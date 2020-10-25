@@ -1,0 +1,11 @@
+{
+  "name": "cravedu-mern",
+  "version": "1.0.0",
+  "description": "Developed by Jason Chiang. ID: 2018331726. Description: Icats business ecosystem, education platform, a courseway website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jason Chiang",
+  "license": "MIT"
+}
