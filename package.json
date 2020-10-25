@@ -4,7 +4,7 @@
   "description": "Developed by Jason Chiang. ID: 2018331726. Description: Icats business ecosystem, education platform, a courseway website",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "frontend": "npm start --prefix frontend"
   },
   "author": "Jason Chiang",
   "license": "MIT"
