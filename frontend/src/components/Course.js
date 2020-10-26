@@ -1,5 +1,5 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React from 'react'
+import { makeStyles } from '@material-ui/core/styles'
 import {
   Card,
   CardActionArea,
@@ -8,55 +8,49 @@ import {
   CardMedia,
   Button,
   Typography,
-} from "@material-ui/core";
-import Rating from "./Rating";
+  Link,
+} from '@material-ui/core'
+import Rating from './Rating'
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 345,
+    width: 200,
+    maxWidth: 235,
+    margin: 7,
   },
   media: {
     height: 140,
   },
-});
+})
 
 const Course = ({ course }) => {
-  const classes = useStyles();
+  const classes = useStyles()
+
   return (
     <Card className={classes.root}>
-      <CardActionArea>
-        <CardMedia
-          className={classes.media}
-          image={course.image}
-          title={course.name}
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {course.name}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {course.description}
-          </Typography>
-
-          <Typography variant="caption" component="span">
-            <Rating
-              value={course.rating}
-              text={`${course.numReviews} reviews`}
-            />
-          </Typography>
-        </CardContent>
-      </CardActionArea>
+      <Link href={`/course/${course._id}`}>
+        <CardActionArea>
+          <CardMedia
+            className={classes.media}
+            image={course.image}
+            title={course.name}
+          />
+          <CardContent>
+            <Typography gutterBottom variant='h5' component='h2'>
+              {course.name}
+            </Typography>
+          </CardContent>
+          <Rating value={course.rating} text={`${course.numReviews} reviews`} />
+        </CardActionArea>
+      </Link>
 
       <CardActions>
-        <Button size="small" color="primary">
+        <Button size='small' color='primary'>
           Share
-        </Button>
-        <Button size="small" color="primary">
-          Learn More
         </Button>
       </CardActions>
     </Card>
-  );
-};
+  )
+}
 
-export default Course;
+export default Course

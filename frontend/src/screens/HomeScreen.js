@@ -1,25 +1,39 @@
-import React from "react";
-import { Container, Grid } from "@material-ui/core";
-import courses from "../courses";
-import Course from "../components/Course";
+import React, { useEffect } from 'react'
+import { Grid, Container } from '@material-ui/core'
+import Course from '../components/Course'
+import { listCourses } from '../actions/courseActions'
+import { useDispatch, useSelector } from 'react-redux'
+import SkeletonLoader from '../components/SkeletonLoader'
+import Message from '../components/Message'
 
 const HomeScreen = () => {
-  return (
-    <>
-      <main>
-        <Container maxWidth="md">
-          <h2>Latest Courses</h2>
-          <Grid container spacing={2}>
-            {courses.map((course) => (
-              <Grid key={course._id} item xs={6} sm={3}>
-                <Course course={course} />
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
-      </main>
-    </>
-  );
-};
+  const dispatch = useDispatch()
+  const courseList = useSelector((state) => state.courseList)
+  const { loading, error, courses } = courseList
 
-export default HomeScreen;
+  useEffect(() => {
+    dispatch(listCourses())
+  }, [dispatch])
+
+  return (
+    <Container maxWidth='md'>
+      <h1>Latest Courses</h1>
+
+      {error ? (
+        <Message>{error}</Message>
+      ) : loading ? (
+        <SkeletonLoader />
+      ) : (
+        <Grid container wrap='nowrap'>
+          {courses.map((course) => (
+            <Grid item key={course._id} xs={3}>
+              <Course course={course} />
+            </Grid>
+          ))}
+        </Grid>
+      )}
+    </Container>
+  )
+}
+
+export default HomeScreen
