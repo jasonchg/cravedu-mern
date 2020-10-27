@@ -1,11 +1,11 @@
-import React from "react";
-import StarIcon from "@material-ui/icons/Star";
-import StarBorderIcon from "@material-ui/icons/StarBorder";
-import StarHalfIcon from "@material-ui/icons/StarHalf";
+import React from 'react'
+import StarIcon from '@material-ui/icons/Star'
+import StarBorderIcon from '@material-ui/icons/StarBorder'
+import StarHalfIcon from '@material-ui/icons/StarHalf'
 
 const Rating = ({ value, text, color }) => {
   return (
-    <div className="rating">
+    <div className='rating'>
       <span style={{ color }}>
         {value >= 1 ? (
           <StarIcon />
@@ -51,13 +51,13 @@ const Rating = ({ value, text, color }) => {
           <StarBorderIcon />
         )}
       </span>
-      <p>{text && text}</p>
+      <span>{text && text}</span>
     </div>
-  );
-};
+  )
+}
 
 Rating.defaultProps = {
-  color: "#f8e825",
-};
+  color: '#f8e825',
+}
 
-export default Rating;
+export default Rating

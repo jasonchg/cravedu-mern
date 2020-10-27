@@ -3,11 +3,12 @@ import { Grid, Container } from '@material-ui/core'
 import Course from '../components/Course'
 import { listCourses } from '../actions/courseActions'
 import { useDispatch, useSelector } from 'react-redux'
-import SkeletonLoader from '../components/SkeletonLoader'
 import Message from '../components/Message'
+import Loader from '../components/Loader'
 
 const HomeScreen = () => {
   const dispatch = useDispatch()
+
   const courseList = useSelector((state) => state.courseList)
   const { loading, error, courses } = courseList
 
@@ -22,11 +23,11 @@ const HomeScreen = () => {
       {error ? (
         <Message>{error}</Message>
       ) : loading ? (
-        <SkeletonLoader />
+        <Loader />
       ) : (
         <Grid container wrap='nowrap'>
           {courses.map((course) => (
-            <Grid item key={course._id} xs={3}>
+            <Grid item key={course._id} xs={12} md={6} lg={3}>
               <Course course={course} />
             </Grid>
           ))}

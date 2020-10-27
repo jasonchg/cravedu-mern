@@ -1,19 +1,21 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
+import CraveduLogo from '../assets/images/logo.png'
 import {
   AppBar,
   Container,
   Toolbar,
   Typography,
   Button,
-  IconButton,
+  Link,
 } from '@material-ui/core'
-import MenuIcon from '@material-ui/icons/Menu'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    marginBottom: 20,
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -24,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const Header = () => {
+  const goToCart = () => {}
   const classes = useStyles()
 
   return (
@@ -31,18 +34,12 @@ const Header = () => {
       <AppBar position='static'>
         <Container maxWidth='md'>
           <Toolbar>
-            <IconButton
-              edge='start'
-              className={classes.menuButton}
-              color='inherit'
-              aria-label='menu'
-            >
-              <MenuIcon />
-            </IconButton>
             <Typography variant='h6' className={classes.title}>
-              Cravedu
+              <Link href='/'>
+                <img src={CraveduLogo} alt='logo' style={{ width: 90 }} />
+              </Link>
             </Typography>
-            <Button color='inherit'>
+            <Button color='inherit' onClick={goToCart}>
               <ShoppingCartIcon />
               Cart
             </Button>

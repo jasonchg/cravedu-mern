@@ -5,6 +5,7 @@ import { Container } from '@material-ui/core'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import HomeScreen from './screens/HomeScreen'
 import CourseScreen from './screens/CourseScreen'
+import CartScreen from './screens/CartScreen'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Container maxWidth='md'>
         <main>
           <Router>
+            <Route path='/cart/:id' component={CartScreen} />
             <Route path='/course/:id' component={CourseScreen} />
             <Route path='/' component={HomeScreen} exact />
           </Router>
