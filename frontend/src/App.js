@@ -7,6 +7,7 @@ import HomeScreen from './screens/HomeScreen'
 import CourseScreen from './screens/CourseScreen'
 import CartScreen from './screens/CartScreen'
 import LoginScreen from './screens/LoginScreen'
+import RegisterScreen from './screens/RegisterScreen'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Container maxWidth='md'>
         <main>
           <Router>
+            <Route path='/register' component={RegisterScreen} />
             <Route path='/login' component={LoginScreen} />
             <Route path='/cart' component={CartScreen} exact />
             <Route path='/cart/:id' component={CartScreen} exact />

@@ -11,7 +11,6 @@ import {
   Menu,
   MenuItem,
   ListItemIcon,
-  Divider,
 } from '@material-ui/core'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
@@ -79,6 +78,12 @@ const Header = () => {
 
             {userInfo ? (
               <>
+                {userInfo.isInstructor && (
+                  <Button color='inherit' startIcon={<BallotIcon />}>
+                    Instructor
+                  </Button>
+                )}
+
                 <Button
                   color='inherit'
                   startIcon={<AccountCircleIcon />}
@@ -93,15 +98,6 @@ const Header = () => {
                   open={Boolean(openMenu)}
                   onClose={closeMenuHandler}
                 >
-                  {userInfo.isInstructor && (
-                    <MenuItem onClick={closeMenuHandler}>
-                      <ListItemIcon>
-                        <BallotIcon fontSize='small' />
-                      </ListItemIcon>
-                      <Typography variant='inherit'>Instructor</Typography>
-                    </MenuItem>
-                  )}
-
                   <MenuItem onClick={closeMenuHandler}>
                     <ListItemIcon>
                       <ListIcon fontSize='small' />
@@ -115,7 +111,7 @@ const Header = () => {
                     </ListItemIcon>
                     <Typography variant='inherit'> My Account</Typography>
                   </MenuItem>
-                  <Divider />
+
                   <MenuItem onClick={logoutUser}>
                     <ListItemIcon>
                       <ExitToAppIcon fontSize='small' />

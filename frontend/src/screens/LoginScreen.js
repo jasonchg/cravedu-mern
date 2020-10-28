@@ -52,17 +52,16 @@ const LoginScreen = ({ history, location }) => {
           </Grid>
           {error && <Message>{error}</Message>}
           {loading && <Loader />}
-
           <form className={classes.form} onSubmit={submitHandler}>
             <Grid item xs={12}>
               <FormContainer>
                 <TextField
+                  required
                   fullWidth
                   id='email'
                   type='email'
                   label='Email Address'
                   placeholder=''
-                  multiline
                   variant='filled'
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -72,6 +71,7 @@ const LoginScreen = ({ history, location }) => {
             <Grid item xs={12}>
               <FormContainer>
                 <TextField
+                  required
                   fullWidth
                   id='password'
                   label='Password'

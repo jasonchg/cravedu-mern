@@ -14,7 +14,7 @@ const courseListReducer = (state = { courses: [] }, action) => {
     case COURSE_LIST_SUCCESS:
       return { loading: false, courses: action.payload }
     case COURSE_LIST_FAIL:
-      return { loading: true, error: action.payload }
+      return { loading: false, error: action.payload }
     default:
       return state
   }
@@ -27,7 +27,7 @@ const courseDetailsReducer = (state = { course: {} }, action) => {
     case COURSE_DETAILS_SUCCESS:
       return { loading: false, course: action.payload }
     case COURSE_DETAILS_FAIL:
-      return { loading: true, error: action.payload }
+      return { loading: false, error: action.payload }
     default:
       return state
   }
