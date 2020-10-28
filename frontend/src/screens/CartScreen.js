@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
   checkoutButton: {
     width: '100%',
+    padding: 15,
   },
 
   deleteButton: {
@@ -79,8 +80,8 @@ const CartScreen = ({ match, history }) => {
             <List>
               <Divider className={classes.divider} />
               {cartItems.map((item) => (
-                <>
-                  <ListItem key={item.course}>
+                <div key={item.course}>
+                  <ListItem>
                     <Grid container spacing={2}>
                       <Grid item xs={3}>
                         <ListItemAvatar>
@@ -116,7 +117,7 @@ const CartScreen = ({ match, history }) => {
                     </Grid>
                   </ListItem>
                   <Divider className={classes.divider} />
-                </>
+                </div>
               ))}
             </List>
           )}
@@ -129,8 +130,7 @@ const CartScreen = ({ match, history }) => {
                 <ListItemText
                   primary={
                     <Typography variant='h5'>
-                      Subtotal ({cartItems.reduce((acc, item) => acc + 1, 0)}{' '}
-                      items)
+                      Subtotal ({cartItems.reduce((acc, item) => acc + 1, 0)})
                     </Typography>
                   }
                 />

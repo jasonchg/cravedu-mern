@@ -76,6 +76,7 @@ const CourseScreen = ({ match, history }) => {
     button: {
       margin: 12,
       width: 175,
+      padding: 15,
     },
   }))
   const classes = useStyles()
