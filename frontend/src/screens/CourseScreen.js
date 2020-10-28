@@ -75,7 +75,7 @@ const CourseScreen = ({ match, history }) => {
     },
     button: {
       margin: 12,
-      width: 145,
+      width: 175,
     },
   }))
   const classes = useStyles()
@@ -154,12 +154,13 @@ const CourseScreen = ({ match, history }) => {
                 className={classes.button}
                 variant='contained'
                 color='primary'
-                size='large'
+                size='medium'
                 startIcon={<AddShoppingCartIcon />}
                 onClick={addToCartHandler}
               >
                 Add To Cart
               </Button>
+              <Divider />
             </Grid>
           </Grid>
         </Container>

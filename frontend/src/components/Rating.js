@@ -51,7 +51,7 @@ const Rating = ({ value, text, color }) => {
           <StarBorderIcon />
         )}
       </span>
-      <span>{text && text}</span>
+      <span> {text && text}</span>
     </div>
   )
 }

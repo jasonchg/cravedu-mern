@@ -6,6 +6,7 @@ import dotenv from 'dotenv'
 import colors from 'colors'
 import { notFound, errorHandler } from './middlewares/errorMiddlewares.js'
 
+import userRoutes from './routes/userRoutes.js'
 import courseRoutes from './routes/courseRoutes.js'
 
 dotenv.config()
@@ -21,6 +22,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/courses', courseRoutes)
+app.use('/api/users', userRoutes)
 
 app.use(notFound)
 app.use(errorHandler)

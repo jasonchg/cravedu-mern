@@ -13,6 +13,7 @@ import {
   Paper,
   Divider,
 } from '@material-ui/core'
+import DoneAllIcon from '@material-ui/icons/DoneAll'
 import { makeStyles } from '@material-ui/core/styles'
 import DeleteIcon from '@material-ui/icons/Delete'
 import { useDispatch, useSelector } from 'react-redux'
@@ -30,6 +31,15 @@ const useStyles = makeStyles((theme) => ({
   },
   cartImage: {
     width: 120,
+  },
+  checkoutButton: {
+    width: '100%',
+  },
+
+  deleteButton: {
+    '&:hover': {
+      color: 'maroon',
+    },
   },
 }))
 
@@ -59,7 +69,7 @@ const CartScreen = ({ match, history }) => {
     <Container maxWidth='md'>
       <Grid container spacing={2}>
         <Grid item xs={8}>
-          <Typography variant='h3'>Cart</Typography>
+          <Typography variant='h4'>Cart</Typography>
           {cartItems.length === 0 ? (
             <Message severity='info'>
               Your cart is empty.
@@ -67,37 +77,46 @@ const CartScreen = ({ match, history }) => {
             </Message>
           ) : (
             <List>
+              <Divider className={classes.divider} />
               {cartItems.map((item) => (
-                <ListItem key={item.course}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={3}>
-                      <ListItemAvatar>
-                        <img
-                          className={classes.cartImage}
-                          src={item.image}
-                          alt={item.image}
-                        />
-                      </ListItemAvatar>
+                <>
+                  <ListItem key={item.course}>
+                    <Grid container spacing={2}>
+                      <Grid item xs={3}>
+                        <ListItemAvatar>
+                          <Link href={`/course/${item.course}`}>
+                            <img
+                              className={classes.cartImage}
+                              src={item.image}
+                              alt={item.image}
+                            />
+                          </Link>
+                        </ListItemAvatar>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Link href={`/course/${item.course}`}>
+                          <ListItemText
+                            primary={item.name}
+                            secondary={item.instructor}
+                          />
+                        </Link>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <p>RM {item.price}</p>
+                      </Grid>
+                      <Grid item xs={1}>
+                        <IconButton
+                          className={classes.deleteButton}
+                          aria-label='delete'
+                          onClick={() => removeFromCartHandler(item.course)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </Grid>
                     </Grid>
-                    <Grid item xs={6}>
-                      <ListItemText
-                        primary={item.name}
-                        secondary={item.instructor}
-                      />
-                    </Grid>
-                    <Grid item xs={2}>
-                      <p>RM {item.price}</p>
-                    </Grid>
-                    <Grid item xs={1}>
-                      <IconButton
-                        aria-label='delete'
-                        onClick={() => removeFromCartHandler(item.course)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </Grid>
-                  </Grid>
-                </ListItem>
+                  </ListItem>
+                  <Divider className={classes.divider} />
+                </>
               ))}
             </List>
           )}
@@ -111,12 +130,12 @@ const CartScreen = ({ match, history }) => {
                   primary={
                     <Typography variant='h5'>
                       Subtotal ({cartItems.reduce((acc, item) => acc + 1, 0)}{' '}
-                      {''}
                       items)
                     </Typography>
                   }
                 />
               </ListItem>
+              <Divider className={classes.divider} />
               <ListItem>
                 <ListItemText
                   primary={
@@ -134,9 +153,12 @@ const CartScreen = ({ match, history }) => {
             <Divider className={classes.divider} />
 
             <Button
+              className={classes.checkoutButton}
               variant='contained'
               color='primary'
               onClick={checkOutHandler}
+              startIcon={<DoneAllIcon />}
+              disabled={cartItems.length === 0}
             >
               Proceed To Checkout
             </Button>
