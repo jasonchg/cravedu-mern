@@ -120,7 +120,6 @@ const Header = () => {
                     <ListItemIcon>
                       <ExitToAppIcon fontSize='small' />
                     </ListItemIcon>
-
                     <Typography variant='inherit'>Logout</Typography>
                   </MenuItem>
                 </Menu>
