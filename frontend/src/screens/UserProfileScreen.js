@@ -10,17 +10,17 @@ import {
 import FormContainer from '../components/FormContainer'
 import { makeStyles } from '@material-ui/core/styles'
 import { useDispatch, useSelector } from 'react-redux'
-import { register } from '../actions/userActions'
+import { getUserDetails, updateUserDetails } from '../actions/userActions'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-
+import { USER_UPDATE_RESET } from '../constants/userConstants'
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: 40,
   },
 }))
 
-const RegisterScreen = ({ history, location }) => {
+const UserProfileScreen = ({ history }) => {
   const classes = useStyles()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -29,37 +29,50 @@ const RegisterScreen = ({ history, location }) => {
   const [match, setMatch] = useState(true)
   const dispatch = useDispatch()
 
-  const userRegister = useSelector((state) => state.userRegister)
-  const { loading, error, userInfo } = userRegister
+  const userDetails = useSelector((state) => state.userDetails)
+  const { loading, error, user } = userDetails
 
-  const redirect = location.search ? location.search.split('=')[1] : '/'
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
+  const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
+  const { success } = userUpdateProfile
 
   useEffect(() => {
-    if (userInfo) {
-      history.push(redirect)
+    if (!userInfo) {
+      history.push('/login')
+    } else {
+      if (!user || !user.name || success) {
+        setPassword('')
+        setConfirmPassword('')
+        setMatch(true)
+        dispatch({ type: USER_UPDATE_RESET })
+        dispatch(getUserDetails('profile'))
+      } else {
+        setName(user.name)
+        setEmail(user.email)
+      }
     }
-  }, [history, redirect, userInfo])
+  }, [dispatch, userInfo, history, user, success])
 
   const submitHandler = (e) => {
     e.preventDefault()
 
     if (password === confirmPassword) {
-      dispatch(register(name, email, password))
+      dispatch(updateUserDetails({ _id: user._id, name, email, password }))
     } else {
       setMatch(false)
     }
   }
 
   return (
-    <div>
-      <FormContainer>
-        <Container maxWidth='md' className={classes.root}>
-          <Grid container direction='column' justify='flex-start'>
-            <Grid item xs={12}>
-              <Typography variant='h4'>User Register</Typography>
-            </Grid>
-            {error && <Message>{error}</Message>}
-            {loading && <Loader />}
+    <Container maxWidth='md'>
+      {loading && <Loader />}
+      {error && <Message>{error}</Message>}
+      <Grid container spacing={3} flexDirection='row'>
+        <Grid item xs={5}>
+          <FormContainer>
+            <h1>User Profile</h1>
             <form className={classes.form} onSubmit={submitHandler}>
               <Grid item xs={12}>
                 <FormContainer>
@@ -94,7 +107,6 @@ const RegisterScreen = ({ history, location }) => {
               <Grid item xs={12}>
                 <FormContainer>
                   <TextField
-                    required
                     fullWidth
                     id='password'
                     label='Password'
@@ -103,6 +115,7 @@ const RegisterScreen = ({ history, location }) => {
                     variant='filled'
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    helperText='blank if no changes'
                   />
                 </FormContainer>
               </Grid>
@@ -111,7 +124,6 @@ const RegisterScreen = ({ history, location }) => {
                   {!match ? (
                     <TextField
                       error
-                      required
                       fullWidth
                       id='password'
                       label='Confirm Password'
@@ -124,7 +136,6 @@ const RegisterScreen = ({ history, location }) => {
                     />
                   ) : (
                     <TextField
-                      required
                       fullWidth
                       id='password'
                       label='Confirm Password'
@@ -133,33 +144,25 @@ const RegisterScreen = ({ history, location }) => {
                       variant='filled'
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
+                      helperText='blank if no changes'
                     />
                   )}
                 </FormContainer>
               </Grid>
               <Grid item xs={12}>
                 <Button type='submit' variant='contained' color='primary'>
-                  Register
+                  Update Profile
                 </Button>
               </Grid>
             </form>
-            <Grid item xs={12}>
-              <FormContainer>
-                <Typography variant='body2'>
-                  Have an account?{' '}
-                  <Link
-                    href={redirect ? `/login?redirect=${redirect}` : '/login'}
-                  >
-                    Login
-                  </Link>
-                </Typography>
-              </FormContainer>
-            </Grid>
-          </Grid>
-        </Container>
-      </FormContainer>
-    </div>
+          </FormContainer>
+        </Grid>
+        <Grid item xs={7}>
+          <h1>Other</h1>
+        </Grid>
+      </Grid>
+    </Container>
   )
 }
 
-export default RegisterScreen
+export default UserProfileScreen

@@ -37,7 +37,8 @@ const useStyles = makeStyles((theme) => ({
 const Header = () => {
   const classes = useStyles()
 
-  const [openMenu, setMenuOpen] = useState(null)
+  const [openMenuUser, setMenuOpenUser] = useState(null)
+  const [openMenuAdmin, setMenuOpenAdmin] = useState(null)
 
   const dispatch = useDispatch()
 
@@ -48,14 +49,27 @@ const Header = () => {
     if (window.confirm('Logout?')) {
       dispatch(logout())
     }
-    closeMenuHandler()
+    closeUserMenuHandler()
+    closeAdminMenuHandler()
   }
 
-  const openMenuHandler = (e) => {
-    setMenuOpen(e.currentTarget)
+  const openUserMenuHandler = (e) => {
+    setMenuOpenUser(e.currentTarget)
   }
-  const closeMenuHandler = () => {
-    setMenuOpen(null)
+  const closeUserMenuHandler = () => {
+    setMenuOpenUser(null)
+  }
+
+  const openAdminMenuHandler = (e) => {
+    setMenuOpenAdmin(e.currentTarget)
+  }
+  const closeAdminMenuHandler = () => {
+    setMenuOpenAdmin(null)
+  }
+
+  const goToMyAccount = () => {
+    window.location.href = '/profile'
+    closeUserMenuHandler()
   }
 
   return (
@@ -84,28 +98,63 @@ const Header = () => {
                   </Button>
                 )}
 
+                {userInfo.isAdmin && (
+                  <>
+                    <Button
+                      color='inherit'
+                      startIcon={<BallotIcon />}
+                      onClick={openAdminMenuHandler}
+                    >
+                      Admin
+                    </Button>
+                    <Menu
+                      id='admin-menu'
+                      anchorEl={openMenuAdmin}
+                      keepMounted
+                      open={Boolean(openMenuAdmin)}
+                      onClose={closeAdminMenuHandler}
+                    >
+                      <MenuItem onClick={closeAdminMenuHandler}>
+                        <ListItemIcon>
+                          <ListIcon fontSize='small' />
+                        </ListItemIcon>
+                        <Typography variant='inherit'>
+                          Manage Courses
+                        </Typography>
+                      </MenuItem>
+
+                      <MenuItem onClick={closeAdminMenuHandler}>
+                        <ListItemIcon>
+                          <AccountCircleIcon fontSize='small' />
+                        </ListItemIcon>
+                        <Typography variant='inherit'>Manage User</Typography>
+                      </MenuItem>
+                    </Menu>
+                  </>
+                )}
+
                 <Button
                   color='inherit'
                   startIcon={<AccountCircleIcon />}
-                  onClick={openMenuHandler}
+                  onClick={openUserMenuHandler}
                 >
                   {userInfo.name}
                 </Button>
                 <Menu
-                  id='simple-menu'
-                  anchorEl={openMenu}
+                  id='menu'
+                  anchorEl={openMenuUser}
                   keepMounted
-                  open={Boolean(openMenu)}
-                  onClose={closeMenuHandler}
+                  open={Boolean(openMenuUser)}
+                  onClose={closeUserMenuHandler}
                 >
-                  <MenuItem onClick={closeMenuHandler}>
+                  <MenuItem onClick={closeUserMenuHandler}>
                     <ListItemIcon>
                       <ListIcon fontSize='small' />
                     </ListItemIcon>
                     <Typography variant='inherit'> My Courses</Typography>
                   </MenuItem>
 
-                  <MenuItem onClick={closeMenuHandler}>
+                  <MenuItem onClick={goToMyAccount}>
                     <ListItemIcon>
                       <AccountBoxIcon fontSize='small' />
                     </ListItemIcon>
