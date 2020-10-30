@@ -19,7 +19,8 @@ function App() {
         <main>
           <Router>
             <Route path='/register' component={RegisterScreen} />
-            <Route path='/login' component={LoginScreen} />
+            <Route path='/login/:id' component={LoginScreen} exact />
+            <Route path='/login' component={LoginScreen} exact />
             <Route path='/profile' component={UserProfileScreen} />
             <Route path='/payment' component={PaymentScreen} />
             <Route path='/cart' component={CartScreen} exact />

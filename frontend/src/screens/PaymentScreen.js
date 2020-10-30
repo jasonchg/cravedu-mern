@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Grid,
   Container,
@@ -23,9 +23,11 @@ import FormContainer from '../components/FormContainer'
 import { makeStyles } from '@material-ui/core/styles'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
-import Loader from '../components/Loader'
 import DoneAllIcon from '@material-ui/icons/DoneAll'
-
+import PaymentIcon from '@material-ui/icons/Payment'
+import { savePaymentMethod } from '../actions/cartActions'
+import { addOrder } from '../actions/orderActions'
+import Loader from '../components/Loader'
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: 40,
@@ -52,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 
 const PaymentScreen = ({ history }) => {
   const classes = useStyles()
-  const dispath = useDispatch()
+  const dispatch = useDispatch()
 
   const [paymentMethod, setPaymentMethod] = useState('PayPal')
   const [billingAddress, setBillingAddress] = useState('Malaysia')
@@ -60,11 +62,40 @@ const PaymentScreen = ({ history }) => {
   const cart = useSelector((state) => state.cart)
   const { cartItems } = cart
 
-  const checkoutHandler = (e) => {
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
+  const orderAdd = useSelector((state) => state.orderAdd)
+  const { success, loading, error, order } = orderAdd
+
+  let cartItemPrice = Number(
+    cartItems.reduce((acc, item) => acc + item.price, 0)
+  ).toFixed(2)
+
+  const placeOrderHandler = (e) => {
     e.preventDefault()
-    // dispath(savePaymentMethod(paymentMethod))
-    history.push('/placeorder')
+
+    if (!userInfo) {
+      history.push('/login/paymentlogin')
+    } else {
+      dispatch(savePaymentMethod(paymentMethod))
+      dispatch(
+        addOrder({
+          orderItems: cartItems,
+          paymentMethod: paymentMethod,
+          itemPrice: cartItemPrice,
+          totalPrice: cartItemPrice,
+          isPaid: true,
+        })
+      )
+    }
   }
+
+  useEffect(() => {
+    if (success) {
+      history.push(`/order/${order._id}`)
+    }
+  }, [history, success, order])
 
   return (
     <Container>
@@ -73,6 +104,8 @@ const PaymentScreen = ({ history }) => {
           <Grid item xs={8}>
             <FormContainer>
               <h1>Check Out</h1>
+              {error && <Message>{error}</Message>}
+              {loading && <Loader />}
 
               <FormContainer>
                 <FormControl
@@ -80,17 +113,19 @@ const PaymentScreen = ({ history }) => {
                   className={classes.checkoutInput}
                 >
                   <FormLabel component='legend'>Billing Address</FormLabel>
-                  <Select
-                    labelId='select_country'
-                    id='select_country'
-                    value={billingAddress}
-                    onChange={(e) => setBillingAddress(e.target.value)}
-                  >
-                    <MenuItem value={'Malaysia'}>Malaysia</MenuItem>
-                    <MenuItem value={'Other'} disabled>
-                      Other
-                    </MenuItem>
-                  </Select>
+                  <FormContainer>
+                    <Select
+                      labelId='select_country'
+                      id='select_country'
+                      value={billingAddress}
+                      onChange={(e) => setBillingAddress(e.target.value)}
+                    >
+                      <MenuItem value={'Malaysia'}>Malaysia</MenuItem>
+                      <MenuItem value={'Other'} disabled>
+                        Other
+                      </MenuItem>
+                    </Select>
+                  </FormContainer>
                 </FormControl>
 
                 <FormContainer>
@@ -99,24 +134,31 @@ const PaymentScreen = ({ history }) => {
                     className={classes.checkoutInput}
                   >
                     <FormLabel component='legend'>Payment Method</FormLabel>
-                    <RadioGroup
-                      defaultValue='PayPal'
-                      value={paymentMethod}
-                      onChange={(e) => setPaymentMethod(e.target.value)}
-                    >
-                      <FormControlLabel
-                        value='PayPal'
-                        control={<Radio color='primary' />}
-                        label='PayPal'
-                      />
-
-                      <FormControlLabel
-                        value='Other'
-                        control={<Radio color='primary' />}
-                        label='Other'
-                        disabled
-                      />
-                    </RadioGroup>
+                    <FormContainer>
+                      <RadioGroup
+                        defaultValue='PayPal'
+                        value={paymentMethod}
+                        onChange={(e) => setPaymentMethod(e.target.value)}
+                      >
+                        <span>
+                          <FormControlLabel
+                            value='PayPal'
+                            control={<Radio color='primary' />}
+                            label={<i className='fa fa-paypal'></i>}
+                          />
+                          PayPal
+                        </span>
+                        <span>
+                          <FormControlLabel
+                            value='Other'
+                            control={<Radio color='primary' />}
+                            label={<PaymentIcon />}
+                            disabled
+                          />
+                          Other
+                        </span>
+                      </RadioGroup>
+                    </FormContainer>
                   </FormControl>
                 </FormContainer>
               </FormContainer>
@@ -173,19 +215,14 @@ const PaymentScreen = ({ history }) => {
               <List>
                 <ListItem>
                   <ListItemText
-                    primary={<Typography variant='h5'>Total</Typography>}
+                    primary={<Typography variant='h5'>Order Total</Typography>}
                   />
                 </ListItem>
                 <Divider className={classes.divider} />
                 <ListItem>
                   <ListItemText
                     primary={
-                      <Typography variant='h5'>
-                        RM{' '}
-                        {cartItems
-                          .reduce((acc, item) => acc + item.price, 0)
-                          .toFixed(2)}
-                      </Typography>
+                      <Typography variant='h5'>RM {cartItemPrice}</Typography>
                     }
                     secondary='*tax is included'
                   />
@@ -198,7 +235,7 @@ const PaymentScreen = ({ history }) => {
                 className={classes.checkoutButton}
                 variant='contained'
                 color='primary'
-                onClick={checkoutHandler}
+                onClick={placeOrderHandler}
                 startIcon={<DoneAllIcon />}
                 disabled={cartItems.length === 0}
               >

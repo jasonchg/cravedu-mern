@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const LoginScreen = ({ history, location }) => {
+const LoginScreen = ({ history, location, match }) => {
   const classes = useStyles()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -32,14 +32,22 @@ const LoginScreen = ({ history, location }) => {
 
   const redirect = location.search ? location.search.split('=')[1] : '/'
 
+  const id = match.params.id
+  console.log(id)
+
   useEffect(() => {
     if (userInfo) {
-      history.push(redirect)
+      if (id === 'paymentlogin') {
+        history.push('/payment')
+      } else {
+        history.push(redirect)
+      }
     }
-  }, [history, redirect, userInfo])
+  }, [history, redirect, userInfo, id])
 
   const submitHandler = (e) => {
     e.preventDefault()
+
     dispatch(login(email, password))
   }
 
