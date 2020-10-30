@@ -62,8 +62,8 @@ const CartScreen = ({ match, history }) => {
     dispatch(removeFromCart(courseId))
   }
 
-  const checkOutHandler = () => {
-    console.log('Checkout')
+  const checkoutHandler = () => {
+    history.push('/payment')
   }
 
   return (
@@ -156,7 +156,7 @@ const CartScreen = ({ match, history }) => {
               className={classes.checkoutButton}
               variant='contained'
               color='primary'
-              onClick={checkOutHandler}
+              onClick={checkoutHandler}
               startIcon={<DoneAllIcon />}
               disabled={cartItems.length === 0}
             >
