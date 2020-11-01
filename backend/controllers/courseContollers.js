@@ -1,11 +1,15 @@
 import asyncHandler from 'express-async-handler'
 import Course from '../models/courseModel.js'
+import Order from '../models/orderModel.js'
 
 // @desc    Fetch all courses
 // @route   GET /api/courses
 // @access  Public
 
 const getCourses = asyncHandler(async (req, res) => {
+  // do not display the item that user had bought
+  // const orders = await Order.find({})
+
   const courses = await Course.find({})
 
   if (courses) {

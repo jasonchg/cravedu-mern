@@ -12,6 +12,12 @@ const HomeScreen = () => {
   const courseList = useSelector((state) => state.courseList)
   const { loading, error, courses } = courseList
 
+  const orderAllMy = useSelector((state) => state.orderAllMy)
+  const { orders } = orderAllMy
+
+  // do not display those courses that user had already boought
+  // instead display on the Learning Tab
+
   useEffect(() => {
     dispatch(listCourses())
   }, [dispatch])
@@ -19,7 +25,6 @@ const HomeScreen = () => {
   return (
     <Container maxWidth='md'>
       <h1>Latest Courses</h1>
-
       {error ? (
         <Message>{error}</Message>
       ) : loading ? (

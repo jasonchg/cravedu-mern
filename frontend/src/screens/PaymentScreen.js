@@ -28,6 +28,7 @@ import PaymentIcon from '@material-ui/icons/Payment'
 import { savePaymentMethod } from '../actions/cartActions'
 import { addOrder } from '../actions/orderActions'
 import Loader from '../components/Loader'
+import { CART_RESET } from '../constants/cartConstants'
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: 40,
@@ -66,7 +67,7 @@ const PaymentScreen = ({ history }) => {
   const { userInfo } = userLogin
 
   const orderAdd = useSelector((state) => state.orderAdd)
-  const { success, loading, error, order } = orderAdd
+  const { success, loading, error } = orderAdd
 
   let cartItemPrice = Number(
     cartItems.reduce((acc, item) => acc + item.price, 0)
@@ -93,9 +94,10 @@ const PaymentScreen = ({ history }) => {
 
   useEffect(() => {
     if (success) {
-      history.push(`/order/${order._id}`)
+      dispatch({ type: CART_RESET })
+      history.push('/mycourses')
     }
-  }, [history, success, order])
+  }, [history, success])
 
   return (
     <Container>

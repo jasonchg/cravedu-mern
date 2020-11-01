@@ -13,6 +13,9 @@ import {
   USER_UPDATE_REQUEST,
   USER_UPDATE_SUCCESS,
   USER_UPDATE_FAIL,
+  USER_COURSE_REQUEST,
+  USER_COURSE_SUCCESS,
+  USER_COURSE_FAIL,
 } from '../constants/userConstants'
 
 const login = (email, password) => async (dispatch) => {
@@ -145,4 +148,38 @@ const updateUserDetails = (user) => async (dispatch, getState) => {
   }
 }
 
-export { login, logout, register, getUserDetails, updateUserDetails }
+const getUserCourses = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: USER_COURSE_REQUEST })
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    const { data } = await axios.get('/api/mycourses', config)
+
+    dispatch({ type: USER_COURSE_SUCCESS, payload: data })
+  } catch (e) {
+    dispatch({
+      type: USER_COURSE_FAIL,
+      payload:
+        e.response && e.response.data.message
+          ? e.response.data.message
+          : e.message,
+    })
+  }
+}
+
+export {
+  login,
+  logout,
+  register,
+  getUserDetails,
+  updateUserDetails,
+  getUserCourses,
+}

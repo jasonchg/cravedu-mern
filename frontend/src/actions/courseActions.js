@@ -8,7 +8,7 @@ import {
   COURSE_DETAILS_FAIL,
 } from '../constants/courseConstants'
 
-const listCourses = () => async (dispatch) => {
+const listCourses = () => async (dispatch, getState) => {
   try {
     dispatch({ type: COURSE_LIST_REQUEST })
 
@@ -29,7 +29,7 @@ const listCourses = () => async (dispatch) => {
   }
 }
 
-const listCourseDetails = (courseId) => async (dispatch) => {
+const listCourseDetails = (courseId) => async (dispatch, getState) => {
   try {
     dispatch({ type: COURSE_DETAILS_REQUEST })
 

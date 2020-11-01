@@ -72,6 +72,11 @@ const Header = () => {
     closeUserMenuHandler()
   }
 
+  const goToMyCourses = () => {
+    window.location.href = '/mycourses'
+    closeUserMenuHandler()
+  }
+
   return (
     <div className={classes.root}>
       <AppBar position='static'>
@@ -147,7 +152,7 @@ const Header = () => {
                   open={Boolean(openMenuUser)}
                   onClose={closeUserMenuHandler}
                 >
-                  <MenuItem onClick={closeUserMenuHandler}>
+                  <MenuItem onClick={goToMyCourses}>
                     <ListItemIcon>
                       <ListIcon fontSize='small' />
                     </ListItemIcon>

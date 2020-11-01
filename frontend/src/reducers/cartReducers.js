@@ -1,6 +1,7 @@
 import {
   CART_ADD_ITEM,
   CART_REMOVE_ITEM,
+  CART_RESET,
   SAVE_PAYMENT_METHODS,
 } from '../constants/cartConstants'
 
@@ -29,6 +30,8 @@ const cartReducers = (state = { cartItems: [] }, action) => {
         ...state,
         cartItems: state.cartItems.filter((x) => x.course !== action.payload),
       }
+    case CART_RESET:
+      return {}
 
     case SAVE_PAYMENT_METHODS:
       return {

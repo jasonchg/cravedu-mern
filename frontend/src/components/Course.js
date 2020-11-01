@@ -40,7 +40,12 @@ const Course = ({ course }) => {
               {course.name}
             </Typography>
           </CardContent>
-          <Rating value={course.rating} text={`${course.numReviews} reviews`} />
+          {course.rating ? (
+            <Rating
+              value={course.rating}
+              text={`${course.numReviews} reviews`}
+            />
+          ) : null}
         </CardActionArea>
       </Link>
 

@@ -26,6 +26,20 @@ const userSchema = mongoose.Schema(
       required: true,
       default: false,
     },
+    myCourses: [
+      {
+        _id: {
+          type: mongoose.Schema.Types.ObjectId,
+          required: true,
+          ref: 'Course',
+        },
+        image: { type: String, required: true },
+        name: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
   },
   {
     timestamps: true,
