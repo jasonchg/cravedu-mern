@@ -38,6 +38,10 @@ const userSchema = mongoose.Schema(
           type: String,
           required: true,
         },
+        orderId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Order',
+        },
       },
     ],
   },

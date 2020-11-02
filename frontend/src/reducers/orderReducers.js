@@ -27,12 +27,12 @@ const addOrderReducer = (state = {}, action) => {
   }
 }
 
-const getOrderReducer = (state = { orderItems: [] }, action) => {
+const getOrderReducer = (state = { order: [] }, action) => {
   switch (action.type) {
     case ORDER_DETAILS_REQUEST:
       return { loading: true }
     case ORDER_DETAILS_SUCCESS:
-      return { loading: false, ordedrItems: action.payload }
+      return { loading: false, order: action.payload }
     case ORDER_DETAILS_FAIL:
       return { loading: false, error: action.payload }
     default:

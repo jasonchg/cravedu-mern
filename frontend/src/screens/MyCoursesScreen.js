@@ -28,26 +28,27 @@ const MyCoursesScreen = ({ history }) => {
   return (
     <Container maxWidth='md'>
       <h1>My Courses</h1>
-      {console.log(courses)}
 
-      {courses === 0 ? (
-        <Message severity='info'>
-          No course in your list.
-          <Link href='/'> Start Study?</Link>
-        </Message>
-      ) : error ? (
-        <Message>{error}</Message>
-      ) : loading ? (
-        <Loader />
-      ) : (
-        <Grid container wrap='nowrap'>
-          {courses.map((courseItem, index) => (
-            <Grid item key={index} xs={12} md={6} lg={3}>
-              <Course course={courseItem} />
-            </Grid>
-          ))}
-        </Grid>
-      )}
+      {courses ? (
+        courses.length === 0 ? (
+          <Message severity='info'>
+            No course in your list.
+            <Link href='/'> Start Study?</Link>
+          </Message>
+        ) : error ? (
+          <Message>{error}</Message>
+        ) : loading ? (
+          <Loader />
+        ) : (
+          <Grid container wrap='nowrap'>
+            {courses.map((courseItem, index) => (
+              <Grid item key={index} xs={12} md={6} lg={3}>
+                <Course course={courseItem} />
+              </Grid>
+            ))}
+          </Grid>
+        )
+      ) : null}
     </Container>
   )
 }

@@ -24,6 +24,9 @@ const addOrderItems = asyncHandler(async (req, res) => {
       isPaid,
     })
 
+    const createdOrder = await order.save()
+    const orderId = createdOrder._id
+
     if (userExisted) {
       var newMyCourses = userExisted.myCourses
 
@@ -34,16 +37,14 @@ const addOrderItems = asyncHandler(async (req, res) => {
             _id: orderItems[key].course,
             image: orderItems[key].image,
             name: orderItems[key].name,
+            orderId,
           },
         ]
       }
-
       userExisted.myCourses = newMyCourses
     }
 
     const updatedUserProfile = await userExisted.save()
-    const createdOrder = await order.save()
-
     res.status(201).json({ createdOrder, updatedUserProfile })
   }
 })
