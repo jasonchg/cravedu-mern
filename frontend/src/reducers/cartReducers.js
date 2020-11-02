@@ -31,7 +31,9 @@ const cartReducers = (state = { cartItems: [] }, action) => {
         cartItems: state.cartItems.filter((x) => x.course !== action.payload),
       }
     case CART_RESET:
-      return {}
+      return {
+        cartItems: [],
+      }
 
     case SAVE_PAYMENT_METHODS:
       return {

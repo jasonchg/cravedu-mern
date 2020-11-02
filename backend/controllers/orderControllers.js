@@ -1,4 +1,3 @@
-import { json } from 'express'
 import asyncHandler from 'express-async-handler'
 import Order from '../models/orderModel.js'
 import User from '../models/userModel.js'
@@ -10,7 +9,7 @@ import User from '../models/userModel.js'
 const addOrderItems = asyncHandler(async (req, res) => {
   const { orderItems, paymentMethod, itemPrice, totalPrice, isPaid } = req.body
 
-  const userExisted = await User.findById(req.user._id)
+  const userExisted = await User.findById(req.user.id)
 
   if (!orderItems && orderItems.length === 0) {
     res.status(400)
@@ -70,15 +69,14 @@ const getOrderById = asyncHandler(async (req, res) => {
 // @access  Private
 
 const getAllUserOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({
-    user: req.user._id,
-  })
-
-  if (orders) {
+  try {
+    const orders = await Order.find({
+      user: req.user.id,
+    })
     res.json(orders)
-  } else {
+  } catch (e) {
     res.status(404)
-    throw new Error('No course found')
+    throw new Error('No order found')
   }
 })
 

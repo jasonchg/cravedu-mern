@@ -30,8 +30,7 @@ const authUser = asyncHandler(async (req, res) => {
 // @access  Private
 
 const getUserProfile = asyncHandler(async (req, res) => {
-  const userId = req.user.id
-  const user = await User.findById(userId)
+  const user = await User.findById(req.user.id)
 
   if (user) {
     res.json({
@@ -86,7 +85,7 @@ const registerUser = asyncHandler(async (req, res) => {
 // @access  Private
 
 const updateUserProfile = asyncHandler(async (req, res) => {
-  const userExisted = await User.findById(req.user._id)
+  const userExisted = await User.findById(req.user.id)
 
   if (userExisted) {
     userExisted.name = req.body.name || userExisted.name

@@ -1,9 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import { Grid, Container, TextField, Button } from '@material-ui/core'
+import {
+  Grid,
+  Container,
+  TextField,
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  Divider,
+} from '@material-ui/core'
 import FormContainer from '../components/FormContainer'
 import { makeStyles } from '@material-ui/core/styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserDetails, updateUserDetails } from '../actions/userActions'
+import { getAllMyOrders } from '../actions/orderActions'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { USER_UPDATE_RESET } from '../constants/userConstants'
@@ -31,10 +41,15 @@ const UserProfileScreen = ({ history }) => {
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
   const { success } = userUpdateProfile
 
+  const orderAllMy = useSelector((state) => state.orderAllMy)
+  const { loading: orderMyLoading, myOrders, error: orderMyError } = orderAllMy
+
   useEffect(() => {
     if (!userInfo) {
       history.push('/login')
     } else {
+      dispatch(getAllMyOrders())
+
       if (!user || !user.name || success) {
         setPassword('')
         setConfirmPassword('')
@@ -62,10 +77,10 @@ const UserProfileScreen = ({ history }) => {
     <Container maxWidth='md'>
       {loading && <Loader />}
       {error && <Message>{error}</Message>}
-      <Grid container spacing={3} flexDirection='row'>
+      <Grid container spacing={3}>
         <Grid item xs={5}>
+          <h1>User Profile</h1>
           <FormContainer>
-            <h1>User Profile</h1>
             <form className={classes.form} onSubmit={submitHandler}>
               <Grid item xs={12}>
                 <FormContainer>
@@ -93,6 +108,7 @@ const UserProfileScreen = ({ history }) => {
                     placeholder=''
                     variant='filled'
                     value={email}
+                    autoComplete='email'
                     onChange={(e) => setEmail(e.target.value)}
                   />
                 </FormContainer>
@@ -101,7 +117,7 @@ const UserProfileScreen = ({ history }) => {
                 <FormContainer>
                   <TextField
                     fullWidth
-                    id='password'
+                    id='password-form1'
                     label='Password'
                     type='password'
                     autoComplete='current-password'
@@ -118,7 +134,7 @@ const UserProfileScreen = ({ history }) => {
                     <TextField
                       error
                       fullWidth
-                      id='password'
+                      id='confirm-password-form2'
                       label='Confirm Password'
                       type='password'
                       autoComplete='current-password'
@@ -130,7 +146,7 @@ const UserProfileScreen = ({ history }) => {
                   ) : (
                     <TextField
                       fullWidth
-                      id='password'
+                      id='confirm-password-form2'
                       label='Confirm Password'
                       type='password'
                       autoComplete='current-password'
@@ -151,7 +167,36 @@ const UserProfileScreen = ({ history }) => {
           </FormContainer>
         </Grid>
         <Grid item xs={7}>
-          <h1>Other</h1>
+          <h2>My Orders History</h2>
+          {orderMyError && <Message>{orderMyError}</Message>}
+          {orderMyLoading && <Loader />}
+          <List>
+            {myOrders ? (
+              myOrders.length === 0 ? (
+                <Message severity='info'>No order found</Message>
+              ) : (
+                myOrders.map((order) => (
+                  <div key={order._id}>
+                    <ListItem>
+                      <ListItemText
+                        primary={`ID# ${order._id}`}
+                        secondary={`Purchased at ${order.createdAt.substring(
+                          10,
+                          0
+                        )}`}
+                      />
+                      <Button
+                        onClick={() => history.push(`/order/${order._id}`)}
+                      >
+                        View
+                      </Button>
+                    </ListItem>
+                    <Divider />
+                  </div>
+                ))
+              )
+            ) : null}
+          </List>
         </Grid>
       </Grid>
     </Container>

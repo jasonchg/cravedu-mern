@@ -11,6 +11,17 @@ const reviewSchema = mongoose.Schema(
   }
 )
 
+const contentSchema = mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    chapter: { type: String, required: true },
+    video: { type: String, required: true },
+  },
+  {
+    timestamps: true,
+  }
+)
+
 const courseSchema = mongoose.Schema(
   {
     user: {
@@ -50,6 +61,7 @@ const courseSchema = mongoose.Schema(
       required: true,
       default: 0,
     },
+    courseContents: [contentSchema],
   },
   {
     timestamps: true,

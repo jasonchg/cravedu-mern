@@ -2,6 +2,7 @@ import axios from 'axios'
 import {
   CART_ADD_ITEM,
   CART_REMOVE_ITEM,
+  CART_RESET,
   SAVE_PAYMENT_METHODS,
 } from '../constants/cartConstants'
 
@@ -40,4 +41,9 @@ const savePaymentMethod = (paymentMethod) => (dispatch) => {
   localStorage.setItem('paymentMethod', JSON.stringify(paymentMethod))
 }
 
-export { addToCart, removeFromCart, savePaymentMethod }
+const clearCart = () => (dispatch) => {
+  dispatch({ type: CART_RESET })
+  localStorage.removeItem('cartItems')
+}
+
+export { addToCart, removeFromCart, savePaymentMethod, clearCart }

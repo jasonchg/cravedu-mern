@@ -113,7 +113,7 @@ const RegisterScreen = ({ history, location }) => {
                       error
                       required
                       fullWidth
-                      id='password'
+                      id='confirm-password'
                       label='Confirm Password'
                       type='password'
                       autoComplete='current-password'
@@ -126,7 +126,7 @@ const RegisterScreen = ({ history, location }) => {
                     <TextField
                       required
                       fullWidth
-                      id='password'
+                      id='confirm-password'
                       label='Confirm Password'
                       type='password'
                       autoComplete='current-password'

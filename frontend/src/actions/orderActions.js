@@ -2,9 +2,9 @@ import {
   ADD_ORDER_FAIL,
   ADD_ORDER_REQUEST,
   ADD_ORDER_SUCCESS,
-  ORDER_ALL_FAIL,
-  ORDER_ALL_REQUEST,
-  ORDER_ALL_SUCCESS,
+  ORDER_ALL_MY_FAIL,
+  ORDER_ALL_MY_REQUEST,
+  ORDER_ALL_MY_SUCCESS,
   ORDER_DETAILS_FAIL,
   ORDER_DETAILS_REQUEST,
   ORDER_DETAILS_SUCCESS,
@@ -69,9 +69,9 @@ const getOrderDetails = (orderId) => async (dispatch, getState) => {
   }
 }
 
-const getAllOrderDetails = () => async (dispatch, getState) => {
+const getAllMyOrders = () => async (dispatch, getState) => {
   try {
-    dispatch({ type: ORDER_ALL_REQUEST })
+    dispatch({ type: ORDER_ALL_MY_REQUEST })
 
     const {
       userLogin: { userInfo },
@@ -83,12 +83,12 @@ const getAllOrderDetails = () => async (dispatch, getState) => {
       },
     }
 
-    const { data } = await axios.get(`/api/orders/mycourses`, config)
+    const { data } = await axios.get(`/api/orders/myorders`, config)
 
-    dispatch({ type: ORDER_ALL_SUCCESS, payload: data })
+    dispatch({ type: ORDER_ALL_MY_SUCCESS, payload: data })
   } catch (e) {
     dispatch({
-      type: ORDER_ALL_FAIL,
+      type: ORDER_ALL_MY_FAIL,
       payload:
         e.response && e.response.data.message
           ? e.response.data.message
@@ -97,4 +97,4 @@ const getAllOrderDetails = () => async (dispatch, getState) => {
   }
 }
 
-export { addOrder, getOrderDetails, getAllOrderDetails }
+export { addOrder, getOrderDetails, getAllMyOrders }

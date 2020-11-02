@@ -29,7 +29,7 @@ const listCourses = () => async (dispatch, getState) => {
   }
 }
 
-const listCourseDetails = (courseId) => async (dispatch, getState) => {
+const listCourseDetails = (courseId) => async (dispatch) => {
   try {
     dispatch({ type: COURSE_DETAILS_REQUEST })
 

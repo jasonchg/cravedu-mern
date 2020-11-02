@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Grid, Container } from '@material-ui/core'
+import React, { useEffect } from 'react'
+import { Grid, Container, Link } from '@material-ui/core'
 import Course from '../components/Course'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
@@ -18,21 +18,31 @@ const MyCoursesScreen = ({ history }) => {
   const { error, loading, courses } = userCourses
 
   useEffect(() => {
-    dispatch(getUserCourses())
-  }, [dispatch])
+    if (!userInfo) {
+      history.push('/login')
+    } else {
+      dispatch(getUserCourses())
+    }
+  }, [dispatch, history, userInfo])
 
   return (
     <Container maxWidth='md'>
       <h1>My Courses</h1>
+      {console.log(courses)}
 
-      {error ? (
+      {courses === 0 ? (
+        <Message severity='info'>
+          No course in your list.
+          <Link href='/'> Start Study?</Link>
+        </Message>
+      ) : error ? (
         <Message>{error}</Message>
       ) : loading ? (
         <Loader />
       ) : (
         <Grid container wrap='nowrap'>
-          {courses.map((courseItem) => (
-            <Grid item key={courseItem.course} xs={12} md={6} lg={3}>
+          {courses.map((courseItem, index) => (
+            <Grid item key={index} xs={12} md={6} lg={3}>
               <Course course={courseItem} />
             </Grid>
           ))}

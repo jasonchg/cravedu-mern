@@ -8,6 +8,10 @@ import {
   ORDER_ALL_REQUEST,
   ORDER_ALL_SUCCESS,
   ORDER_ALL_FAIL,
+  ORDER_ALL_MY_REQUEST,
+  ORDER_ALL_MY_SUCCESS,
+  ORDER_ALL_MY_FAIL,
+  ORDER_ALL_MY_RESET,
 } from '../constants/orderConstants'
 
 const addOrderReducer = (state = {}, action) => {
@@ -49,4 +53,25 @@ const getAllOrdersReducer = (state = { orders: [] }, action) => {
   }
 }
 
-export { addOrderReducer, getOrderReducer, getAllOrdersReducer }
+const getAllMyOrdersReducer = (state = { myOrders: [] }, action) => {
+  switch (action.type) {
+    case ORDER_ALL_MY_REQUEST:
+      return { loading: true }
+    case ORDER_ALL_MY_SUCCESS:
+      return { loading: false, myOrders: action.payload }
+    case ORDER_ALL_MY_FAIL:
+      return { loading: false, myOrders: action.payload }
+
+    case ORDER_ALL_MY_RESET:
+      return { myOrders: [] }
+    default:
+      return state
+  }
+}
+
+export {
+  addOrderReducer,
+  getOrderReducer,
+  getAllOrdersReducer,
+  getAllMyOrdersReducer,
+}

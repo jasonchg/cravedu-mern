@@ -25,10 +25,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import DoneAllIcon from '@material-ui/icons/DoneAll'
 import PaymentIcon from '@material-ui/icons/Payment'
-import { savePaymentMethod } from '../actions/cartActions'
+import { clearCart, savePaymentMethod } from '../actions/cartActions'
 import { addOrder } from '../actions/orderActions'
 import Loader from '../components/Loader'
-import { CART_RESET } from '../constants/cartConstants'
+
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: 40,
@@ -80,6 +80,7 @@ const PaymentScreen = ({ history }) => {
       history.push('/login/paymentlogin')
     } else {
       dispatch(savePaymentMethod(paymentMethod))
+
       dispatch(
         addOrder({
           orderItems: cartItems,
@@ -94,10 +95,10 @@ const PaymentScreen = ({ history }) => {
 
   useEffect(() => {
     if (success) {
-      dispatch({ type: CART_RESET })
+      clearCart()
       history.push('/mycourses')
     }
-  }, [history, success])
+  }, [history, success, dispatch])
 
   return (
     <Container>

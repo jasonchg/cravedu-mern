@@ -13,8 +13,13 @@ import {
   TableBody,
   TableCell,
   Divider,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from '@material-ui/core'
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled'
 import { makeStyles } from '@material-ui/core/styles'
 import { listCourseDetails } from '../actions/courseActions'
 import { useDispatch, useSelector } from 'react-redux'
@@ -34,11 +39,6 @@ const CourseScreen = ({ match, history }) => {
   const addToCartHandler = () => {
     history.push(`/cart/${courseId}`)
   }
-
-  useEffect(() => {
-    dispatch(listCourseDetails(courseId))
-  }, [dispatch, courseId])
-
   const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -78,8 +78,16 @@ const CourseScreen = ({ match, history }) => {
       width: 175,
       padding: 15,
     },
+    accordion: {
+      background: '#f0f0f0',
+    },
   }))
   const classes = useStyles()
+
+  useEffect(() => {
+    dispatch(listCourseDetails(courseId))
+  }, [dispatch, courseId])
+
   return (
     <>
       {loading ? (
@@ -87,7 +95,7 @@ const CourseScreen = ({ match, history }) => {
       ) : error ? (
         <Message>{error}</Message>
       ) : (
-        <Container maxWidth='md' className={classes.root}>
+        <Container className={classes.root}>
           <Button onClick={goBack}>Go Back</Button>
           <Grid container spacing={2}>
             <Grid item xs={9}>
@@ -162,6 +170,30 @@ const CourseScreen = ({ match, history }) => {
                 Add To Cart
               </Button>
               <Divider />
+            </Grid>
+          </Grid>
+          <Grid container>
+            <h2>Course Content</h2>
+            <Grid item xs={12}>
+              {course.courseContents ? (
+                course.courseContents.map((content, index) => (
+                  <Accordion key={index} className={classes.accordion}>
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls='course-content'
+                      id='course-content-panel-header'
+                    >
+                      <Typography>{content.chapter}</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography>{content.name}</Typography>{' '}
+                      <PlayCircleFilledIcon />
+                    </AccordionDetails>
+                  </Accordion>
+                ))
+              ) : (
+                <Loader />
+              )}
             </Grid>
           </Grid>
         </Container>

@@ -8,6 +8,18 @@ const products = [
     price: 49.99,
     rating: 5,
     numReviews: 4,
+    courseContents: [
+      {
+        name: 'Set Up Environment',
+        chapter: 'Chapter 1',
+        video: '/uploads/videos/javascript/javascript_01_2020_09_10.mp4',
+      },
+      {
+        name: 'Basic Concept',
+        chapter: 'Chapter 2',
+        video: '/uploads/videos/javascript/javascript_02_2020_09_10.mp4',
+      },
+    ],
   },
   {
     name: 'Introduction to C++',
@@ -18,6 +30,23 @@ const products = [
     price: 20.99,
     rating: 3,
     numReviews: 2,
+    courseContents: [
+      {
+        name: 'Set Up Environment',
+        chapter: 'Chapter 1',
+        video: '/uploads/videos/cplusplus/cplusplus_01_2020_09_10.mp4',
+      },
+      {
+        name: 'Basic Concept',
+        chapter: 'Chapter 2',
+        video: '/uploads/videos/cplusplus/cplusplus_02_2020_09_10.mp4',
+      },
+      {
+        name: 'Advance Concept',
+        chapter: 'Chapter 3',
+        video: '/uploads/videos/cplusplus/cplusplus_03_2020_09_10.mp4',
+      },
+    ],
   },
   {
     name: 'Introduction to Typescript',
@@ -28,6 +57,18 @@ const products = [
     price: 22.99,
     rating: 1,
     numReviews: 4,
+    courseContents: [
+      {
+        name: 'Set Up Visual Code',
+        chapter: 'Chapter 1',
+        video: '/uploads/videos/typescript/typescript_01_2020_09_10.mp4',
+      },
+      {
+        name: 'Basic Concept of Typescript',
+        chapter: 'Chapter 2',
+        video: '/uploads/videos/typescript/typescript_02_2020_09_10.mp4',
+      },
+    ],
   },
   {
     name: 'Introduction to Python',
@@ -38,6 +79,18 @@ const products = [
     price: 10.99,
     rating: 4.5,
     numReviews: 4,
+    courseContents: [
+      {
+        name: 'Set Up Python Environment',
+        chapter: 'Chapter 1',
+        video: '/uploads/videos/python/python_01_2020_09_10.mp4',
+      },
+      {
+        name: 'Basic Concept',
+        chapter: 'Chapter 2',
+        video: '/uploads/videos/python/python_02_2020_09_10.mp4',
+      },
+    ],
   },
 ]
 
