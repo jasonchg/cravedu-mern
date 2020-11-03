@@ -66,15 +66,18 @@ const HomeScreen = () => {
   return (
     <Container maxWidth='md' style={{ padding: 20 }}>
       <Grid container style={{ marginBottom: 30 }}>
-        {category && category.map((item) => <Category category={item} />)}
+        {category &&
+          category.map((item, index) => (
+            <Category key={index} category={item} />
+          ))}
 
-        {userInfo && userCurrentCourses ? (
+        {userInfo && userCurrentCourses && userCurrentCourses.length !== 0 ? (
           <>
             <Grid item xs={12}>
               <h2> Let's start learning, {userInfo.name}</h2>
             </Grid>
 
-            {userCurrentCourses.map((currentCourse) => (
+            {userCurrentCourses.map((currentCourse, index) => (
               <Grid item key={currentCourse._id} xs={6}>
                 <Course course={currentCourse} learning />
               </Grid>
@@ -93,7 +96,7 @@ const HomeScreen = () => {
             <h2>What to learn next</h2>
           </Grid>
           {courses.map((course) => (
-            <Grid item key={course._id} xs={12} md={3}>
+            <Grid item key={course._id} xs={12} sm={4} md={3}>
               <Course course={course} />
             </Grid>
           ))}

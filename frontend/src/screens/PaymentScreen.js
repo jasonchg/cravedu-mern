@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import {
   Grid,
   Container,
@@ -28,6 +29,8 @@ import PaymentIcon from '@material-ui/icons/Payment'
 import { clearCart, savePaymentMethod } from '../actions/cartActions'
 import { addOrder } from '../actions/orderActions'
 import Loader from '../components/Loader'
+import { PayPalButton } from 'react-paypal-button-v2'
+import { ORDER_PAY_RESET } from '../constants/orderConstants'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,6 +62,7 @@ const PaymentScreen = ({ history }) => {
 
   const [paymentMethod, setPaymentMethod] = useState('PayPal')
   const [billingAddress, setBillingAddress] = useState('Malaysia')
+  const [sdkReady, setSdkReady] = useState(false)
 
   const cart = useSelector((state) => state.cart)
   const { cartItems } = cart
@@ -79,24 +83,46 @@ const PaymentScreen = ({ history }) => {
     if (!userInfo) {
       history.push('/login/paymentlogin')
     } else {
-      dispatch(savePaymentMethod(paymentMethod))
-
-      dispatch(
-        addOrder({
-          orderItems: cartItems,
-          paymentMethod: paymentMethod,
-          itemPrice: cartItemPrice,
-          totalPrice: cartItemPrice,
-          isPaid: true,
-        })
-      )
+      clearCart()
     }
   }
 
+  const successPaymentHandler = () => {
+    dispatch(savePaymentMethod(paymentMethod))
+
+    dispatch(
+      addOrder({
+        orderItems: cartItems,
+        paymentMethod: paymentMethod,
+        itemPrice: cartItemPrice,
+        totalPrice: cartItemPrice,
+        isPaid: true,
+      })
+    )
+    dispatch({ type: ORDER_PAY_RESET })
+  }
+
   useEffect(() => {
+    const addPayPalScript = async () => {
+      const { data: clientId } = await axios.get('/api/config/paypal')
+      const script = document.createElement('script')
+      script.type = 'text/javascript'
+      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`
+      script.async = true
+      script.onload = () => {
+        setSdkReady(true)
+      }
+      document.body.appendChild(script)
+    }
+
     if (success) {
-      clearCart()
       history.push('/mycourses')
+    } else {
+      if (!window.paypal) {
+        addPayPalScript()
+      } else {
+        setSdkReady(true)
+      }
     }
   }, [history, success, dispatch])
 
@@ -234,16 +260,28 @@ const PaymentScreen = ({ history }) => {
 
               <Divider className={classes.divider} />
 
-              <Button
-                className={classes.checkoutButton}
-                variant='contained'
-                color='primary'
-                onClick={placeOrderHandler}
-                startIcon={<DoneAllIcon />}
-                disabled={cartItems.length === 0}
-              >
-                Place Order
-              </Button>
+              {!sdkReady ? (
+                <Button
+                  className={classes.checkoutButton}
+                  variant='contained'
+                  color='primary'
+                  onClick={placeOrderHandler}
+                  startIcon={<DoneAllIcon />}
+                  disabled={cartItems.length === 0}
+                >
+                  Place Order
+                </Button>
+              ) : (
+                <PayPalButton
+                  amount={cartItemPrice}
+                  onSuccess={successPaymentHandler}
+                  onError={() => (
+                    <Message>
+                      Something went wrong, please refresh page and try again...
+                    </Message>
+                  )}
+                />
+              )}
             </Paper>
           </Grid>
         </Grid>
