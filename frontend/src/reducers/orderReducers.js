@@ -12,6 +12,7 @@ import {
   ORDER_ALL_MY_SUCCESS,
   ORDER_ALL_MY_FAIL,
   ORDER_ALL_MY_RESET,
+  ADD_ORDER_RESET,
 } from '../constants/orderConstants'
 
 const addOrderReducer = (state = {}, action) => {
@@ -22,6 +23,8 @@ const addOrderReducer = (state = {}, action) => {
       return { loading: false, success: true, order: action.payload }
     case ADD_ORDER_FAIL:
       return { loading: false, error: action.payload }
+    case ADD_ORDER_RESET:
+      return {}
     default:
       return state
   }

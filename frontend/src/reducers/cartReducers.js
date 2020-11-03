@@ -32,6 +32,7 @@ const cartReducers = (state = { cartItems: [] }, action) => {
       }
     case CART_RESET:
       return {
+        ...state,
         cartItems: [],
       }
 

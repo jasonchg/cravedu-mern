@@ -30,7 +30,7 @@ import { clearCart, savePaymentMethod } from '../actions/cartActions'
 import { addOrder } from '../actions/orderActions'
 import Loader from '../components/Loader'
 import { PayPalButton } from 'react-paypal-button-v2'
-import { ORDER_PAY_RESET } from '../constants/orderConstants'
+import { ADD_ORDER_RESET, ORDER_PAY_RESET } from '../constants/orderConstants'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -82,8 +82,6 @@ const PaymentScreen = ({ history }) => {
 
     if (!userInfo) {
       history.push('/login/paymentlogin')
-    } else {
-      clearCart()
     }
   }
 
@@ -116,6 +114,7 @@ const PaymentScreen = ({ history }) => {
     }
 
     if (success) {
+      dispatch({ type: ADD_ORDER_RESET })
       history.push('/mycourses')
     } else {
       if (!window.paypal) {

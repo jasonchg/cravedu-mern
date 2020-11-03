@@ -11,6 +11,7 @@ import {
 } from '../constants/orderConstants'
 
 import axios from 'axios'
+import { CART_RESET } from '../constants/cartConstants'
 
 const addOrder = (newOrder) => async (dispatch, getState) => {
   try {
@@ -30,6 +31,8 @@ const addOrder = (newOrder) => async (dispatch, getState) => {
     const { data } = await axios.post('/api/orders', newOrder, config)
 
     dispatch({ type: ADD_ORDER_SUCCESS, payload: data })
+    dispatch({ type: CART_RESET, payload: data })
+    localStorage.removeItem('cartItems')
   } catch (e) {
     dispatch({
       type: ADD_ORDER_FAIL,

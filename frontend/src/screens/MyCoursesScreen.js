@@ -42,7 +42,7 @@ const MyCoursesScreen = ({ history }) => {
         ) : (
           <Grid container wrap='nowrap'>
             {courses.map((courseItem, index) => (
-              <Grid item key={index} xs={12} md={6} lg={3}>
+              <Grid item key={index} xs={12} sm={4} md={3}>
                 <Course course={courseItem} />
               </Grid>
             ))}

@@ -107,6 +107,13 @@ const CourseScreen = ({ match, history }) => {
   }
 
   useEffect(() => {
+    if (bought) {
+      history.push(`/course/${courseId}/learn`)
+    } else {
+    }
+  }, [history, bought])
+
+  useEffect(() => {
     dispatch(listCourseDetails(courseId))
     if (userInfo) {
       dispatch(getUserCourses())
@@ -114,8 +121,9 @@ const CourseScreen = ({ match, history }) => {
   }, [dispatch, courseId, userInfo])
 
   useEffect(() => {
-    if (userCurrentCourses && course)
+    if (userCurrentCourses && course) {
       setBought(checkBought(userCurrentCourses, course))
+    }
   }, [userCurrentCourses, course])
 
   return (
