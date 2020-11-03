@@ -9,6 +9,7 @@ import {
   Button,
   Typography,
   Link,
+  Grid,
 } from '@material-ui/core'
 import Rating from './Rating'
 
@@ -16,44 +17,82 @@ const useStyles = makeStyles({
   root: {
     width: 200,
     maxWidth: 235,
-    margin: 7,
+    margin: 10,
   },
   media: {
     height: 140,
   },
 })
 
-const Course = ({ course }) => {
+const learningStyles = makeStyles({
+  root: {
+    width: 375,
+    maxWidth: 400,
+    margin: 10,
+  },
+  media: {
+    width: 125,
+    height: 125,
+    backgroundSize: 'auto 100%',
+    backgroundPosition: 'left top',
+  },
+})
+
+const Course = ({ course, learning }) => {
   const classes = useStyles()
+  const classesLearning = learningStyles()
 
   return (
-    <Card className={classes.root}>
+    <Card className={learning ? classesLearning.root : classes.root}>
       <Link href={`/course/${course._id}`}>
-        <CardActionArea>
-          <CardMedia
-            className={classes.media}
-            image={course.image}
-            title={course.name}
-          />
-          <CardContent>
-            <Typography gutterBottom variant='h5' component='h2'>
-              {course.name}
-            </Typography>
-          </CardContent>
-          {course.rating ? (
-            <Rating
-              value={course.rating}
-              text={`${course.numReviews} reviews`}
+        {learning && (
+          <Grid container alignItems='center'>
+            <Grid item xs={4}>
+              <CardMedia
+                className={classesLearning.media}
+                image={course.image}
+                title={course.name}
+              />
+            </Grid>
+            <Grid item xs={8}>
+              <CardContent>
+                <Typography component='h5' variant='h5'>
+                  {course.name}
+                </Typography>
+              </CardContent>
+            </Grid>
+          </Grid>
+        )}
+        {learning ? null : (
+          <CardActionArea>
+            <CardMedia
+              className={classes.media}
+              image={course.image}
+              title={course.name}
             />
-          ) : null}
-        </CardActionArea>
+
+            <CardContent>
+              <Typography gutterBottom variant='h5' component='h5'>
+                {course.name}
+              </Typography>
+            </CardContent>
+            {course.rating ? (
+              <Rating
+                value={course.rating}
+                text={`${course.numReviews} reviews`}
+              />
+            ) : null}
+          </CardActionArea>
+        )}
       </Link>
 
-      <CardActions>
-        <Button size='small' color='primary'>
-          Share
-        </Button>
-      </CardActions>
+      {learning ? null : (
+        <CardActions>
+          <Button size='small' color='primary'>
+            Share
+          </Button>
+        </CardActions>
+      )}
     </Card>
   )
 }

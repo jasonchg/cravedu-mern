@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Button,
   Container,
@@ -22,6 +22,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled'
 import { makeStyles } from '@material-ui/core/styles'
 import { listCourseDetails } from '../actions/courseActions'
+import { getUserCourses } from '../actions/userActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
@@ -30,8 +31,6 @@ import Rating from '../components/Rating'
 const CourseScreen = ({ match, history }) => {
   const courseId = match.params.id
   const dispatch = useDispatch()
-  const courseDetails = useSelector((state) => state.courseDetails)
-  const { loading, error, course } = courseDetails
 
   const goBack = () => {
     history.push('/')
@@ -84,9 +83,40 @@ const CourseScreen = ({ match, history }) => {
   }))
   const classes = useStyles()
 
+  const courseDetails = useSelector((state) => state.courseDetails)
+  const { loading, error, course } = courseDetails
+
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
+  const userCourses = useSelector((state) => state.userCourses)
+  const { courses: userCurrentCourses } = userCourses
+
+  const [bought, setBought] = useState(false)
+
+  const checkBought = (currentCourse, courseHere) => {
+    return (
+      currentCourse &&
+      courseHere &&
+      currentCourse.some((curCourse) => {
+        if (curCourse._id === courseHere._id) {
+          return true
+        }
+      })
+    )
+  }
+
   useEffect(() => {
     dispatch(listCourseDetails(courseId))
-  }, [dispatch, courseId])
+    if (userInfo) {
+      dispatch(getUserCourses())
+    }
+  }, [dispatch, courseId, userInfo])
+
+  useEffect(() => {
+    if (userCurrentCourses && course)
+      setBought(checkBought(userCurrentCourses, course))
+  }, [userCurrentCourses, course])
 
   return (
     <>
@@ -159,17 +189,22 @@ const CourseScreen = ({ match, history }) => {
                   </TableRow>
                 </TableBody>
               </Table>
-              <Button
-                className={classes.button}
-                variant='contained'
-                color='primary'
-                size='medium'
-                startIcon={<AddShoppingCartIcon />}
-                onClick={addToCartHandler}
-              >
-                Add To Cart
-              </Button>
-              <Divider />
+              {bought ? null : (
+                <>
+                  <Button
+                    className={classes.button}
+                    variant='contained'
+                    color='primary'
+                    size='medium'
+                    startIcon={<AddShoppingCartIcon />}
+                    onClick={addToCartHandler}
+                    disabled={bought}
+                  >
+                    Add To Cart
+                  </Button>
+                  <Divider />
+                </>
+              )}
             </Grid>
           </Grid>
           <Grid container>

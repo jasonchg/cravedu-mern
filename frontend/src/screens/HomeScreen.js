@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Grid, Container } from '@material-ui/core'
 import Course from '../components/Course'
 import { listCourses } from '../actions/courseActions'
+import { getUserCourses } from '../actions/userActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
+import Category from '../components/Category'
 
 const HomeScreen = () => {
   const dispatch = useDispatch()
@@ -12,24 +14,86 @@ const HomeScreen = () => {
   const courseList = useSelector((state) => state.courseList)
   const { loading, error, courses } = courseList
 
-  // do not display those courses that user had already boought
-  // instead display on the Learning Tab
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
+  const userCourses = useSelector((state) => state.userCourses)
+  const { courses: userCurrentCourses } = userCourses
 
   useEffect(() => {
     dispatch(listCourses())
-  }, [dispatch])
+
+    if (userInfo) {
+      dispatch(getUserCourses())
+    }
+  }, [dispatch, userInfo])
+
+  const [category, setCategory] = useState([
+    {
+      name: 'Software',
+      link: '#',
+    },
+    {
+      name: 'Design',
+      link: '#',
+    },
+    {
+      name: 'Mathematic',
+      link: '#',
+    },
+    {
+      name: 'Science',
+      link: '#',
+    },
+    {
+      name: 'Electrical',
+      link: '#',
+    },
+    {
+      name: 'Personal Development',
+      link: '#',
+    },
+    {
+      name: 'Health',
+      link: '#',
+    },
+    {
+      name: 'Fitness',
+      link: '#',
+    },
+  ])
 
   return (
-    <Container maxWidth='md'>
-      <h1>Latest Courses</h1>
+    <Container maxWidth='md' style={{ padding: 20 }}>
+      <Grid container style={{ marginBottom: 30 }}>
+        {category && category.map((item) => <Category category={item} />)}
+
+        {userInfo && userCurrentCourses ? (
+          <>
+            <Grid item xs={12}>
+              <h2> Let's start learning, {userInfo.name}</h2>
+            </Grid>
+
+            {userCurrentCourses.map((currentCourse) => (
+              <Grid item key={currentCourse._id} xs={6}>
+                <Course course={currentCourse} learning />
+              </Grid>
+            ))}
+          </>
+        ) : null}
+      </Grid>
+
       {error ? (
         <Message>{error}</Message>
       ) : loading ? (
         <Loader />
       ) : (
-        <Grid container wrap='nowrap'>
+        <Grid container style={{ marginBottom: 30 }}>
+          <Grid item xs={12}>
+            <h2>What to learn next</h2>
+          </Grid>
           {courses.map((course) => (
-            <Grid item key={course._id} xs={12} md={6} lg={3}>
+            <Grid item key={course._id} xs={12} md={3}>
               <Course course={course} />
             </Grid>
           ))}
