@@ -1,33 +1,63 @@
 import React, { useEffect, useState } from 'react'
 import {
-  Button,
   Container,
   Grid,
   Typography,
   List,
   ListItem,
   ListItemText,
-  Table,
-  Paper,
-  TableRow,
-  TableBody,
-  TableCell,
   Divider,
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Tabs,
+  Tab,
+  Box,
+  Paper,
+  Button,
+  Avatar,
+  ListItemAvatar,
 } from '@material-ui/core'
-import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled'
 import { makeStyles } from '@material-ui/core/styles'
 import { listCourseDetails } from '../actions/courseActions'
-import { getUserCourses } from '../actions/userActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import Rating from '../components/Rating'
 import VideoPlayer from '../components/VideoPlayer'
+import PropTypes from 'prop-types'
+const TabPanel = (props) => {
+  const { children, value, index, ...other } = props
+
+  return (
+    <div
+      role='tabpanel'
+      hidden={value !== index}
+      id={`course-${index}`}
+      aria-labelledby={`course-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box p={3}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  )
+}
+const a11yProps = (index) => {
+  return {
+    id: `course-tab-${index}`,
+    'aria-controls': `course-tabpanel-${index}`,
+  }
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired,
+}
 
 const VideoLearningScreen = ({ match, history }) => {
   const courseId = match.params.id
@@ -61,6 +91,11 @@ const VideoLearningScreen = ({ match, history }) => {
     player: {
       height: 1500,
     },
+    courseContents: {
+      padding: 10,
+      minHeight: 443,
+    },
+    questionBlock: {},
   }))
   const classes = useStyles()
 
@@ -70,34 +105,18 @@ const VideoLearningScreen = ({ match, history }) => {
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
-  const userCourses = useSelector((state) => state.userCourses)
-  const { courses: userCurrentCourses } = userCourses
-
-  const [bought, setBought] = useState(false)
-
-  const checkBought = (currentCourse, courseHere) => {
-    return (
-      currentCourse &&
-      courseHere &&
-      currentCourse.some((curCourse) => {
-        if (curCourse._id === courseHere._id) {
-          return true
-        }
-      })
-    )
+  const [value, setValue] = useState(0)
+  const tabHandler = (event, newValue) => {
+    setValue(newValue)
   }
 
   useEffect(() => {
-    dispatch(listCourseDetails(courseId))
-    if (userInfo) {
-      dispatch(getUserCourses())
+    if (!userInfo) {
+      history.push('/')
+    } else {
+      dispatch(listCourseDetails(courseId))
     }
-  }, [dispatch, courseId, userInfo])
-
-  useEffect(() => {
-    if (userCurrentCourses && course)
-      setBought(checkBought(userCurrentCourses, course))
-  }, [userCurrentCourses, course])
+  }, [dispatch, courseId, userInfo, history])
 
   return (
     <>
@@ -114,7 +133,7 @@ const VideoLearningScreen = ({ match, history }) => {
             </Typography>
           </div>
 
-          <Grid container spacing={2}>
+          <Grid container spacing={0}>
             <Grid item xs={8}>
               <div>
                 <VideoPlayer
@@ -125,65 +144,167 @@ const VideoLearningScreen = ({ match, history }) => {
                 />
               </div>
 
-              <div className={classes.titleBox}>
-                <List>
-                  <ListItem>
-                    <h2>About this course</h2>
-                  </ListItem>
-                  <ListItem className={classes.description}>
-                    <ListItemText
-                      secondary={`Description: ${course.description}`}
-                    />
-                  </ListItem>
+              <div>
+                <Paper>
+                  <Tabs
+                    onChange={tabHandler}
+                    aria-label='course tabs'
+                    value={value}
+                  >
+                    <Tab label='About this Course' {...a11yProps(0)} />
+                    <Tab label='Q&A' {...a11yProps(1)} />
+                    <Tab label='Annoucement' {...a11yProps(2)} />
+                  </Tabs>
+                </Paper>
 
-                  <Divider />
-                  <ListItem>
-                    <ListItemText
-                      primary={
-                        <Rating
-                          value={course.rating}
-                          text={`${course.numReviews} reviews`}
+                <TabPanel value={value} index={0}>
+                  <List>
+                    <ListItem className={classes.description}>
+                      <ListItemText
+                        primary={`Description: ${course.description}`}
+                      />
+                    </ListItem>
+                    <Divider />
+                  </List>
+                </TabPanel>
+
+                <TabPanel value={value} index={1}>
+                  <List>
+                    <ListItem style={{ display: 'flex' }}>
+                      <h3 style={{ flex: 1 }}>3 questions in this course</h3>
+                      <Button
+                        size='medium'
+                        style={{
+                          padding: 15,
+                          fontSize: 12,
+                        }}
+                        color='inherit'
+                        variant='text'
+                      >
+                        Ask a new question?
+                      </Button>
+                    </ListItem>
+
+                    <Divider />
+                    <p className={classes.questionBlock}>
+                      <ListItem alignItems='flex-start'>
+                        <ListItemAvatar>
+                          <Avatar style={{ marginRight: 10 }}>S</Avatar>
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={
+                            <strong>
+                              Can you please update your course to the latest
+                              version? I dont understand the new Docs that
+                              published recently!
+                            </strong>
+                          }
+                          secondary={
+                            <p>
+                              <Typography
+                                component='span'
+                                variant='body2'
+                                color='textPrimary'
+                              >
+                                Sam Smith
+                              </Typography>
+                              {' - 2020/11/10 1:10AM'}
+                            </p>
+                          }
                         />
-                      }
-                    />
-                  </ListItem>
-                  <Divider />
-                </List>
+                      </ListItem>
+                      <Divider variant='inset' component='li' />
+                    </p>
+                    <p className={classes.questionBlock}>
+                      <ListItem alignItems='flex-start'>
+                        <ListItemAvatar>
+                          <Avatar style={{ marginRight: 10 }}>K</Avatar>
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={
+                            <strong>I don't understand at all...</strong>
+                          }
+                          secondary={
+                            <p>
+                              <Typography
+                                component='span'
+                                variant='body2'
+                                color='textPrimary'
+                              >
+                                Kiki
+                              </Typography>
+                              {' - 2020/10/10 2:10PM'}
+                            </p>
+                          }
+                        />
+                      </ListItem>
+                      <Divider variant='inset' component='li' />
+                    </p>
+                    <p className={classes.questionBlock}>
+                      <ListItem alignItems='flex-start'>
+                        <ListItemAvatar>
+                          <Avatar style={{ marginRight: 10 }}>R</Avatar>
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={<strong>Why need so many classes?</strong>}
+                          secondary={
+                            <p>
+                              <Typography
+                                component='span'
+                                variant='body2'
+                                color='textPrimary'
+                              >
+                                Roger Liew
+                              </Typography>
+                              {' - 2020/11/10 1:10AM'}
+                            </p>
+                          }
+                        />
+                      </ListItem>
+                      <Divider variant='inset' component='li' />
+                    </p>
+                  </List>
+                </TabPanel>
+
+                <TabPanel value={value} index={2}>
+                  There is no any annnouce just yet
+                </TabPanel>
               </div>
             </Grid>
 
             <Grid item xs={4}>
-              <List>
-                <ListItemText>
-                  <h2>Course Contents</h2>
-                </ListItemText>
-                {/*
-                 * loops video path as argument
-                 * when click any of the child
-                 * change the path of the VideoPlayer component
-                 */}
-                {course.courseContents ? (
-                  course.courseContents.map((content, index) => (
-                    <ListItemText key={index}>
-                      <Accordion className={classes.accordion}>
-                        <AccordionSummary
-                          expandIcon={<ExpandMoreIcon />}
-                          aria-controls='course-content'
-                          id='course-content-panel-header'
-                        >
-                          <Typography>{content.chapter}</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <Typography>{content.name}</Typography>{' '}
-                          <PlayCircleFilledIcon />
-                        </AccordionDetails>
-                      </Accordion>
-                    </ListItemText>
-                  ))
-                ) : (
-                  <Loader />
-                )}
-              </List>
+              <Paper className={classes.courseContents}>
+                <h2>Course Contents</h2>
+
+                <List>
+                  {/*
+                   * loops video path as argument
+                   * when click any of the child
+                   * change the path of the VideoPlayer component
+                   */}
+                  {course.courseContents ? (
+                    course.courseContents.map((content, index) => (
+                      <ListItemText key={index}>
+                        <Accordion className={classes.accordion}>
+                          <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls='course-content'
+                            id='course-content-panel-header'
+                          >
+                            <Typography>{content.chapter}</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <Typography>{content.name}</Typography>{' '}
+                            <PlayCircleFilledIcon />
+                          </AccordionDetails>
+                        </Accordion>
+                      </ListItemText>
+                    ))
+                  ) : (
+                    <Loader />
+                  )}
+                </List>
+              </Paper>
             </Grid>
           </Grid>
         </Container>

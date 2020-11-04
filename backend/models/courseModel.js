@@ -22,6 +22,17 @@ const contentSchema = mongoose.Schema(
   }
 )
 
+const questionAskedSchema = mongoose.Schema(
+  {
+    question: { type: String },
+    answer: { type: String },
+    userName: { type: String },
+  },
+  {
+    timestamps: true,
+  }
+)
+
 const courseSchema = mongoose.Schema(
   {
     user: {
@@ -45,7 +56,6 @@ const courseSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    reviews: [reviewSchema],
     rating: {
       type: Number,
       required: true,
@@ -61,7 +71,12 @@ const courseSchema = mongoose.Schema(
       required: true,
       default: 0,
     },
+    annoucement: {
+      type: String,
+    },
+    reviews: [reviewSchema],
     courseContents: [contentSchema],
+    courseQASection: [questionAskedSchema],
   },
   {
     timestamps: true,

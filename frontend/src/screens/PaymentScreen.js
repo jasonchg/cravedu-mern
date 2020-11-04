@@ -26,7 +26,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import DoneAllIcon from '@material-ui/icons/DoneAll'
 import PaymentIcon from '@material-ui/icons/Payment'
-import { clearCart, savePaymentMethod } from '../actions/cartActions'
+import { savePaymentMethod } from '../actions/cartActions'
 import { addOrder } from '../actions/orderActions'
 import Loader from '../components/Loader'
 import { PayPalButton } from 'react-paypal-button-v2'
@@ -79,10 +79,6 @@ const PaymentScreen = ({ history }) => {
 
   const placeOrderHandler = (e) => {
     e.preventDefault()
-
-    if (!userInfo) {
-      history.push('/login/paymentlogin')
-    }
   }
 
   const successPaymentHandler = () => {
@@ -101,6 +97,10 @@ const PaymentScreen = ({ history }) => {
   }
 
   useEffect(() => {
+    if (!userInfo) {
+      history.push('/login/paymentlogin')
+    }
+
     const addPayPalScript = async () => {
       const { data: clientId } = await axios.get('/api/config/paypal')
       const script = document.createElement('script')

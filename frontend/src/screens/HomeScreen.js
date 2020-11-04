@@ -64,11 +64,11 @@ const HomeScreen = () => {
   ])
 
   return (
-    <Container maxWidth='md' style={{ padding: 20 }}>
-      <Grid container style={{ marginBottom: 30 }}>
+    <Container maxWidth='md'>
+      <Grid container>
         {category &&
           category.map((item, index) => (
-            <Category key={index} category={item} />
+            <Category key={index} category={item} color='primary' />
           ))}
 
         {userInfo && userCurrentCourses && userCurrentCourses.length !== 0 ? (

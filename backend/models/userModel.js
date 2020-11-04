@@ -42,6 +42,10 @@ const userSchema = mongoose.Schema(
           type: mongoose.Schema.Types.ObjectId,
           ref: 'Order',
         },
+        progress: {
+          type: String,
+          required: true,
+        },
       },
     ],
   },

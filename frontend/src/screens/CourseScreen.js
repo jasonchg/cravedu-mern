@@ -210,7 +210,6 @@ const CourseScreen = ({ match, history }) => {
                   >
                     Add To Cart
                   </Button>
-                  <Divider />
                 </>
               )}
             </Grid>

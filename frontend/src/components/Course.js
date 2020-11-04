@@ -12,6 +12,7 @@ import {
   Grid,
 } from '@material-ui/core'
 import Rating from './Rating'
+import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled'
 
 const useStyles = makeStyles({
   root: {
@@ -33,8 +34,28 @@ const learningStyles = makeStyles({
   media: {
     width: 125,
     height: 125,
+    position: 'relative',
+  },
+  mediaImg: {
+    width: '100%',
+    height: '100%',
     backgroundSize: 'auto 100%',
-    backgroundPosition: 'left top',
+    backgroundPosition: 'cover',
+  },
+  playIcon: {
+    position: 'absolute',
+    margin: 'auto',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    textAlign: 'center',
+    fontSize: '5em',
+    color: '#3e3f40',
+    opacity: '0.97',
+    '&:hover': {
+      opacity: '0.7',
+    },
   },
 })
 
@@ -48,16 +69,22 @@ const Course = ({ course, learning }) => {
         {learning && (
           <Grid container alignItems='center'>
             <Grid item xs={4}>
-              <CardMedia
-                className={classesLearning.media}
-                image={course.image}
-                title={course.name}
-              />
+              <div className={classesLearning.media}>
+                <CardMedia
+                  className={classesLearning.mediaImg}
+                  image={course.image}
+                  title={course.name}
+                />
+                <PlayCircleFilledIcon className={classesLearning.playIcon} />
+              </div>
             </Grid>
             <Grid item xs={8}>
               <CardContent>
-                <Typography component='h5' variant='h5'>
+                <Typography variant='h5' color='textPrimary'>
                   {course.name}
+                </Typography>
+                <Typography variant='caption' color='textSecondary'>
+                  Progress: 1/10
                 </Typography>
               </CardContent>
             </Grid>
@@ -72,7 +99,7 @@ const Course = ({ course, learning }) => {
             />
 
             <CardContent>
-              <Typography gutterBottom variant='h5' component='h5'>
+              <Typography gutterBottom variant='h5'>
                 {course.name}
               </Typography>
             </CardContent>

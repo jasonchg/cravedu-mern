@@ -75,130 +75,136 @@ const UserProfileScreen = ({ history }) => {
 
   return (
     <Container maxWidth='md'>
-      {loading && <Loader />}
       {error && <Message>{error}</Message>}
-      <Grid container spacing={3}>
-        <Grid item xs={5}>
-          <h1>User Profile</h1>
-          <FormContainer>
-            <form className={classes.form} onSubmit={submitHandler}>
-              <Grid item xs={12}>
-                <FormContainer>
-                  <TextField
-                    required
-                    fullWidth
-                    id='name'
-                    type='text'
-                    label='Name'
-                    placeholder=''
-                    variant='filled'
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                </FormContainer>
-              </Grid>
-              <Grid item xs={12}>
-                <FormContainer>
-                  <TextField
-                    required
-                    fullWidth
-                    id='email'
-                    type='email'
-                    label='Email Address'
-                    placeholder=''
-                    variant='filled'
-                    value={email}
-                    autoComplete='email'
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </FormContainer>
-              </Grid>
-              <Grid item xs={12}>
-                <FormContainer>
-                  <TextField
-                    fullWidth
-                    id='password-form1'
-                    label='Password'
-                    type='password'
-                    autoComplete='current-password'
-                    variant='filled'
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    helperText='blank if no changes'
-                  />
-                </FormContainer>
-              </Grid>
-              <Grid item xs={12}>
-                <FormContainer>
-                  {!match ? (
+
+      {loading ? (
+        <Loader />
+      ) : (
+        <Grid container spacing={3}>
+          <Grid item xs={5}>
+            <h1>User Profile</h1>
+            <FormContainer>
+              <form className={classes.form} onSubmit={submitHandler}>
+                <Grid item xs={12}>
+                  <FormContainer>
                     <TextField
-                      error
+                      required
                       fullWidth
-                      id='confirm-password-form2'
-                      label='Confirm Password'
-                      type='password'
-                      autoComplete='current-password'
+                      disabled
+                      id='email'
+                      type='email'
+                      label='Email Address'
+                      placeholder=''
                       variant='filled'
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      helperText='Password do not match'
+                      value={email}
+                      autoComplete='email'
+                      onChange={(e) => setEmail(e.target.value)}
                     />
-                  ) : (
+                  </FormContainer>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormContainer>
+                    <TextField
+                      required
+                      fullWidth
+                      id='name'
+                      type='text'
+                      label='Name'
+                      placeholder=''
+                      variant='filled'
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                  </FormContainer>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <FormContainer>
                     <TextField
                       fullWidth
-                      id='confirm-password-form2'
-                      label='Confirm Password'
+                      id='password-form1'
+                      label='Password'
                       type='password'
                       autoComplete='current-password'
                       variant='filled'
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       helperText='blank if no changes'
                     />
-                  )}
-                </FormContainer>
-              </Grid>
-              <Grid item xs={12}>
-                <Button type='submit' variant='contained' color='primary'>
-                  Update Profile
-                </Button>
-              </Grid>
-            </form>
-          </FormContainer>
-        </Grid>
-        <Grid item xs={7}>
-          <h2>My Orders History</h2>
-          {orderMyError && <Message>{orderMyError}</Message>}
-          {orderMyLoading && <Loader />}
-          <List>
-            {myOrders ? (
-              myOrders.length === 0 ? (
-                <Message severity='info'>No order found</Message>
-              ) : (
-                myOrders.map((order) => (
-                  <div key={order._id}>
-                    <ListItem>
-                      <ListItemText
-                        primary={`ID# ${order._id}`}
-                        secondary={`Purchased at ${order.createdAt.substring(
-                          10,
-                          0
-                        )}`}
+                  </FormContainer>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormContainer>
+                    {!match ? (
+                      <TextField
+                        error
+                        fullWidth
+                        id='confirm-password-form2'
+                        label='Confirm Password'
+                        type='password'
+                        autoComplete='current-password'
+                        variant='filled'
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        helperText='Password do not match'
                       />
-                      <Button
-                        onClick={() => history.push(`/order/${order._id}`)}
-                      >
-                        View
-                      </Button>
-                    </ListItem>
-                    <Divider />
-                  </div>
-                ))
-              )
-            ) : null}
-          </List>
+                    ) : (
+                      <TextField
+                        fullWidth
+                        id='confirm-password-form2'
+                        label='Confirm Password'
+                        type='password'
+                        autoComplete='current-password'
+                        variant='filled'
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        helperText='blank if no changes'
+                      />
+                    )}
+                  </FormContainer>
+                </Grid>
+                <Grid item xs={12}>
+                  <Button type='submit' variant='contained' color='primary'>
+                    Update Profile
+                  </Button>
+                </Grid>
+              </form>
+            </FormContainer>
+          </Grid>
+          <Grid item xs={7}>
+            <h2>My Orders History</h2>
+            {orderMyError && <Message>{orderMyError}</Message>}
+            {orderMyLoading && <Loader />}
+            <List>
+              {myOrders ? (
+                myOrders.length === 0 ? (
+                  <Message severity='info'>No order found</Message>
+                ) : (
+                  myOrders.map((order) => (
+                    <div key={order._id}>
+                      <ListItem>
+                        <ListItemText
+                          primary={`ID# ${order._id}`}
+                          secondary={`Purchased at ${order.createdAt.substring(
+                            10,
+                            0
+                          )}`}
+                        />
+                        <Button
+                          onClick={() => history.push(`/order/${order._id}`)}
+                        >
+                          View
+                        </Button>
+                      </ListItem>
+                      <Divider />
+                    </div>
+                  ))
+                )
+              ) : null}
+            </List>
+          </Grid>
         </Grid>
-      </Grid>
+      )}
     </Container>
   )
 }
