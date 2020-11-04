@@ -31,6 +31,11 @@ function App() {
             <Route path='/cart' component={CartScreen} exact />
             <Route path='/cart/:id' component={CartScreen} exact />
             <Route
+              path='/course/:id/learn?:chapter'
+              component={VideoLearningScreen}
+              exact
+            />
+            <Route
               path='/course/:id/learn'
               component={VideoLearningScreen}
               exact

@@ -1,6 +1,18 @@
 import mongoose from 'mongoose'
 import bcrypt from 'bcryptjs'
 
+const courseContentsSchema = mongoose.Schema({
+  chapter: {
+    type: String,
+    required: true,
+  },
+  progress: {
+    type: Boolean,
+    default: false,
+    required: true,
+  },
+})
+
 const userSchema = mongoose.Schema(
   {
     name: {
@@ -42,9 +54,9 @@ const userSchema = mongoose.Schema(
           type: mongoose.Schema.Types.ObjectId,
           ref: 'Order',
         },
-        progress: {
-          type: String,
-          required: true,
+        courseContents: [courseContentsSchema],
+        finishedAt: {
+          type: Date,
         },
       },
     ],

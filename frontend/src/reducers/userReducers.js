@@ -16,6 +16,7 @@ import {
   USER_COURSE_REQUEST,
   USER_COURSE_SUCCESS,
   USER_COURSE_FAIL,
+  USER_COURSE_SAVE_CURRENT_STATE,
 } from '../constants/userConstants'
 
 const userLoginReducer = (state = {}, action) => {
@@ -76,14 +77,20 @@ const userUpdateReducer = (state = {}, action) => {
   }
 }
 
-const userCourseReducer = (state = { courses: [] }, action) => {
+const userCourseReducer = (state = { userPaidCourses: [] }, action) => {
   switch (action.type) {
     case USER_COURSE_REQUEST:
       return { loading: true }
     case USER_COURSE_SUCCESS:
-      return { loading: false, courses: action.payload }
+      return { loading: false, userPaidCourses: action.payload }
     case USER_COURSE_FAIL:
       return { loading: false, error: action.payload }
+    case USER_COURSE_SAVE_CURRENT_STATE: {
+      return {
+        ...state,
+        currentVideo: action.payload,
+      }
+    }
 
     default:
       return state

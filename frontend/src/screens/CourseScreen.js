@@ -90,7 +90,7 @@ const CourseScreen = ({ match, history }) => {
   const { userInfo } = userLogin
 
   const userCourses = useSelector((state) => state.userCourses)
-  const { courses: userCurrentCourses } = userCourses
+  const { userPaidCourses } = userCourses
 
   const [bought, setBought] = useState(false)
 
@@ -121,10 +121,10 @@ const CourseScreen = ({ match, history }) => {
   }, [dispatch, courseId, userInfo])
 
   useEffect(() => {
-    if (userCurrentCourses && course) {
-      setBought(checkBought(userCurrentCourses, course))
+    if (userPaidCourses && course) {
+      setBought(checkBought(userPaidCourses, course))
     }
-  }, [userCurrentCourses, course])
+  }, [userPaidCourses, course])
 
   return (
     <>

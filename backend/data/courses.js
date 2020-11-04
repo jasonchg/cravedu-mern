@@ -92,6 +92,28 @@ const products = [
       },
     ],
   },
+  {
+    name: 'Learn HTML CSS to build a webpage',
+    image: '/images/html_css.jpg',
+    description: 'HTML CSS is the most high demand in the industry nowaday.',
+    instructor: 'Brad',
+    category: 'Programming',
+    price: 10.99,
+    rating: 4.5,
+    numReviews: 4,
+    courseContents: [
+      {
+        name: 'Start Build!',
+        chapter: 'Chapter 1',
+        video: '/videos/html_css.mp4',
+      },
+      {
+        name: 'Extra Content!',
+        chapter: 'Chapter 2',
+        video: '/videos/html_css_2.mp4',
+      },
+    ],
+  },
 ]
 
 export default products

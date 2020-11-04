@@ -18,6 +18,7 @@ import {
   USER_COURSE_SUCCESS,
   USER_COURSE_FAIL,
   USER_DETAILS_RESET,
+  USER_COURSE_SAVE_CURRENT_STATE,
 } from '../constants/userConstants'
 
 const login = (email, password) => async (dispatch) => {
@@ -178,6 +179,15 @@ const getUserCourses = () => async (dispatch, getState) => {
   }
 }
 
+const saveVideoCurrent = (id) => (dispatch) => {
+  dispatch({
+    type: USER_COURSE_SAVE_CURRENT_STATE,
+    payload: id,
+  })
+
+  localStorage.setItem('userLearn', JSON.stringify(id))
+}
+
 export {
   login,
   logout,
@@ -185,4 +195,5 @@ export {
   getUserDetails,
   updateUserDetails,
   getUserCourses,
+  saveVideoCurrent,
 }

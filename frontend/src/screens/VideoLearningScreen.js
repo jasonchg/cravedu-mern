@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+
 import {
   Container,
   Grid,
@@ -22,6 +23,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled'
 import { makeStyles } from '@material-ui/core/styles'
 import { listCourseDetails } from '../actions/courseActions'
+import { saveVideoCurrent } from '../actions/userActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
@@ -59,7 +61,7 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired,
 }
 
-const VideoLearningScreen = ({ match, history }) => {
+const VideoLearningScreen = ({ match, history, location }) => {
   const courseId = match.params.id
   const dispatch = useDispatch()
 
@@ -99,24 +101,76 @@ const VideoLearningScreen = ({ match, history }) => {
   }))
   const classes = useStyles()
 
+  const [selectedVideo, setSelectedVideo] = useState('')
+
   const courseDetails = useSelector((state) => state.courseDetails)
   const { loading, error, course } = courseDetails
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
+  const userCourses = useSelector((state) => state.userCourses)
+  const { userPaidCourses } = userCourses
+
   const [value, setValue] = useState(0)
   const tabHandler = (event, newValue) => {
     setValue(newValue)
   }
 
+  const selectTopicHandler = (chapterId) => {
+    dispatch(saveVideoCurrent(chapterId))
+    history.push(`/course/${courseId}/learn?chapter=${chapterId}`)
+  }
+
+  let param = new URLSearchParams(location.search)
+  let getVideoId = param.get('chapter')
+
+  // check if user already logged in
   useEffect(() => {
     if (!userInfo) {
       history.push('/')
     } else {
       dispatch(listCourseDetails(courseId))
     }
-  }, [dispatch, courseId, userInfo, history])
+  }, [history, courseId])
+
+  const getVideoPath = (content, id) => {
+    return (
+      content &&
+      content.filter(function (item) {
+        return item._id === id
+      })[0].video
+    )
+  }
+
+  // Check if the link doenst carrying any video ids
+  useEffect(() => {
+    if (course) {
+      if (
+        getVideoId !== '' &&
+        typeof getVideoId !== 'undefined' &&
+        getVideoId !== null
+      ) {
+        history.push(`/course/${courseId}/learn?chapter=${getVideoId}`)
+      } else {
+        if (course) {
+          getVideoId = course.courseContents[0]._id
+          setSelectedVideo(getVideoPath(course.courseContents, getVideoId))
+        }
+      }
+    }
+  }, [course, history, getVideoId])
+
+  useEffect(() => {
+    let videoPath
+
+    if (course) {
+      videoPath = getVideoPath(course.courseContents, getVideoId)
+      if (videoPath !== '') {
+        setSelectedVideo(videoPath)
+      }
+    }
+  }, [course, getVideoId])
 
   return (
     <>
@@ -138,9 +192,7 @@ const VideoLearningScreen = ({ match, history }) => {
               <div>
                 <VideoPlayer
                   className={classes.player}
-                  videoPath={
-                    'https://www.youtube.com/watch?v=rRgD1yVwIvE&t=24s&ab_channel=TraversyMedia'
-                  }
+                  videoPath={selectedVideo}
                 />
               </div>
 
@@ -277,14 +329,9 @@ const VideoLearningScreen = ({ match, history }) => {
                 <h2>Course Contents</h2>
 
                 <List>
-                  {/*
-                   * loops video path as argument
-                   * when click any of the child
-                   * change the path of the VideoPlayer component
-                   */}
                   {course.courseContents ? (
-                    course.courseContents.map((content, index) => (
-                      <ListItemText key={index}>
+                    course.courseContents.map((content) => (
+                      <ListItemText key={content._id}>
                         <Accordion className={classes.accordion}>
                           <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
@@ -293,9 +340,18 @@ const VideoLearningScreen = ({ match, history }) => {
                           >
                             <Typography>{content.chapter}</Typography>
                           </AccordionSummary>
-                          <AccordionDetails>
-                            <Typography>{content.name}</Typography>{' '}
-                            <PlayCircleFilledIcon />
+                          <AccordionDetails
+                            style={{
+                              background: '#eaeaea',
+                            }}
+                          >
+                            <Button
+                              onClick={() => selectTopicHandler(content._id)}
+                            >
+                              <Typography>
+                                <PlayCircleFilledIcon /> {content.name}
+                              </Typography>
+                            </Button>
                           </AccordionDetails>
                         </Accordion>
                       </ListItemText>

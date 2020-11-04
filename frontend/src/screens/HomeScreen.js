@@ -18,7 +18,7 @@ const HomeScreen = () => {
   const { userInfo } = userLogin
 
   const userCourses = useSelector((state) => state.userCourses)
-  const { courses: userCurrentCourses } = userCourses
+  const { userPaidCourses } = userCourses
 
   useEffect(() => {
     dispatch(listCourses())
@@ -71,13 +71,13 @@ const HomeScreen = () => {
             <Category key={index} category={item} color='primary' />
           ))}
 
-        {userInfo && userCurrentCourses && userCurrentCourses.length !== 0 ? (
+        {userInfo && userPaidCourses && userPaidCourses.length !== 0 ? (
           <>
             <Grid item xs={12}>
               <h2> Let's start learning, {userInfo.name}</h2>
             </Grid>
 
-            {userCurrentCourses.map((currentCourse, index) => (
+            {userPaidCourses.map((currentCourse, index) => (
               <Grid item key={currentCourse._id} xs={6}>
                 <Course course={currentCourse} learning />
               </Grid>

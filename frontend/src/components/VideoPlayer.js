@@ -4,7 +4,7 @@ import ReactPlayer from 'react-player'
 import { makeStyles } from '@material-ui/core/styles'
 const useStyles = makeStyles((theme) => ({
   playerWrapper: {
-    height: 415,
+    height: 325,
     width: 'auto',
   },
   reactPlayer: {},

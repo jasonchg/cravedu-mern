@@ -77,10 +77,6 @@ const PaymentScreen = ({ history }) => {
     cartItems.reduce((acc, item) => acc + item.price, 0)
   ).toFixed(2)
 
-  const placeOrderHandler = (e) => {
-    e.preventDefault()
-  }
-
   const successPaymentHandler = () => {
     dispatch(savePaymentMethod(paymentMethod))
 
@@ -260,25 +256,11 @@ const PaymentScreen = ({ history }) => {
               <Divider className={classes.divider} />
 
               {!sdkReady ? (
-                <Button
-                  className={classes.checkoutButton}
-                  variant='contained'
-                  color='primary'
-                  onClick={placeOrderHandler}
-                  startIcon={<DoneAllIcon />}
-                  disabled={cartItems.length === 0}
-                >
-                  Place Order
-                </Button>
+                <Loader />
               ) : (
                 <PayPalButton
                   amount={cartItemPrice}
                   onSuccess={successPaymentHandler}
-                  onError={() => (
-                    <Message>
-                      Something went wrong, please refresh page and try again...
-                    </Message>
-                  )}
                 />
               )}
             </Paper>

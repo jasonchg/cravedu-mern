@@ -11,6 +11,7 @@ import {
   userDetailsReducer,
   userUpdateReducer,
   userCourseReducer,
+  userCurrentCourseReducer,
 } from './reducers/userReducers'
 import { cartReducers } from './reducers/cartReducers'
 import {
@@ -41,9 +42,14 @@ const userInfoFromStorage = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo'))
   : null
 
+const userLearnFromStorage = localStorage.getItem('userLearn')
+  ? JSON.parse(localStorage.getItem('userLearn'))
+  : null
+
 const initialState = {
   cart: { cartItems: cartItemsFromStorage },
   userLogin: { userInfo: userInfoFromStorage },
+  userCourses: { currentVideo: userLearnFromStorage },
 }
 
 const middleware = [thunk]
