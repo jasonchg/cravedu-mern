@@ -188,7 +188,7 @@ const VideoLearningScreen = ({ match, history, location }) => {
           </div>
 
           <Grid container spacing={0}>
-            <Grid item xs={8}>
+            <Grid item xs={9}>
               <div>
                 <VideoPlayer
                   className={classes.player}
@@ -324,7 +324,7 @@ const VideoLearningScreen = ({ match, history, location }) => {
               </div>
             </Grid>
 
-            <Grid item xs={4}>
+            <Grid item xs={3}>
               <Paper className={classes.courseContents}>
                 <h2>Course Contents</h2>
 

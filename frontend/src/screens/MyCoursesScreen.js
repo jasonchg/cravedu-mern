@@ -15,7 +15,7 @@ const MyCoursesScreen = ({ history }) => {
   const { userInfo } = userLogin
 
   const userCourses = useSelector((state) => state.userCourses)
-  const { error, loading, courses } = userCourses
+  const { error, loading, userPaidCourses } = userCourses
 
   useEffect(() => {
     if (!userInfo) {
@@ -29,8 +29,8 @@ const MyCoursesScreen = ({ history }) => {
     <Container maxWidth='md'>
       <h1>My Courses</h1>
 
-      {courses ? (
-        courses.length === 0 ? (
+      {userPaidCourses ? (
+        userPaidCourses.length === 0 ? (
           <Message severity='info'>
             No course in your list.
             <Link href='/'> Start Study?</Link>
@@ -41,7 +41,7 @@ const MyCoursesScreen = ({ history }) => {
           <Loader />
         ) : (
           <Grid container wrap='nowrap'>
-            {courses.map((courseItem, index) => (
+            {userPaidCourses.map((courseItem, index) => (
               <Grid item key={index} xs={12} sm={4} md={3}>
                 <Course course={courseItem} />
               </Grid>

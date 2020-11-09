@@ -10,6 +10,7 @@ import userRoutes from './routes/userRoutes.js'
 import courseRoutes from './routes/courseRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
 import myCourseRoutes from './routes/myCourseRoutes.js'
+import adminRoutes from './routes/adminRoutes.js'
 
 dotenv.config()
 connectDB()
@@ -30,6 +31,7 @@ app.use('/api/mycourses', myCourseRoutes)
 app.use('/api/config/paypal', (req, res) => {
   res.send(process.env.PAYPAL_CLIENT_ID)
 })
+app.use('/api/admin/users', adminRoutes)
 
 app.use(notFound)
 app.use(errorHandler)

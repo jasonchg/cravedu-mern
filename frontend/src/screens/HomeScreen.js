@@ -8,7 +8,7 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import Category from '../components/Category'
 
-const HomeScreen = () => {
+const HomeScreen = ({ history }) => {
   const dispatch = useDispatch()
 
   const courseList = useSelector((state) => state.courseList)
@@ -26,7 +26,7 @@ const HomeScreen = () => {
     if (userInfo) {
       dispatch(getUserCourses())
     }
-  }, [dispatch, userInfo])
+  }, [dispatch, userInfo, history])
 
   const [category, setCategory] = useState([
     {

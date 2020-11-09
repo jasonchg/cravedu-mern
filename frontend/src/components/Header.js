@@ -77,6 +77,11 @@ const Header = () => {
     closeUserMenuHandler()
   }
 
+  const goToManageUsers = () => {
+    window.location.href = '/admin/users'
+    closeAdminMenuHandler()
+  }
+
   return (
     <div className={classes.root}>
       <AppBar position='static'>
@@ -128,7 +133,7 @@ const Header = () => {
                         </Typography>
                       </MenuItem>
 
-                      <MenuItem onClick={closeAdminMenuHandler}>
+                      <MenuItem onClick={goToManageUsers}>
                         <ListItemIcon>
                           <AccountCircleIcon fontSize='small' />
                         </ListItemIcon>
