@@ -33,7 +33,6 @@ const ManageUsersScreen = ({ history }) => {
     }
   }
 
-  let countMe = 1
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
       dispatch(listUsers())
@@ -70,9 +69,9 @@ const ManageUsersScreen = ({ history }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {users.map((user) => (
+                {users.map((user, index) => (
                   <TableRow key={user._id}>
-                    <TableCell>{countMe++}</TableCell>
+                    <TableCell>{index + 1}</TableCell>
                     <TableCell>
                       <b>{user.name}</b> <br />
                       <Typography variant='caption'>({user._id})</Typography>

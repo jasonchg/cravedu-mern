@@ -20,6 +20,12 @@ import SubdirectoryArrowRightIcon from '@material-ui/icons/SubdirectoryArrowRigh
 import CheckBoxIcon from '@material-ui/icons/CheckBox'
 const useStyles = makeStyles((theme) => ({
   root: {},
+  list: {
+    background: '#fff',
+    border: '1px solid #999',
+    height: 350,
+    padding: 10,
+  },
 }))
 
 const UserEditScreen = ({ history, match }) => {
@@ -137,21 +143,38 @@ const UserEditScreen = ({ history, match }) => {
               </FormContainer>
             </Grid>
 
-            <Grid item xs={8}>
-              {isInstructor && <h2>Created Courses</h2>}
+            <Grid item xs={8} className={classes.list}>
+              {isInstructor && (
+                <Message severity='warning'>Created Courses</Message>
+              )}
 
-              <h2>Subscribed Courses</h2>
+              <h2>Invoices</h2>
               <List>
-                {userDetails.myCourses &&
-                  userDetails.myCourses.map((course) => (
-                    <div key={course._id}>
-                      <ListItem>
-                        <ListItemText primary={`ID# ${course._id}`} />
-                        <Button>View</Button>
-                      </ListItem>
-                      <Divider />
-                    </div>
-                  ))}
+                {userDetails.myCourses ? (
+                  userDetails.myCourses.length === 0 ? (
+                    <Message severity='info'>No invoice</Message>
+                  ) : (
+                    userDetails.myCourses.map((course, index) => (
+                      <div key={course._id}>
+                        <ListItem>
+                          <ListItemText
+                            primary={`${index + 1}.  ${course.orderId}`}
+                          />
+                          <Button
+                            onClick={() =>
+                              history.push(`/order/${course.orderId}`)
+                            }
+                          >
+                            View
+                          </Button>
+                        </ListItem>
+                        <Divider />
+                      </div>
+                    ))
+                  )
+                ) : (
+                  <Message>Something went wrong</Message>
+                )}
               </List>
             </Grid>
           </Grid>
