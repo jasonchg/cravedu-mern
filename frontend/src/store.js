@@ -18,9 +18,15 @@ import {
   getOrderReducer,
   getAllMyOrdersReducer,
 } from './reducers/orderReducers'
-import { userListReducer } from './reducers/adminReducers'
+import {
+  userDeleteReducer,
+  userListReducer,
+  userGetDetailsReducer,
+} from './reducers/adminReducers'
 
 const reducer = combineReducers({
+  userGetDetails: userGetDetailsReducer,
+  userDelete: userDeleteReducer,
   userList: userListReducer,
   courseList: courseListReducer,
   courseDetails: courseDetailsReducer,

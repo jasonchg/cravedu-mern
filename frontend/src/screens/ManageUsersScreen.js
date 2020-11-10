@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Children } from 'react'
+import React, { useEffect } from 'react'
 import {
   Grid,
   Button,
@@ -8,14 +8,15 @@ import {
   TableRow,
   TableBody,
   Table,
+  Typography,
 } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
 import { listUsers } from '../actions/adminActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import CheckIcon from '@material-ui/icons/Check'
 import CloseIcon from '@material-ui/icons/Close'
+import { USER_DETAILS_RESET } from '../constants/userConstants'
 
 const ManageUsersScreen = ({ history }) => {
   const dispatch = useDispatch()
@@ -26,14 +27,20 @@ const ManageUsersScreen = ({ history }) => {
   const userList = useSelector((state) => state.userList)
   const { users, loading, error } = userList
 
+  const goToEdit = (id) => {
+    if (id) {
+      history.push(`/admin/users/${id}/edit`)
+    }
+  }
+
   let countMe = 1
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
       dispatch(listUsers())
     } else {
-      history.push('/')
+      history.push('/login')
     }
-  }, [])
+  }, [userInfo, dispatch, history])
 
   return (
     <Grid container>
@@ -56,10 +63,9 @@ const ManageUsersScreen = ({ history }) => {
               <TableHead>
                 <TableRow>
                   <TableCell>No</TableCell>
-                  <TableCell>#ID</TableCell>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Admin</TableCell>
-                  <TableCell>Instructor</TableCell>
+                  <TableCell>Name (#)</TableCell>
+                  <TableCell align='center'>Admin</TableCell>
+                  <TableCell align='center'>Instructor</TableCell>
                   <TableCell></TableCell>
                 </TableRow>
               </TableHead>
@@ -67,16 +73,18 @@ const ManageUsersScreen = ({ history }) => {
                 {users.map((user) => (
                   <TableRow key={user._id}>
                     <TableCell>{countMe++}</TableCell>
-                    <TableCell>{user._id}</TableCell>
-                    <TableCell>{user.name}</TableCell>
                     <TableCell>
+                      <b>{user.name}</b> <br />
+                      <Typography variant='caption'>({user._id})</Typography>
+                    </TableCell>
+                    <TableCell align='center'>
                       {user.isAdmin ? (
                         <CheckIcon style={{ color: 'green' }} />
                       ) : (
                         <CloseIcon style={{ color: 'red' }} />
                       )}
                     </TableCell>
-                    <TableCell>
+                    <TableCell align='center'>
                       {user.isInstructor ? (
                         <CheckIcon style={{ color: 'green' }} />
                       ) : (
@@ -84,7 +92,12 @@ const ManageUsersScreen = ({ history }) => {
                       )}
                     </TableCell>
                     <TableCell>
-                      <Button>View</Button>
+                      <Button
+                        onClick={() => goToEdit(user._id)}
+                        variant='outlined'
+                      >
+                        Edit Info
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}

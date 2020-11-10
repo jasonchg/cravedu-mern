@@ -13,8 +13,8 @@ import PaymentScreen from './screens/PaymentScreen'
 import MyCoursesScreen from './screens/MyCoursesScreen'
 import ViewOrderScreen from './screens/ViewOrderScreen'
 import VideoLearningScreen from './screens/VideoLearningScreen'
-
 import ManageUsersScreen from './screens/ManageUsersScreen'
+import UserEditScreen from './screens/UserEditScreen'
 
 function App() {
   return (
@@ -52,7 +52,12 @@ function App() {
 
           {/* For Admin */}
           <Container maxWidth='md'>
-            <Route path='/admin/users' component={ManageUsersScreen} />
+            <Route
+              path='/admin/users/:id/edit'
+              component={UserEditScreen}
+              exact
+            />
+            <Route path='/admin/users' component={ManageUsersScreen} exact />
           </Container>
 
           {/* Default */}
