@@ -23,7 +23,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled'
 import { makeStyles } from '@material-ui/core/styles'
 import { listCourseDetails } from '../actions/courseActions'
-import { saveVideoCurrent } from '../actions/userActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
@@ -61,44 +60,45 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired,
 }
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  paper: {
+    background: '#f0f0f0',
+    margin: 'auto',
+    marginTop: 10,
+  },
+
+  divider: {
+    margin: theme.spacing(2, 0),
+  },
+  description: {
+    textAlign: 'justify',
+  },
+  button: {
+    margin: 12,
+    width: 175,
+    padding: 15,
+  },
+  accordion: {
+    background: '#f0f0f0',
+    width: '100%',
+  },
+  player: {
+    height: 1500,
+  },
+  courseContents: {
+    padding: 10,
+    minHeight: 443,
+  },
+  questionBlock: {},
+}))
+
 const VideoLearningScreen = ({ match, history, location }) => {
   const courseId = match.params.id
   const dispatch = useDispatch()
 
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      flexGrow: 1,
-    },
-    paper: {
-      background: '#f0f0f0',
-      margin: 'auto',
-      marginTop: 10,
-    },
-
-    divider: {
-      margin: theme.spacing(2, 0),
-    },
-    description: {
-      textAlign: 'justify',
-    },
-    button: {
-      margin: 12,
-      width: 175,
-      padding: 15,
-    },
-    accordion: {
-      background: '#f0f0f0',
-      width: '100%',
-    },
-    player: {
-      height: 1500,
-    },
-    courseContents: {
-      padding: 10,
-      minHeight: 443,
-    },
-    questionBlock: {},
-  }))
   const classes = useStyles()
 
   const [selectedVideo, setSelectedVideo] = useState('')
@@ -109,68 +109,62 @@ const VideoLearningScreen = ({ match, history, location }) => {
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
-  const userCourses = useSelector((state) => state.userCourses)
-  const { userPaidCourses } = userCourses
-
   const [value, setValue] = useState(0)
+
   const tabHandler = (event, newValue) => {
     setValue(newValue)
   }
 
-  const selectTopicHandler = (chapterId) => {
-    dispatch(saveVideoCurrent(chapterId))
-    history.push(`/course/${courseId}/learn?chapter=${chapterId}`)
-  }
-
-  let param = new URLSearchParams(location.search)
-  let getVideoId = param.get('chapter')
-
-  // check if user already logged in
-  useEffect(() => {
-    if (!userInfo) {
-      history.push('/')
-    } else {
-      dispatch(listCourseDetails(courseId))
-    }
-  }, [history, courseId])
-
+  // func : get the actual video path
   const getVideoPath = (content, id) => {
     return (
       content &&
-      content.filter(function (item) {
-        return item._id === id
-      })[0].video
+      String(
+        content.filter(function (item) {
+          return item._id === id
+        })[0].video
+      )
     )
   }
 
-  // Check if the link doenst carrying any video ids
+  // useEffect : redirect to respective video
+  useEffect(() => {
+    if (!userInfo) {
+      history.push('/login')
+    } else {
+      dispatch(listCourseDetails(courseId))
+      setSelectedVideo('')
+    }
+  }, [userInfo, history, dispatch, courseId])
+
+  // URL
+  let getVideoId = ''
+  let param = new URLSearchParams(location.search)
+  getVideoId = param.get('chapter')
+
+  // useEffect : check if the url doenst carry any video ids
   useEffect(() => {
     if (course) {
-      if (
-        getVideoId !== '' &&
-        typeof getVideoId !== 'undefined' &&
-        getVideoId !== null
-      ) {
-        history.push(`/course/${courseId}/learn?chapter=${getVideoId}`)
-      } else {
-        if (course) {
-          getVideoId = course.courseContents[0]._id
-          setSelectedVideo(getVideoPath(course.courseContents, getVideoId))
-        }
+      if (getVideoId === '' || getVideoId === 'null') {
+        history.push(
+          `/course/${courseId}/learn?chapter=${course.courseContents[0]._id}`
+        )
       }
     }
-  }, [course, history, getVideoId])
+  }, [course, history, courseId, location])
 
   useEffect(() => {
-    let videoPath
-
-    if (course) {
-      videoPath = getVideoPath(course.courseContents, getVideoId)
-      if (videoPath !== '') {
-        setSelectedVideo(videoPath)
-      }
+    if (getVideoId !== '' || getVideoId !== 'null') {
+      course &&
+        setSelectedVideo(getVideoPath(course.courseContents, getVideoId))
     }
-  }, [course, getVideoId])
+  }, [getVideoId, course, getVideoId])
+
+  // 2 func : set video to the video player
+  const selectTopicHandler = (chapterId) => {
+    setSelectedVideo(getVideoPath(course.courseContents, chapterId))
+    history.push(`/course/${courseId}/learn?chapter=${chapterId}`)
+  }
 
   return (
     <>
