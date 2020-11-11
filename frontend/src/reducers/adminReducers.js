@@ -1,57 +1,82 @@
 import {
-  USER_LIST_REQUEST,
-  USER_LIST_SUCCESS,
-  USER_LIST_FAIL,
-  USER_LIST_RESET,
-  USER_DELETE_REQUEST,
-  USER_DELETE_SUCCESS,
-  USER_DELETE_FAIL,
+  ADMIN_USER_LIST_REQUEST,
+  ADMIN_USER_LIST_SUCCESS,
+  ADMIN_USER_LIST_FAIL,
+  ADMIN_USER_LIST_RESET,
+  ADMIN_USER_DELETE_REQUEST,
+  ADMIN_USER_DELETE_SUCCESS,
+  ADMIN_USER_DELETE_FAIL,
+  ADMIN_USER_DETAILS_FAIL,
+  ADMIN_USER_DETAILS_REQUEST,
+  ADMIN_USER_DETAILS_SUCCESS,
+  ADMIN_USER_DETAILS_RESET,
+  ADMIN_USER_UPDATE_REQUEST,
+  ADMIN_USER_UPDATE_SUCCESS,
+  ADMIN_USER_UPDATE_FAIL,
+  ADMIN_USER_UPDATE_RESET,
 } from '../constants/adminConstants'
-import {
-  USER_DETAILS_FAIL,
-  USER_DETAILS_REQUEST,
-  USER_DETAILS_SUCCESS,
-} from '../constants/userConstants'
 
-const userListReducer = (state = { users: [] }, action) => {
+const adminUserListReducer = (state = { users: [] }, action) => {
   switch (action.type) {
-    case USER_LIST_REQUEST:
+    case ADMIN_USER_LIST_REQUEST:
       return { loading: true, users: [] }
-    case USER_LIST_SUCCESS:
+    case ADMIN_USER_LIST_SUCCESS:
       return { loading: false, users: action.payload }
-    case USER_LIST_FAIL:
+    case ADMIN_USER_LIST_FAIL:
       return { loading: false, error: action.payload }
-    case USER_LIST_RESET:
+    case ADMIN_USER_LIST_RESET:
       return { users: [] }
     default:
       return state
   }
 }
 
-const userDeleteReducer = (state = {}, action) => {
+const adminUserDeleteReducer = (state = {}, action) => {
   switch (action.type) {
-    case USER_DELETE_REQUEST:
+    case ADMIN_USER_DELETE_REQUEST:
       return { loading: true }
-    case USER_DELETE_SUCCESS:
+    case ADMIN_USER_DELETE_SUCCESS:
       return { loading: false, success: true }
-    case USER_DELETE_FAIL:
+    case ADMIN_USER_DELETE_FAIL:
       return { loading: false, error: action.payload }
     default:
       return state
   }
 }
 
-const userGetDetailsReducer = (state = { userDetails: {} }, action) => {
+const adminUserGetDetailsReducer = (state = { userDetails: {} }, action) => {
   switch (action.type) {
-    case USER_DETAILS_REQUEST:
+    case ADMIN_USER_DETAILS_REQUEST:
       return { loading: true }
-    case USER_DETAILS_SUCCESS:
+    case ADMIN_USER_DETAILS_SUCCESS:
       return { loading: false, userDetails: action.payload }
-    case USER_DETAILS_FAIL:
+    case ADMIN_USER_DETAILS_FAIL:
       return { loading: false, error: action.payload }
+    case ADMIN_USER_DETAILS_RESET:
+      return { userDetails: {} }
     default:
       return state
   }
 }
 
-export { userListReducer, userDeleteReducer, userGetDetailsReducer }
+const adminUserUpdateReducer = (state = { userDetails: {} }, action) => {
+  switch (action.type) {
+    case ADMIN_USER_UPDATE_REQUEST:
+      return { loading: true }
+    case ADMIN_USER_UPDATE_SUCCESS:
+      return { loading: false, success: true }
+    case ADMIN_USER_UPDATE_FAIL:
+      return { loading: false, error: action.payload }
+    case ADMIN_USER_UPDATE_RESET:
+      return { userDetails: {} }
+    default:
+      return state
+  }
+}
+
+export {
+  adminUserListReducer,
+  adminUserDeleteReducer,
+  adminUserGetDetailsReducer,
+  adminUserUpdateReducer,
+}

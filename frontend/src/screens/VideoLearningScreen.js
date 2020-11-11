@@ -104,7 +104,7 @@ const VideoLearningScreen = ({ match, history, location }) => {
   const [selectedVideo, setSelectedVideo] = useState('')
 
   const courseDetails = useSelector((state) => state.courseDetails)
-  const { loading, error, course } = courseDetails
+  const { loading, error, course, success: courseSuccess } = courseDetails
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
@@ -127,38 +127,30 @@ const VideoLearningScreen = ({ match, history, location }) => {
     )
   }
 
+  // URL
+  // to store the last video that user watched
+  // let getVideoId = ''
+  // let param = new URLSearchParams(location.search)
+  // getVideoId = param.get('chapter')
+
   // useEffect : redirect to respective video
   useEffect(() => {
     if (!userInfo) {
       history.push('/login')
     } else {
-      dispatch(listCourseDetails(courseId))
-      setSelectedVideo('')
-    }
-  }, [userInfo, history, dispatch, courseId])
-
-  // URL
-  let getVideoId = ''
-  let param = new URLSearchParams(location.search)
-  getVideoId = param.get('chapter')
-
-  // useEffect : check if the url doenst carry any video ids
-  useEffect(() => {
-    if (course) {
-      if (getVideoId === '' || getVideoId === 'null') {
+      if (courseSuccess) {
         history.push(
           `/course/${courseId}/learn?chapter=${course.courseContents[0]._id}`
         )
+        setSelectedVideo(
+          getVideoPath(course.courseContents, course.courseContents[0]._id)
+        )
+      } else {
+        dispatch(listCourseDetails(courseId))
+        setSelectedVideo('')
       }
     }
-  }, [course, history, courseId, location])
-
-  useEffect(() => {
-    if (getVideoId !== '' || getVideoId !== 'null') {
-      course &&
-        setSelectedVideo(getVideoPath(course.courseContents, getVideoId))
-    }
-  }, [getVideoId, course, getVideoId])
+  }, [userInfo, history, dispatch, courseId, courseSuccess, course])
 
   // 2 func : set video to the video player
   const selectTopicHandler = (chapterId) => {

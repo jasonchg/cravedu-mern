@@ -19,15 +19,17 @@ import {
   getAllMyOrdersReducer,
 } from './reducers/orderReducers'
 import {
-  userDeleteReducer,
-  userListReducer,
-  userGetDetailsReducer,
+  adminUserDeleteReducer,
+  adminUserListReducer,
+  adminUserGetDetailsReducer,
+  adminUserUpdateReducer,
 } from './reducers/adminReducers'
 
 const reducer = combineReducers({
-  userGetDetails: userGetDetailsReducer,
-  userDelete: userDeleteReducer,
-  userList: userListReducer,
+  adminUserUpdateDetails: adminUserUpdateReducer,
+  adminUserGetDetails: adminUserGetDetailsReducer,
+  adminUserDelete: adminUserDeleteReducer,
+  adminUserList: adminUserListReducer,
   courseList: courseListReducer,
   courseDetails: courseDetailsReducer,
   cart: cartReducers,

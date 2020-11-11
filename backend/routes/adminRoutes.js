@@ -4,6 +4,7 @@ import {
   deleteUser,
   getUsers,
   getUserById,
+  updateUser,
 } from '../controllers/adminControllers.js'
 import { protectedRoute, adminRoute } from '../middlewares/authMiddlewares.js'
 
@@ -14,5 +15,6 @@ router
   .route('/:id')
   .delete(protectedRoute, adminRoute, deleteUser)
   .get(protectedRoute, adminRoute, getUserById)
+  .put(protectedRoute, adminRoute, updateUser)
 
 export default router

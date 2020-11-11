@@ -25,7 +25,7 @@ const courseDetailsReducer = (state = { course: {} }, action) => {
     case COURSE_DETAILS_REQUEST:
       return { loading: true }
     case COURSE_DETAILS_SUCCESS:
-      return { loading: false, course: action.payload }
+      return { loading: false, course: action.payload, success: true }
     case COURSE_DETAILS_FAIL:
       return { loading: false, error: action.payload }
     default:

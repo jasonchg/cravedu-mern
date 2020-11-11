@@ -12,12 +12,17 @@ import {
 } from '@material-ui/core'
 import FormContainer from '../components/FormContainer'
 import { makeStyles } from '@material-ui/core/styles'
-import { getUserById } from '../actions/adminActions'
+import { getUserById, updateUser } from '../actions/adminActions'
 import { useDispatch, useSelector } from 'react-redux'
+
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import SubdirectoryArrowRightIcon from '@material-ui/icons/SubdirectoryArrowRight'
-import CheckBoxIcon from '@material-ui/icons/CheckBox'
+import {
+  ADMIN_USER_DETAILS_RESET,
+  ADMIN_USER_UPDATE_RESET,
+} from '../constants/adminConstants'
+
 const useStyles = makeStyles((theme) => ({
   root: {},
   list: {
@@ -32,36 +37,81 @@ const UserEditScreen = ({ history, match }) => {
   const dispatch = useDispatch()
   const classes = useStyles()
 
+  const userId = match.params.id
+
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
-  const userGetDetails = useSelector((state) => state.userGetDetails)
-  const { userDetails, loading, error } = userGetDetails
+  const adminUserGetDetails = useSelector((state) => state.adminUserGetDetails)
+  const { userDetails, loading, error } = adminUserGetDetails
+
+  const adminUserUpdateDetails = useSelector(
+    (state) => state.adminUserUpdateDetails
+  )
+  const {
+    loading: updateLoading,
+    success: updateSuccess,
+    error: updateError,
+  } = adminUserUpdateDetails
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [isAdmin, setIsAdmin] = useState(false)
   const [isInstructor, setIsInstructor] = useState(false)
 
+  // useEffect
+  // check if user existed
+  // check if user details exisited
+  // check if user update success
+
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
-      dispatch(getUserById(match.params.id))
+      if (updateSuccess) {
+        dispatch({ type: ADMIN_USER_UPDATE_RESET })
+        dispatch({ type: ADMIN_USER_DETAILS_RESET })
+        history.push('/admin/users')
+      } else {
+        if (
+          !userDetails ||
+          !userDetails.name ||
+          !userDetails.email ||
+          userDetails._id !== userId
+        ) {
+          setName('')
+          setEmail('')
+          setIsAdmin(false)
+          setIsInstructor(false)
+          dispatch(getUserById(userId))
+        } else {
+          setName(userDetails.name)
+          setEmail(userDetails.email)
+          setIsAdmin(userDetails.isAdmin)
+          setIsInstructor(userDetails.isInstructor)
+        }
+      }
     } else {
       history.push('/login')
     }
-  }, [dispatch, userInfo, history, match])
-
-  useEffect(() => {
-    if (userDetails) {
-      setEmail(userDetails.email)
-      setName(userDetails.name)
-      setIsAdmin(userDetails.isAdmin)
-      setIsInstructor(userDetails.isInstructor)
-    }
-  }, [userDetails])
+  }, [dispatch, userInfo, history, updateSuccess, userDetails, userId])
 
   const submitHandler = (e) => {
     e.preventDefault()
+    dispatch(
+      updateUser({
+        _id: userId,
+        name,
+        email,
+        isAdmin,
+        isInstructor,
+      })
+    )
+  }
+
+  const handleAdminCheck = (e, isChecked) => {
+    setIsAdmin(isChecked)
+  }
+  const handleInstructorCheck = (e, isChecked) => {
+    setIsInstructor(isChecked)
   }
 
   return (
@@ -77,6 +127,9 @@ const UserEditScreen = ({ history, match }) => {
       <h1>
         <SubdirectoryArrowRightIcon /> {userDetails && userDetails.name}
       </h1>
+
+      {updateLoading && <Loader />}
+      {updateError && <Message>{updateError}</Message>}
 
       {loading ? (
         <Loader />
@@ -120,7 +173,7 @@ const UserEditScreen = ({ history, match }) => {
                   control={
                     <Checkbox
                       checked={isAdmin}
-                      onChange={(e) => setIsAdmin(e.target.checked)}
+                      onChange={handleAdminCheck}
                       name='isAdmin'
                       color='primary'
                     />
@@ -134,7 +187,7 @@ const UserEditScreen = ({ history, match }) => {
                   control={
                     <Checkbox
                       checked={isInstructor}
-                      onChange={(e) => setIsInstructor(e.target.checked)}
+                      onChange={handleInstructorCheck}
                       name='isInstructor'
                       color='primary'
                     />

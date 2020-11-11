@@ -1,19 +1,20 @@
 import axios from 'axios'
 
 import {
-  USER_LIST_REQUEST,
-  USER_LIST_SUCCESS,
-  USER_LIST_FAIL,
+  ADMIN_USER_LIST_REQUEST,
+  ADMIN_USER_LIST_SUCCESS,
+  ADMIN_USER_LIST_FAIL,
+  ADMIN_USER_DETAILS_FAIL,
+  ADMIN_USER_DETAILS_REQUEST,
+  ADMIN_USER_DETAILS_SUCCESS,
+  ADMIN_USER_UPDATE_REQUEST,
+  ADMIN_USER_UPDATE_SUCCESS,
+  ADMIN_USER_UPDATE_FAIL,
 } from '../constants/adminConstants'
-import {
-  USER_DETAILS_FAIL,
-  USER_DETAILS_REQUEST,
-  USER_DETAILS_SUCCESS,
-} from '../constants/userConstants'
 
 const listUsers = () => async (dispatch, getState) => {
   try {
-    dispatch({ type: USER_LIST_REQUEST })
+    dispatch({ type: ADMIN_USER_LIST_REQUEST })
     const {
       userLogin: { userInfo },
     } = getState()
@@ -26,10 +27,10 @@ const listUsers = () => async (dispatch, getState) => {
 
     const { data } = await axios.get('/api/admin/users', config)
 
-    dispatch({ type: USER_LIST_SUCCESS, payload: data })
+    dispatch({ type: ADMIN_USER_LIST_SUCCESS, payload: data })
   } catch (e) {
     dispatch({
-      type: USER_LIST_FAIL,
+      type: ADMIN_USER_LIST_FAIL,
       payload:
         e.response && e.response.data.message
           ? e.response.data.message
@@ -40,7 +41,7 @@ const listUsers = () => async (dispatch, getState) => {
 
 const getUserById = (id) => async (dispatch, getState) => {
   try {
-    dispatch({ type: USER_DETAILS_REQUEST })
+    dispatch({ type: ADMIN_USER_DETAILS_REQUEST })
     const {
       userLogin: { userInfo },
     } = getState()
@@ -53,10 +54,10 @@ const getUserById = (id) => async (dispatch, getState) => {
 
     const { data } = await axios.get(`/api/admin/users/${id}`, config)
 
-    dispatch({ type: USER_DETAILS_SUCCESS, payload: data })
+    dispatch({ type: ADMIN_USER_DETAILS_SUCCESS, payload: data })
   } catch (e) {
     dispatch({
-      type: USER_DETAILS_FAIL,
+      type: ADMIN_USER_DETAILS_FAIL,
       payload:
         e.response && e.response.data.message
           ? e.response.data.message
@@ -65,4 +66,37 @@ const getUserById = (id) => async (dispatch, getState) => {
   }
 }
 
-export { listUsers, getUserById }
+const updateUser = (user) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: ADMIN_USER_UPDATE_REQUEST })
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    const { data } = await axios.put(
+      `/api/admin/users/${user._id}`,
+      user,
+      config
+    )
+
+    dispatch({ type: ADMIN_USER_UPDATE_SUCCESS })
+    dispatch({ type: ADMIN_USER_DETAILS_SUCCESS, payload: data })
+  } catch (e) {
+    dispatch({
+      type: ADMIN_USER_UPDATE_FAIL,
+      payload:
+        e.response && e.response.data.message
+          ? e.response.data.message
+          : e.message,
+    })
+  }
+}
+
+export { listUsers, getUserById, updateUser }

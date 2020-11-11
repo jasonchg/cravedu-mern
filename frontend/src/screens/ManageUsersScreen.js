@@ -16,7 +16,7 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import CheckIcon from '@material-ui/icons/Check'
 import CloseIcon from '@material-ui/icons/Close'
-import { USER_DETAILS_RESET } from '../constants/userConstants'
+import { ADMIN_USER_DETAILS_RESET } from '../constants/adminConstants'
 
 const ManageUsersScreen = ({ history }) => {
   const dispatch = useDispatch()
@@ -24,17 +24,16 @@ const ManageUsersScreen = ({ history }) => {
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
-  const userList = useSelector((state) => state.userList)
-  const { users, loading, error } = userList
+  const adminUserList = useSelector((state) => state.adminUserList)
+  const { users, loading, error } = adminUserList
 
   const goToEdit = (id) => {
-    if (id) {
-      history.push(`/admin/users/${id}/edit`)
-    }
+    history.push(`/admin/users/${id}/edit`)
   }
 
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
+      dispatch({ type: ADMIN_USER_DETAILS_RESET })
       dispatch(listUsers())
     } else {
       history.push('/login')
