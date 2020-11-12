@@ -82,6 +82,11 @@ const Header = () => {
     closeAdminMenuHandler()
   }
 
+  const goToManageCourses = () => {
+    window.location.href = '/admin/courses'
+    closeAdminMenuHandler()
+  }
+
   return (
     <div className={classes.root}>
       <AppBar position='static'>
@@ -124,7 +129,7 @@ const Header = () => {
                       open={Boolean(openMenuAdmin)}
                       onClose={closeAdminMenuHandler}
                     >
-                      <MenuItem onClick={closeAdminMenuHandler}>
+                      <MenuItem onClick={goToManageCourses}>
                         <ListItemIcon>
                           <ListIcon fontSize='small' />
                         </ListItemIcon>

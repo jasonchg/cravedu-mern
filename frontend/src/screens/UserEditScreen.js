@@ -197,6 +197,12 @@ const UserEditScreen = ({ history, match }) => {
             </Grid>
 
             <Grid item xs={8} className={classes.list}>
+              <h4>
+                User Id# {userDetails._id} <br /> Acocunt created since{' '}
+                {userDetails.createdAt}
+                <Divider />
+              </h4>
+
               {isInstructor && (
                 <Message severity='warning'>Created Courses</Message>
               )}

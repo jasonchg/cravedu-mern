@@ -15,6 +15,7 @@ import ViewOrderScreen from './screens/ViewOrderScreen'
 import VideoLearningScreen from './screens/VideoLearningScreen'
 import ManageUsersScreen from './screens/ManageUsersScreen'
 import UserEditScreen from './screens/UserEditScreen'
+import ManageCoursesScreen from './screens/ManageCoursesScreen'
 
 function App() {
   return (
@@ -52,6 +53,12 @@ function App() {
 
           {/* For Admin */}
           <Container maxWidth='md'>
+            <Route
+              path='/admin/courses'
+              component={ManageCoursesScreen}
+              exact
+            />
+
             <Route
               path='/admin/users/:id/edit'
               component={UserEditScreen}
