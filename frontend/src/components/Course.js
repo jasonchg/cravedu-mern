@@ -27,7 +27,6 @@ const useStyles = makeStyles({
 
 const learningStyles = makeStyles({
   root: {
-    width: 375,
     maxWidth: 400,
     margin: 10,
   },
@@ -65,8 +64,8 @@ const Course = ({ course, learning }) => {
 
   return (
     <Card className={learning ? classesLearning.root : classes.root}>
-      <Link href={`/course/${course._id}`}>
-        {learning && (
+      {learning && (
+        <Link href={`/course/${course._id}/learn`}>
           <Grid container alignItems='center'>
             <Grid item xs={4}>
               <div className={classesLearning.media}>
@@ -89,8 +88,10 @@ const Course = ({ course, learning }) => {
               </CardContent>
             </Grid>
           </Grid>
-        )}
-        {learning ? null : (
+        </Link>
+      )}
+      {learning ? null : (
+        <Link href={`/course/${course._id}`}>
           <CardActionArea>
             <CardMedia
               className={classes.media}
@@ -110,8 +111,8 @@ const Course = ({ course, learning }) => {
               />
             ) : null}
           </CardActionArea>
-        )}
-      </Link>
+        </Link>
+      )}
 
       {learning ? null : (
         <CardActions>

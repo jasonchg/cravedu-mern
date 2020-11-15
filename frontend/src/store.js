@@ -24,9 +24,13 @@ import {
   adminUserGetDetailsReducer,
   adminUserUpdateReducer,
 } from './reducers/adminReducers'
-import { adminCourseListReducer } from './reducers/adminCourseReducers'
+import {
+  adminCourseDetailsReducer,
+  adminCourseListReducer,
+} from './reducers/adminCourseReducers'
 
 const reducer = combineReducers({
+  adminCourseDetails: adminCourseDetailsReducer,
   adminCourseList: adminCourseListReducer,
   adminUserUpdateDetails: adminUserUpdateReducer,
   adminUserGetDetails: adminUserGetDetailsReducer,

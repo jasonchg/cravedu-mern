@@ -4,7 +4,6 @@ import {
   Grid,
   Container,
   Typography,
-  Button,
   Link,
   RadioGroup,
   FormControl,
@@ -24,7 +23,6 @@ import FormContainer from '../components/FormContainer'
 import { makeStyles } from '@material-ui/core/styles'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
-import DoneAllIcon from '@material-ui/icons/DoneAll'
 import PaymentIcon from '@material-ui/icons/Payment'
 import { savePaymentMethod } from '../actions/cartActions'
 import { addOrder } from '../actions/orderActions'
@@ -119,7 +117,7 @@ const PaymentScreen = ({ history }) => {
         setSdkReady(true)
       }
     }
-  }, [history, success, dispatch])
+  }, [history, success, dispatch, userInfo])
 
   return (
     <Container>

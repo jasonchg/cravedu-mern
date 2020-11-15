@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Grid, Container } from '@material-ui/core'
+import React, { useEffect } from 'react'
+import { Grid, Container, Button } from '@material-ui/core'
 import Course from '../components/Course'
 import { listCourses } from '../actions/courseActions'
 import { getUserCourses } from '../actions/userActions'
@@ -28,7 +28,7 @@ const HomeScreen = ({ history }) => {
     }
   }, [dispatch, userInfo, history])
 
-  const [category, setCategory] = useState([
+  const category = [
     {
       name: 'Software',
       link: '#',
@@ -61,7 +61,7 @@ const HomeScreen = ({ history }) => {
       name: 'Fitness',
       link: '#',
     },
-  ])
+  ]
 
   return (
     <Container maxWidth='md'>
@@ -93,7 +93,20 @@ const HomeScreen = ({ history }) => {
       ) : (
         <Grid container style={{ marginBottom: 30 }}>
           <Grid item xs={12}>
-            <h2>What to learn next</h2>
+            <div style={{ display: 'flex' }}>
+              <div style={{ flex: 1 }}>
+                <h2>What to learn next</h2>
+              </div>
+              <div>
+                <Button
+                  style={{ margin: 10, maxHeight: 35 }}
+                  size='small'
+                  onClick={() => history.push('/course')}
+                >
+                  View More
+                </Button>
+              </div>
+            </div>
           </Grid>
           {courses.map((course) => (
             <Grid item key={course._id} xs={12} sm={4} md={3}>

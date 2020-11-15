@@ -41,7 +41,7 @@ const TabPanel = (props) => {
     >
       {value === index && (
         <Box p={3}>
-          <Typography>{children}</Typography>
+          <div>{children}</div>
         </Box>
       )}
     </div>
@@ -166,12 +166,12 @@ const VideoLearningScreen = ({ match, history, location }) => {
         <Message>{error}</Message>
       ) : (
         <Container className={classes.root}>
-          <div style={{ marginBottom: 10 }}>
-            <Typography variant='h4'>{course.name}</Typography>
-            <Typography variant='subtitle1'>
-              {`Created by ${course.instructor}`}
-            </Typography>
-          </div>
+          <Typography variant='h4' component='p'>
+            {course.name}
+          </Typography>
+          <Typography variant='subtitle1' component='p'>
+            {`Created by ${course.instructor}`}
+          </Typography>
 
           <Grid container spacing={0}>
             <Grid item xs={9}>
@@ -224,7 +224,7 @@ const VideoLearningScreen = ({ match, history, location }) => {
                     </ListItem>
 
                     <Divider />
-                    <p className={classes.questionBlock}>
+                    <div className={classes.questionBlock}>
                       <ListItem alignItems='flex-start'>
                         <ListItemAvatar>
                           <Avatar style={{ marginRight: 10 }}>S</Avatar>
@@ -238,7 +238,7 @@ const VideoLearningScreen = ({ match, history, location }) => {
                             </strong>
                           }
                           secondary={
-                            <p>
+                            <span>
                               <Typography
                                 component='span'
                                 variant='body2'
@@ -247,13 +247,13 @@ const VideoLearningScreen = ({ match, history, location }) => {
                                 Sam Smith
                               </Typography>
                               {' - 2020/11/10 1:10AM'}
-                            </p>
+                            </span>
                           }
                         />
                       </ListItem>
                       <Divider variant='inset' component='li' />
-                    </p>
-                    <p className={classes.questionBlock}>
+                    </div>
+                    <div className={classes.questionBlock}>
                       <ListItem alignItems='flex-start'>
                         <ListItemAvatar>
                           <Avatar style={{ marginRight: 10 }}>K</Avatar>
@@ -263,7 +263,7 @@ const VideoLearningScreen = ({ match, history, location }) => {
                             <strong>I don't understand at all...</strong>
                           }
                           secondary={
-                            <p>
+                            <span>
                               <Typography
                                 component='span'
                                 variant='body2'
@@ -272,13 +272,13 @@ const VideoLearningScreen = ({ match, history, location }) => {
                                 Kiki
                               </Typography>
                               {' - 2020/10/10 2:10PM'}
-                            </p>
+                            </span>
                           }
                         />
                       </ListItem>
                       <Divider variant='inset' component='li' />
-                    </p>
-                    <p className={classes.questionBlock}>
+                    </div>
+                    <div className={classes.questionBlock}>
                       <ListItem alignItems='flex-start'>
                         <ListItemAvatar>
                           <Avatar style={{ marginRight: 10 }}>R</Avatar>
@@ -286,7 +286,7 @@ const VideoLearningScreen = ({ match, history, location }) => {
                         <ListItemText
                           primary={<strong>Why need so many classes?</strong>}
                           secondary={
-                            <p>
+                            <span>
                               <Typography
                                 component='span'
                                 variant='body2'
@@ -295,12 +295,12 @@ const VideoLearningScreen = ({ match, history, location }) => {
                                 Roger Liew
                               </Typography>
                               {' - 2020/11/10 1:10AM'}
-                            </p>
+                            </span>
                           }
                         />
                       </ListItem>
                       <Divider variant='inset' component='li' />
-                    </p>
+                    </div>
                   </List>
                 </TabPanel>
 
@@ -324,7 +324,9 @@ const VideoLearningScreen = ({ match, history, location }) => {
                             aria-controls='course-content'
                             id='course-content-panel-header'
                           >
-                            <Typography>{content.chapter}</Typography>
+                            <Typography variant='body1' component='span'>
+                              {content.chapter}
+                            </Typography>
                           </AccordionSummary>
                           <AccordionDetails
                             style={{
@@ -334,7 +336,7 @@ const VideoLearningScreen = ({ match, history, location }) => {
                             <Button
                               onClick={() => selectTopicHandler(content._id)}
                             >
-                              <Typography>
+                              <Typography variant='body1' component='span'>
                                 <PlayCircleFilledIcon /> {content.name}
                               </Typography>
                             </Button>

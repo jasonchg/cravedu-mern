@@ -60,11 +60,9 @@ const ManageCourseScreen = ({ history }) => {
                 <TableRow>
                   <TableCell>No</TableCell>
                   <TableCell>Name</TableCell>
-                  <TableCell align='center'>Price (MYR)</TableCell>
+                  <TableCell>Price (MYR)</TableCell>
                   <TableCell>Instructor</TableCell>
-                  <TableCell align='cneter' width={60}>
-                    Total Chapter Count (*)
-                  </TableCell>
+                  <TableCell width={60}>Total Chapters </TableCell>
                   <TableCell></TableCell>
                 </TableRow>
               </TableHead>
@@ -74,11 +72,13 @@ const ManageCourseScreen = ({ history }) => {
                     <TableCell>{index + 1}</TableCell>
                     <TableCell>
                       <b>{course.name}</b> <br />
-                      <Typography variant='caption'>({course._id})</Typography>
+                      <Typography variant='caption' component='span'>
+                        ({course._id})
+                      </Typography>
                     </TableCell>
-                    <TableCell align='center'>{course.price}</TableCell>
+                    <TableCell>{course.price}</TableCell>
                     <TableCell>{course.instructor}</TableCell>
-                    <TableCell align='cneter' width={60}>
+                    <TableCell width={60}>
                       {course.courseContents.length}
                     </TableCell>
                     <TableCell>

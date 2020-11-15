@@ -80,7 +80,12 @@ const CourseScreen = ({ match, history }) => {
     accordion: {
       background: '#f0f0f0',
     },
+    blurBackground: {
+      opacity: 0.7,
+      background: '#111',
+    },
   }))
+
   const classes = useStyles()
 
   const courseDetails = useSelector((state) => state.courseDetails)
@@ -101,30 +106,37 @@ const CourseScreen = ({ match, history }) => {
       currentCourse.some((curCourse) => {
         if (curCourse._id === courseHere._id) {
           return true
+        } else {
+          return null
         }
       })
     )
   }
 
   useEffect(() => {
-    if (bought) {
-      history.push(`/course/${courseId}/learn`)
-    } else {
-    }
-  }, [history, bought])
-
-  useEffect(() => {
-    dispatch(listCourseDetails(courseId))
-    if (userInfo) {
-      dispatch(getUserCourses())
-    }
-  }, [dispatch, courseId, userInfo])
-
-  useEffect(() => {
     if (userPaidCourses && course) {
       setBought(checkBought(userPaidCourses, course))
     }
   }, [userPaidCourses, course])
+
+  useEffect(() => {
+    const redirectToLearningScreen = () => {
+      alert(
+        'You have already bought this course. Redirect to the learning screen now.',
+        history.push(`/course/${courseId}/learn`)
+      )
+    }
+
+    dispatch(listCourseDetails(courseId))
+
+    if (userInfo) {
+      if (bought) {
+        redirectToLearningScreen()
+      } else {
+        dispatch(getUserCourses())
+      }
+    }
+  }, [history, bought, courseId, userInfo, dispatch])
 
   return (
     <>

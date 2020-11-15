@@ -16,6 +16,8 @@ import VideoLearningScreen from './screens/VideoLearningScreen'
 import ManageUsersScreen from './screens/ManageUsersScreen'
 import UserEditScreen from './screens/UserEditScreen'
 import ManageCoursesScreen from './screens/ManageCoursesScreen'
+import CourseEditScreen from './screens/CourseEditScreen'
+import BrowseScreen from './screens/BrowseScreen'
 
 function App() {
   return (
@@ -23,6 +25,46 @@ function App() {
       <Header />
       <main>
         <Router>
+          {/* Main Screen */}
+          <Container maxWidth='md'>
+            <Route path='/mycourses' component={MyCoursesScreen} />
+            <Route path='/register' component={RegisterScreen} />
+            <Route path='/login/:id' component={LoginScreen} exact />
+            <Route path='/login' component={LoginScreen} exact />
+            <Route path='/profile' component={UserProfileScreen} />
+            <Route path='/order/:id' component={ViewOrderScreen} />
+            <Route path='/payment' component={PaymentScreen} />
+            <Route path='/cart' component={CartScreen} exact />
+            <Route path='/cart/:id' component={CartScreen} exact />
+            <Route path='/course/:id' component={CourseScreen} exact />
+            <Route path='/course' component={BrowseScreen} exact />
+          </Container>
+
+          {/* For Admin */}
+          <Container maxWidth='md'>
+            <Route
+              path='/admin/courses/:id/edit'
+              component={CourseEditScreen}
+              exact
+            />
+            <Route
+              path='/admin/courses'
+              component={ManageCoursesScreen}
+              exact
+            />
+            <Route
+              path='/admin/users/:id/edit'
+              component={UserEditScreen}
+              exact
+            />
+            <Route path='/admin/users' component={ManageUsersScreen} exact />
+          </Container>
+
+          {/* Default */}
+          <Container maxWidth='md'>
+            <Route path='/' component={HomeScreen} exact />
+          </Container>
+
           {/* Video Learning */}
           <div className='video-learning'>
             <Route
@@ -36,41 +78,6 @@ function App() {
               exact
             />
           </div>
-
-          {/* Main Screen */}
-          <Container maxWidth='md'>
-            <Route path='/mycourses' component={MyCoursesScreen} />
-            <Route path='/register' component={RegisterScreen} />
-            <Route path='/login/:id' component={LoginScreen} exact />
-            <Route path='/login' component={LoginScreen} exact />
-            <Route path='/profile' component={UserProfileScreen} />
-            <Route path='/order/:id' component={ViewOrderScreen} />
-            <Route path='/payment' component={PaymentScreen} />
-            <Route path='/cart' component={CartScreen} exact />
-            <Route path='/cart/:id' component={CartScreen} exact />
-            <Route path='/course/:id' component={CourseScreen} exact />
-          </Container>
-
-          {/* For Admin */}
-          <Container maxWidth='md'>
-            <Route
-              path='/admin/courses'
-              component={ManageCoursesScreen}
-              exact
-            />
-
-            <Route
-              path='/admin/users/:id/edit'
-              component={UserEditScreen}
-              exact
-            />
-            <Route path='/admin/users' component={ManageUsersScreen} exact />
-          </Container>
-
-          {/* Default */}
-          <Container maxWidth='md'>
-            <Route path='/' component={HomeScreen} exact />
-          </Container>
         </Router>
       </main>
       <Footer />
