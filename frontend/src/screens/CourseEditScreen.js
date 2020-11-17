@@ -8,6 +8,7 @@ import {
   ListItemText,
   Divider,
   TextareaAutosize,
+  Paper,
 } from '@material-ui/core'
 import FormContainer from '../components/FormContainer'
 import { makeStyles } from '@material-ui/core/styles'
@@ -16,9 +17,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import SubdirectoryArrowRightIcon from '@material-ui/icons/SubdirectoryArrowRight'
+import { ADMIN_COURSE_DETAILS_RESET } from '../constants/adminConstants'
 
 const useStyles = makeStyles((theme) => ({
   root: {},
+  img: {
+    width: 120,
+  },
 }))
 
 const CourseEditScreen = ({ match, history }) => {
@@ -36,33 +41,33 @@ const CourseEditScreen = ({ match, history }) => {
   const [name, setName] = useState('')
   const [price, setPrice] = useState(0)
   const [description, setDescription] = useState('')
+  const [image, setImage] = useState('')
+  const [courseContent, setCourseContent] = useState([])
 
   // useEffect
   // check if user existed
   // check if course details exisited
-
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
       if (
         !courseDetails ||
         !courseDetails.name ||
-        !courseDetails.price ||
+        !courseDetails.image ||
         !courseDetails.description ||
-        courseDetails._id !== courseId
+        !courseDetails.courseContents
       ) {
-        setName('')
-        setPrice(0)
-        setDescription('')
         dispatch(getCourseById(courseId))
       } else {
         setName(courseDetails.name)
-        setPrice(Number(courseDetails.price))
+        setPrice(courseDetails.price)
         setDescription(courseDetails.description)
+        setImage(courseDetails.image)
+        setCourseContent(courseDetails.courseContents)
       }
     } else {
       history.push('/login')
     }
-  }, [dispatch, userInfo, history, courseId, courseDetails])
+  }, [userInfo, courseDetails, dispatch, courseId, history])
 
   return loading ? (
     <Loader />
@@ -77,11 +82,17 @@ const CourseEditScreen = ({ match, history }) => {
         </Button>
       </Grid>
       <h1>
-        <SubdirectoryArrowRightIcon /> {courseDetails && courseDetails.name}
+        <SubdirectoryArrowRightIcon /> {name}
       </h1>
       <Grid container spacing={3}>
         <Grid item xs={4}>
+          <img src={image} alt='' className={classes.img} />
+
           <form>
+            <FormContainer>
+              <input type='file' />
+            </FormContainer>
+
             <FormContainer>
               <TextField
                 required
@@ -131,6 +142,30 @@ const CourseEditScreen = ({ match, history }) => {
           </form>
         </Grid>
         <Grid item xs={8}>
+          <h2>Course Contents</h2>
+          <Paper>
+            <List>
+              {courseContent ? (
+                courseContent.length === 0 ? (
+                  <Message severity='info'>Nothing...</Message>
+                ) : (
+                  courseContent.map((course, index) => (
+                    <div key={course._id}>
+                      <ListItem>
+                        <ListItemText
+                          primary={`${index + 1}.  ${course.name}`}
+                        />
+                      </ListItem>
+                      <Divider />
+                    </div>
+                  ))
+                )
+              ) : (
+                <Message>Something went wrong</Message>
+              )}
+            </List>
+          </Paper>
+
           <h2>Reviews</h2>
           <List>
             {courseDetails.reviews ? (
@@ -154,25 +189,6 @@ const CourseEditScreen = ({ match, history }) => {
           <h2>Total Sales</h2>
           <Message severity='info'>No sales</Message>
 
-          <h2>Course Contents</h2>
-          <List>
-            {courseDetails.courseContents ? (
-              courseDetails.courseContents.length === 0 ? (
-                <Message severity='info'>Nothing...</Message>
-              ) : (
-                courseDetails.courseContents.map((course, index) => (
-                  <div key={course._id}>
-                    <ListItem>
-                      <ListItemText primary={`${index + 1}.  ${course.name}`} />
-                    </ListItem>
-                    <Divider />
-                  </div>
-                ))
-              )
-            ) : (
-              <Message>Something went wrong</Message>
-            )}
-          </List>
           <Divider />
         </Grid>
       </Grid>

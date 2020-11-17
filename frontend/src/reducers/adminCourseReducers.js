@@ -27,7 +27,7 @@ const adminCourseListReducer = (state = { courses: [] }, action) => {
 const adminCourseDetailsReducer = (state = { courseDetails: {} }, action) => {
   switch (action.type) {
     case ADMIN_COURSE_DETAILS_REQUEST:
-      return { loading: true, courseDetails: {} }
+      return { loading: true }
     case ADMIN_COURSE_DETAILS_SUCCESS:
       return { loading: false, courseDetails: action.payload }
     case ADMIN_COURSE_DETAILS_FAIL:

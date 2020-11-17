@@ -49,8 +49,9 @@ const getCourseById = (id) => async (dispatch, getState) => {
     }
 
     const { data } = await axios.get(`/api/admin/courses/${id}`, config)
-
-    dispatch({ type: ADMIN_COURSE_DETAILS_SUCCESS, payload: data })
+    if (data) {
+      dispatch({ type: ADMIN_COURSE_DETAILS_SUCCESS, payload: data })
+    }
   } catch (e) {
     dispatch({
       type: ADMIN_COURSE_DETAILS_FAIL,
