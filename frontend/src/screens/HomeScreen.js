@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import Category from '../components/Category'
+import Carousels from '../components/Carousels'
 
 const HomeScreen = ({ history }) => {
   const dispatch = useDispatch()
@@ -92,6 +93,10 @@ const HomeScreen = ({ history }) => {
         <Loader />
       ) : (
         <Grid container style={{ marginBottom: 30 }}>
+          <Grid item xs={12}>
+            <Carousels courses={courses} />
+          </Grid>
+
           <Grid item xs={12}>
             <div style={{ display: 'flex' }}>
               <div style={{ flex: 1 }}>
