@@ -33,7 +33,7 @@ const MyCoursesScreen = ({ history }) => {
         userPaidCourses.length === 0 ? (
           <Message severity='info'>
             No course in your list.
-            <Link href='/'> Start Study?</Link>
+            <Link href='/course'> Start Study?</Link>
           </Message>
         ) : error ? (
           <Message>{error}</Message>
@@ -42,8 +42,12 @@ const MyCoursesScreen = ({ history }) => {
         ) : (
           <Grid container wrap='nowrap'>
             {userPaidCourses.map((courseItem, index) => (
-              <Grid item key={index} xs={12} sm={4} md={3}>
-                <Course course={courseItem} />
+              <Grid item xs={12} sm={4} md={3}>
+                <Link key={index} href={`/course/${courseItem._id}/learn`}>
+                  <div style={{ pointerEvents: 'none' }}>
+                    <Course course={courseItem} />
+                  </div>
+                </Link>
               </Grid>
             ))}
           </Grid>
