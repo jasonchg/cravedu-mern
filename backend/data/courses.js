@@ -8,6 +8,7 @@ const products = [
     price: 49.99,
     rating: 5,
     numReviews: 4,
+    isPublished: true,
     courseContents: [
       {
         name: 'Set Up Environment',
@@ -30,6 +31,7 @@ const products = [
     price: 20.99,
     rating: 3,
     numReviews: 2,
+    isPublished: true,
     courseContents: [
       {
         name: 'Set Up Environment',
@@ -57,6 +59,7 @@ const products = [
     price: 22.99,
     rating: 1,
     numReviews: 4,
+    isPublished: true,
     courseContents: [
       {
         name: 'Set Up Visual Code',
@@ -79,6 +82,7 @@ const products = [
     price: 10.99,
     rating: 4.5,
     numReviews: 4,
+    isPublished: false,
     courseContents: [
       {
         name: 'Set Up Python Environment',
@@ -101,6 +105,7 @@ const products = [
     price: 10.99,
     rating: 4.5,
     numReviews: 4,
+    isPublished: true,
     courseContents: [
       {
         name: 'Start Build!',

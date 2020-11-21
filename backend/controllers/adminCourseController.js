@@ -31,4 +31,39 @@ const getCourseById = asyncHandler(async (req, res) => {
   }
 })
 
-export { getCourses, getCourseById }
+// @desc    Update course details
+// @route   PUT /api/admin/course/:id
+// @access  Private Admin
+
+const updateCourse = asyncHandler(async (req, res) => {
+  const course = await Course.findById(req.params.id)
+
+  if (course) {
+    course.name = req.body.name || course.name
+    course.image = req.body.image || course.image
+    course.name = req.body.name || course.name
+    course.description = req.body.description || course.description
+    course.instructor = req.body.instructor || course.instructor
+    course.isPublished = course.isPublished
+
+    try {
+      const courseUpdated = await course.save()
+      res.json({
+        _id: courseUpdated._id,
+        name: courseUpdated.name,
+        image: courseUpdated.image,
+        description: courseUpdated.description,
+        instructor: courseUpdated.instructor,
+        isPublished: courseUpdated.isPublished,
+      })
+    } catch (e) {
+      res.status(401)
+      throw new Error('Something went wrong.')
+    }
+  } else {
+    res.status(404)
+    throw new Error('Course not found')
+  }
+})
+
+export { getCourses, getCourseById, updateCourse }

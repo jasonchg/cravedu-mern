@@ -56,6 +56,10 @@ const courseSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    isPublished: {
+      type: String,
+      required: true,
+    },
     rating: {
       type: Number,
       required: true,

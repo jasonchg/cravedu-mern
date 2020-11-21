@@ -8,7 +8,7 @@ import Course from '../models/courseModel.js'
 const getCourses = asyncHandler(async (req, res) => {
   // do not display the item that user had bought
 
-  const courses = await Course.find({})
+  const courses = await Course.find({ isPublished: true })
 
   if (courses) {
     res.json(courses)
