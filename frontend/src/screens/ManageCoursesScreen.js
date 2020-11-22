@@ -60,7 +60,7 @@ const ManageCourseScreen = ({ history }) => {
                 <TableRow>
                   <TableCell>No</TableCell>
                   <TableCell>Name</TableCell>
-                  <TableCell>Publish</TableCell>
+                  <TableCell>Published</TableCell>
                   <TableCell>Price (MYR)</TableCell>
                   <TableCell>Instructor</TableCell>
                   <TableCell width={60}>Total Chapters </TableCell>
@@ -77,7 +77,9 @@ const ManageCourseScreen = ({ history }) => {
                         ({course._id})
                       </Typography>
                     </TableCell>
-                    <TableCell>{course.isPublished}</TableCell>
+                    <TableCell>
+                      {course.isPublished ? <span>Yes</span> : <span>No</span>}
+                    </TableCell>
                     <TableCell>{course.price}</TableCell>
                     <TableCell>{course.instructor}</TableCell>
                     <TableCell width={60}>

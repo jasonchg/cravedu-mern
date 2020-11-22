@@ -1,4 +1,5 @@
 import express from 'express'
+import path from 'path'
 import courses from './data/courses.js'
 import connectDB from './config/db.js'
 import morgan from 'morgan'
@@ -12,6 +13,7 @@ import orderRoutes from './routes/orderRoutes.js'
 import myCourseRoutes from './routes/myCourseRoutes.js'
 import adminRoutes from './routes/adminRoutes.js'
 import adminCourseRoutes from './routes/adminCourseRoutes.js'
+import uploadRoutes from './routes/uploadRoutes.js'
 
 // Config & Initialization
 dotenv.config()
@@ -31,6 +33,10 @@ app.use('/api/mycourses', myCourseRoutes)
 app.use('/api/config/paypal', (req, res) => {
   res.send(process.env.PAYPAL_CLIENT_ID)
 })
+app.use('/api/upload', uploadRoutes)
+
+const __dirname = path.resolve()
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 
 // Admin Routes
 app.use('/api/admin/users', adminRoutes)

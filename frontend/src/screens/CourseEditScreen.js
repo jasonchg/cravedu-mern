@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 import {
   Grid,
   TextField,
@@ -9,6 +10,8 @@ import {
   Divider,
   TextareaAutosize,
   Paper,
+  Checkbox,
+  FormControlLabel,
 } from '@material-ui/core'
 import FormContainer from '../components/FormContainer'
 import { makeStyles } from '@material-ui/core/styles'
@@ -21,7 +24,6 @@ import {
   ADMIN_COURSE_DETAILS_RESET,
   ADMIN_COURSE_UPDATE_RESET,
 } from '../constants/adminConstants'
-import { adminCourseUpdateReducer } from '../reducers/adminCourseReducers'
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -55,13 +57,61 @@ const CourseEditScreen = ({ match, history }) => {
     loading: updateLoading,
     success: updateSuccess,
     error: updateError,
-  } = adminCourseUpdateReducer
+  } = adminCourseUpdate
 
   const [name, setName] = useState('')
   const [price, setPrice] = useState(0)
   const [description, setDescription] = useState('')
   const [image, setImage] = useState('')
   const [courseContent, setCourseContent] = useState([])
+  const [isPublished, setIsPublished] = useState(false)
+  const [uploading, setUploading] = useState(false)
+
+  const uploadFileHandler = async (e) => {
+    const file = e.target.files[0]
+    const formData = new FormData()
+    formData.append('image', file)
+    setUploading(true)
+
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+
+      const { data } = await axios.post(
+        '/api/upload/course-image',
+        formData,
+        config
+      )
+
+      setImage(data)
+      setUploading(false)
+    } catch (e) {
+      console.error(error)
+      setUploading(false)
+    }
+  }
+
+  const submitHandler = (e) => {
+    e.preventDefault()
+    dispatch(
+      updateCourse({
+        _id: courseId,
+        name,
+        price,
+        image,
+        description,
+        isPublished,
+      })
+    )
+  }
+
+  const handlePublishedCheck = (e, isChecked) => {
+    setIsPublished(isChecked)
+  }
 
   // useEffect
   // check if user existed
@@ -84,6 +134,7 @@ const CourseEditScreen = ({ match, history }) => {
           setDescription('')
           setImage('')
           setCourseContent([])
+          setIsPublished(false)
           dispatch({ type: ADMIN_COURSE_DETAILS_RESET })
           dispatch(getCourseById(courseId))
         } else {
@@ -92,12 +143,13 @@ const CourseEditScreen = ({ match, history }) => {
           setDescription(courseDetails.description)
           setImage(courseDetails.image)
           setCourseContent(courseDetails.courseContents)
+          setIsPublished(courseDetails.isPublished)
         }
       } else {
         history.push('/login')
       }
     }
-  }, [userInfo, courseDetails, dispatch, courseId, history])
+  }, [userInfo, courseDetails, dispatch, courseId, history, updateSuccess])
 
   return loading ? (
     <Loader />
@@ -119,15 +171,22 @@ const CourseEditScreen = ({ match, history }) => {
       <Grid container spacing={3}>
         <Grid item xs={5}>
           <Paper className={classes.leftPanel}>
-            <form>
-              <img src={image} alt='' className={classes.img} />
+            <img src={image} alt='' className={classes.img} />
+            <p>{image.substr(8, 30)}</p>
+            <form
+              onSubmit={submitHandler}
+              method='post'
+              encType='multipart/form-data'
+            >
               <FormContainer>
                 <input
+                  id='image'
                   type='file'
-                  name='courseImg'
+                  name='image'
                   placeholder='Enter Image Url'
-                  onChange={(e) => setImage(e.target.value)}
+                  onChange={uploadFileHandler}
                 />
+                {uploading && <Loader left />}
               </FormContainer>
 
               <FormContainer>
@@ -172,6 +231,21 @@ const CourseEditScreen = ({ match, history }) => {
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </FormContainer>
+
+              <FormContainer>
+                <FormControlLabel
+                  label='Published'
+                  control={
+                    <Checkbox
+                      checked={isPublished}
+                      onChange={handlePublishedCheck}
+                      name='isPublished'
+                      color='primary'
+                    />
+                  }
+                />
+              </FormContainer>
+
               <Button
                 type='submit'
                 variant='contained'

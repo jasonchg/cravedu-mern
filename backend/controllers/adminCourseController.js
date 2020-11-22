@@ -41,10 +41,10 @@ const updateCourse = asyncHandler(async (req, res) => {
   if (course) {
     course.name = req.body.name || course.name
     course.image = req.body.image || course.image
-    course.name = req.body.name || course.name
+    course.price = req.body.price || course.price
     course.description = req.body.description || course.description
     course.instructor = req.body.instructor || course.instructor
-    course.isPublished = course.isPublished
+    course.isPublished = req.body.isPublished
 
     try {
       const courseUpdated = await course.save()
@@ -52,6 +52,7 @@ const updateCourse = asyncHandler(async (req, res) => {
         _id: courseUpdated._id,
         name: courseUpdated.name,
         image: courseUpdated.image,
+        price: courseUpdated.price,
         description: courseUpdated.description,
         instructor: courseUpdated.instructor,
         isPublished: courseUpdated.isPublished,

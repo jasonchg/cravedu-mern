@@ -2,7 +2,7 @@
   "name": "cravedu-mern",
   "version": "1.0.0",
   "description": "Developed by Jason Chiang. ID: 2018331726. Description: Icats business ecosystem, education platform, a courseway website",
-  "main": "index.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
     "frontend": "npm start --prefix frontend",
@@ -21,7 +21,8 @@
     "express-async-handler": "^1.1.4",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.10",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "multer": "^1.4.2"
   },
   "devDependencies": {
     "concurrently": "^5.3.0",
