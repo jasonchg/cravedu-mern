@@ -118,6 +118,7 @@ const CourseEditScreen = ({ match, history }) => {
   // check if course details exisited
   useEffect(() => {
     if (updateSuccess) {
+      dispatch({ type: ADMIN_COURSE_DETAILS_RESET })
       dispatch({ type: ADMIN_COURSE_UPDATE_RESET })
       history.push('/admin/courses')
     } else {
@@ -127,7 +128,8 @@ const CourseEditScreen = ({ match, history }) => {
           !courseDetails.name ||
           !courseDetails.image ||
           !courseDetails.description ||
-          !courseDetails.courseContents
+          !courseDetails.courseContents ||
+          courseDetails._id !== courseId
         ) {
           setName('')
           setPrice(0)
@@ -135,7 +137,6 @@ const CourseEditScreen = ({ match, history }) => {
           setImage('')
           setCourseContent([])
           setIsPublished(false)
-          dispatch({ type: ADMIN_COURSE_DETAILS_RESET })
           dispatch(getCourseById(courseId))
         } else {
           setName(courseDetails.name)
