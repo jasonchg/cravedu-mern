@@ -12,12 +12,16 @@ import {
 } from '@material-ui/core'
 import FormContainer from '../components/FormContainer'
 import { makeStyles } from '@material-ui/core/styles'
-import { getCourseById } from '../actions/adminCourseActions'
+import { getCourseById, updateCourse } from '../actions/adminCourseActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import SubdirectoryArrowRightIcon from '@material-ui/icons/SubdirectoryArrowRight'
-import { ADMIN_COURSE_DETAILS_RESET } from '../constants/adminConstants'
+import {
+  ADMIN_COURSE_DETAILS_RESET,
+  ADMIN_COURSE_UPDATE_RESET,
+} from '../constants/adminConstants'
+import { adminCourseUpdateReducer } from '../reducers/adminCourseReducers'
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -46,6 +50,13 @@ const CourseEditScreen = ({ match, history }) => {
   const adminCourseDetails = useSelector((state) => state.adminCourseDetails)
   const { courseDetails, loading, error } = adminCourseDetails
 
+  const adminCourseUpdate = useSelector((state) => state.adminCourseUpdate)
+  const {
+    loading: updateLoading,
+    success: updateSuccess,
+    error: updateError,
+  } = adminCourseUpdateReducer
+
   const [name, setName] = useState('')
   const [price, setPrice] = useState(0)
   const [description, setDescription] = useState('')
@@ -56,30 +67,35 @@ const CourseEditScreen = ({ match, history }) => {
   // check if user existed
   // check if course details exisited
   useEffect(() => {
-    if (userInfo && userInfo.isAdmin) {
-      if (
-        !courseDetails ||
-        !courseDetails.name ||
-        !courseDetails.image ||
-        !courseDetails.description ||
-        !courseDetails.courseContents
-      ) {
-        setName('')
-        setPrice(0)
-        setDescription('')
-        setImage('')
-        setCourseContent([])
-        dispatch({ type: ADMIN_COURSE_DETAILS_RESET })
-        dispatch(getCourseById(courseId))
-      } else {
-        setName(courseDetails.name)
-        setPrice(courseDetails.price)
-        setDescription(courseDetails.description)
-        setImage(courseDetails.image)
-        setCourseContent(courseDetails.courseContents)
-      }
+    if (updateSuccess) {
+      dispatch({ type: ADMIN_COURSE_UPDATE_RESET })
+      history.push('/admin/courses')
     } else {
-      history.push('/login')
+      if (userInfo && userInfo.isAdmin) {
+        if (
+          !courseDetails ||
+          !courseDetails.name ||
+          !courseDetails.image ||
+          !courseDetails.description ||
+          !courseDetails.courseContents
+        ) {
+          setName('')
+          setPrice(0)
+          setDescription('')
+          setImage('')
+          setCourseContent([])
+          dispatch({ type: ADMIN_COURSE_DETAILS_RESET })
+          dispatch(getCourseById(courseId))
+        } else {
+          setName(courseDetails.name)
+          setPrice(courseDetails.price)
+          setDescription(courseDetails.description)
+          setImage(courseDetails.image)
+          setCourseContent(courseDetails.courseContents)
+        }
+      } else {
+        history.push('/login')
+      }
     }
   }, [userInfo, courseDetails, dispatch, courseId, history])
 
@@ -98,13 +114,20 @@ const CourseEditScreen = ({ match, history }) => {
       <h1>
         <SubdirectoryArrowRightIcon /> {name}
       </h1>
+      {updateLoading && <Loader />}
+      {updateError && <Message>{updateError}</Message>}
       <Grid container spacing={3}>
         <Grid item xs={5}>
           <Paper className={classes.leftPanel}>
             <form>
               <img src={image} alt='' className={classes.img} />
               <FormContainer>
-                <input type='file' />
+                <input
+                  type='file'
+                  name='courseImg'
+                  placeholder='Enter Image Url'
+                  onChange={(e) => setImage(e.target.value)}
+                />
               </FormContainer>
 
               <FormContainer>
@@ -149,7 +172,12 @@ const CourseEditScreen = ({ match, history }) => {
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </FormContainer>
-              <Button variant='contained' color='primary' fullWidth>
+              <Button
+                type='submit'
+                variant='contained'
+                color='primary'
+                fullWidth
+              >
                 Update
               </Button>
             </form>

@@ -7,6 +7,10 @@ import {
   ADMIN_COURSE_LIST_REQUEST,
   ADMIN_COURSE_LIST_RESET,
   ADMIN_COURSE_LIST_SUCCESS,
+  ADMIN_COURSE_UPDATE_FAIL,
+  ADMIN_COURSE_UPDATE_REQUEST,
+  ADMIN_COURSE_UPDATE_RESET,
+  ADMIN_COURSE_UPDATE_SUCCESS,
 } from '../constants/adminConstants'
 
 const adminCourseListReducer = (state = { courses: [] }, action) => {
@@ -39,4 +43,23 @@ const adminCourseDetailsReducer = (state = { courseDetails: {} }, action) => {
   }
 }
 
-export { adminCourseListReducer, adminCourseDetailsReducer }
+const adminCourseUpdateReducer = (state = { courseDetails: {} }, action) => {
+  switch (action.type) {
+    case ADMIN_COURSE_UPDATE_REQUEST:
+      return { loading: true }
+    case ADMIN_COURSE_UPDATE_SUCCESS:
+      return { loading: false, success: true }
+    case ADMIN_COURSE_UPDATE_FAIL:
+      return { loading: false, error: action.payload }
+    case ADMIN_COURSE_UPDATE_RESET:
+      return { courseDetails: {} }
+    default:
+      return state
+  }
+}
+
+export {
+  adminCourseListReducer,
+  adminCourseDetailsReducer,
+  adminCourseUpdateReducer,
+}

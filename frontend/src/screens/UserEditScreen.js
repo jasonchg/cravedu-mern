@@ -128,7 +128,7 @@ const UserEditScreen = ({ history, match }) => {
         <SubdirectoryArrowRightIcon /> {userDetails && userDetails.name}
       </h1>
 
-      {updateLoading && <Loader />}
+      {updateLoading && <Loader left />}
       {updateError && <Message>{updateError}</Message>}
 
       {loading ? (

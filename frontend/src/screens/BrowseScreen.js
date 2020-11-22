@@ -79,8 +79,8 @@ const BrowseScreen = ({ history }) => {
         <Grid item xs={3}>
           {category &&
             category.map((item, index) => (
-              <span onClick={() => setCatHandler(item.name)}>
-                <Category key={index} category={item} color='primary' />
+              <span key={index} onClick={() => setCatHandler(item.name)}>
+                <Category category={item} color='primary' />
               </span>
             ))}
         </Grid>
