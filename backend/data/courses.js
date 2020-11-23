@@ -1,13 +1,14 @@
 const products = [
   {
     name: 'Introduction to Javascript',
-    image: '/images/javascript.jpg',
+    image: '/uploads/introductiontojavascript.jpg',
     description: 'Javascript is the most high demand in the industry nowaday.',
     instructor: 'John Doe',
     category: 'Programming',
     price: 49.99,
     rating: 5,
     numReviews: 4,
+    totalSold: 1000,
     isPublished: true,
     courseContents: [
       {
@@ -24,12 +25,13 @@ const products = [
   },
   {
     name: 'Introduction to C++',
-    image: '/images/cplusplus.jpg',
+    image: '/uploads/introductiontoc++.jpg',
     description: 'C++ is the most high demand in the industry nowaday.',
     instructor: 'John Doe',
     category: 'Programming',
     price: 20.99,
     rating: 3,
+    totalSold: 201,
     numReviews: 2,
     isPublished: true,
     courseContents: [
@@ -52,12 +54,13 @@ const products = [
   },
   {
     name: 'Introduction to Typescript',
-    image: '/images/typescript.jpg',
+    image: '/uploads/introductiontotypescript.jpg',
     description: 'Typescript is the most high demand in the industry nowaday.',
     instructor: 'John Doe',
     category: 'Programming',
     price: 22.99,
     rating: 1,
+    totalSold: 10,
     numReviews: 4,
     isPublished: true,
     courseContents: [
@@ -75,12 +78,13 @@ const products = [
   },
   {
     name: 'Introduction to Python',
-    image: '/images/python.jpg',
+    image: '/uploads/introductiontopython.jpg',
     description: 'Python is the most high demand in the industry nowaday.',
     instructor: 'John Doe',
     category: 'Programming',
     price: 10.99,
     rating: 4.5,
+    totalSold: 0,
     numReviews: 4,
     isPublished: false,
     courseContents: [
@@ -97,14 +101,15 @@ const products = [
     ],
   },
   {
-    name: 'Learn HTML CSS to build a webpage',
-    image: '/images/html_css.jpg',
+    name: 'Learn HTML CSS To Build A Webpage',
+    image: '/uploads/learnhtmlcsstobuildawebpage.jpg',
     description: 'HTML CSS is the most high demand in the industry nowaday.',
     instructor: 'Brad',
     category: 'Programming',
     price: 10.99,
     rating: 4.5,
     numReviews: 4,
+    totalSold: 20100,
     isPublished: true,
     courseContents: [
       {

@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler'
 import Order from '../models/orderModel.js'
 import User from '../models/userModel.js'
+import Course from '../models/courseModel.js'
 
 // @desc    Add New Order
 // @route   POST /api/orders
@@ -8,44 +9,64 @@ import User from '../models/userModel.js'
 
 const addOrderItems = asyncHandler(async (req, res) => {
   const { orderItems, paymentMethod, itemPrice, totalPrice, isPaid } = req.body
-
   const userExisted = await User.findById(req.user.id)
 
-  if (!orderItems && orderItems.length === 0) {
-    res.status(400)
-    throw new Error('No order item!')
-  } else {
-    const order = new Order({
-      orderItems,
-      user: req.user._id,
-      paymentMethod,
-      itemPrice,
-      totalPrice,
-      isPaid,
-    })
+  try {
+    if (!orderItems && orderItems.length === 0) {
+      res.status(400)
+      throw new Error('No order item!')
+    } else {
+      const order = new Order({
+        orderItems,
+        user: req.user._id,
+        paymentMethod,
+        itemPrice,
+        totalPrice,
+        isPaid,
+      })
 
-    const createdOrder = await order.save()
-    const orderId = createdOrder._id
+      const createdOrder = await order.save()
+      const orderId = createdOrder._id
 
-    if (userExisted) {
-      var newMyCourses = userExisted.myCourses
+      if (userExisted) {
+        var newMyCourses = userExisted.myCourses
 
-      for (var key in orderItems) {
-        newMyCourses = [
-          ...newMyCourses,
-          {
-            _id: orderItems[key].course,
-            image: orderItems[key].image,
-            name: orderItems[key].name,
-            orderId,
-          },
-        ]
+        for (var key in orderItems) {
+          newMyCourses = [
+            ...newMyCourses,
+            {
+              _id: orderItems[key].course,
+              image: orderItems[key].image,
+              name: orderItems[key].name,
+              orderId,
+            },
+          ]
+
+          Course.findOneAndUpdate(
+            {
+              _id: orderItems[key].course,
+            },
+            {
+              $inc: {
+                totalSold: 1,
+              },
+            },
+            (e) => {
+              console.error(e)
+            }
+          )
+        }
+
+        userExisted.myCourses = newMyCourses
+
+        await userExisted.save()
+
+        res.status(201).json({ createdOrder })
       }
-      userExisted.myCourses = newMyCourses
     }
-
-    const updatedUserProfile = await userExisted.save()
-    res.status(201).json({ createdOrder, updatedUserProfile })
+  } catch (e) {
+    res.status(500)
+    throw new Error(e)
   }
 })
 

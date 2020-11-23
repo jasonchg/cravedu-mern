@@ -12,6 +12,7 @@ import {
   Paper,
   Checkbox,
   FormControlLabel,
+  Typography,
 } from '@material-ui/core'
 import FormContainer from '../components/FormContainer'
 import { makeStyles } from '@material-ui/core/styles'
@@ -63,7 +64,6 @@ const CourseEditScreen = ({ match, history }) => {
   const [price, setPrice] = useState(0)
   const [description, setDescription] = useState('')
   const [image, setImage] = useState('')
-  const [courseContent, setCourseContent] = useState([])
   const [isPublished, setIsPublished] = useState(false)
   const [uploading, setUploading] = useState(false)
 
@@ -132,14 +132,12 @@ const CourseEditScreen = ({ match, history }) => {
           !courseDetails.name ||
           !courseDetails.image ||
           !courseDetails.description ||
-          !courseDetails.courseContents ||
           courseDetails._id !== courseId
         ) {
           setName('')
           setPrice(0)
           setDescription('')
           setImage('')
-          setCourseContent([])
           setIsPublished(false)
           dispatch(getCourseById(courseId))
         } else {
@@ -147,7 +145,6 @@ const CourseEditScreen = ({ match, history }) => {
           setPrice(courseDetails.price)
           setDescription(courseDetails.description)
           setImage(courseDetails.image)
-          setCourseContent(courseDetails.courseContents)
           setIsPublished(courseDetails.isPublished)
         }
       } else {
@@ -169,7 +166,7 @@ const CourseEditScreen = ({ match, history }) => {
         </Button>
       </Grid>
       <h1>
-        <SubdirectoryArrowRightIcon /> {name}
+        <SubdirectoryArrowRightIcon /> {courseDetails.name}
       </h1>
       {updateLoading && <Loader />}
       {updateError && <Message>{updateError}</Message>}
@@ -265,7 +262,15 @@ const CourseEditScreen = ({ match, history }) => {
 
           <Divider />
           <h2>Total Sales</h2>
-          <Message severity='info'>No sales</Message>
+          <Paper>
+            {courseDetails.totalSold ? (
+              <Typography variant='h3' component='h3' style={{ padding: 10 }}>
+                {courseDetails.totalSold}
+              </Typography>
+            ) : (
+              <Message severity='info'>No sales</Message>
+            )}
+          </Paper>
 
           <Divider />
         </Grid>
@@ -273,11 +278,11 @@ const CourseEditScreen = ({ match, history }) => {
           <h2>Course Contents</h2>
           <Paper>
             <List>
-              {courseContent ? (
-                courseContent.length === 0 ? (
+              {courseDetails.courseContents ? (
+                courseDetails.courseContents.length === 0 ? (
                   <Message severity='info'>Nothing...</Message>
                 ) : (
-                  courseContent.map((course, index) => (
+                  courseDetails.courseContents.map((course, index) => (
                     <div key={course._id}>
                       <ListItem>
                         <ListItemText
