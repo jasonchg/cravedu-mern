@@ -4,13 +4,10 @@ import { protectedRoute } from '../middlewares/authMiddlewares.js'
 
 const router = express.Router()
 
-router.route('/course-image').post(
-  protectedRoute,
-
-  uploadCourseImage.single('image'),
-  (req, res) => {
-    res.send(`/${req.file.path}`)
-  }
-)
+router
+  .route('/course-image')
+  .post(protectedRoute, uploadCourseImage.any(), (req, res) => {
+    res.send('/' + req.files[0].path.replace('\\', '/'))
+  })
 
 export default router

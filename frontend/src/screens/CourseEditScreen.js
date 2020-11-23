@@ -67,10 +67,14 @@ const CourseEditScreen = ({ match, history }) => {
   const [isPublished, setIsPublished] = useState(false)
   const [uploading, setUploading] = useState(false)
 
+  const myTrim = (name) => {
+    return String(name.replace(/ /g, '').toLowerCase())
+  }
+
   const uploadFileHandler = async (e) => {
     const file = e.target.files[0]
     const formData = new FormData()
-    formData.append('image', file)
+    formData.append(myTrim(name), file)
     setUploading(true)
 
     try {
@@ -87,7 +91,7 @@ const CourseEditScreen = ({ match, history }) => {
         config
       )
 
-      setImage(data)
+      setImage(myTrim(data))
       setUploading(false)
     } catch (e) {
       console.error(error)
@@ -173,7 +177,9 @@ const CourseEditScreen = ({ match, history }) => {
         <Grid item xs={5}>
           <Paper className={classes.leftPanel}>
             <img src={image} alt='' className={classes.img} />
-            <p>{image.substr(8, 30)}</p>
+            <p style={{ background: '#eee', padding: 7 }}>
+              {image.substr(8, 40)}
+            </p>
             <form
               onSubmit={submitHandler}
               method='post'
@@ -181,9 +187,8 @@ const CourseEditScreen = ({ match, history }) => {
             >
               <FormContainer>
                 <input
-                  id='image'
                   type='file'
-                  name='image'
+                  name={myTrim(name)}
                   placeholder='Enter Image Url'
                   onChange={uploadFileHandler}
                 />
@@ -257,25 +262,7 @@ const CourseEditScreen = ({ match, history }) => {
               </Button>
             </form>
           </Paper>
-          <h2>Reviews</h2>
-          <List>
-            {courseDetails.reviews ? (
-              courseDetails.reviews.length === 0 ? (
-                <Message severity='info'>No Review</Message>
-              ) : (
-                courseDetails.reviews.map((review, index) => (
-                  <div key={review._id}>
-                    <ListItem>
-                      <ListItemText primary={`${index + 1}.`} />
-                    </ListItem>
-                    <Divider />
-                  </div>
-                ))
-              )
-            ) : (
-              <Message>Something went wrong</Message>
-            )}
-          </List>
+
           <Divider />
           <h2>Total Sales</h2>
           <Message severity='info'>No sales</Message>
