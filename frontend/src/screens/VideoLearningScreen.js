@@ -93,6 +93,10 @@ const useStyles = makeStyles((theme) => ({
     minHeight: 443,
   },
   questionBlock: {},
+  titleHead: {
+    marginBottom: 10,
+    padding: 7,
+  },
 }))
 
 const VideoLearningScreen = ({ match, history, location }) => {
@@ -102,6 +106,7 @@ const VideoLearningScreen = ({ match, history, location }) => {
   const classes = useStyles()
 
   const [selectedVideo, setSelectedVideo] = useState('')
+  const [selectedVideoName, setSelectedVideoName] = useState('')
 
   const courseDetails = useSelector((state) => state.courseDetails)
   const { loading, error, course, success: courseSuccess } = courseDetails
@@ -142,6 +147,7 @@ const VideoLearningScreen = ({ match, history, location }) => {
         history.push(
           `/course/${courseId}/learn?chapter=${course.courseContents[0]._id}`
         )
+        setSelectedVideoName(course.courseContents[0].name)
         setSelectedVideo(
           getVideoPath(course.courseContents, course.courseContents[0]._id)
         )
@@ -153,7 +159,8 @@ const VideoLearningScreen = ({ match, history, location }) => {
   }, [userInfo, history, dispatch, courseId, courseSuccess, course])
 
   // 2 func : set video to the video player
-  const selectTopicHandler = (chapterId) => {
+  const selectTopicHandler = (chapterId, name) => {
+    setSelectedVideoName(name)
     setSelectedVideo(getVideoPath(course.courseContents, chapterId))
     history.push(`/course/${courseId}/learn?chapter=${chapterId}`)
   }
@@ -166,12 +173,14 @@ const VideoLearningScreen = ({ match, history, location }) => {
         <Message>{error}</Message>
       ) : (
         <Container className={classes.root}>
-          <Typography variant='h4' component='p'>
-            {course.name}
-          </Typography>
-          <Typography variant='subtitle1' component='p'>
-            {`Created by ${course.instructor}`}
-          </Typography>
+          <span className={classes.titleHead}>
+            <Typography variant='h3' component='p'>
+              {selectedVideoName}
+            </Typography>
+            <Typography variant='subtitle1' component='p'>
+              From {course.name}
+            </Typography>
+          </span>
 
           <Grid container spacing={0}>
             <Grid item xs={9}>
@@ -334,7 +343,9 @@ const VideoLearningScreen = ({ match, history, location }) => {
                             }}
                           >
                             <Button
-                              onClick={() => selectTopicHandler(content._id)}
+                              onClick={() =>
+                                selectTopicHandler(content._id, content.name)
+                              }
                             >
                               <Typography variant='body1' component='span'>
                                 <PlayCircleFilledIcon /> {content.name}
