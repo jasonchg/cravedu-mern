@@ -8,6 +8,7 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import Category from '../components/Category'
 import Carousels from '../components/Carousels'
+import { default as CourseScroll } from 'react-elastic-carousel'
 
 const HomeScreen = ({ history }) => {
   const dispatch = useDispatch()
@@ -78,11 +79,13 @@ const HomeScreen = ({ history }) => {
               <h2> Let's start learning, {userInfo.name}</h2>
             </Grid>
 
-            {userPaidCourses.map((currentCourse, index) => (
-              <Grid item key={currentCourse._id} xs={6}>
-                <Course course={currentCourse} learning />
-              </Grid>
-            ))}
+            <CourseScroll itemsToShow={2} pagination={false}>
+              {userPaidCourses.map((currentCourse, index) => (
+                <Grid item key={currentCourse._id}>
+                  <Course course={currentCourse} learning />
+                </Grid>
+              ))}
+            </CourseScroll>
           </>
         ) : null}
       </Grid>
@@ -94,6 +97,7 @@ const HomeScreen = ({ history }) => {
       ) : (
         <Grid container style={{ marginBottom: 30 }}>
           <Grid item xs={12}>
+            <h2>Trending</h2>
             <Carousels courses={courses} />
           </Grid>
 
@@ -113,11 +117,14 @@ const HomeScreen = ({ history }) => {
               </div>
             </div>
           </Grid>
-          {courses.map((course) => (
-            <Grid item key={course._id} xs={12} sm={4} md={3}>
-              <Course course={course} />
-            </Grid>
-          ))}
+
+          <Grid item xs={12}>
+            <CourseScroll itemsToShow={3} pagination>
+              {courses.map((course, i) => (
+                <Course key={i} course={course} />
+              ))}
+            </CourseScroll>
+          </Grid>
         </Grid>
       )}
     </Container>

@@ -8,18 +8,30 @@ const useStyles = makeStyles({
     marginBottom: '20px',
   },
   slide: {
-    textAlign: 'center',
-    minHeight: '300px',
-    padding: '20px',
     cursor: 'pointer',
+    borderRadius: 20,
   },
   slideBody: {
     height: '100%',
     width: '100%',
+    display: 'flex',
   },
   slideImg: {
-    width: '300px',
-    borderRadius: '7px',
+    maxWidth: '330px',
+    marginRight: 10,
+    borderTopLeftRadius: 20,
+    borderBottomLeftRadius: 20,
+  },
+  slideTextContainer: {
+    margin: 20,
+    padding: 20,
+    background: '#eee',
+    borderRadius: 20,
+    width: '100%',
+  },
+  slideText: {
+    fontSize: 45,
+    paddingRight: 20,
   },
 })
 
@@ -34,8 +46,11 @@ const Carousels = ({ autoPlay = true, indicators = true, courses }) => {
       >
         <div className={classes.slideBody}>
           <img className={classes.slideImg} src={course.image} alt='' />
-          <h2>{course.name}</h2>
-          <p>{course.description}</p>
+
+          <div className={classes.slideTextContainer}>
+            <h2 className={classes.slideText}>{course.name}</h2>
+            <p>{course.description}</p>
+          </div>
         </div>
       </Paper>
     )
@@ -46,7 +61,7 @@ const Carousels = ({ autoPlay = true, indicators = true, courses }) => {
       className={classes.carousel}
       autoPlay={autoPlay}
       animation='slide'
-      navButtonsAlwaysVisible
+      navButtonsAlwaysVisible={false}
       indicators={indicators}
       interval={5000}
     >
