@@ -10,6 +10,7 @@ const useStyles = makeStyles({
   slide: {
     cursor: 'pointer',
     borderRadius: 20,
+    maxHeight: 310,
   },
   slideBody: {
     height: '100%',

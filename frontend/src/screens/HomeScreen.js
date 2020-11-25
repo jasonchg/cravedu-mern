@@ -8,7 +8,7 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import Category from '../components/Category'
 import Carousels from '../components/Carousels'
-import { default as CourseScroll } from 'react-elastic-carousel'
+import { default as CourseScroll, consts } from 'react-elastic-carousel'
 
 const HomeScreen = ({ history }) => {
   const dispatch = useDispatch()
@@ -79,7 +79,11 @@ const HomeScreen = ({ history }) => {
               <h2> Let's start learning, {userInfo.name}</h2>
             </Grid>
 
-            <CourseScroll itemsToShow={2} pagination={false}>
+            <CourseScroll
+              itemsToShow={2}
+              pagination={false}
+              itemPosition={consts.START}
+            >
               {userPaidCourses.map((currentCourse, index) => (
                 <Grid item key={currentCourse._id}>
                   <Course course={currentCourse} learning />
@@ -119,7 +123,11 @@ const HomeScreen = ({ history }) => {
           </Grid>
 
           <Grid item xs={12}>
-            <CourseScroll itemsToShow={3} pagination>
+            <CourseScroll
+              itemsToShow={4}
+              pagination
+              itemPosition={consts.START}
+            >
               {courses.map((course, i) => (
                 <Course key={i} course={course} />
               ))}

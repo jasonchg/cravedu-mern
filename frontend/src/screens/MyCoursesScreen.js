@@ -42,8 +42,8 @@ const MyCoursesScreen = ({ history }) => {
         ) : (
           <Grid container wrap='nowrap'>
             {userPaidCourses.map((courseItem, index) => (
-              <Grid item xs={12} sm={4} md={3}>
-                <Link key={index} href={`/course/${courseItem._id}/learn`}>
+              <Grid key={index} item xs={12} sm={4} md={3}>
+                <Link href={`/course/${courseItem._id}/learn`}>
                   <div style={{ pointerEvents: 'none' }}>
                     <Course course={courseItem} />
                   </div>

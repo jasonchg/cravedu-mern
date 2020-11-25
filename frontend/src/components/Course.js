@@ -79,10 +79,14 @@ const Course = ({ course, learning }) => {
             </Grid>
             <Grid item xs={8}>
               <CardContent>
-                <Typography variant='h5' color='textPrimary'>
+                <Typography variant='h5' color='textPrimary' componen='span'>
                   {course.name}
                 </Typography>
-                <Typography variant='caption' color='textSecondary'>
+                <Typography
+                  variant='caption'
+                  color='textSecondary'
+                  componen='span'
+                >
                   Progress: 1/10
                 </Typography>
               </CardContent>
@@ -100,7 +104,7 @@ const Course = ({ course, learning }) => {
             />
 
             <CardContent>
-              <Typography gutterBottom variant='h5'>
+              <Typography gutterBottom variant='h5' componen='span'>
                 {course.name}
               </Typography>
             </CardContent>

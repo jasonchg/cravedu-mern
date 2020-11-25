@@ -29,7 +29,7 @@ import { addOrder } from '../actions/orderActions'
 import Loader from '../components/Loader'
 import { PayPalButton } from 'react-paypal-button-v2'
 import { ADD_ORDER_RESET, ORDER_PAY_RESET } from '../constants/orderConstants'
-
+import { getUserCourses } from '../actions/userActions'
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: 40,
@@ -71,13 +71,17 @@ const PaymentScreen = ({ history }) => {
   const orderAdd = useSelector((state) => state.orderAdd)
   const { success, loading, error } = orderAdd
 
+  const userCourses = useSelector((state) => state.userCourses)
+  const { userPaidCourses } = userCourses
+
+  const [bought, setBought] = useState(false)
+
   let cartItemPrice = Number(
     cartItems.reduce((acc, item) => acc + item.price, 0)
   ).toFixed(2)
 
   const successPaymentHandler = () => {
     dispatch(savePaymentMethod(paymentMethod))
-
     dispatch(
       addOrder({
         orderItems: cartItems,
@@ -90,34 +94,63 @@ const PaymentScreen = ({ history }) => {
     dispatch({ type: ORDER_PAY_RESET })
   }
 
+  const checkBought = (currentCourse, courseHere) => {
+    return (
+      currentCourse &&
+      courseHere &&
+      currentCourse.map((curCourse) => {
+        return courseHere.some((courseNow) => {
+          if (curCourse._id === courseNow._id) {
+            return true
+          } else {
+            return null
+          }
+        })
+      })
+    )
+  }
+
   useEffect(() => {
     if (!userInfo) {
       history.push('/login/paymentlogin')
-    }
-
-    const addPayPalScript = async () => {
-      const { data: clientId } = await axios.get('/api/config/paypal')
-      const script = document.createElement('script')
-      script.type = 'text/javascript'
-      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`
-      script.async = true
-      script.onload = () => {
-        setSdkReady(true)
-      }
-      document.body.appendChild(script)
-    }
-
-    if (success) {
-      dispatch({ type: ADD_ORDER_RESET })
-      history.push('/mycourses')
     } else {
-      if (!window.paypal) {
-        addPayPalScript()
+      dispatch(getUserCourses())
+
+      if (userPaidCourses) {
+        setBought(checkBought(userPaidCourses, cartItems))
+      }
+      if (bought) {
+        alert('Bought courses detected in your cart!')
+        dispatch({ type: ADD_ORDER_RESET })
+        localStorage.removeItem('cartItems')
+        history.push('/mycourses')
       } else {
-        setSdkReady(true)
+        const addPayPalScript = async () => {
+          const { data: clientId } = await axios.get('/api/config/paypal')
+          const script = document.createElement('script')
+          script.type = 'text/javascript'
+          script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`
+          script.async = true
+          script.onload = () => {
+            setSdkReady(true)
+          }
+          document.body.appendChild(script)
+        }
+
+        if (success) {
+          dispatch({ type: ADD_ORDER_RESET })
+
+          history.push('/mycourses')
+        } else {
+          if (!window.paypal) {
+            addPayPalScript()
+          } else {
+            setSdkReady(true)
+          }
+        }
       }
     }
-  }, [history, success, dispatch, userInfo])
+  }, [history, success, dispatch, userInfo, bought, cartItems, userPaidCourses])
 
   return (
     <Container>

@@ -36,3 +36,18 @@ main {
 .video-learning {
   padding: 20px;
 }
+
+/* CourseScroll */
+.rec.rec-arrow {
+  background-color: #eee;
+}
+
+.rec.rec-arrow:hover {
+  background-color: #eaeaee !important;
+  color: #111;
+}
+
+.rec-carousel-item:focus {
+  outline: none;
+  box-shadow: inset 0 0 1px 1px #111;
+}
