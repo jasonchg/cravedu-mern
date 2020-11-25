@@ -1,20 +1,21 @@
 import React from 'react'
 import Carousel from 'react-material-ui-carousel'
 import { Paper, makeStyles } from '@material-ui/core'
+import PeopleIcon from '@material-ui/icons/People'
 
 const useStyles = makeStyles({
   carousel: {
     marginTop: '20px',
     marginBottom: '20px',
+    maxHeight: 310,
   },
   slide: {
     cursor: 'pointer',
     borderRadius: 20,
-    maxHeight: 310,
   },
   slideBody: {
-    height: '100%',
-    width: '100%',
+    maxHeight: '100%',
+    maxWidth: '100%',
     display: 'flex',
   },
   slideImg: {
@@ -28,7 +29,8 @@ const useStyles = makeStyles({
     padding: 20,
     background: '#eee',
     borderRadius: 20,
-    width: '100%',
+    maxWidth: '100%',
+    maxHeight: '100%',
   },
   slideText: {
     fontSize: 45,
@@ -51,6 +53,11 @@ const Carousels = ({ autoPlay = true, indicators = true, courses }) => {
           <div className={classes.slideTextContainer}>
             <h2 className={classes.slideText}>{course.name}</h2>
             <p>{course.description}</p>
+            <span
+              style={{ display: 'flex', alignContent: 'center', fontSize: 20 }}
+            >
+              <PeopleIcon /> {course.totalSold}
+            </span>
           </div>
         </div>
       </Paper>

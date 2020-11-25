@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core'
 import Rating from './Rating'
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled'
-
+import PeopleIcon from '@material-ui/icons/People'
 const useStyles = makeStyles({
   root: {
     width: 200,
@@ -107,12 +107,19 @@ const Course = ({ course, learning }) => {
               <Typography gutterBottom variant='h5' componen='span'>
                 {course.name}
               </Typography>
+              {course.totalSold ? (
+                <span
+                  style={{
+                    display: 'flex',
+                    alignContent: 'center',
+                  }}
+                >
+                  <PeopleIcon /> {course.totalSold}
+                </span>
+              ) : null}
             </CardContent>
             {course.rating ? (
-              <Rating
-                value={course.rating}
-                text={`${course.numReviews} reviews`}
-              />
+              <Rating value={course.rating} text={`(${course.numReviews})`} />
             ) : null}
           </CardActionArea>
         </Link>

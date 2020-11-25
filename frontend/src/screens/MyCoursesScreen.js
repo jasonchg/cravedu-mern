@@ -7,8 +7,6 @@ import Loader from '../components/Loader'
 import { getUserCourses } from '../actions/userActions'
 
 const MyCoursesScreen = ({ history }) => {
-  // list all user bought courses, not from the course it self
-
   const dispatch = useDispatch()
 
   const userLogin = useSelector((state) => state.userLogin)
