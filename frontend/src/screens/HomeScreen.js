@@ -125,7 +125,7 @@ const HomeScreen = ({ history }) => {
           <Grid item xs={12}>
             <CourseScroll
               itemsToShow={4}
-              pagination
+              pagination={false}
               itemPosition={consts.START}
             >
               {courses.map((course, i) => (

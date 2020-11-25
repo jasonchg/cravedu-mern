@@ -33,8 +33,7 @@ const useStyles = makeStyles({
     maxHeight: '100%',
   },
   slideText: {
-    fontSize: 45,
-    paddingRight: 20,
+    fontSize: 40,
   },
 })
 
