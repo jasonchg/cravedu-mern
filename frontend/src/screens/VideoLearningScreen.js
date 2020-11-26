@@ -18,16 +18,21 @@ import {
   Button,
   Avatar,
   ListItemAvatar,
+  Modal,
+  TextField,
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled'
 import { makeStyles } from '@material-ui/core/styles'
-import { listCourseDetails } from '../actions/courseActions'
+import { addQanda, listCourseDetails } from '../actions/courseActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import VideoPlayer from '../components/VideoPlayer'
 import PropTypes from 'prop-types'
+import FormContainer from '../components/FormContainer'
+import { COURSE_QANDA_RESET } from '../constants/courseConstants'
+
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props
 
@@ -63,13 +68,33 @@ TabPanel.propTypes = {
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    position: 'relative',
   },
   paper: {
     background: '#f0f0f0',
     margin: 'auto',
     marginTop: 10,
   },
-
+  modalContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalPaper: {
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: '1px solid #777',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    borderRadius: 10,
+  },
+  qandaSection: {
+    background: '#fff',
+    maxHeight: 700,
+    overflow: 'scroll',
+    overflowX: 'hidden',
+  },
   divider: {
     margin: theme.spacing(2, 0),
   },
@@ -92,7 +117,6 @@ const useStyles = makeStyles((theme) => ({
     padding: 10,
     minHeight: 443,
   },
-  questionBlock: {},
   titleHead: {
     marginBottom: 10,
     padding: 7,
@@ -104,21 +128,24 @@ const VideoLearningScreen = ({ match, history, location }) => {
   const dispatch = useDispatch()
 
   const classes = useStyles()
-
+  const [modalOpen, setModalOpen] = useState(false)
   const [selectedVideo, setSelectedVideo] = useState('')
   const [selectedVideoName, setSelectedVideoName] = useState({
     name: '',
     chapter: '',
   })
-
   const courseDetails = useSelector((state) => state.courseDetails)
-  const { loading, error, course, success: courseSuccess } = courseDetails
-
+  const { loading, error, course } = courseDetails
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
-
+  const courseQanda = useSelector((state) => state.courseQanda)
+  const {
+    loading: qandaLoading,
+    error: qandaError,
+    success: qandaSuccess,
+  } = courseQanda
   const [value, setValue] = useState(0)
-
+  const [question, setQuestion] = useState('')
   const tabHandler = (event, newValue) => {
     setValue(newValue)
   }
@@ -135,18 +162,19 @@ const VideoLearningScreen = ({ match, history, location }) => {
     )
   }
 
-  // URL
-  // to store the last video that user watched
-  // let getVideoId = ''
-  // let param = new URLSearchParams(location.search)
-  // getVideoId = param.get('chapter')
-
-  // useEffect : redirect to respective video
   useEffect(() => {
+    if (qandaSuccess) {
+      setQuestion('')
+      dispatch({ type: COURSE_QANDA_RESET })
+      alert('Question Submitted')
+    }
     if (!userInfo) {
       history.push('/login')
     } else {
-      if (courseSuccess) {
+      if (!course || !course.name || course._id !== courseId) {
+        dispatch(listCourseDetails(courseId))
+        setSelectedVideo('')
+      } else {
         history.push(
           `/course/${courseId}/learn?chapter=${course.courseContents[0]._id}`
         )
@@ -154,21 +182,25 @@ const VideoLearningScreen = ({ match, history, location }) => {
           name: course.courseContents[0].name,
           chapter: course.courseContents[0].chapter,
         })
-
         setSelectedVideo(
           getVideoPath(course.courseContents, course.courseContents[0]._id)
         )
-      } else {
-        dispatch(listCourseDetails(courseId))
-        setSelectedVideo('')
       }
     }
-  }, [userInfo, history, dispatch, courseId, courseSuccess, course])
+  }, [userInfo, history, dispatch, courseId, course, qandaSuccess])
 
   // 2 func : set video to the video player
   const selectTopicHandler = (chapterId) => {
     setSelectedVideo(getVideoPath(course.courseContents, chapterId))
     history.push(`/course/${courseId}/learn?chapter=${chapterId}`)
+  }
+
+  // 3 func : add qanda handler
+
+  const qandaHandler = (e) => {
+    e.preventDefault()
+    dispatch(addQanda(courseId, { question }))
+    setModalOpen(false)
   }
 
   return (
@@ -222,10 +254,48 @@ const VideoLearningScreen = ({ match, history, location }) => {
                 </TabPanel>
 
                 <TabPanel value={value} index={1}>
+                  <Modal
+                    open={modalOpen}
+                    onClose={() => setModalOpen(false)}
+                    aria-labelledby='qanda'
+                    aria-describedby='qanda-pool'
+                    className={classes.modalContainer}
+                  >
+                    <div className={classes.modalPaper}>
+                      <form onSubmit={qandaHandler}>
+                        <FormContainer>
+                          <TextField
+                            required
+                            fullWidth
+                            id='question'
+                            type='text'
+                            label='Your Question'
+                            placeholder=''
+                            variant='filled'
+                            value={question}
+                            onChange={(e) => setQuestion(e.target.value)}
+                          />
+                        </FormContainer>
+                        <Button
+                          type='submit'
+                          variant='contained'
+                          color='primary'
+                        >
+                          Post
+                        </Button>
+                      </form>
+                    </div>
+                  </Modal>
                   <List>
                     <ListItem style={{ display: 'flex' }}>
-                      <h3 style={{ flex: 1 }}>3 questions in this course</h3>
+                      <h3 style={{ flex: 1 }}>
+                        {course.courseQASection
+                          ? course.courseQASection.length
+                          : 0}{' '}
+                        questions in this course
+                      </h3>
                       <Button
+                        onClick={() => setModalOpen(true)}
                         size='medium'
                         style={{
                           padding: 15,
@@ -237,84 +307,42 @@ const VideoLearningScreen = ({ match, history, location }) => {
                         Ask a new question?
                       </Button>
                     </ListItem>
-
                     <Divider />
-                    <div className={classes.questionBlock}>
-                      <ListItem alignItems='flex-start'>
-                        <ListItemAvatar>
-                          <Avatar style={{ marginRight: 10 }}>S</Avatar>
-                        </ListItemAvatar>
-                        <ListItemText
-                          primary={
-                            <strong>
-                              Can you please update your course to the latest
-                              version? I dont understand the new Docs that
-                              published recently!
-                            </strong>
-                          }
-                          secondary={
-                            <span>
-                              <Typography
-                                component='span'
-                                variant='body2'
-                                color='textPrimary'
-                              >
-                                Sam Smith
-                              </Typography>
-                              {' - 2020/11/10 1:10AM'}
-                            </span>
-                          }
-                        />
-                      </ListItem>
-                      <Divider variant='inset' component='li' />
-                    </div>
-                    <div className={classes.questionBlock}>
-                      <ListItem alignItems='flex-start'>
-                        <ListItemAvatar>
-                          <Avatar style={{ marginRight: 10 }}>K</Avatar>
-                        </ListItemAvatar>
-                        <ListItemText
-                          primary={
-                            <strong>I don't understand at all...</strong>
-                          }
-                          secondary={
-                            <span>
-                              <Typography
-                                component='span'
-                                variant='body2'
-                                color='textPrimary'
-                              >
-                                Kiki
-                              </Typography>
-                              {' - 2020/10/10 2:10PM'}
-                            </span>
-                          }
-                        />
-                      </ListItem>
-                      <Divider variant='inset' component='li' />
-                    </div>
-                    <div className={classes.questionBlock}>
-                      <ListItem alignItems='flex-start'>
-                        <ListItemAvatar>
-                          <Avatar style={{ marginRight: 10 }}>R</Avatar>
-                        </ListItemAvatar>
-                        <ListItemText
-                          primary={<strong>Why need so many classes?</strong>}
-                          secondary={
-                            <span>
-                              <Typography
-                                component='span'
-                                variant='body2'
-                                color='textPrimary'
-                              >
-                                Roger Liew
-                              </Typography>
-                              {' - 2020/11/10 1:10AM'}
-                            </span>
-                          }
-                        />
-                      </ListItem>
-                      <Divider variant='inset' component='li' />
+
+                    {qandaLoading && <Loader left />}
+                    {qandaError && <Message>{qandaError}</Message>}
+                    <div className={classes.qandaSection}>
+                      {course && course.courseQASection ? (
+                        course.courseQASection.reverse().map((qanda, i) => (
+                          <div key={i} className={classes.questionBlock}>
+                            <ListItem alignItems='flex-start'>
+                              <ListItemAvatar>
+                                <Avatar style={{ marginRight: 10 }}>
+                                  {qanda.userName.charAt(0)}
+                                </Avatar>
+                              </ListItemAvatar>
+                              <ListItemText
+                                primary={<strong>{qanda.question}</strong>}
+                                secondary={
+                                  <span>
+                                    <Typography
+                                      component='span'
+                                      variant='body2'
+                                      color='textPrimary'
+                                    >
+                                      {qanda.userName}
+                                    </Typography>
+                                    <p>{qanda.createdAt.substring(10, 0)}</p>
+                                  </span>
+                                }
+                              />
+                            </ListItem>
+                            <Divider variant='inset' component='li' />
+                          </div>
+                        ))
+                      ) : (
+                        <ListItem>No any question just yet.</ListItem>
+                      )}
                     </div>
                   </List>
                 </TabPanel>

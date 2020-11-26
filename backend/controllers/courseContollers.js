@@ -51,8 +51,8 @@ const createCourseQandA = asyncHandler(async (req, res) => {
 
     course.courseQASection.push(qanda)
 
-    await course.save()
-    res.status(201).json({ message: 'Q and A pushed to the database pool.' })
+    const posted = await course.save()
+    res.status(201).json({ posted })
   } else {
     res.status(404)
     throw new Error('Course not found')

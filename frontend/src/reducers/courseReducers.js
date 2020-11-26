@@ -5,6 +5,10 @@ import {
   COURSE_DETAILS_REQUEST,
   COURSE_DETAILS_SUCCESS,
   COURSE_DETAILS_FAIL,
+  COURSE_QANDA_REQUEST,
+  COURSE_QANDA_SUCCESS,
+  COURSE_QANDA_FAIL,
+  COURSE_QANDA_RESET,
 } from '../constants/courseConstants'
 
 const courseListReducer = (state = { courses: [] }, action) => {
@@ -25,7 +29,7 @@ const courseDetailsReducer = (state = { course: {} }, action) => {
     case COURSE_DETAILS_REQUEST:
       return { loading: true }
     case COURSE_DETAILS_SUCCESS:
-      return { loading: false, course: action.payload, success: true }
+      return { loading: false, course: action.payload }
     case COURSE_DETAILS_FAIL:
       return { loading: false, error: action.payload }
     default:
@@ -33,5 +37,19 @@ const courseDetailsReducer = (state = { course: {} }, action) => {
   }
 }
 
-// EXPORT HERE
-export { courseListReducer, courseDetailsReducer }
+const courseQandaReducer = (state = {}, action) => {
+  switch (action.type) {
+    case COURSE_QANDA_REQUEST:
+      return { loading: true }
+    case COURSE_QANDA_SUCCESS:
+      return { loading: false, success: true }
+    case COURSE_QANDA_FAIL:
+      return { loading: false, error: action.payload }
+    case COURSE_QANDA_RESET:
+      return { loading: false, error: action.payload }
+    default:
+      return state
+  }
+}
+
+export { courseListReducer, courseDetailsReducer, courseQandaReducer }

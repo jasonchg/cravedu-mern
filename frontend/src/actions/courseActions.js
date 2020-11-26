@@ -6,6 +6,9 @@ import {
   COURSE_DETAILS_REQUEST,
   COURSE_DETAILS_SUCCESS,
   COURSE_DETAILS_FAIL,
+  COURSE_QANDA_REQUEST,
+  COURSE_QANDA_SUCCESS,
+  COURSE_QANDA_FAIL,
 } from '../constants/courseConstants'
 
 const listCourses = () => async (dispatch) => {
@@ -50,5 +53,36 @@ const listCourseDetails = (courseId) => async (dispatch) => {
   }
 }
 
-// EXPORT HERE
-export { listCourses, listCourseDetails }
+const addQanda = (courseId, qanda) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: COURSE_QANDA_REQUEST })
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    await axios.post(`/api/courses/${courseId}/qanda`, qanda, config)
+
+    dispatch({ type: COURSE_QANDA_SUCCESS })
+    dispatch({
+      type: COURSE_DETAILS_REQUEST,
+    })
+  } catch (e) {
+    dispatch({
+      type: COURSE_QANDA_FAIL,
+      payload:
+        e.response && e.response.data.message
+          ? e.response.data.message
+          : e.message,
+    })
+  }
+}
+
+export { listCourses, listCourseDetails, addQanda }
