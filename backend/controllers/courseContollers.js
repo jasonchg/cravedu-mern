@@ -33,4 +33,30 @@ const getCourseById = asyncHandler(async (req, res) => {
   }
 })
 
-export { getCourses, getCourseById }
+// @desc    Create QandA
+// @route   POST /api/courses/:id/qanda
+// @access  Private
+
+const createCourseQandA = asyncHandler(async (req, res) => {
+  const { question } = req.body
+
+  const course = await Course.findById(req.params.id)
+
+  if (course) {
+    const qanda = {
+      userName: req.user.name,
+      question,
+      user: req.user._id,
+    }
+
+    course.courseQASection.push(qanda)
+
+    await course.save()
+    res.status(201).json({ message: 'Q and A pushed to the database pool.' })
+  } else {
+    res.status(404)
+    throw new Error('Course not found')
+  }
+})
+
+export { getCourses, getCourseById, createCourseQandA }

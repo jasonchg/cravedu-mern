@@ -58,6 +58,10 @@ const userSchema = mongoose.Schema(
         finishedAt: {
           type: Date,
         },
+        completedCertificate: {
+          type: String,
+          required: true,
+        },
       },
     ],
   },
