@@ -59,4 +59,8 @@ const createCourseQandA = asyncHandler(async (req, res) => {
   }
 })
 
+// @desc    Reply QandA
+// @route   PUT /api/courses/:id/qanda
+// @access  Private
+
 export { getCourses, getCourseById, createCourseQandA }

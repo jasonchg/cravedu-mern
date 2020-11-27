@@ -70,6 +70,10 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     position: 'relative',
   },
+  upperSection: {
+    background: '#446397',
+    padding: 20,
+  },
   paper: {
     background: '#f0f0f0',
     margin: 'auto',
@@ -107,8 +111,10 @@ const useStyles = makeStyles((theme) => ({
     padding: 15,
   },
   accordion: {
-    background: '#f0f0f0',
+    background: 'transparent',
     width: '100%',
+    color: '#eee',
+    border: '1px solid #eee',
   },
   player: {
     height: 1500,
@@ -119,7 +125,12 @@ const useStyles = makeStyles((theme) => ({
   },
   titleHead: {
     marginBottom: 10,
+    color: '#eee',
     padding: 7,
+    fontStyle: 'bold',
+  },
+  contentChapter: {
+    color: '#eee',
   },
 }))
 
@@ -210,37 +221,107 @@ const VideoLearningScreen = ({ match, history, location }) => {
       ) : error ? (
         <Message>{error}</Message>
       ) : (
-        <Container className={classes.root}>
-          <span className={classes.titleHead}>
-            <Typography variant='h4' component='p'>
-              {selectedVideoName.chapter} - {selectedVideoName.name}
-            </Typography>
-            <Typography variant='subtitle1' component='p'>
-              From {course.name} by {course.instructor}
-            </Typography>
-          </span>
+        <>
+          <div className={classes.upperSection}>
+            <Container className={classes.root}>
+              <span className={classes.titleHead}>
+                <Typography variant='h4' component='p'>
+                  {selectedVideoName.chapter} - {selectedVideoName.name}
+                </Typography>
+                <Typography variant='subtitle1' component='p'>
+                  From {course.name} by {course.instructor}
+                </Typography>
+              </span>
 
-          <Grid container spacing={0}>
-            <Grid item xs={9}>
-              <div>
-                <VideoPlayer
-                  className={classes.player}
-                  videoPath={selectedVideo}
-                />
-              </div>
+              <Grid container spacing={0}>
+                <Grid item xs={9}>
+                  <VideoPlayer
+                    className={classes.player}
+                    videoPath={selectedVideo}
+                  />
+                </Grid>
 
-              <div>
-                <Paper>
-                  <Tabs
-                    onChange={tabHandler}
-                    aria-label='course tabs'
-                    value={value}
-                  >
-                    <Tab label='About this Course' {...a11yProps(0)} />
-                    <Tab label='Q&A' {...a11yProps(1)} />
-                    <Tab label='Annoucement' {...a11yProps(2)} />
-                  </Tabs>
-                </Paper>
+                <Grid item xs={3}>
+                  <div className={classes.courseContents}>
+                    <Typography
+                      variant='h6'
+                      component='p'
+                      className={classes.contentChapter}
+                    >
+                      {course.courseContents && course.courseContents.length}{' '}
+                      Chapters
+                    </Typography>
+
+                    <List>
+                      {course.courseContents ? (
+                        course.courseContents.map((content) => (
+                          <ListItemText key={content._id}>
+                            <Accordion className={classes.accordion}>
+                              <AccordionSummary
+                                expandIcon={
+                                  <ExpandMoreIcon style={{ color: '#eee' }} />
+                                }
+                                aria-controls='course-content'
+                                id='course-content-panel-header'
+                              >
+                                <Typography variant='body1' component='span'>
+                                  {content.chapter}
+                                </Typography>
+                              </AccordionSummary>
+                              <AccordionDetails>
+                                <Button
+                                  onClick={() => {
+                                    selectTopicHandler(content._id)
+                                    setSelectedVideoName({
+                                      name: content.name,
+                                      chapter: content.chapter,
+                                    })
+                                  }}
+                                >
+                                  <Typography
+                                    variant='body1'
+                                    component='span'
+                                    style={{
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      color: '#eee',
+                                    }}
+                                  >
+                                    <PlayCircleFilledIcon />
+                                    <div style={{ marginLeft: 7 }}>
+                                      {content.name}
+                                    </div>
+                                  </Typography>
+                                </Button>
+                              </AccordionDetails>
+                            </Accordion>
+                          </ListItemText>
+                        ))
+                      ) : (
+                        <Loader />
+                      )}
+                    </List>
+                  </div>
+                </Grid>
+              </Grid>
+            </Container>
+          </div>
+          <Container>
+            <Grid container>
+              <Grid item xs={12} className={classes.tabPanelArea}>
+                <div>
+                  <Paper>
+                    <Tabs
+                      onChange={tabHandler}
+                      aria-label='course tabs'
+                      value={value}
+                    >
+                      <Tab label='About this Course' {...a11yProps(0)} />
+                      <Tab label='Q&A' {...a11yProps(1)} />
+                      <Tab label='Annoucement' {...a11yProps(2)} />
+                    </Tabs>
+                  </Paper>
+                </div>
 
                 <TabPanel value={value} index={0}>
                   <List>
@@ -312,9 +393,14 @@ const VideoLearningScreen = ({ match, history, location }) => {
                     {qandaLoading && <Loader left />}
                     {qandaError && <Message>{qandaError}</Message>}
                     <div className={classes.qandaSection}>
-                      {course && course.courseQASection ? (
-                        course.courseQASection.reverse().map((qanda, i) => (
-                          <div key={i} className={classes.questionBlock}>
+                      {course &&
+                      course.courseQASection &&
+                      course.courseQASection.length !== 0 ? (
+                        course.courseQASection.reverse().map((qanda) => (
+                          <div
+                            key={qanda._id}
+                            className={classes.questionBlock}
+                          >
                             <ListItem alignItems='flex-start'>
                               <ListItemAvatar>
                                 <Avatar style={{ marginRight: 10 }}>
@@ -331,8 +417,8 @@ const VideoLearningScreen = ({ match, history, location }) => {
                                       color='textPrimary'
                                     >
                                       {qanda.userName}
-                                    </Typography>
-                                    <p>{qanda.createdAt.substring(10, 0)}</p>
+                                    </Typography>{' '}
+                                    {qanda.createdAt.substring(10, 0)}
                                   </span>
                                 }
                               />
@@ -350,57 +436,10 @@ const VideoLearningScreen = ({ match, history, location }) => {
                 <TabPanel value={value} index={2}>
                   There is no any annnouce just yet
                 </TabPanel>
-              </div>
+              </Grid>
             </Grid>
-
-            <Grid item xs={3}>
-              <Paper className={classes.courseContents}>
-                <h2>Course Contents</h2>
-
-                <List>
-                  {course.courseContents ? (
-                    course.courseContents.map((content) => (
-                      <ListItemText key={content._id}>
-                        <Accordion className={classes.accordion}>
-                          <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls='course-content'
-                            id='course-content-panel-header'
-                          >
-                            <Typography variant='body1' component='span'>
-                              {content.chapter}
-                            </Typography>
-                          </AccordionSummary>
-                          <AccordionDetails
-                            style={{
-                              background: '#eaeaea',
-                            }}
-                          >
-                            <Button
-                              onClick={() => {
-                                selectTopicHandler(content._id)
-                                setSelectedVideoName({
-                                  name: content.name,
-                                  chapter: content.chapter,
-                                })
-                              }}
-                            >
-                              <Typography variant='body1' component='span'>
-                                <PlayCircleFilledIcon /> {content.name}
-                              </Typography>
-                            </Button>
-                          </AccordionDetails>
-                        </Accordion>
-                      </ListItemText>
-                    ))
-                  ) : (
-                    <Loader />
-                  )}
-                </List>
-              </Paper>
-            </Grid>
-          </Grid>
-        </Container>
+          </Container>
+        </>
       )}
     </>
   )

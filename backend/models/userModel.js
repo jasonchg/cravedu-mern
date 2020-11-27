@@ -60,7 +60,6 @@ const userSchema = mongoose.Schema(
         },
         completedCertificate: {
           type: String,
-          required: true,
         },
       },
     ],

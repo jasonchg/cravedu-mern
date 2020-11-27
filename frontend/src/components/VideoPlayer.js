@@ -6,6 +6,7 @@ const useStyles = makeStyles((theme) => ({
   playerWrapper: {
     height: 415,
     width: 'auto',
+    border: '1px solid #eee',
   },
   reactPlayer: {},
 }))
