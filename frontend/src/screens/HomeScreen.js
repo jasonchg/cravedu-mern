@@ -9,6 +9,7 @@ import Loader from '../components/Loader'
 import Category from '../components/Category'
 import Carousels from '../components/Carousels'
 import { default as CourseScroll, consts } from 'react-elastic-carousel'
+import Banner from '../components/Banner'
 
 const HomeScreen = ({ history }) => {
   const dispatch = useDispatch()
@@ -66,76 +67,85 @@ const HomeScreen = ({ history }) => {
   ]
 
   return (
-    <Container maxWidth='md'>
-      <Grid container>
-        {category &&
-          category.map((item, index) => (
-            <Category key={index} category={item} color='primary' />
-          ))}
+    <>
+      <Container>
+        <Grid container>
+          <Banner
+            text='To keep us available in this valuable platform '
+            subText='Enjoy up to 90% discount. Shop now, some of the courses only MYR10.'
+          />
 
-        {userInfo && userPaidCourses && userPaidCourses.length !== 0 ? (
-          <>
+          {userInfo && userPaidCourses && userPaidCourses.length !== 0 ? (
+            <>
+              <Grid item xs={12} style={{ marginTop: 20 }}>
+                <h2> Let's start learning, {userInfo.name}</h2>
+              </Grid>
+
+              <CourseScroll
+                itemsToShow={3}
+                pagination={false}
+                itemPosition={consts.START}
+              >
+                {userPaidCourses.map((currentCourse, index) => (
+                  <Grid item key={currentCourse._id}>
+                    <Course course={currentCourse} learning />
+                  </Grid>
+                ))}
+              </CourseScroll>
+            </>
+          ) : null}
+        </Grid>
+
+        {error ? (
+          <Message>{error}</Message>
+        ) : loading ? (
+          <Loader />
+        ) : (
+          <Grid container style={{ marginBottom: 30 }}>
             <Grid item xs={12}>
-              <h2> Let's start learning, {userInfo.name}</h2>
+              <h2>Trending</h2>
+              <Carousels courses={courses} />
             </Grid>
 
-            <CourseScroll
-              itemsToShow={2}
-              pagination={false}
-              itemPosition={consts.START}
-            >
-              {userPaidCourses.map((currentCourse, index) => (
-                <Grid item key={currentCourse._id}>
-                  <Course course={currentCourse} learning />
-                </Grid>
-              ))}
-            </CourseScroll>
-          </>
-        ) : null}
-      </Grid>
+            <Grid item xs={12}>
+              {category &&
+                category.map((item, index) => (
+                  <Category key={index} category={item} color='primary' />
+                ))}
+            </Grid>
 
-      {error ? (
-        <Message>{error}</Message>
-      ) : loading ? (
-        <Loader />
-      ) : (
-        <Grid container style={{ marginBottom: 30 }}>
-          <Grid item xs={12}>
-            <h2>Trending</h2>
-            <Carousels courses={courses} />
-          </Grid>
-
-          <Grid item xs={12}>
-            <div style={{ display: 'flex' }}>
-              <div style={{ flex: 1 }}>
-                <h2>What to learn next</h2>
+            <Grid item xs={12}>
+              <div style={{ display: 'flex' }}>
+                <div style={{ flex: 1 }}>
+                  <h2>What to learn next</h2>
+                </div>
+                <div>
+                  <Button
+                    style={{ margin: 10, maxHeight: 35 }}
+                    size='small'
+                    onClick={() => history.push('/course')}
+                  >
+                    View More
+                  </Button>
+                </div>
               </div>
-              <div>
-                <Button
-                  style={{ margin: 10, maxHeight: 35 }}
-                  size='small'
-                  onClick={() => history.push('/course')}
-                >
-                  View More
-                </Button>
-              </div>
-            </div>
-          </Grid>
+            </Grid>
 
-          <Grid item xs={12}>
-            <CourseScroll
-              itemsToShow={4}
-              pagination={false}
-              itemPosition={consts.START}
-            >
-              {courses.map((course, i) => (
-                <Course key={i} course={course} />
-              ))}
-            </CourseScroll>
+            <Grid item xs={12}>
+              <CourseScroll
+                itemsToShow={5}
+                pagination={false}
+                itemPosition={consts.START}
+              >
+                {courses.map((course, i) => (
+                  <Course key={i} course={course} />
+                ))}
+              </CourseScroll>
+            </Grid>
           </Grid>
-        </Grid>
-      )}
-    </Container>
+        )}
+      </Container>
+    </>
   )
 }
 

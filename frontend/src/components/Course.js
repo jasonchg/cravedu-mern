@@ -16,9 +16,8 @@ import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled'
 import PeopleIcon from '@material-ui/icons/People'
 const useStyles = makeStyles({
   root: {
-    width: 200,
-    maxWidth: 235,
-    margin: 10,
+    width: 225,
+    marginRight: 10,
   },
   media: {
     height: 140,
@@ -28,7 +27,7 @@ const useStyles = makeStyles({
 const learningStyles = makeStyles({
   root: {
     maxWidth: 400,
-    margin: 10,
+    marginRight: 10,
   },
   media: {
     width: 125,

@@ -89,7 +89,7 @@ const Header = () => {
   return (
     <div className={classes.root}>
       <AppBar position='static'>
-        <Container maxWidth='md'>
+        <Container>
           <Toolbar>
             <Typography variant='h6' className={classes.title}>
               <Link href='/'>

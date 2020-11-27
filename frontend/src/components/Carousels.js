@@ -1,6 +1,6 @@
 import React from 'react'
 import Carousel from 'react-material-ui-carousel'
-import { Paper, makeStyles } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core'
 import PeopleIcon from '@material-ui/icons/People'
 
 const useStyles = makeStyles({
@@ -9,9 +9,9 @@ const useStyles = makeStyles({
     marginBottom: '20px',
     maxHeight: 310,
   },
-  slide: {
+  slideContainer: {
     cursor: 'pointer',
-    borderRadius: 20,
+    background: '#fff',
   },
   slideBody: {
     maxHeight: '100%',
@@ -21,29 +21,22 @@ const useStyles = makeStyles({
   slideImg: {
     maxWidth: '330px',
     marginRight: 10,
-    borderTopLeftRadius: 20,
-    borderBottomLeftRadius: 20,
   },
   slideTextContainer: {
-    margin: 20,
-    padding: 20,
-    background: '#eee',
-    borderRadius: 20,
-    maxWidth: '100%',
-    maxHeight: '100%',
+    padding: 10,
   },
   slideText: {
     fontSize: 40,
   },
 })
 
-const Carousels = ({ autoPlay = true, indicators = true, courses }) => {
+const Carousels = ({ autoPlay = true, courses }) => {
   const classes = useStyles()
 
   const Item = ({ course }) => {
     return (
-      <Paper
-        className={classes.slide}
+      <div
+        className={classes.slideContainer}
         onClick={() => (window.location.href = `/course/${course._id}`)}
       >
         <div className={classes.slideBody}>
@@ -51,15 +44,35 @@ const Carousels = ({ autoPlay = true, indicators = true, courses }) => {
 
           <div className={classes.slideTextContainer}>
             <h2 className={classes.slideText}>{course.name}</h2>
-            <p>{course.description}</p>
-            <span
-              style={{ display: 'flex', alignContent: 'center', fontSize: 20 }}
+            <p
+              style={{
+                fontSize: 16,
+              }}
             >
-              <PeopleIcon /> {course.totalSold}
-            </span>
+              {course.description}
+            </p>
+
+            <div
+              style={{
+                display: 'flex',
+                alignContent: 'center',
+                fontSize: 16,
+              }}
+            >
+              <div>
+                <PeopleIcon
+                  style={{
+                    fontSize: 20,
+                    marginRight: 10,
+                  }}
+                />
+              </div>
+              <div>{`  ${course.totalSold} enrolled`}</div>
+            </div>
+            <div style={{ marginTop: 30, fontSize: 24 }}>RM{course.price}</div>
           </div>
         </div>
-      </Paper>
+      </div>
     )
   }
 
@@ -69,7 +82,7 @@ const Carousels = ({ autoPlay = true, indicators = true, courses }) => {
       autoPlay={autoPlay}
       animation='slide'
       navButtonsAlwaysVisible={false}
-      indicators={indicators}
+      indicators={false}
       interval={5000}
     >
       {courses.map((course, i) => (
