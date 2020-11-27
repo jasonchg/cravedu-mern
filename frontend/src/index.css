@@ -56,3 +56,9 @@ main {
   transform: scale(0);
   display: none;
 }
+
+/* Video player */
+.player-wrapper {
+  width: auto;
+  height: auto;
+}

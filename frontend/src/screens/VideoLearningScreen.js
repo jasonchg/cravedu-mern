@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
   },
   upperSection: {
-    background: '#446397',
+    background: '#1d2747',
     padding: 20,
   },
   paper: {
@@ -120,8 +120,11 @@ const useStyles = makeStyles((theme) => ({
     height: 1500,
   },
   courseContents: {
-    padding: 10,
+    padding: 20,
     minHeight: 443,
+    maxHeight: 1500,
+    overflow: 'visible',
+    overflowX: 'hidden',
   },
   titleHead: {
     marginBottom: 10,
@@ -131,6 +134,9 @@ const useStyles = makeStyles((theme) => ({
   },
   contentChapter: {
     color: '#eee',
+  },
+  tabPanelArea: {
+    minHeight: 500,
   },
 }))
 
@@ -309,19 +315,17 @@ const VideoLearningScreen = ({ match, history, location }) => {
           <Container>
             <Grid container>
               <Grid item xs={12} className={classes.tabPanelArea}>
-                <div>
-                  <Paper>
-                    <Tabs
-                      onChange={tabHandler}
-                      aria-label='course tabs'
-                      value={value}
-                    >
-                      <Tab label='About this Course' {...a11yProps(0)} />
-                      <Tab label='Q&A' {...a11yProps(1)} />
-                      <Tab label='Annoucement' {...a11yProps(2)} />
-                    </Tabs>
-                  </Paper>
-                </div>
+                <Paper>
+                  <Tabs
+                    onChange={tabHandler}
+                    aria-label='course tabs'
+                    value={value}
+                  >
+                    <Tab label='About this Course' {...a11yProps(0)} />
+                    <Tab label='Q&A' {...a11yProps(1)} />
+                    <Tab label='Annoucement' {...a11yProps(2)} />
+                  </Tabs>
+                </Paper>
 
                 <TabPanel value={value} index={0}>
                   <List>
@@ -334,39 +338,39 @@ const VideoLearningScreen = ({ match, history, location }) => {
                   </List>
                 </TabPanel>
 
+                <Modal
+                  open={modalOpen}
+                  onClose={() => setModalOpen(false)}
+                  aria-labelledby='qanda'
+                  aria-describedby='qanda-pool'
+                  className={classes.modalContainer}
+                >
+                  <div className={classes.modalPaper}>
+                    <form onSubmit={qandaHandler}>
+                      <FormContainer>
+                        <TextField
+                          required
+                          fullWidth
+                          id='question'
+                          type='text'
+                          label='Your Question'
+                          placeholder=''
+                          variant='filled'
+                          value={question}
+                          onChange={(e) => setQuestion(e.target.value)}
+                        />
+                      </FormContainer>
+                      <Button type='submit' variant='contained' color='primary'>
+                        Post
+                      </Button>
+                      <Button onClick={() => setModalOpen(false)}>
+                        Cancel
+                      </Button>
+                    </form>
+                  </div>
+                </Modal>
+
                 <TabPanel value={value} index={1}>
-                  <Modal
-                    open={modalOpen}
-                    onClose={() => setModalOpen(false)}
-                    aria-labelledby='qanda'
-                    aria-describedby='qanda-pool'
-                    className={classes.modalContainer}
-                  >
-                    <div className={classes.modalPaper}>
-                      <form onSubmit={qandaHandler}>
-                        <FormContainer>
-                          <TextField
-                            required
-                            fullWidth
-                            id='question'
-                            type='text'
-                            label='Your Question'
-                            placeholder=''
-                            variant='filled'
-                            value={question}
-                            onChange={(e) => setQuestion(e.target.value)}
-                          />
-                        </FormContainer>
-                        <Button
-                          type='submit'
-                          variant='contained'
-                          color='primary'
-                        >
-                          Post
-                        </Button>
-                      </form>
-                    </div>
-                  </Modal>
                   <List>
                     <ListItem style={{ display: 'flex' }}>
                       <h3 style={{ flex: 1 }}>
@@ -390,13 +394,12 @@ const VideoLearningScreen = ({ match, history, location }) => {
                     </ListItem>
                     <Divider />
 
-                    {qandaLoading && <Loader left />}
                     {qandaError && <Message>{qandaError}</Message>}
                     <div className={classes.qandaSection}>
                       {course &&
                       course.courseQASection &&
                       course.courseQASection.length !== 0 ? (
-                        course.courseQASection.reverse().map((qanda) => (
+                        course.courseQASection.map((qanda) => (
                           <div
                             key={qanda._id}
                             className={classes.questionBlock}
@@ -407,21 +410,35 @@ const VideoLearningScreen = ({ match, history, location }) => {
                                   {qanda.userName.charAt(0)}
                                 </Avatar>
                               </ListItemAvatar>
-                              <ListItemText
-                                primary={<strong>{qanda.question}</strong>}
-                                secondary={
-                                  <span>
-                                    <Typography
-                                      component='span'
-                                      variant='body2'
-                                      color='textPrimary'
-                                    >
-                                      {qanda.userName}
-                                    </Typography>{' '}
-                                    {qanda.createdAt.substring(10, 0)}
-                                  </span>
-                                }
-                              />
+                              <div
+                                style={{
+                                  display: 'grid',
+                                  gridTemplateColumns: '7fr .7fr',
+                                }}
+                              >
+                                <div>
+                                  <ListItemText
+                                    primary={<strong>{qanda.question}</strong>}
+                                    secondary={
+                                      <span>
+                                        <Typography
+                                          component='span'
+                                          variant='body2'
+                                          color='textPrimary'
+                                        >
+                                          {qanda.userName}
+                                        </Typography>{' '}
+                                        {qanda.createdAt.substring(10, 0)}
+                                      </span>
+                                    }
+                                  />
+                                </div>
+                                <div>
+                                  <Button size='small'>
+                                    I know the answer
+                                  </Button>
+                                </div>
+                              </div>
                             </ListItem>
                             <Divider variant='inset' component='li' />
                           </div>
@@ -434,7 +451,12 @@ const VideoLearningScreen = ({ match, history, location }) => {
                 </TabPanel>
 
                 <TabPanel value={value} index={2}>
-                  There is no any annnouce just yet
+                  <List>
+                    <ListItem className={classes.description}>
+                      <ListItemText primary={`There is no any annoucement.`} />
+                    </ListItem>
+                    <Divider />
+                  </List>
                 </TabPanel>
               </Grid>
             </Grid>
