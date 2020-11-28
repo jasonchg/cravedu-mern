@@ -27,14 +27,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import Rating from '../components/Rating'
+import Breadcrumbs from '../components/Breadcrumbs'
 
 const CourseScreen = ({ match, history }) => {
   const courseId = match.params.id
   const dispatch = useDispatch()
 
-  const goBack = () => {
-    history.push('/')
-  }
   const addToCartHandler = () => {
     history.push(`/cart/${courseId}`)
   }
@@ -145,112 +143,125 @@ const CourseScreen = ({ match, history }) => {
       ) : error ? (
         <Message>{error}</Message>
       ) : (
-        <Container className={classes.root}>
-          <Button onClick={goBack}>Go Back</Button>
-          <Grid container spacing={2}>
-            <Grid item xs={9}>
-              <Paper className={classes.paper}>
-                <Grid container>
-                  <Grid item xs={6}>
-                    <div className='image'>
-                      <img
-                        src={course.image}
-                        alt={course.name}
-                        className={classes.image}
-                      />
-                    </div>
-                  </Grid>
+        <>
+          <Breadcrumbs
+            previousPage={[
+              {
+                name: 'Information Technology',
+                link: '/',
+              },
+            ]}
+            currentPage={'Javascript'}
+            courseScreen
+          />
+          <Container className={classes.root}>
+            <Grid container spacing={2}>
+              <Grid item xs={9}>
+                <Paper className={classes.paper}>
+                  <Grid container>
+                    <Grid item xs={6}>
+                      <div className='image'>
+                        <img
+                          src={course.image}
+                          alt={course.name}
+                          className={classes.image}
+                        />
+                      </div>
+                    </Grid>
 
-                  <Grid item xs={6} className={classes.titleBox}>
-                    <List>
-                      <ListItem>
-                        <ListItemText
-                          primary={
-                            <Typography variant='h4'>{course.name}</Typography>
-                          }
-                          secondary={`Created by ${course.instructor}`}
-                        />
-                      </ListItem>
-                      <Divider />
-                      <ListItem>
-                        <ListItemText
-                          primary={
-                            <Rating
-                              value={course.rating}
-                              text={`${course.numReviews} reviews`}
-                            />
-                          }
-                        />
-                      </ListItem>
-                      <Divider />
-                      <ListItem className={classes.description}>
-                        <ListItemText
-                          secondary={`Description: ${course.description}`}
-                        />
-                      </ListItem>
-                    </List>
+                    <Grid item xs={6} className={classes.titleBox}>
+                      <List>
+                        <ListItem>
+                          <ListItemText
+                            primary={
+                              <Typography variant='h4'>
+                                {course.name}
+                              </Typography>
+                            }
+                            secondary={`Created by ${course.instructor}`}
+                          />
+                        </ListItem>
+                        <Divider />
+                        <ListItem>
+                          <ListItemText
+                            primary={
+                              <Rating
+                                value={course.rating}
+                                text={`${course.numReviews} reviews`}
+                              />
+                            }
+                          />
+                        </ListItem>
+                        <Divider />
+                        <ListItem className={classes.description}>
+                          <ListItemText
+                            secondary={`Description: ${course.description}`}
+                          />
+                        </ListItem>
+                      </List>
+                    </Grid>
                   </Grid>
-                </Grid>
-              </Paper>
-            </Grid>
+                </Paper>
+              </Grid>
 
-            <Grid item xs={3} className={classes.priceTable}>
-              <Table>
-                <TableBody>
-                  <TableRow>
-                    <TableCell>RM</TableCell>
-                    <TableCell>{course.price}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Last Update</TableCell>
-                    <TableCell>
-                      {course.updatedAt && course.updatedAt.substring(0, 10)}
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-              {bought ? null : (
-                <>
-                  <Button
-                    className={classes.button}
-                    variant='contained'
-                    color='primary'
-                    size='medium'
-                    startIcon={<AddShoppingCartIcon />}
-                    onClick={addToCartHandler}
-                    disabled={bought}
-                  >
-                    Add To Cart
-                  </Button>
-                </>
-              )}
-            </Grid>
-          </Grid>
-          <Grid container>
-            <h2>Course Content</h2>
-            <Grid item xs={12}>
-              {course.courseContents ? (
-                course.courseContents.map((content, index) => (
-                  <Accordion key={index} className={classes.accordion}>
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-controls='course-content'
-                      id='course-content-panel-header'
+              <Grid item xs={3} className={classes.priceTable}>
+                <Table>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>RM</TableCell>
+                      <TableCell>{course.price}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Last Update</TableCell>
+                      <TableCell>
+                        {course.updatedAt && course.updatedAt.substring(0, 10)}
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+                {bought ? null : (
+                  <>
+                    <Button
+                      className={classes.button}
+                      variant='contained'
+                      color='primary'
+                      size='medium'
+                      startIcon={<AddShoppingCartIcon />}
+                      onClick={addToCartHandler}
+                      disabled={bought}
                     >
-                      <Typography>{content.chapter}</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <Typography>{content.name}</Typography>{' '}
-                      <PlayCircleFilledIcon />
-                    </AccordionDetails>
-                  </Accordion>
-                ))
-              ) : (
-                <Loader />
-              )}
+                      Add To Cart
+                    </Button>
+                  </>
+                )}
+              </Grid>
             </Grid>
-          </Grid>
-        </Container>
+            <Grid container>
+              <h2>Course Content</h2>
+              <Grid item xs={12}>
+                {course.courseContents ? (
+                  course.courseContents.map((content, index) => (
+                    <Accordion key={index} className={classes.accordion}>
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls='course-content'
+                        id='course-content-panel-header'
+                      >
+                        <Typography>{content.chapter}</Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <Typography>{content.name}</Typography>{' '}
+                        <PlayCircleFilledIcon />
+                      </AccordionDetails>
+                    </Accordion>
+                  ))
+                ) : (
+                  <Loader />
+                )}
+              </Grid>
+            </Grid>
+          </Container>
+        </>
       )}
     </>
   )

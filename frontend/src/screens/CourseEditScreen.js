@@ -27,7 +27,9 @@ import {
 } from '../constants/adminConstants'
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  root: {
+    marginTop: 10,
+  },
   img: {
     width: 120,
   },

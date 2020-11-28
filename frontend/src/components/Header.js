@@ -106,7 +106,9 @@ const Header = () => {
             {userInfo ? (
               <>
                 {userInfo.isInstructor && (
-                  <Button color='inherit' startIcon={<BallotIcon />}></Button>
+                  <Button color='inherit' startIcon={<BallotIcon />}>
+                    Instructor
+                  </Button>
                 )}
 
                 {userInfo.isAdmin && (
@@ -149,7 +151,7 @@ const Header = () => {
                   onClick={openUserMenuHandler}
                   size='small'
                 >
-                  <Avatar style={{ color: '#fff' }}>
+                  <Avatar style={{ background: 'rgba(255,255,255, 0.5)' }}>
                     {userInfo.name.charAt(0)}
                   </Avatar>
                 </Button>
@@ -164,7 +166,7 @@ const Header = () => {
                     <ListItemIcon>
                       <ListIcon fontSize='small' />
                     </ListItemIcon>
-                    <Typography variant='inherit'> My Courses</Typography>
+                    <Typography variant='inherit'> My Learning</Typography>
                   </MenuItem>
 
                   <MenuItem onClick={goToMyAccount}>

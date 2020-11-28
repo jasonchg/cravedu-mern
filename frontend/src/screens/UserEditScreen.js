@@ -24,12 +24,16 @@ import {
 } from '../constants/adminConstants'
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  root: {
+    marginTop: 10,
+  },
   list: {
     background: '#fff',
     border: '1px solid #999',
-    height: 350,
+    height: '80vh',
     padding: 10,
+    overflow: 'scroll',
+    overflowX: 'hidden',
   },
 }))
 
@@ -116,7 +120,7 @@ const UserEditScreen = ({ history, match }) => {
 
   return (
     <>
-      <Grid container>
+      <Grid container className={classes.root}>
         <Grid item xs={12}>
           <Button onClick={() => history.push('/admin/users')}>Go Back</Button>|
           <Button onClick={() => history.push('/admin/courses')}>
@@ -136,9 +140,9 @@ const UserEditScreen = ({ history, match }) => {
       ) : error ? (
         <Message>{error} </Message>
       ) : (
-        <form className={classes.form} onSubmit={submitHandler}>
-          <Grid container spacing='3'>
-            <Grid item xs={4}>
+        <Grid container spacing='3'>
+          <Grid item xs={4}>
+            <form className={classes.form} onSubmit={submitHandler}>
               <FormContainer>
                 <TextField
                   required
@@ -194,9 +198,13 @@ const UserEditScreen = ({ history, match }) => {
                   }
                 />
               </FormContainer>
-            </Grid>
-
-            <Grid item xs={8} className={classes.list}>
+              <Button type='submit' variant='contained' color='primary'>
+                Update User Profile
+              </Button>
+            </form>
+          </Grid>
+          <Grid item xs={8}>
+            <div className={classes.list}>
               <h4>
                 User Id# {userDetails._id} <br /> Acocunt created since{' '}
                 {userDetails.createdAt}
@@ -208,42 +216,38 @@ const UserEditScreen = ({ history, match }) => {
               )}
 
               <h2>Invoices</h2>
-              <List>
-                {userDetails.myCourses ? (
-                  userDetails.myCourses.length === 0 ? (
-                    <Message severity='info'>No invoice</Message>
+              <div>
+                <List>
+                  {userDetails.myCourses ? (
+                    userDetails.myCourses.length === 0 ? (
+                      <Message severity='info'>No invoice</Message>
+                    ) : (
+                      userDetails.myCourses.map((course, index) => (
+                        <div key={course._id}>
+                          <ListItem>
+                            <ListItemText
+                              primary={`${index + 1}.  ${course.orderId}`}
+                            />
+                            <Button
+                              onClick={() =>
+                                history.push(`/order/${course.orderId}`)
+                              }
+                            >
+                              View
+                            </Button>
+                          </ListItem>
+                          <Divider />
+                        </div>
+                      ))
+                    )
                   ) : (
-                    userDetails.myCourses.map((course, index) => (
-                      <div key={course._id}>
-                        <ListItem>
-                          <ListItemText
-                            primary={`${index + 1}.  ${course.orderId}`}
-                          />
-                          <Button
-                            onClick={() =>
-                              history.push(`/order/${course.orderId}`)
-                            }
-                          >
-                            View
-                          </Button>
-                        </ListItem>
-                        <Divider />
-                      </div>
-                    ))
-                  )
-                ) : (
-                  <Message>Something went wrong</Message>
-                )}
-              </List>
-            </Grid>
+                    <Message>Something went wrong</Message>
+                  )}
+                </List>
+              </div>
+            </div>
           </Grid>
-
-          <Grid item xs={12}>
-            <Button type='submit' variant='contained' color='primary'>
-              Update User Profile
-            </Button>
-          </Grid>
-        </form>
+        </Grid>
       )}
     </>
   )

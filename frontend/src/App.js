@@ -43,49 +43,41 @@ function App() {
 
           {/* Main Screen */}
           <Switch className='main'>
-            <>
-              <Container maxWidth='md'>
-                <Route path='/mycourses' component={MyCoursesScreen} />
-                <Route path='/register' component={RegisterScreen} />
-                <Route path='/login/:id' component={LoginScreen} exact />
-                <Route path='/login' component={LoginScreen} exact />
-                <Route path='/profile' component={UserProfileScreen} />
-                <Route path='/order/:id' component={ViewOrderScreen} />
-                <Route path='/payment' component={PaymentScreen} />
-                <Route path='/cart' component={CartScreen} exact />
-                <Route path='/cart/:id' component={CartScreen} exact />
-                <Route path='/course/:id' component={CourseScreen} exact />
-                <Route path='/course' component={BrowseScreen} exact />
-              </Container>
-            </>
+            <Container>
+              <Route path='/mycourses' component={MyCoursesScreen} />
+              <Route path='/register' component={RegisterScreen} />
+              <Route path='/login/:id' component={LoginScreen} exact />
+              <Route path='/login' component={LoginScreen} exact />
+              <Route path='/profile' component={UserProfileScreen} />
+              <Route path='/order/:id' component={ViewOrderScreen} />
+              <Route path='/payment' component={PaymentScreen} />
+              <Route path='/cart' component={CartScreen} exact />
+              <Route path='/cart/:id' component={CartScreen} exact />
+              <Route path='/course/:id' component={CourseScreen} exact />
+              <Route path='/course' component={BrowseScreen} exact />
+            </Container>
           </Switch>
 
           {/* For Admin */}
           <Switch className='admin'>
-            <>
-              <Container maxWidth='md'>
-                <Route
-                  path='/admin/courses/:id/edit'
-                  component={CourseEditScreen}
-                  exact
-                />
-                <Route
-                  path='/admin/courses'
-                  component={ManageCoursesScreen}
-                  exact
-                />
-                <Route
-                  path='/admin/users/:id/edit'
-                  component={UserEditScreen}
-                  exact
-                />
-                <Route
-                  path='/admin/users'
-                  component={ManageUsersScreen}
-                  exact
-                />
-              </Container>
-            </>
+            <Container>
+              <Route
+                path='/admin/courses/:id/edit'
+                component={CourseEditScreen}
+                exact
+              />
+              <Route
+                path='/admin/courses'
+                component={ManageCoursesScreen}
+                exact
+              />
+              <Route
+                path='/admin/users/:id/edit'
+                component={UserEditScreen}
+                exact
+              />
+              <Route path='/admin/users' component={ManageUsersScreen} exact />
+            </Container>
           </Switch>
 
           <Route path='/' component={HomeScreen} exact />

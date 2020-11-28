@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { ADMIN_COURSE_LIST_RESET } from '../constants/adminConstants'
+import Breadcrumbs from '../components/Breadcrumbs'
 
 const ManageCourseScreen = ({ history }) => {
   const dispatch = useDispatch()
@@ -39,68 +40,83 @@ const ManageCourseScreen = ({ history }) => {
   }, [userInfo, dispatch, history])
 
   return (
-    <Grid container>
-      <Grid item xs={12}>
-        <Button onClick={() => history.push('/')}>Go Back</Button> |
-        <Button onClick={() => history.push('/admin/users')}>
-          Go To Manage Users
-        </Button>
-      </Grid>
+    <>
+      <Breadcrumbs
+        previousPage={[
+          {
+            name: 'Admin',
+            link: '/admin',
+          },
+        ]}
+        currentPage='Courses'
+      />
 
-      <Grid item xs={12}>
-        <h1>Courses</h1>
-        {error ? (
-          <Message>{error}</Message>
-        ) : loading ? (
-          <Loader />
-        ) : (
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>No</TableCell>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Published</TableCell>
-                  <TableCell>Price (MYR)</TableCell>
-                  <TableCell>Instructor</TableCell>
-                  <TableCell width={60}>Total Chapters </TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {courses.map((course, index) => (
-                  <TableRow key={course._id}>
-                    <TableCell>{index + 1}</TableCell>
-                    <TableCell>
-                      <b>{course.name}</b> <br />
-                      <Typography variant='caption' component='span'>
-                        ({course._id})
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      {course.isPublished ? <span>Yes</span> : <span>No</span>}
-                    </TableCell>
-                    <TableCell>{course.price}</TableCell>
-                    <TableCell>{course.instructor}</TableCell>
-                    <TableCell width={60}>
-                      {course.courseContents.length}
-                    </TableCell>
-                    <TableCell>
-                      <Button
-                        onClick={() => goToEdit(course._id)}
-                        variant='outlined'
-                      >
-                        Edit Info
-                      </Button>
-                    </TableCell>
+      <Grid container style={{ marginTop: 10 }}>
+        <Grid item xs={12}>
+          <Button onClick={() => history.push('/admin')}>Go Back</Button> |
+          <Button onClick={() => history.push('/admin/users')}>
+            Go To Manage Users
+          </Button>
+        </Grid>
+
+        <Grid item xs={12}>
+          {error ? (
+            <Message>{error}</Message>
+          ) : loading ? (
+            <Loader />
+          ) : (
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell align='center'>No</TableCell>
+                    <TableCell>Name</TableCell>
+                    <TableCell align='center'>Published</TableCell>
+                    <TableCell align='center'>Price (MYR)</TableCell>
+                    <TableCell align='center'>Instructor</TableCell>
+                    <TableCell align='center'>Chapters </TableCell>
+                    <TableCell></TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        )}
+                </TableHead>
+                <TableBody>
+                  {courses.map((course, index) => (
+                    <TableRow key={course._id}>
+                      <TableCell align='center'>{index + 1}</TableCell>
+                      <TableCell>
+                        <b>{course.name}</b> <br />
+                        <Typography variant='caption' component='span'>
+                          ({course._id})
+                        </Typography>
+                      </TableCell>
+                      <TableCell align='center'>
+                        {course.isPublished ? (
+                          <span>Yes</span>
+                        ) : (
+                          <span>No</span>
+                        )}
+                      </TableCell>
+                      <TableCell align='center'>{course.price}</TableCell>
+                      <TableCell align='center'>{course.instructor}</TableCell>
+                      <TableCell align='center'>
+                        {course.courseContents.length}
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          onClick={() => goToEdit(course._id)}
+                          variant='outlined'
+                        >
+                          Edit Info
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
+        </Grid>
       </Grid>
-    </Grid>
+    </>
   )
 }
 
