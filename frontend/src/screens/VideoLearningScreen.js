@@ -70,10 +70,6 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     position: 'relative',
   },
-  upperSection: {
-    background: '#1d2747',
-    padding: 20,
-  },
   paper: {
     background: '#f0f0f0',
     margin: 'auto',
@@ -156,11 +152,7 @@ const VideoLearningScreen = ({ match, history, location }) => {
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
   const courseQanda = useSelector((state) => state.courseQanda)
-  const {
-    loading: qandaLoading,
-    error: qandaError,
-    success: qandaSuccess,
-  } = courseQanda
+  const { error: qandaError, success: qandaSuccess } = courseQanda
   const [value, setValue] = useState(0)
   const [question, setQuestion] = useState('')
   const tabHandler = (event, newValue) => {
@@ -228,7 +220,7 @@ const VideoLearningScreen = ({ match, history, location }) => {
         <Message>{error}</Message>
       ) : (
         <>
-          <div className={classes.upperSection}>
+          <div className='upperSection'>
             <Container className={classes.root}>
               <span className={classes.titleHead}>
                 <Typography variant='h4' component='p'>

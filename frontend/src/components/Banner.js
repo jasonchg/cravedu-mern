@@ -3,14 +3,14 @@ import bgImage from '../assets/images/banner-bg.jpg'
 
 const useStyles = makeStyles({
   root: {
-    width: '70vw',
-    height: '30vh',
-    marginBottom: 30,
+    width: '100vw',
+    height: '35h',
+    overflow: 'hidden',
   },
   bannerContainer: {
     backgroundImage: `url(${bgImage})`,
     backgroundSize: 'cover',
-    padding: '30px',
+    padding: '40px',
     width: '100%',
     height: '100%',
   },

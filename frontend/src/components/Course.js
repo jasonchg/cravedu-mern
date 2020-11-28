@@ -9,7 +9,6 @@ import {
   Button,
   Typography,
   Link,
-  Grid,
 } from '@material-ui/core'
 import Rating from './Rating'
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled'
@@ -26,8 +25,8 @@ const useStyles = makeStyles({
 
 const learningStyles = makeStyles({
   root: {
-    maxWidth: 400,
     marginRight: 10,
+    width: '100%',
   },
   media: {
     width: 125,
@@ -55,6 +54,10 @@ const learningStyles = makeStyles({
       opacity: '0.7',
     },
   },
+  learningBody: {
+    display: 'flex',
+  },
+  content: {},
 })
 
 const Course = ({ course, learning }) => {
@@ -65,32 +68,33 @@ const Course = ({ course, learning }) => {
     <Card className={learning ? classesLearning.root : classes.root}>
       {learning && (
         <Link href={`/course/${course._id}/learn`}>
-          <Grid container alignItems='center'>
-            <Grid item xs={4}>
-              <div className={classesLearning.media}>
-                <CardMedia
-                  className={classesLearning.mediaImg}
-                  image={course.image}
-                  title={course.name}
-                />
-                <PlayCircleFilledIcon className={classesLearning.playIcon} />
-              </div>
-            </Grid>
-            <Grid item xs={8}>
-              <CardContent>
-                <Typography variant='h5' color='textPrimary' componen='span'>
-                  {course.name}
-                </Typography>
-                <Typography
-                  variant='caption'
-                  color='textSecondary'
-                  componen='span'
-                >
-                  Progress: 1/10
-                </Typography>
-              </CardContent>
-            </Grid>
-          </Grid>
+          <div className={classesLearning.learningBody}>
+            <div className={classesLearning.media}>
+              <CardMedia
+                className={classesLearning.mediaImg}
+                image={course.image}
+                title={course.name}
+              />
+              <PlayCircleFilledIcon className={classesLearning.playIcon} />
+            </div>
+            <CardContent className={classesLearning.content}>
+              <Typography
+                variant='body1'
+                color='textPrimary'
+                componen='span'
+                style={{ fontStyle: 'bold' }}
+              >
+                {course.name}
+              </Typography>
+              <Typography
+                variant='caption'
+                color='textSecondary'
+                componen='span'
+              >
+                Progress: 1/10
+              </Typography>
+            </CardContent>
+          </div>
         </Link>
       )}
       {learning ? null : (

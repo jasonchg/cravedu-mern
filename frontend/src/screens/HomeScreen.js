@@ -77,7 +77,7 @@ const HomeScreen = ({ history }) => {
 
           {userInfo && userPaidCourses && userPaidCourses.length !== 0 ? (
             <>
-              <Grid item xs={12} style={{ marginTop: 20 }}>
+              <Grid item xs={12} className='homeHeaderText'>
                 <h2> Let's start learning, {userInfo.name}</h2>
               </Grid>
 
@@ -87,9 +87,11 @@ const HomeScreen = ({ history }) => {
                 itemPosition={consts.START}
               >
                 {userPaidCourses.map((currentCourse, index) => (
-                  <Grid item key={currentCourse._id}>
-                    <Course course={currentCourse} learning />
-                  </Grid>
+                  <Course
+                    key={currentCourse._id}
+                    course={currentCourse}
+                    learning
+                  />
                 ))}
               </CourseScroll>
             </>
@@ -102,7 +104,7 @@ const HomeScreen = ({ history }) => {
           <Loader />
         ) : (
           <Grid container style={{ marginBottom: 30 }}>
-            <Grid item xs={12}>
+            <Grid item xs={12} className='homeHeaderText'>
               <h2>Trending</h2>
               <Carousels courses={courses} />
             </Grid>
@@ -115,7 +117,7 @@ const HomeScreen = ({ history }) => {
             </Grid>
 
             <Grid item xs={12}>
-              <div style={{ display: 'flex' }}>
+              <div style={{ display: 'flex' }} className='homeHeaderText'>
                 <div style={{ flex: 1 }}>
                   <h2>What to learn next</h2>
                 </div>

@@ -11,6 +11,7 @@ import {
   Menu,
   MenuItem,
   ListItemIcon,
+  Avatar,
 } from '@material-ui/core'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
@@ -25,9 +26,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
+  menuButton: {},
   title: {
     flexGrow: 1,
   },
@@ -88,7 +87,7 @@ const Header = () => {
 
   return (
     <div className={classes.root}>
-      <AppBar position='static'>
+      <AppBar position='static' className='header'>
         <Container>
           <Toolbar>
             <Typography variant='h6' className={classes.title}>
@@ -107,9 +106,7 @@ const Header = () => {
             {userInfo ? (
               <>
                 {userInfo.isInstructor && (
-                  <Button color='inherit' startIcon={<BallotIcon />}>
-                    Instructor
-                  </Button>
+                  <Button color='inherit' startIcon={<BallotIcon />}></Button>
                 )}
 
                 {userInfo.isAdmin && (
@@ -149,10 +146,12 @@ const Header = () => {
 
                 <Button
                   color='inherit'
-                  startIcon={<AccountCircleIcon />}
                   onClick={openUserMenuHandler}
+                  size='small'
                 >
-                  {userInfo.name}
+                  <Avatar style={{ color: '#fff' }}>
+                    {userInfo.name.charAt(0)}
+                  </Avatar>
                 </Button>
                 <Menu
                   id='menu'

@@ -1,5 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap');
 
+:root {
+  /* Cravedu Colour Palette */
+  --light: #f1faee;
+  --info: #a8dadc;
+  --primary: #457b9d;
+  --dark: #1d3557;
+  --danger: #e63946;
+  --dark2: #090b2f;
+}
+
 * {
   text-decoration: none !important;
 }
@@ -26,6 +36,13 @@ main {
   min-height: 80vh;
 }
 
+.header {
+  background: var(--dark) !important;
+}
+.homeHeaderText {
+  margin-top: 20px !important;
+}
+
 .rating {
   display: flex;
   align-items: center;
@@ -41,6 +58,14 @@ main {
 .rec.rec-arrow {
   background-color: #eee;
 }
+
+/* Video Player BG */
+.upperSection {
+  padding: 20px;
+  background: var(--dark2);
+}
+
+/* Sliders */
 
 .rec.rec-arrow:hover {
   background-color: #eaeaee !important;

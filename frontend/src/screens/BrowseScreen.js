@@ -69,14 +69,14 @@ const BrowseScreen = ({ history }) => {
 
   return (
     <Container maxWidth='md'>
-      <div
-        style={{ marginBottom: '30px', marginLeft: '25%', fontSize: '20px' }}
-      >
-        <h1>{currentCategory}</h1>
-        <Divider />
-      </div>
-      <Grid container spacing={1}>
-        <Grid item xs={3}>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <div style={{ fontSize: '20px' }}>
+            <h1>{currentCategory}</h1>
+            <Divider />
+          </div>
+        </Grid>
+        <Grid item xs={12}>
           {category &&
             category.map((item, index) => (
               <span key={index} onClick={() => setCatHandler(item.name)}>
@@ -84,15 +84,17 @@ const BrowseScreen = ({ history }) => {
               </span>
             ))}
         </Grid>
-        <Grid item xs={9}>
-          <Grid container>
+        <Grid item xs={12}>
+          <Grid container wrap='wrap'>
             {error ? (
-              <Message>{error}</Message>
+              <Grid item xs={12}>
+                <Message>{error}</Message>
+              </Grid>
             ) : loading ? (
               <Loader />
             ) : (
-              courses.map((course) => (
-                <Grid item key={course._id} xs={12} sm={4}>
+              courses.map((course, i) => (
+                <Grid key={i} item style={{ marginTop: 7 }}>
                   <Course course={course} />
                 </Grid>
               ))
