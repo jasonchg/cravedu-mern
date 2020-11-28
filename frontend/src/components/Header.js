@@ -93,12 +93,15 @@ const Header = () => {
     <div className={classes.root}>
       <AppBar position='static' className='header'>
         <Container>
-          <Toolbar>
-            <Typography variant='h6' className={classes.title}>
-              <Link href='/'>
-                <img src={CraveduLogo} alt='logo' style={{ width: 90 }} />
-              </Link>
-            </Typography>
+          <Toolbar style={{ margin: 0, padding: 0 }}>
+            <Link href='/'>
+              <img
+                src={CraveduLogo}
+                alt='logo'
+                style={{ width: 90, marginLeft: 0, paddingLeft: 0 }}
+              />
+            </Link>
+            <Typography variant='h6' className={classes.title}></Typography>
             <Button
               color='inherit'
               startIcon={<ShoppingCartIcon />}

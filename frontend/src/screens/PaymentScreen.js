@@ -30,9 +30,10 @@ import Loader from '../components/Loader'
 import { PayPalButton } from 'react-paypal-button-v2'
 import { ADD_ORDER_RESET, ORDER_PAY_RESET } from '../constants/orderConstants'
 import { getUserCourses } from '../actions/userActions'
+import Breadcrumbs from '../components/Breadcrumbs'
 const useStyles = makeStyles((theme) => ({
   root: {
-    padding: 40,
+    marginTop: 10,
   },
   paper: {
     background: '#f0f0f0',
@@ -149,152 +150,167 @@ const PaymentScreen = ({ history }) => {
   }, [history, success, dispatch, userInfo, cartItems, userPaidCourses])
 
   return (
-    <Container>
-      <form>
-        <Grid container spacing={2}>
-          <Grid item xs={8}>
-            <FormContainer>
-              <h1>Check Out</h1>
-              {error && <Message>{error}</Message>}
-              {loading && <Loader />}
+    <>
+      <Breadcrumbs
+        previousPage={[
+          {
+            name: 'Cart',
+            link: '/cart',
+          },
+        ]}
+        currentPage='Checkout'
+      />
 
+      <Container className={classes.root}>
+        <form>
+          <Grid container spacing={2}>
+            <Grid item xs={8}>
               <FormContainer>
-                <FormControl
-                  component='fieldset'
-                  className={classes.checkoutInput}
-                >
-                  <FormLabel component='legend'>Billing Address</FormLabel>
-                  <FormContainer>
-                    <Select
-                      labelId='select_country'
-                      id='select_country'
-                      value={billingAddress}
-                      onChange={(e) => setBillingAddress(e.target.value)}
-                    >
-                      <MenuItem value={'Malaysia'}>Malaysia</MenuItem>
-                      <MenuItem value={'Other'} disabled>
-                        Other
-                      </MenuItem>
-                    </Select>
-                  </FormContainer>
-                </FormControl>
+                {error && <Message>{error}</Message>}
+                {loading && <Loader />}
 
                 <FormContainer>
                   <FormControl
                     component='fieldset'
                     className={classes.checkoutInput}
                   >
-                    <FormLabel component='legend'>Payment Method</FormLabel>
+                    <FormLabel component='legend'>Billing Address</FormLabel>
                     <FormContainer>
-                      <RadioGroup
-                        defaultValue='PayPal'
-                        value={paymentMethod}
-                        onChange={(e) => setPaymentMethod(e.target.value)}
+                      <Select
+                        labelId='select_country'
+                        id='select_country'
+                        value={billingAddress}
+                        onChange={(e) => setBillingAddress(e.target.value)}
                       >
-                        <span>
-                          <FormControlLabel
-                            value='PayPal'
-                            control={<Radio color='primary' />}
-                            label={<i className='fa fa-paypal'></i>}
-                          />
-                          PayPal
-                        </span>
-                        <span>
-                          <FormControlLabel
-                            value='Other'
-                            control={<Radio color='primary' />}
-                            label={<PaymentIcon />}
-                            disabled
-                          />
+                        <MenuItem value={'Malaysia'}>Malaysia</MenuItem>
+                        <MenuItem value={'Other'} disabled>
                           Other
-                        </span>
-                      </RadioGroup>
+                        </MenuItem>
+                      </Select>
                     </FormContainer>
                   </FormControl>
+
+                  <FormContainer>
+                    <FormControl
+                      component='fieldset'
+                      className={classes.checkoutInput}
+                    >
+                      <FormLabel component='legend'>Payment Method</FormLabel>
+                      <FormContainer>
+                        <RadioGroup
+                          defaultValue='PayPal'
+                          value={paymentMethod}
+                          onChange={(e) => setPaymentMethod(e.target.value)}
+                        >
+                          <span>
+                            <FormControlLabel
+                              value='PayPal'
+                              control={<Radio color='primary' />}
+                              label={<i className='fa fa-paypal'></i>}
+                            />
+                            PayPal
+                          </span>
+                          <span>
+                            <FormControlLabel
+                              value='Other'
+                              control={<Radio color='primary' />}
+                              label={<PaymentIcon />}
+                              disabled
+                            />
+                            Other
+                          </span>
+                        </RadioGroup>
+                      </FormContainer>
+                    </FormControl>
+                  </FormContainer>
                 </FormContainer>
               </FormContainer>
-            </FormContainer>
 
-            <h2>Order Items ({cartItems.reduce((acc, item) => acc + 1, 0)})</h2>
-            <FormContainer>
-              {cartItems.length === 0 ? (
-                <Message severity='info'>
-                  Your cart is empty.
-                  <Link href='/'> Add a course?</Link>
-                </Message>
-              ) : (
-                <List>
-                  <Divider className={classes.divider} />
-                  {cartItems.map((item) => (
-                    <div key={item.course}>
-                      <ListItem>
-                        <Grid container spacing={2}>
-                          <Grid item xs={3}>
-                            <ListItemAvatar>
+              <h2>
+                Order Items ({cartItems.reduce((acc, item) => acc + 1, 0)})
+              </h2>
+              <FormContainer>
+                {cartItems.length === 0 ? (
+                  <Message severity='info'>
+                    Your cart is empty.
+                    <Link href='/'> Add a course?</Link>
+                  </Message>
+                ) : (
+                  <List>
+                    <Divider className={classes.divider} />
+                    {cartItems.map((item) => (
+                      <div key={item.course}>
+                        <ListItem>
+                          <Grid container spacing={2}>
+                            <Grid item xs={3}>
+                              <ListItemAvatar>
+                                <Link href={`/course/${item.course}`}>
+                                  <img
+                                    className={classes.cartImage}
+                                    src={item.image}
+                                    alt={item.image}
+                                  />
+                                </Link>
+                              </ListItemAvatar>
+                            </Grid>
+                            <Grid item xs={6}>
                               <Link href={`/course/${item.course}`}>
-                                <img
-                                  className={classes.cartImage}
-                                  src={item.image}
-                                  alt={item.image}
+                                <ListItemText
+                                  primary={item.name}
+                                  secondary={item.instructor}
                                 />
                               </Link>
-                            </ListItemAvatar>
+                            </Grid>
+                            <Grid item xs={2}>
+                              <p>RM {item.price}</p>
+                            </Grid>
                           </Grid>
-                          <Grid item xs={6}>
-                            <Link href={`/course/${item.course}`}>
-                              <ListItemText
-                                primary={item.name}
-                                secondary={item.instructor}
-                              />
-                            </Link>
-                          </Grid>
-                          <Grid item xs={2}>
-                            <p>RM {item.price}</p>
-                          </Grid>
-                        </Grid>
-                      </ListItem>
-                      <Divider className={classes.divider} />
-                    </div>
-                  ))}
+                        </ListItem>
+                        <Divider className={classes.divider} />
+                      </div>
+                    ))}
+                  </List>
+                )}
+              </FormContainer>
+            </Grid>
+
+            <Grid item xs={4}>
+              <Paper className={classes.paper}>
+                <List>
+                  <ListItem>
+                    <ListItemText
+                      primary={
+                        <Typography variant='h5'>Order Total</Typography>
+                      }
+                    />
+                  </ListItem>
+                  <Divider className={classes.divider} />
+                  <ListItem>
+                    <ListItemText
+                      primary={
+                        <Typography variant='h5'>RM {cartItemPrice}</Typography>
+                      }
+                      secondary='*tax is included'
+                    />
+                  </ListItem>
                 </List>
-              )}
-            </FormContainer>
-          </Grid>
 
-          <Grid item xs={4}>
-            <Paper className={classes.paper}>
-              <List>
-                <ListItem>
-                  <ListItemText
-                    primary={<Typography variant='h5'>Order Total</Typography>}
-                  />
-                </ListItem>
                 <Divider className={classes.divider} />
-                <ListItem>
-                  <ListItemText
-                    primary={
-                      <Typography variant='h5'>RM {cartItemPrice}</Typography>
-                    }
-                    secondary='*tax is included'
+
+                {!sdkReady ? (
+                  <Loader />
+                ) : (
+                  <PayPalButton
+                    amount={cartItemPrice}
+                    onSuccess={successPaymentHandler}
                   />
-                </ListItem>
-              </List>
-
-              <Divider className={classes.divider} />
-
-              {!sdkReady ? (
-                <Loader />
-              ) : (
-                <PayPalButton
-                  amount={cartItemPrice}
-                  onSuccess={successPaymentHandler}
-                />
-              )}
-            </Paper>
+                )}
+              </Paper>
+            </Grid>
           </Grid>
-        </Grid>
-      </form>
-    </Container>
+        </form>
+      </Container>
+    </>
   )
 }
 

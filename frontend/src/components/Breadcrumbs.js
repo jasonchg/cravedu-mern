@@ -5,6 +5,7 @@ import {
   makeStyles,
   Container,
 } from '@material-ui/core'
+import HomeIcon from '@material-ui/icons/Home'
 
 const useStyles = makeStyles({
   root: {
@@ -44,7 +45,11 @@ const Breadcrumbs = ({ previousPage, currentPage, courseScreen = false }) => {
             {previousPage &&
               previousPage.map((page, i) => (
                 <Link key={i} href={page.link}>
-                  {page.name}
+                  {page.name.toLowerCase() === 'home' ? (
+                    <HomeIcon fontSize='small' />
+                  ) : (
+                    page.name
+                  )}
                 </Link>
               ))}
             <Link>{currentPage}</Link>

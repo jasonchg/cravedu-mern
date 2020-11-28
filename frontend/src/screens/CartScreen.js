@@ -121,7 +121,11 @@ const CartScreen = ({ match, history }) => {
                 <div className={classes.iconContainer}>
                   <AddShoppingCartIcon className={classes.cartIcon} />
                   <p>Your cart is empty. Add a course now!</p>
-                  <Button variant='contained' color='secondary'>
+                  <Button
+                    variant='contained'
+                    color='secondary'
+                    onClick={() => history.push('/')}
+                  >
                     Add a Course
                   </Button>
                 </div>
