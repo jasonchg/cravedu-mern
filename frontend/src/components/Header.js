@@ -81,8 +81,12 @@ const Header = () => {
   }
 
   const goToManageCourses = () => {
-    window.location.href = '/admin/courses'
+    window.location.href = '/admin'
     closeAdminMenuHandler()
+  }
+
+  const goInstructor = () => {
+    window.location.href = '/instructor'
   }
 
   return (
@@ -106,7 +110,11 @@ const Header = () => {
             {userInfo ? (
               <>
                 {userInfo.isInstructor && (
-                  <Button color='inherit' startIcon={<BallotIcon />}>
+                  <Button
+                    color='inherit'
+                    startIcon={<BallotIcon />}
+                    onClick={goInstructor}
+                  >
                     Instructor
                   </Button>
                 )}

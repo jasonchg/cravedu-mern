@@ -17,7 +17,7 @@ import Loader from '../components/Loader'
 import { ADMIN_COURSE_LIST_RESET } from '../constants/adminConstants'
 import Breadcrumbs from '../components/Breadcrumbs'
 
-const ManageCourseScreen = ({ history }) => {
+const InstructorScreen = ({ history }) => {
   const dispatch = useDispatch()
 
   const userLogin = useSelector((state) => state.userLogin)
@@ -44,21 +44,14 @@ const ManageCourseScreen = ({ history }) => {
       <Breadcrumbs
         previousPage={[
           {
-            name: 'Admin',
-            link: '/admin',
+            name: 'Home',
+            link: '/',
           },
         ]}
-        currentPage='Courses'
+        currentPage='Instructor'
       />
 
       <Grid container style={{ marginTop: 10 }}>
-        <Grid item xs={12}>
-          <Button onClick={() => history.push('/admin')}>Go Back</Button> |
-          <Button onClick={() => history.push('/admin/users')}>
-            Go To Manage Users
-          </Button>
-        </Grid>
-
         <Grid item xs={12}>
           {error ? (
             <Message>{error}</Message>
@@ -120,4 +113,4 @@ const ManageCourseScreen = ({ history }) => {
   )
 }
 
-export default ManageCourseScreen
+export default InstructorScreen

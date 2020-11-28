@@ -89,3 +89,48 @@ main {
   width: auto;
   height: auto;
 }
+
+/* Footer */
+footer {
+  background-color: var(--dark);
+  margin-top: 30px;
+}
+
+.footer > div {
+  display: flex;
+  justify-content: space-around;
+  padding: 60px 35px;
+  color: #eee;
+
+  align-items: center;
+}
+
+.footer ul {
+  list-style-type: none;
+  list-style-position: inside;
+  padding-left: 0;
+}
+
+.footer ul li {
+  margin-top: 10px;
+  margin-left: 0;
+}
+
+.footer ul li > a {
+  color: #eee !important;
+}
+
+.left-footer {
+  max-width: 400px;
+  color: #eee;
+  line-height: 20px;
+}
+.left-footer img {
+  width: 300px;
+  display: block;
+}
+
+.footer-bottom {
+  background-color: var(--dark2);
+  color: #eee;
+}

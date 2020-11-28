@@ -162,7 +162,7 @@ const CourseEditScreen = ({ match, history }) => {
   ) : (
     <Grid container className={classes.root}>
       <Grid item xs={12}>
-        <Button onClick={() => history.push('/admin/courses')}>Go Back</Button>|
+        <Button onClick={() => history.push('/admin')}>Go Back</Button>|
         <Button onClick={() => history.push('/admin/users')}>
           Go To Manage Users
         </Button>

@@ -18,6 +18,7 @@ import UserEditScreen from './screens/UserEditScreen'
 import ManageCoursesScreen from './screens/ManageCoursesScreen'
 import CourseEditScreen from './screens/CourseEditScreen'
 import BrowseScreen from './screens/BrowseScreen'
+import InstructorScreen from './screens/InstructorScreen'
 
 function App() {
   return (
@@ -62,21 +63,24 @@ function App() {
           <Switch className='admin'>
             <Container>
               <Route
-                path='/admin/courses/:id/edit'
+                path='/admin/:id/edit'
                 component={CourseEditScreen}
                 exact
               />
-              <Route
-                path='/admin/courses'
-                component={ManageCoursesScreen}
-                exact
-              />
+              <Route path='/admin' component={ManageCoursesScreen} exact />
               <Route
                 path='/admin/users/:id/edit'
                 component={UserEditScreen}
                 exact
               />
               <Route path='/admin/users' component={ManageUsersScreen} exact />
+            </Container>
+          </Switch>
+
+          {/* For Admin */}
+          <Switch className='instructor'>
+            <Container>
+              <Route path='/instructor' component={InstructorScreen} exact />
             </Container>
           </Switch>
 
