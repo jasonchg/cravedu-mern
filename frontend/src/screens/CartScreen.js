@@ -21,6 +21,7 @@ import { addToCart, removeFromCart } from '../actions/cartActions'
 import Message from '../components/Message'
 import Banner from '../components/Banner'
 import Breadcrumbs from '../components/Breadcrumbs'
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart'
 
 const useStyles = makeStyles({
   root: {
@@ -57,6 +58,18 @@ const useStyles = makeStyles({
   cartItemDetails: {
     display: 'flex',
     justifyContent: 'space-around',
+  },
+  iconContainer: {
+    marginTop: '30px',
+    marginBottom: '20px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cartIcon: {
+    fontSize: 180,
+    opacity: 0.7,
   },
 })
 
@@ -104,10 +117,15 @@ const CartScreen = ({ match, history }) => {
         <Grid container spacing={2}>
           <Grid item xs={8}>
             {cartItems.length === 0 ? (
-              <Message severity='info'>
-                Your cart is empty.
-                <Link href='/'> Add a course?</Link>
-              </Message>
+              <>
+                <div className={classes.iconContainer}>
+                  <AddShoppingCartIcon className={classes.cartIcon} />
+                  <p>Your cart is empty. Add a course now!</p>
+                  <Button variant='contained' color='secondary'>
+                    Add a Course
+                  </Button>
+                </div>
+              </>
             ) : (
               <div className={classes.cart}>
                 <Typography variant='body1' component='span'>
