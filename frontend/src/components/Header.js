@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+
 import CraveduLogo from '../assets/images/logo.png'
 import {
   AppBar,
@@ -12,6 +12,15 @@ import {
   MenuItem,
   ListItemIcon,
   Avatar,
+  useTheme,
+  useMediaQuery,
+  makeStyles,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Collapse,
 } from '@material-ui/core'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
@@ -21,7 +30,9 @@ import AccountBoxIcon from '@material-ui/icons/AccountBox'
 import ListIcon from '@material-ui/icons/List'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../actions/userActions'
-
+import MenuOpenIcon from '@material-ui/icons/MenuOpen'
+import ExpandLess from '@material-ui/icons/ExpandLess'
+import ExpandMore from '@material-ui/icons/ExpandMore'
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -37,11 +48,16 @@ const Header = () => {
 
   const [openMenuUser, setMenuOpenUser] = useState(null)
   const [openMenuAdmin, setMenuOpenAdmin] = useState(null)
+  const [openDrawer, setOpenDrawer] = useState(false)
 
   const dispatch = useDispatch()
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
+
+  const toggleDrawer = () => {
+    setOpenDrawer(true)
+  }
 
   const logoutUser = () => {
     if (window.confirm('Logout?')) {
@@ -89,6 +105,9 @@ const Header = () => {
     window.location.href = '/instructor'
   }
 
+  const theme = useTheme()
+  const matchesSM = useMediaQuery(theme.breakpoints.down('sm'))
+
   return (
     <div className={classes.root}>
       <AppBar position='static' className='header'>
@@ -102,107 +121,229 @@ const Header = () => {
               />
             </Link>
             <Typography variant='h6' className={classes.title}></Typography>
-            <Button
-              color='inherit'
-              startIcon={<ShoppingCartIcon />}
-              onClick={() => (window.location.href = '/cart')}
-            >
-              Cart
-            </Button>
-
-            {userInfo ? (
+            {matchesSM ? (
               <>
-                {userInfo.isInstructor && (
-                  <Button
-                    color='inherit'
-                    startIcon={<BallotIcon />}
-                    onClick={goInstructor}
-                  >
-                    Instructor
-                  </Button>
-                )}
+                <IconButton color='inherit' onClick={toggleDrawer}>
+                  <MenuOpenIcon fontSize='large' />
+                </IconButton>
 
-                {userInfo.isAdmin && (
+                <Drawer open={openDrawer} onClose={() => setOpenDrawer(false)}>
+                  <List style={{ width: '300px' }}>
+                    {userInfo ? (
+                      <>
+                        <ListItem
+                          button
+                          onClick={() => setMenuOpenUser(!openMenuUser)}
+                        >
+                          <ListItemIcon>
+                            <Avatar>{userInfo.name.charAt(0)}</Avatar>
+                          </ListItemIcon>
+                          <ListItemText primary={userInfo.name} />
+                          {openMenuUser ? <ExpandLess /> : <ExpandMore />}
+                        </ListItem>
+                        <Collapse
+                          in={openMenuUser}
+                          timeout='auto'
+                          unmountOnExit
+                        >
+                          <List component='div' disablePadding>
+                            <ListItem button onClick={goToMyCourses}>
+                              <ListItemIcon>
+                                <ListIcon fontSize='small' />
+                              </ListItemIcon>
+                              <ListItemText primary=' My Learning' />
+                            </ListItem>
+                            <ListItem button onClick={goToMyAccount}>
+                              <ListItemIcon>
+                                <AccountBoxIcon fontSize='small' />
+                              </ListItemIcon>
+                              <ListItemText primary='My Account' />
+                            </ListItem>
+                            <ListItem button onClick={logoutUser}>
+                              <ListItemIcon>
+                                <ExitToAppIcon fontSize='small' />
+                              </ListItemIcon>
+                              <ListItemText primary='Logout' />
+                            </ListItem>
+                          </List>
+                        </Collapse>
+                        {userInfo.isInstructor && (
+                          <ListItem button onClick={goInstructor}>
+                            <ListItemIcon>
+                              <BallotIcon />
+                            </ListItemIcon>
+
+                            <ListItemText primary='Instructor' />
+                          </ListItem>
+                        )}
+
+                        {userInfo.isAdmin && (
+                          <>
+                            <ListItem
+                              button
+                              onClick={() => setMenuOpenAdmin(!openMenuAdmin)}
+                            >
+                              <ListItemIcon>
+                                <BallotIcon />
+                              </ListItemIcon>
+                              <ListItemText primary='Admin' />
+                              {openMenuAdmin ? <ExpandLess /> : <ExpandMore />}
+                            </ListItem>
+
+                            <Collapse
+                              in={openMenuAdmin}
+                              timeout='auto'
+                              unmountOnExit
+                            >
+                              <List component='div' disablePadding>
+                                <ListItem button onClick={goToManageCourses}>
+                                  <ListItemIcon>
+                                    <ListIcon fontSize='small' />
+                                  </ListItemIcon>
+                                  <ListItemText primary='Manage Courses' />
+                                </ListItem>
+
+                                <ListItem button onClick={goToManageUsers}>
+                                  <ListItemIcon>
+                                    <AccountCircleIcon fontSize='small' />
+                                  </ListItemIcon>
+                                  <ListItemText primary='Manage User' />
+                                </ListItem>
+                              </List>
+                            </Collapse>
+                          </>
+                        )}
+                      </>
+                    ) : (
+                      <ListItem
+                        button
+                        onClick={() => (window.location.href = '/login')}
+                      >
+                        <ListItemIcon>
+                          <AccountCircleIcon />
+                        </ListItemIcon>
+                        <ListItemText primary='Login' />
+                      </ListItem>
+                    )}
+                    <ListItem
+                      button
+                      onClick={() => (window.location.href = '/cart')}
+                    >
+                      <ListItemIcon>
+                        <ShoppingCartIcon />
+                      </ListItemIcon>
+                      <ListItemText primary='Cart' />
+                    </ListItem>
+                  </List>
+                </Drawer>
+              </>
+            ) : (
+              <>
+                <Button
+                  color='inherit'
+                  startIcon={<ShoppingCartIcon />}
+                  onClick={() => (window.location.href = '/cart')}
+                >
+                  Cart
+                </Button>
+
+                {userInfo ? (
                   <>
+                    {userInfo.isInstructor && (
+                      <Button
+                        color='inherit'
+                        startIcon={<BallotIcon />}
+                        onClick={goInstructor}
+                      >
+                        Instructor
+                      </Button>
+                    )}
+
+                    {userInfo.isAdmin && (
+                      <>
+                        <Button
+                          color='inherit'
+                          startIcon={<BallotIcon />}
+                          onClick={openAdminMenuHandler}
+                        >
+                          Admin
+                        </Button>
+                        <Menu
+                          id='admin-menu'
+                          anchorEl={openMenuAdmin}
+                          keepMounted
+                          open={Boolean(openMenuAdmin)}
+                          onClose={closeAdminMenuHandler}
+                        >
+                          <MenuItem onClick={goToManageCourses}>
+                            <ListItemIcon>
+                              <ListIcon fontSize='small' />
+                            </ListItemIcon>
+                            <Typography variant='inherit'>
+                              Manage Courses
+                            </Typography>
+                          </MenuItem>
+
+                          <MenuItem onClick={goToManageUsers}>
+                            <ListItemIcon>
+                              <AccountCircleIcon fontSize='small' />
+                            </ListItemIcon>
+                            <Typography variant='inherit'>
+                              Manage User
+                            </Typography>
+                          </MenuItem>
+                        </Menu>
+                      </>
+                    )}
+
                     <Button
                       color='inherit'
-                      startIcon={<BallotIcon />}
-                      onClick={openAdminMenuHandler}
+                      onClick={openUserMenuHandler}
+                      size='small'
                     >
-                      Admin
+                      <Avatar style={{ background: 'rgba(255,255,255, 0.5)' }}>
+                        {userInfo.name.charAt(0)}
+                      </Avatar>
                     </Button>
                     <Menu
-                      id='admin-menu'
-                      anchorEl={openMenuAdmin}
+                      id='menu'
+                      anchorEl={openMenuUser}
                       keepMounted
-                      open={Boolean(openMenuAdmin)}
-                      onClose={closeAdminMenuHandler}
+                      open={Boolean(openMenuUser)}
+                      onClose={closeUserMenuHandler}
                     >
-                      <MenuItem onClick={goToManageCourses}>
+                      <MenuItem onClick={goToMyCourses}>
                         <ListItemIcon>
                           <ListIcon fontSize='small' />
                         </ListItemIcon>
-                        <Typography variant='inherit'>
-                          Manage Courses
-                        </Typography>
+                        <Typography variant='inherit'> My Learning</Typography>
                       </MenuItem>
 
-                      <MenuItem onClick={goToManageUsers}>
+                      <MenuItem onClick={goToMyAccount}>
                         <ListItemIcon>
-                          <AccountCircleIcon fontSize='small' />
+                          <AccountBoxIcon fontSize='small' />
                         </ListItemIcon>
-                        <Typography variant='inherit'>Manage User</Typography>
+                        <Typography variant='inherit'> My Account</Typography>
+                      </MenuItem>
+
+                      <MenuItem onClick={logoutUser}>
+                        <ListItemIcon>
+                          <ExitToAppIcon fontSize='small' />
+                        </ListItemIcon>
+                        <Typography variant='inherit'>Logout</Typography>
                       </MenuItem>
                     </Menu>
                   </>
+                ) : (
+                  <Button
+                    color='inherit'
+                    startIcon={<AccountCircleIcon />}
+                    onClick={() => (window.location.href = '/login')}
+                  >
+                    Login
+                  </Button>
                 )}
-
-                <Button
-                  color='inherit'
-                  onClick={openUserMenuHandler}
-                  size='small'
-                >
-                  <Avatar style={{ background: 'rgba(255,255,255, 0.5)' }}>
-                    {userInfo.name.charAt(0)}
-                  </Avatar>
-                </Button>
-                <Menu
-                  id='menu'
-                  anchorEl={openMenuUser}
-                  keepMounted
-                  open={Boolean(openMenuUser)}
-                  onClose={closeUserMenuHandler}
-                >
-                  <MenuItem onClick={goToMyCourses}>
-                    <ListItemIcon>
-                      <ListIcon fontSize='small' />
-                    </ListItemIcon>
-                    <Typography variant='inherit'> My Learning</Typography>
-                  </MenuItem>
-
-                  <MenuItem onClick={goToMyAccount}>
-                    <ListItemIcon>
-                      <AccountBoxIcon fontSize='small' />
-                    </ListItemIcon>
-                    <Typography variant='inherit'> My Account</Typography>
-                  </MenuItem>
-
-                  <MenuItem onClick={logoutUser}>
-                    <ListItemIcon>
-                      <ExitToAppIcon fontSize='small' />
-                    </ListItemIcon>
-                    <Typography variant='inherit'>Logout</Typography>
-                  </MenuItem>
-                </Menu>
               </>
-            ) : (
-              <Button
-                color='inherit'
-                startIcon={<AccountCircleIcon />}
-                onClick={() => (window.location.href = '/login')}
-              >
-                Login
-              </Button>
             )}
           </Toolbar>
         </Container>

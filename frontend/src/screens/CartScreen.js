@@ -114,7 +114,7 @@ const CartScreen = ({ match, history }) => {
       </Grid>
       <Container className={classes.root}>
         <Grid container spacing={2}>
-          <Grid item xs={8}>
+          <Grid item md={8} xs={12}>
             {cartItems.length === 0 ? (
               <>
                 <div className={classes.iconContainer}>
@@ -139,7 +139,7 @@ const CartScreen = ({ match, history }) => {
                     <div key={item.course}>
                       <ListItem className={classes.listItem}>
                         <Grid container spacing={2}>
-                          <Grid item xs={3}>
+                          <Grid item xs={12} md={3}>
                             <ListItemAvatar>
                               <Link href={`/course/${item.course}`}>
                                 <img
@@ -150,7 +150,12 @@ const CartScreen = ({ match, history }) => {
                               </Link>
                             </ListItemAvatar>
                           </Grid>
-                          <Grid item xs={9} className={classes.cartItemDetails}>
+                          <Grid
+                            item
+                            md={9}
+                            xs={12}
+                            className={classes.cartItemDetails}
+                          >
                             <div style={{ flex: 1 }}>
                               <Link href={`/course/${item.course}`}>
                                 <ListItemText
@@ -184,7 +189,7 @@ const CartScreen = ({ match, history }) => {
             )}
           </Grid>
 
-          <Grid item xs={4}>
+          <Grid item md={4} xs={12}>
             <Paper className={classes.paper}>
               <List>
                 <ListItem>

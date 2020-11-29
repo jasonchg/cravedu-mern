@@ -46,6 +46,7 @@ const useStyles = makeStyles({
     marginLeft: '20px',
     position: 'relative',
     height: '75vh',
+    marginBottom: '20px',
     '& img': {
       position: 'absolute',
       width: '175px',

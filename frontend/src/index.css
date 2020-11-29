@@ -102,6 +102,7 @@ footer {
   padding: 60px 35px;
   color: #eee;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .footer ul {

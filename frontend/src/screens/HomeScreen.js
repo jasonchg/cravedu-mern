@@ -1,5 +1,11 @@
 import React, { useEffect } from 'react'
-import { Grid, Container, Button } from '@material-ui/core'
+import {
+  Grid,
+  Container,
+  Button,
+  useTheme,
+  useMediaQuery,
+} from '@material-ui/core'
 import Course from '../components/Course'
 import { listCourses } from '../actions/courseActions'
 import { getUserCourses } from '../actions/userActions'
@@ -66,6 +72,14 @@ const HomeScreen = ({ history }) => {
     },
   ]
 
+  const theme = useTheme()
+  const matchesSM = useMediaQuery(theme.breakpoints.down('sm'))
+  const matchesMD = useMediaQuery(theme.breakpoints.down('md'))
+  const matchesLG = useMediaQuery(theme.breakpoints.up('lg'))
+
+  let itemToShow = matchesSM ? 2 : matchesMD ? 4 : matchesLG ? 5 : 4
+  let itemToShowLeaning = matchesSM ? 1 : matchesMD ? 2 : matchesLG ? 3 : 2
+
   return (
     <>
       <Container>
@@ -82,7 +96,7 @@ const HomeScreen = ({ history }) => {
               </Grid>
 
               <CourseScroll
-                itemsToShow={3}
+                itemsToShow={itemToShowLeaning}
                 pagination={false}
                 itemPosition={consts.START}
               >
@@ -104,12 +118,14 @@ const HomeScreen = ({ history }) => {
           <Loader />
         ) : (
           <Grid container style={{ marginBottom: 30 }}>
-            <Grid item xs={12} className='homeHeaderText'>
-              <h2>Trending</h2>
-              <Carousels courses={courses} />
-            </Grid>
+            {matchesLG === true ? (
+              <Grid item xs={12} className='homeHeaderText'>
+                <h2>Trending</h2>
+                <Carousels courses={courses} />
+              </Grid>
+            ) : null}
 
-            <Grid item xs={12}>
+            <Grid item xs={12} style={{ marginTop: 20 }}>
               {category &&
                 category.map((item, index) => (
                   <Category key={index} category={item} color='primary' />
@@ -135,7 +151,7 @@ const HomeScreen = ({ history }) => {
 
             <Grid item xs={12}>
               <CourseScroll
-                itemsToShow={5}
+                itemsToShow={itemToShow}
                 pagination={false}
                 itemPosition={consts.START}
               >

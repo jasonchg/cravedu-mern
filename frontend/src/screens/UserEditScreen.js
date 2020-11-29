@@ -141,7 +141,7 @@ const UserEditScreen = ({ history, match }) => {
         <Message>{error} </Message>
       ) : (
         <Grid container spacing='3'>
-          <Grid item xs={4}>
+          <Grid item md={4} xs={12}>
             <form className={classes.form} onSubmit={submitHandler}>
               <FormContainer>
                 <TextField
@@ -203,7 +203,7 @@ const UserEditScreen = ({ history, match }) => {
               </Button>
             </form>
           </Grid>
-          <Grid item xs={8}>
+          <Grid item md={8} xs={12}>
             <div className={classes.list}>
               <h4>
                 User Id# {userDetails._id} <br /> Acocunt created since{' '}

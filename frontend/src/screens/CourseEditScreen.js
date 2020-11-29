@@ -173,7 +173,7 @@ const CourseEditScreen = ({ match, history }) => {
       {updateLoading && <Loader />}
       {updateError && <Message>{updateError}</Message>}
       <Grid container spacing={3}>
-        <Grid item xs={5}>
+        <Grid item md={5} xs={12}>
           <Paper className={classes.leftPanel}>
             <img src={image} alt='' className={classes.img} />
             <p style={{ background: '#eee', padding: 7 }}>
@@ -276,7 +276,7 @@ const CourseEditScreen = ({ match, history }) => {
 
           <Divider />
         </Grid>
-        <Grid item xs={7}>
+        <Grid item md={7} xs={12}>
           <h2>Course Contents</h2>
           <Paper>
             <List>

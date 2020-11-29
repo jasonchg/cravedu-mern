@@ -104,96 +104,89 @@ const UserProfileScreen = ({ history }) => {
           <Loader />
         ) : (
           <Grid container spacing={3} className={classes.root}>
-            <Grid item xs={5}>
+            <Grid item md={5} xs={12}>
               <FormContainer>
                 <form className={classes.form} onSubmit={submitHandler}>
-                  <Grid item xs={12}>
-                    <FormContainer>
-                      <TextField
-                        required
-                        fullWidth
-                        disabled
-                        id='email'
-                        type='email'
-                        label='Email Address'
-                        placeholder=''
-                        variant='filled'
-                        value={email}
-                        autoComplete='email'
-                        onChange={(e) => setEmail(e.target.value)}
-                      />
-                    </FormContainer>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormContainer>
-                      <TextField
-                        required
-                        fullWidth
-                        id='name'
-                        type='text'
-                        label='Name'
-                        placeholder=''
-                        variant='filled'
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                      />
-                    </FormContainer>
-                  </Grid>
+                  <FormContainer>
+                    <TextField
+                      required
+                      fullWidth
+                      disabled
+                      id='email'
+                      type='email'
+                      label='Email Address'
+                      placeholder=''
+                      variant='filled'
+                      value={email}
+                      autoComplete='email'
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </FormContainer>
 
-                  <Grid item xs={12}>
-                    <FormContainer>
+                  <FormContainer>
+                    <TextField
+                      required
+                      fullWidth
+                      id='name'
+                      type='text'
+                      label='Name'
+                      placeholder=''
+                      variant='filled'
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                  </FormContainer>
+
+                  <FormContainer>
+                    <TextField
+                      fullWidth
+                      id='password-form1'
+                      label='Password'
+                      type='password'
+                      autoComplete='current-password'
+                      variant='filled'
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      helperText='blank if no changes'
+                    />
+                  </FormContainer>
+
+                  <FormContainer>
+                    {!match ? (
                       <TextField
+                        error
                         fullWidth
-                        id='password-form1'
-                        label='Password'
+                        id='confirm-password-form2'
+                        label='Confirm Password'
                         type='password'
                         autoComplete='current-password'
                         variant='filled'
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        helperText='Password do not match'
+                      />
+                    ) : (
+                      <TextField
+                        fullWidth
+                        id='confirm-password-form2'
+                        label='Confirm Password'
+                        type='password'
+                        autoComplete='current-password'
+                        variant='filled'
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
                         helperText='blank if no changes'
                       />
-                    </FormContainer>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormContainer>
-                      {!match ? (
-                        <TextField
-                          error
-                          fullWidth
-                          id='confirm-password-form2'
-                          label='Confirm Password'
-                          type='password'
-                          autoComplete='current-password'
-                          variant='filled'
-                          value={confirmPassword}
-                          onChange={(e) => setConfirmPassword(e.target.value)}
-                          helperText='Password do not match'
-                        />
-                      ) : (
-                        <TextField
-                          fullWidth
-                          id='confirm-password-form2'
-                          label='Confirm Password'
-                          type='password'
-                          autoComplete='current-password'
-                          variant='filled'
-                          value={confirmPassword}
-                          onChange={(e) => setConfirmPassword(e.target.value)}
-                          helperText='blank if no changes'
-                        />
-                      )}
-                    </FormContainer>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Button type='submit' variant='contained' color='primary'>
-                      Update Profile
-                    </Button>
-                  </Grid>
+                    )}
+                  </FormContainer>
+
+                  <Button type='submit' variant='contained' color='primary'>
+                    Update Profile
+                  </Button>
                 </form>
               </FormContainer>
             </Grid>
-            <Grid item xs={7}>
+            <Grid item md={7} xs={12}>
               <div className={classes.list}>
                 <h2>My Orders History</h2>
                 {orderMyError && <Message>{orderMyError}</Message>}
