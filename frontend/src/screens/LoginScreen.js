@@ -13,12 +13,57 @@ import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../actions/userActions'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
+import {
+  FacebookLoginButton,
+  GoogleLoginButton,
+  TwitterLoginButton,
+  MicrosoftLoginButton,
+} from 'react-social-login-buttons'
+import LogoIcon from '../assets/images/logo-icon.png'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   root: {
-    padding: 40,
+    marginTop: 10,
   },
-}))
+  rightLoginContainer: {
+    marginTop: '12px',
+    maxWidth: '400px',
+  },
+  socialButtons: {
+    marginBottom: 50,
+  },
+  leftLoginContainer: {
+    backgroundColor: '#457b9d',
+    height: '70vh',
+    marginTop: '40px',
+    position: 'relative',
+    marginBottom: '10px',
+    '& img': {
+      position: 'absolute',
+      width: '175px',
+      left: 40,
+      top: 30,
+    },
+  },
+  leftInnerLoginContainer: {
+    position: 'absolute',
+    right: 20,
+    bottom: 20,
+    background: '#1d3557',
+    padding: '20px',
+    color: '#eee ',
+    width: '320px',
+    textAlign: 'left',
+    boxShadow: '10px 10px 5px 0px rgba(19,19,48,1)',
+    '& a': {
+      color: '#eee !important',
+      fontStyle: 'italic',
+    },
+    '& p': {
+      marginTop: '20px',
+    },
+  },
+})
 
 const LoginScreen = ({ history, location, match }) => {
   const classes = useStyles()
@@ -52,68 +97,102 @@ const LoginScreen = ({ history, location, match }) => {
   }
 
   return (
-    <FormContainer>
-      <Container maxWidth='md' className={classes.root}>
-        <Grid container direction='column' justify='flex-start'>
-          <Grid item xs={12}>
-            <Typography variant='h4'>User Login</Typography>
+    <>
+      <Container className={classes.root}>
+        <Grid container spacing={6}>
+          <Grid item md={6} xs={12} className={classes.leftLoginContainer}>
+            <img src={LogoIcon} alt='' />
+            <div className={classes.leftInnerLoginContainer}>
+              <Typography variant='h3' component='span'>
+                Good to see you again
+              </Typography>
+              <Typography component='p'>
+                By logged into Cravedu you're agreed to our{' '}
+                <a href='/'>Privacy Policies</a> and{' '}
+                <a href='/'> Terms & Conditions</a>.
+              </Typography>
+            </div>
           </Grid>
-          {error && <Message>{error}</Message>}
-          {loading && <Loader />}
-          <form className={classes.form} onSubmit={submitHandler}>
-            <Grid item xs={12}>
-              <FormContainer>
-                <TextField
-                  required
-                  fullWidth
-                  id='email'
-                  type='email'
-                  label='Email Address'
-                  placeholder=''
-                  variant='filled'
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </FormContainer>
-            </Grid>
-            <Grid item xs={12}>
-              <FormContainer>
-                <TextField
-                  required
-                  fullWidth
-                  id='password'
-                  label='Password'
-                  type='password'
-                  autoComplete='current-password'
-                  variant='filled'
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </FormContainer>
-            </Grid>
-            <Grid item xs={12}>
-              <Button type='submit' variant='contained' color='primary'>
-                Login
-              </Button>
-            </Grid>
-            <Grid item xs={12}>
-              <FormContainer>
-                <Typography variant='body2'>
-                  New User?{' '}
-                  <Link
-                    href={
-                      redirect ? `/register?redirect=${redirect}` : '/register'
-                    }
-                  >
-                    Register
-                  </Link>
-                </Typography>
-              </FormContainer>
-            </Grid>
-          </form>
+
+          <Grid item md={6} xs={12} className={classes.rightLoginContainer}>
+            {error && <Message>{error}</Message>}
+            {loading && <Loader />}
+
+            <Typography variant='h5'>Social Logins</Typography>
+            <div className={classes.socialButtons}>
+              <FacebookLoginButton onClick={() => alert('Facebook')} />
+              <GoogleLoginButton onClick={() => alert('Google')} />
+              <TwitterLoginButton onClick={() => alert('Twitter')} />
+              <MicrosoftLoginButton onClick={() => alert('Microsoft')} />
+            </div>
+            <Typography variant='h5'>Email Logins</Typography>
+            <form className={classes.form} onSubmit={submitHandler}>
+              <Grid item xs={12}>
+                <FormContainer>
+                  <TextField
+                    required
+                    fullWidth
+                    id='email'
+                    type='email'
+                    label='Email Address'
+                    placeholder=''
+                    variant='filled'
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </FormContainer>
+              </Grid>
+              <Grid item xs={12}>
+                <FormContainer>
+                  <TextField
+                    required
+                    fullWidth
+                    id='password'
+                    label='Password'
+                    type='password'
+                    autoComplete='current-password'
+                    variant='filled'
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </FormContainer>
+                <FormContainer>
+                  <Typography variant='body2'>
+                    <Link href={'/'}> Forget Password </Link>
+                  </Typography>
+                </FormContainer>
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                  type='submit'
+                  variant='contained'
+                  color='primary'
+                  size='large'
+                >
+                  Login
+                </Button>
+              </Grid>
+              <Grid item xs={12}>
+                <FormContainer>
+                  <Typography variant='body2'>
+                    New User?{' '}
+                    <Link
+                      href={
+                        redirect
+                          ? `/register?redirect=${redirect}`
+                          : '/register'
+                      }
+                    >
+                      Register
+                    </Link>
+                  </Typography>
+                </FormContainer>
+              </Grid>
+            </form>
+          </Grid>
         </Grid>
       </Container>
-    </FormContainer>
+    </>
   )
 }
 

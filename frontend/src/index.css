@@ -93,7 +93,7 @@ main {
 /* Footer */
 footer {
   background-color: var(--dark);
-  margin-top: 30px;
+  margin-top: 10px;
 }
 
 .footer > div {
@@ -101,7 +101,6 @@ footer {
   justify-content: space-around;
   padding: 60px 35px;
   color: #eee;
-
   align-items: center;
 }
 
@@ -130,7 +129,17 @@ footer {
   display: block;
 }
 
-.footer-bottom {
+.footer-bottom-container {
   background-color: var(--dark2);
-  color: #eee;
+}
+.footer-bottom > div {
+  display: flex;
+  align-items: center;
+  color: #eee !important;
+  justify-content: space-between;
+  padding: 0 30px;
+}
+
+.footer-bottom a {
+  color: #eee !important;
 }

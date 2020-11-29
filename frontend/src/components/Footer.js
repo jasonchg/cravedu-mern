@@ -23,16 +23,16 @@ const Footer = () => {
             </Typography>
             <ul>
               <li>
-                <a>Home</a>
+                <a href='/'>Home</a>
               </li>
               <li>
-                <a>Browse Course</a>
+                <a href='/'>Browse Course</a>
               </li>
               <li>
-                <a>Cart</a>
+                <a href='/'>Cart</a>
               </li>
               <li>
-                <a>About</a>
+                <a href='/'>About</a>
               </li>
             </ul>
           </div>
@@ -43,16 +43,16 @@ const Footer = () => {
             </Typography>
             <ul>
               <li>
-                <a>Home</a>
+                <a href='/'>Home</a>
               </li>
               <li>
-                <a>Browse Course</a>
+                <a href='/course'>Browse Course</a>
               </li>
               <li>
-                <a>Cart</a>
+                <a href='/cart'>Cart</a>
               </li>
               <li>
-                <a>About</a>
+                <a href='/'>About</a>
               </li>
             </ul>
           </div>
@@ -63,17 +63,17 @@ const Footer = () => {
             </Typography>
             <ul>
               <li>
-                <a>
+                <a href='/'>
                   <InstagramIcon /> Cravedu Insta
                 </a>
               </li>
               <li>
-                <a>
+                <a href='/'>
                   <FacebookIcon /> Cravedu FB
                 </a>
               </li>
               <li>
-                <a>
+                <a href='/'>
                   <TwitterIcon /> Cravedu Tweet
                 </a>
               </li>
@@ -82,9 +82,21 @@ const Footer = () => {
         </Container>
       </div>
 
-      <Typography className='footer-bottom' variant='subtitle1' align='center'>
-        Copyright &copy; Cravedu.inc
-      </Typography>
+      <div className='footer-bottom-container'>
+        <div className='footer-bottom'>
+          <Container>
+            <div>
+              <Typography variant='subtitle1' align='center'>
+                Copyright &copy; Cravedu.inc
+              </Typography>
+            </div>
+            <div>
+              <a href='/'>Privacy Policies</a> |{' '}
+              <a href='/'>Terms & Conditions</a>
+            </div>
+          </Container>
+        </div>
+      </div>
     </footer>
   )
 }

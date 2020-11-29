@@ -43,6 +43,10 @@ const MyCoursesScreen = ({ history }) => {
         />
       </Grid>
       <Container style={{ marginTop: 10 }}>
+        {userPaidCourses && (
+          <p>{`You have total ${userPaidCourses.length} courses in your study list.`}</p>
+        )}
+
         <Grid container>
           {userPaidCourses ? (
             userPaidCourses.length === 0 ? (
