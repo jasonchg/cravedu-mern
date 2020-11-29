@@ -51,7 +51,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @access  Public
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body
+  const { name, email, password, instructor } = req.body
   const userExisted = await User.findOne({ email })
 
   if (userExisted) {
@@ -59,10 +59,13 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error('User already exists')
   }
 
+  let type = instructor.toLowerCase() === 'student' ? false : true
+
   const createdUser = await User.create({
     name,
     email,
     password,
+    isInstructor: type,
   })
 
   if (createdUser) {

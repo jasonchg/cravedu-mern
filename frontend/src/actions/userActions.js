@@ -58,7 +58,7 @@ const logout = () => async (dispatch) => {
   dispatch({ type: USER_LOGOUT })
 }
 
-const register = (name, email, password) => async (dispatch) => {
+const register = (name, email, password, instructor) => async (dispatch) => {
   try {
     dispatch({ type: USER_REGISTER_REQUEST })
 
@@ -70,7 +70,7 @@ const register = (name, email, password) => async (dispatch) => {
 
     const { data } = await axios.post(
       '/api/users',
-      { name, email, password },
+      { name, email, password, instructor },
       config
     )
 

@@ -98,7 +98,7 @@ const RegisterScreen = ({ history, location }) => {
     e.preventDefault()
 
     if (password === confirmPassword) {
-      dispatch(register(name, email, password))
+      dispatch(register(name, email, password, instructor))
     } else {
       setMatch(false)
     }
