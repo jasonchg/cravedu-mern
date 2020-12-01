@@ -126,7 +126,7 @@ const CourseEditScreen = ({ match, history }) => {
     if (updateSuccess) {
       dispatch({ type: ADMIN_COURSE_DETAILS_RESET })
       dispatch({ type: ADMIN_COURSE_UPDATE_RESET })
-      history.push('/admin/courses')
+      history.push('/admin')
     } else {
       if (userInfo && userInfo.isAdmin) {
         if (

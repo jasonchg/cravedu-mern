@@ -14,6 +14,7 @@ import myCourseRoutes from './routes/myCourseRoutes.js'
 import adminRoutes from './routes/adminRoutes.js'
 import adminCourseRoutes from './routes/adminCourseRoutes.js'
 import uploadRoutes from './routes/uploadRoutes.js'
+import instructorRoutes from './routes/instructorRoutes.js'
 
 // Config & Initialization
 dotenv.config()
@@ -41,6 +42,9 @@ app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 // Admin Routes
 app.use('/api/admin/users', adminRoutes)
 app.use('/api/admin/courses', adminCourseRoutes)
+
+// Instructor Routes
+app.use('/api/instructor', instructorRoutes)
 
 // Error Handling
 app.use(notFound)

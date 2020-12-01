@@ -111,14 +111,17 @@ const Course = ({ course, learning }) => {
                 {course.name}
               </Typography>
               {course.totalSold ? (
-                <span
+                <div
                   style={{
                     display: 'flex',
-                    alignContent: 'center',
+                    alignItems: 'center',
                   }}
                 >
-                  <PeopleIcon /> {course.totalSold}
-                </span>
+                  <div>
+                    <PeopleIcon />{' '}
+                  </div>
+                  <div> {course.totalSold}</div>
+                </div>
               ) : null}
             </CardContent>
             {course.rating ? (

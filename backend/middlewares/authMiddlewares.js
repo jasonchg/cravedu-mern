@@ -37,4 +37,13 @@ const adminRoute = asyncHandler(async (req, res, next) => {
   }
 })
 
-export { protectedRoute, adminRoute }
+const instructorRoute = asyncHandler(async (req, res, next) => {
+  if (req.user && req.user.isInstructor) {
+    next()
+  } else {
+    res.status(401)
+    throw new Error('Not authorized')
+  }
+})
+
+export { protectedRoute, adminRoute, instructorRoute }

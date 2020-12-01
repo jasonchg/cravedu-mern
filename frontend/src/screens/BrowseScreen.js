@@ -1,30 +1,28 @@
 import React, { useEffect, useState } from 'react'
-import { Grid, Container, Divider } from '@material-ui/core'
+import {
+  Grid,
+  Container,
+  Divider,
+  useTheme,
+  useMediaQuery,
+} from '@material-ui/core'
 import Course from '../components/Course'
 import { listCourses } from '../actions/courseActions'
-import { getUserCourses } from '../actions/userActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import Category from '../components/Category'
 import Carousels from '../components/Carousels'
 
-const BrowseScreen = ({ history }) => {
+const BrowseScreen = () => {
   const dispatch = useDispatch()
 
   const courseList = useSelector((state) => state.courseList)
   const { loading, error, courses } = courseList
 
-  const userLogin = useSelector((state) => state.userLogin)
-  const { userInfo } = userLogin
-
   useEffect(() => {
     dispatch(listCourses())
-
-    if (userInfo) {
-      dispatch(getUserCourses())
-    }
-  }, [dispatch, userInfo, history])
+  }, [dispatch])
 
   const category = [
     { name: 'All Courses', link: '#' },
@@ -67,9 +65,11 @@ const BrowseScreen = ({ history }) => {
   const setCatHandler = (selectCategory) => {
     setCurrentCategory(selectCategory)
   }
+  const theme = useTheme()
+  const matchesLG = useMediaQuery(theme.breakpoints.up('lg'))
 
   return (
-    <Container maxWidth='md'>
+    <Container>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <div style={{ fontSize: '20px' }}>
@@ -77,6 +77,7 @@ const BrowseScreen = ({ history }) => {
             <Divider />
           </div>
         </Grid>
+
         <Grid item xs={12}>
           {category &&
             category.map((item, index) => (
@@ -85,17 +86,16 @@ const BrowseScreen = ({ history }) => {
               </span>
             ))}
         </Grid>
+
         <Grid item xs={12}>
           <Grid container wrap='wrap'>
             {error ? (
-              <Grid item xs={12}>
-                <Message>{error}</Message>
-              </Grid>
+              <Message>{error}</Message>
             ) : loading ? (
               <Loader />
             ) : (
               courses.map((course, i) => (
-                <Grid key={i} item style={{ marginTop: 7 }}>
+                <Grid item key={i} style={{ marginTop: 7 }}>
                   <Course course={course} />
                 </Grid>
               ))
@@ -103,10 +103,12 @@ const BrowseScreen = ({ history }) => {
           </Grid>
         </Grid>
 
-        <Grid item xs={12} className='homeHeaderText'>
-          <h2>Trending</h2>
-          <Carousels courses={courses} />
-        </Grid>
+        {matchesLG === true ? (
+          <Grid item xs={12} className='homeHeaderText'>
+            <h2>Trending</h2>
+            <Carousels courses={courses} />
+          </Grid>
+        ) : null}
       </Grid>
     </Container>
   )

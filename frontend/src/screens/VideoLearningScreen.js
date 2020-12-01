@@ -136,7 +136,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const VideoLearningScreen = ({ match, history, location }) => {
+const VideoLearningScreen = ({ match, history }) => {
   const courseId = match.params.id
   const dispatch = useDispatch()
 
@@ -232,14 +232,14 @@ const VideoLearningScreen = ({ match, history, location }) => {
               </span>
 
               <Grid container spacing={0}>
-                <Grid item xs={9}>
+                <Grid item md={9} xs={12}>
                   <VideoPlayer
                     className={classes.player}
                     videoPath={selectedVideo}
                   />
                 </Grid>
 
-                <Grid item xs={3}>
+                <Grid item md={3} xs={12}>
                   <div className={classes.courseContents}>
                     <Typography
                       variant='h6'
