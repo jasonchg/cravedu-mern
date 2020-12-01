@@ -38,7 +38,7 @@ const createCourse = asyncHandler(async (req, res) => {
 
   try {
     const createdCourse = await course.save()
-    res.status(201).json(createdCourse)
+    res.status(201).json(createdCourse._id)
   } catch (e) {
     res.status(500)
     throw new Error('Internal Error with this one, please try again later.')

@@ -10,11 +10,14 @@ import {
   Table,
   Typography,
 } from '@material-ui/core'
-import { listCourses } from '../actions/instructorActions'
+import { createCourse, listCourses } from '../actions/instructorActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { INSTRUCTOR_COURSE_LIST_RESET } from '../constants/instructorConstants'
+import {
+  INSTRUCTOR_COURSE_CREATE_RESET,
+  INSTRUCTOR_COURSE_LIST_RESET,
+} from '../constants/instructorConstants'
 import Breadcrumbs from '../components/Breadcrumbs'
 
 const InstructorScreen = ({ history }) => {
@@ -28,18 +31,36 @@ const InstructorScreen = ({ history }) => {
   )
   const { courses, loading, error } = instructorCourseList
 
+  const instructorCourseCreate = useSelector(
+    (state) => state.instructorCourseCreate
+  )
+  const {
+    courseId: newCourseId,
+    error: createCourseError,
+    success: createCourseSuccess,
+    loading: createCourseLoading,
+  } = instructorCourseCreate
+
   const goToEdit = (id) => {
+    // update to instructor/:id/edit
     history.push(`/admin/${id}/edit`)
   }
 
   useEffect(() => {
-    if (userInfo && userInfo.isInstructor) {
-      dispatch({ type: INSTRUCTOR_COURSE_LIST_RESET })
-      dispatch(listCourses())
+    dispatch({ type: INSTRUCTOR_COURSE_CREATE_RESET })
+
+    if (createCourseSuccess) {
+      // update to instructor/:id/edit
+      history.push(`/admin/${newCourseId}/edit`)
     } else {
-      history.push('/login')
+      if (userInfo && userInfo.isInstructor) {
+        dispatch({ type: INSTRUCTOR_COURSE_LIST_RESET })
+        dispatch(listCourses())
+      } else {
+        history.push('/login')
+      }
     }
-  }, [userInfo, dispatch, history])
+  }, [userInfo, dispatch, history, createCourseSuccess, newCourseId])
 
   return (
     <>
@@ -61,10 +82,12 @@ const InstructorScreen = ({ history }) => {
           <Button
             variant='contained'
             color='primary'
-            onClick={() => alert('create course')}
+            onClick={() => dispatch(createCourse())}
           >
             Create New Course
           </Button>
+          {createCourseError && <Message>{createCourseError}</Message>}
+          {createCourseLoading && <Loader left />}
         </Grid>
 
         <Grid item xs={12}>

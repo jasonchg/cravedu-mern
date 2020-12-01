@@ -11,6 +11,10 @@ import {
   INSTRUCTOR_COURSE_UPDATE_REQUEST,
   INSTRUCTOR_COURSE_UPDATE_RESET,
   INSTRUCTOR_COURSE_UPDATE_SUCCESS,
+  INSTRUCTOR_COURSE_CREATE_REQUEST,
+  INSTRUCTOR_COURSE_CREATE_FAIL,
+  INSTRUCTOR_COURSE_CREATE_SUCCESS,
+  INSTRUCTOR_COURSE_CREATE_RESET,
 } from '../constants/instructorConstants'
 
 const instructorCourseListReducer = (state = { courses: [] }, action) => {
@@ -23,6 +27,21 @@ const instructorCourseListReducer = (state = { courses: [] }, action) => {
       return { loading: false, error: action.payload }
     case INSTRUCTOR_COURSE_LIST_RESET:
       return { courses: [] }
+    default:
+      return state
+  }
+}
+
+const instructorCourseCreateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case INSTRUCTOR_COURSE_CREATE_REQUEST:
+      return { loading: true, courses: [] }
+    case INSTRUCTOR_COURSE_CREATE_SUCCESS:
+      return { loading: false, courseId: action.payload, success: true }
+    case INSTRUCTOR_COURSE_CREATE_FAIL:
+      return { loading: false, error: action.payload }
+    case INSTRUCTOR_COURSE_CREATE_RESET:
+      return {}
     default:
       return state
   }
@@ -68,4 +87,5 @@ export {
   instructorCourseListReducer,
   instructorCourseDetailsReducer,
   instructorCourseUpdateReducer,
+  instructorCourseCreateReducer,
 }

@@ -9,7 +9,40 @@ import {
   INSTRUCTOR_COURSE_UPDATE_FAIL,
   INSTRUCTOR_COURSE_UPDATE_REQUEST,
   INSTRUCTOR_COURSE_UPDATE_SUCCESS,
+  INSTRUCTOR_COURSE_CREATE_FAIL,
+  INSTRUCTOR_COURSE_CREATE_REQUEST,
+  INSTRUCTOR_COURSE_CREATE_SUCCESS,
 } from '../constants/instructorConstants'
+
+const createCourse = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: INSTRUCTOR_COURSE_CREATE_REQUEST })
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    const { data } = await axios.post('/api/instructor/', {}, config)
+
+    dispatch({
+      type: INSTRUCTOR_COURSE_CREATE_SUCCESS,
+      payload: data,
+    })
+  } catch (e) {
+    dispatch({
+      type: INSTRUCTOR_COURSE_CREATE_FAIL,
+      payload:
+        e.response && e.response.data.message
+          ? e.response.data.message
+          : e.message,
+    })
+  }
+}
 
 const listCourses = () => async (dispatch, getState) => {
   try {
@@ -99,4 +132,4 @@ const updateCourse = (course) => async (dispatch, getState) => {
   }
 }
 
-export { listCourses, getCourseById, updateCourse }
+export { listCourses, getCourseById, updateCourse, createCourse }
