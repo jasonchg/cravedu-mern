@@ -5,6 +5,22 @@ import Course from '../models/courseModel.js'
 // @route   GET /api/instructor/courses
 // @access  Private
 
+const getCourses = asyncHandler(async (req, res) => {
+  const courses = await Course.find({
+    user: req.user._id,
+  })
+
+  if (courses) {
+    res.json(courses)
+  } else {
+    res.status(404)
+    throw new Error('Course not found')
+  }
+})
+
+// @desc    Create a new course
+// @route   POST /api/instructor/courses
+// @access  Private
 const createCourse = asyncHandler(async (req, res) => {
   const course = new Course({
     user: req.user._id,
@@ -29,10 +45,6 @@ const createCourse = asyncHandler(async (req, res) => {
   }
 })
 
-// @desc    Create a new course
-// @route   POST /api/instructor/courses
-// @access  Private
-
 // @desc    Update a course
 // @route   PUT /api/instructor/courses/:id
 // @access  Private
@@ -45,4 +57,4 @@ const createCourse = asyncHandler(async (req, res) => {
 // @route   DELETE /api/instructor/courses/:id
 // @access  Private
 
-export { createCourse }
+export { createCourse, getCourses }

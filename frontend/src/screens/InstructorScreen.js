@@ -10,11 +10,11 @@ import {
   Table,
   Typography,
 } from '@material-ui/core'
-import { listCourses } from '../actions/adminCourseActions'
+import { listCourses } from '../actions/instructorActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { ADMIN_COURSE_LIST_RESET } from '../constants/adminConstants'
+import { INSTRUCTOR_COURSE_LIST_RESET } from '../constants/instructorConstants'
 import Breadcrumbs from '../components/Breadcrumbs'
 
 const InstructorScreen = ({ history }) => {
@@ -23,16 +23,18 @@ const InstructorScreen = ({ history }) => {
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
-  const adminCourseList = useSelector((state) => state.adminCourseList)
-  const { courses, loading, error } = adminCourseList
+  const instructorCourseList = useSelector(
+    (state) => state.instructorCourseList
+  )
+  const { courses, loading, error } = instructorCourseList
 
   const goToEdit = (id) => {
     history.push(`/admin/${id}/edit`)
   }
 
   useEffect(() => {
-    if (userInfo && userInfo.isAdmin) {
-      dispatch({ type: ADMIN_COURSE_LIST_RESET })
+    if (userInfo && userInfo.isInstructor) {
+      dispatch({ type: INSTRUCTOR_COURSE_LIST_RESET })
       dispatch(listCourses())
     } else {
       history.push('/login')
@@ -52,6 +54,19 @@ const InstructorScreen = ({ history }) => {
       />
 
       <Grid container style={{ marginTop: 10 }}>
+        <Grid item xs={12}>
+          <Button style={{ marginRight: 10 }} onClick={() => history.push('/')}>
+            Go Back
+          </Button>
+          <Button
+            variant='contained'
+            color='primary'
+            onClick={() => alert('create course')}
+          >
+            Create New Course
+          </Button>
+        </Grid>
+
         <Grid item xs={12}>
           {error ? (
             <Message>{error}</Message>
