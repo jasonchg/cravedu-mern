@@ -14,11 +14,12 @@ import MyCoursesScreen from './screens/MyCoursesScreen'
 import ViewOrderScreen from './screens/ViewOrderScreen'
 import VideoLearningScreen from './screens/VideoLearningScreen'
 import ManageUsersScreen from './screens/ManageUsersScreen'
-import UserEditScreen from './screens/UserEditScreen'
+import AdminUserEditScreen from './screens/AdminUserEditScreen'
 import ManageCoursesScreen from './screens/ManageCoursesScreen'
-import CourseEditScreen from './screens/CourseEditScreen'
+import AdminCourseEditScreen from './screens/AdminCourseEditScreen'
 import BrowseScreen from './screens/BrowseScreen'
 import InstructorScreen from './screens/InstructorScreen'
+import InstructorCourseEditScreen from './screens/InstructorCourseEditScreen'
 
 function App() {
   return (
@@ -64,13 +65,13 @@ function App() {
             <Container>
               <Route
                 path='/admin/:id/edit'
-                component={CourseEditScreen}
+                component={AdminCourseEditScreen}
                 exact
               />
               <Route path='/admin' component={ManageCoursesScreen} exact />
               <Route
                 path='/admin/users/:id/edit'
-                component={UserEditScreen}
+                component={AdminUserEditScreen}
                 exact
               />
               <Route path='/admin/users' component={ManageUsersScreen} exact />
@@ -80,6 +81,11 @@ function App() {
           {/* For Admin */}
           <Switch className='instructor'>
             <Container>
+              <Route
+                path='/instructor/:id/edit'
+                component={InstructorCourseEditScreen}
+                exact
+              />
               <Route path='/instructor' component={InstructorScreen} exact />
             </Container>
           </Switch>

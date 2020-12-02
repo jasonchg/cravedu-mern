@@ -10,23 +10,22 @@ import {
   Divider,
   TextareaAutosize,
   Paper,
-  Checkbox,
-  FormControlLabel,
   Typography,
 } from '@material-ui/core'
 import FormContainer from '../components/FormContainer'
 import { makeStyles } from '@material-ui/core/styles'
-import { getCourseById, updateCourse } from '../actions/adminCourseActions'
+import { getCourseById, updateCourse } from '../actions/instructorActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import SubdirectoryArrowRightIcon from '@material-ui/icons/SubdirectoryArrowRight'
-import {
-  ADMIN_COURSE_DETAILS_RESET,
-  ADMIN_COURSE_UPDATE_RESET,
-} from '../constants/adminConstants'
 
-const useStyles = makeStyles((theme) => ({
+import {
+  INSTRUCTOR_COURSE_DETAILS_RESET,
+  INSTRUCTOR_COURSE_UPDATE_RESET,
+} from '../constants/instructorConstants'
+
+const useStyles = makeStyles({
   root: {
     marginTop: 10,
   },
@@ -41,9 +40,9 @@ const useStyles = makeStyles((theme) => ({
     minHeight: 200,
     minWidth: '100%',
   },
-}))
+})
 
-const CourseEditScreen = ({ match, history }) => {
+const InstructorCourseEditScreen = ({ match, history }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
 
@@ -52,8 +51,10 @@ const CourseEditScreen = ({ match, history }) => {
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
-  const adminCourseDetails = useSelector((state) => state.adminCourseDetails)
-  const { courseDetails, loading, error } = adminCourseDetails
+  const instructorCourseDetails = useSelector(
+    (state) => state.instructorCourseDetails
+  )
+  const { courseDetails, loading, error } = instructorCourseDetails
 
   const adminCourseUpdate = useSelector((state) => state.adminCourseUpdate)
   const {
@@ -66,7 +67,6 @@ const CourseEditScreen = ({ match, history }) => {
   const [price, setPrice] = useState(0)
   const [description, setDescription] = useState('')
   const [image, setImage] = useState('')
-  const [isPublished, setIsPublished] = useState(false)
   const [uploading, setUploading] = useState(false)
 
   const myTrim = (name) => {
@@ -110,13 +110,8 @@ const CourseEditScreen = ({ match, history }) => {
         price,
         image,
         description,
-        isPublished,
       })
     )
-  }
-
-  const handlePublishedCheck = (e, isChecked) => {
-    setIsPublished(isChecked)
   }
 
   // useEffect
@@ -124,11 +119,11 @@ const CourseEditScreen = ({ match, history }) => {
   // check if course details exisited
   useEffect(() => {
     if (updateSuccess) {
-      dispatch({ type: ADMIN_COURSE_DETAILS_RESET })
-      dispatch({ type: ADMIN_COURSE_UPDATE_RESET })
-      history.push('/admin')
+      dispatch({ type: INSTRUCTOR_COURSE_DETAILS_RESET })
+      dispatch({ type: INSTRUCTOR_COURSE_UPDATE_RESET })
+      history.push('/instructor')
     } else {
-      if (userInfo && userInfo.isAdmin) {
+      if (userInfo && userInfo.isInstructor) {
         if (
           !courseDetails ||
           !courseDetails.name ||
@@ -140,14 +135,12 @@ const CourseEditScreen = ({ match, history }) => {
           setPrice(0)
           setDescription('')
           setImage('')
-          setIsPublished(false)
           dispatch(getCourseById(courseId))
         } else {
           setName(courseDetails.name)
           setPrice(courseDetails.price)
           setDescription(courseDetails.description)
           setImage(courseDetails.image)
-          setIsPublished(courseDetails.isPublished)
         }
       } else {
         history.push('/login')
@@ -162,10 +155,7 @@ const CourseEditScreen = ({ match, history }) => {
   ) : (
     <Grid container className={classes.root}>
       <Grid item xs={12}>
-        <Button onClick={() => history.push('/admin')}>Go Back</Button>|
-        <Button onClick={() => history.push('/admin/users')}>
-          Go To Manage Users
-        </Button>
+        <Button onClick={() => history.push('/instructor')}>Go Back</Button>|
       </Grid>
       <h1>
         <SubdirectoryArrowRightIcon /> {courseDetails.name}
@@ -237,20 +227,6 @@ const CourseEditScreen = ({ match, history }) => {
                 />
               </FormContainer>
 
-              <FormContainer>
-                <FormControlLabel
-                  label='Published'
-                  control={
-                    <Checkbox
-                      checked={isPublished}
-                      onChange={handlePublishedCheck}
-                      name='isPublished'
-                      color='primary'
-                    />
-                  }
-                />
-              </FormContainer>
-
               <Button
                 type='submit'
                 variant='contained'
@@ -307,4 +283,4 @@ const CourseEditScreen = ({ match, history }) => {
   )
 }
 
-export default CourseEditScreen
+export default InstructorCourseEditScreen

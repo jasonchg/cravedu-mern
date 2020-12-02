@@ -19,6 +19,7 @@ import {
   INSTRUCTOR_COURSE_LIST_RESET,
 } from '../constants/instructorConstants'
 import Breadcrumbs from '../components/Breadcrumbs'
+import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder'
 
 const InstructorScreen = ({ history }) => {
   const dispatch = useDispatch()
@@ -43,7 +44,7 @@ const InstructorScreen = ({ history }) => {
 
   const goToEdit = (id) => {
     // update to instructor/:id/edit
-    history.push(`/admin/${id}/edit`)
+    history.push(`/instructor/${id}/edit`)
   }
 
   useEffect(() => {
@@ -75,23 +76,61 @@ const InstructorScreen = ({ history }) => {
       />
 
       <Grid container style={{ marginTop: 10 }}>
+        {courses && courses.length !== 0 ? (
+          <Grid item xs={12}>
+            <>
+              <Button
+                style={{ marginRight: 10 }}
+                onClick={() => history.push('/')}
+              >
+                Go Back
+              </Button>
+              <Button
+                variant='contained'
+                color='primary'
+                onClick={() => dispatch(createCourse())}
+              >
+                Create New Course{' '}
+                <CreateNewFolderIcon style={{ marginLeft: 10 }} />
+              </Button>
+            </>
+            {createCourseError && <Message>{createCourseError}</Message>}
+            {createCourseLoading && <Loader left />}
+          </Grid>
+        ) : null}
         <Grid item xs={12}>
-          <Button style={{ marginRight: 10 }} onClick={() => history.push('/')}>
-            Go Back
-          </Button>
-          <Button
-            variant='contained'
-            color='primary'
-            onClick={() => dispatch(createCourse())}
-          >
-            Create New Course
-          </Button>
-          {createCourseError && <Message>{createCourseError}</Message>}
-          {createCourseLoading && <Loader left />}
-        </Grid>
-
-        <Grid item xs={12}>
-          {error ? (
+          {courses && courses.length === 0 ? (
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: '20px',
+                textAlign: 'center',
+                marginTop: 10,
+              }}
+            >
+              <div>
+                <CreateNewFolderIcon
+                  color='inherit'
+                  style={{
+                    fontSize: 180,
+                    opacity: 0.7,
+                    transform: 'rotate(-8deg)',
+                  }}
+                />
+                <p>You don't have any course. Create a new course?</p>
+              </div>
+              <Button
+                variant='contained'
+                color='secondary'
+                onClick={() => dispatch(createCourse())}
+              >
+                Create Now
+              </Button>
+            </div>
+          ) : error ? (
             <Message>{error}</Message>
           ) : loading ? (
             <Loader />

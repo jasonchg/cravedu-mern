@@ -21,10 +21,10 @@ const getCourses = asyncHandler(async (req, res) => {
 // @access  Private Admin
 
 const getCourseById = asyncHandler(async (req, res) => {
-  const courses = await Course.findById(req.params.id)
+  const course = await Course.findById(req.params.id)
 
-  if (courses) {
-    res.json(courses)
+  if (course) {
+    res.json(course)
   } else {
     res.status(404)
     throw new Error('Course not found')

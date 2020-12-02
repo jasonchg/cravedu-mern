@@ -69,6 +69,7 @@ const useStyles = makeStyles({
   cartIcon: {
     fontSize: 180,
     opacity: 0.7,
+    transform: 'rotate(-8deg)',
   },
 })
 

@@ -45,16 +45,27 @@ const createCourse = asyncHandler(async (req, res) => {
   }
 })
 
-// @desc    Update a course
+// @desc    Get a course details
 // @route   PUT /api/instructor/courses/:id
 // @access  Private
 
+const getCourseById = asyncHandler(async (req, res) => {
+  const course = await Course.findById(req.params.id)
+
+  if (course) {
+    res.json(course)
+  } else {
+    res.status(404)
+    throw new Error('Course not found')
+  }
+})
+
 // @desc    Update a course content
-// @route   PUT /api/instructor/courses/:id/contents
+// @route   PUT /api/instructor/courses/:id
 // @access  Private
 
 // @desc    Delete a course
 // @route   DELETE /api/instructor/courses/:id
 // @access  Private
 
-export { createCourse, getCourses }
+export { createCourse, getCourses, getCourseById }

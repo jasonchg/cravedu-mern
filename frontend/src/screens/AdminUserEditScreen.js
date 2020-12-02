@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const UserEditScreen = ({ history, match }) => {
+const AdminUserEditScreen = ({ history, match }) => {
   const dispatch = useDispatch()
   const classes = useStyles()
 
@@ -253,4 +253,4 @@ const UserEditScreen = ({ history, match }) => {
   )
 }
 
-export default UserEditScreen
+export default AdminUserEditScreen

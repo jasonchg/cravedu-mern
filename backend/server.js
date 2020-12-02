@@ -44,7 +44,7 @@ app.use('/api/admin/users', adminRoutes)
 app.use('/api/admin/courses', adminCourseRoutes)
 
 // Instructor Routes
-app.use('/api/instructor', instructorRoutes)
+app.use('/api/instructor/courses', instructorRoutes)
 
 // Error Handling
 app.use(notFound)

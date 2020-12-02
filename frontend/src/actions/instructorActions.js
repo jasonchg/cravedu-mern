@@ -27,7 +27,7 @@ const createCourse = () => async (dispatch, getState) => {
       },
     }
 
-    const { data } = await axios.post('/api/instructor/', {}, config)
+    const { data } = await axios.post('/api/instructor/courses', {}, config)
 
     dispatch({
       type: INSTRUCTOR_COURSE_CREATE_SUCCESS,
@@ -57,7 +57,7 @@ const listCourses = () => async (dispatch, getState) => {
       },
     }
 
-    const { data } = await axios.get('/api/instructor/', config)
+    const { data } = await axios.get('/api/instructor/courses', config)
 
     dispatch({ type: INSTRUCTOR_COURSE_LIST_SUCCESS, payload: data })
   } catch (e) {
@@ -84,7 +84,7 @@ const getCourseById = (id) => async (dispatch, getState) => {
       },
     }
 
-    const { data } = await axios.get(`/api/instructor/${id}`, config)
+    const { data } = await axios.get(`/api/instructor/courses/${id}`, config)
     if (data) {
       dispatch({ type: INSTRUCTOR_COURSE_DETAILS_SUCCESS, payload: data })
     }
@@ -114,7 +114,7 @@ const updateCourse = (course) => async (dispatch, getState) => {
     }
 
     const { data } = await axios.put(
-      `/api/instructor/${course._id}`,
+      `/api/instructor/courses/${course._id}`,
       course,
       config
     )
