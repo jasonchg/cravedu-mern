@@ -8,7 +8,7 @@ import Course from '../models/courseModel.js'
 const getCourses = asyncHandler(async (req, res) => {
   const courses = await Course.find({
     user: req.user._id,
-  })
+  }).sort({ isPublished: 'desc' })
 
   if (courses) {
     res.json(courses)

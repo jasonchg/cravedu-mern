@@ -6,7 +6,7 @@ import Course from '../models/courseModel.js'
 // @access  Private Admin
 
 const getCourses = asyncHandler(async (req, res) => {
-  const courses = await Course.find({})
+  const courses = await Course.find({}).sort({ isPublished: 'desc' })
 
   if (courses) {
     res.json(courses)

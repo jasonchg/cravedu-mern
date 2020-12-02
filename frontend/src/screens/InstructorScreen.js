@@ -43,7 +43,6 @@ const InstructorScreen = ({ history }) => {
   } = instructorCourseCreate
 
   const goToEdit = (id) => {
-    // update to instructor/:id/edit
     history.push(`/instructor/${id}/edit`)
   }
 
@@ -51,8 +50,7 @@ const InstructorScreen = ({ history }) => {
     dispatch({ type: INSTRUCTOR_COURSE_CREATE_RESET })
 
     if (createCourseSuccess) {
-      // update to instructor/:id/edit
-      history.push(`/admin/${newCourseId}/edit`)
+      history.push(`/instructor/${newCourseId}/edit`)
     } else {
       if (userInfo && userInfo.isInstructor) {
         dispatch({ type: INSTRUCTOR_COURSE_LIST_RESET })
@@ -76,9 +74,13 @@ const InstructorScreen = ({ history }) => {
       />
 
       <Grid container style={{ marginTop: 10 }}>
-        {courses && courses.length !== 0 ? (
-          <Grid item xs={12}>
-            <>
+        {loading ? (
+          <Loader />
+        ) : error ? (
+          <Message>{error}</Message>
+        ) : courses && courses.length !== 0 ? (
+          <>
+            <Grid item xs={12}>
               <Button
                 style={{ marginRight: 10 }}
                 onClick={() => history.push('/')}
@@ -93,98 +95,105 @@ const InstructorScreen = ({ history }) => {
                 Create New Course{' '}
                 <CreateNewFolderIcon style={{ marginLeft: 10 }} />
               </Button>
-            </>
-            {createCourseError && <Message>{createCourseError}</Message>}
-            {createCourseLoading && <Loader left />}
-          </Grid>
-        ) : null}
-        <Grid item xs={12}>
-          {courses && courses.length === 0 ? (
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                padding: '20px',
-                textAlign: 'center',
-                marginTop: 10,
-              }}
-            >
-              <div>
-                <CreateNewFolderIcon
-                  color='inherit'
-                  style={{
-                    fontSize: 180,
-                    opacity: 0.7,
-                    transform: 'rotate(-8deg)',
-                  }}
-                />
-                <p>You don't have any course. Create a new course?</p>
-              </div>
-              <Button
-                variant='contained'
-                color='secondary'
-                onClick={() => dispatch(createCourse())}
-              >
-                Create Now
-              </Button>
-            </div>
-          ) : error ? (
-            <Message>{error}</Message>
-          ) : loading ? (
-            <Loader />
-          ) : (
-            <TableContainer>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell align='center'>No</TableCell>
-                    <TableCell>Name</TableCell>
-                    <TableCell align='center'>Published</TableCell>
-                    <TableCell align='center'>Price (MYR)</TableCell>
-                    <TableCell align='center'>Instructor</TableCell>
-                    <TableCell align='center'>Chapters </TableCell>
-                    <TableCell></TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {courses.map((course, index) => (
-                    <TableRow key={course._id}>
-                      <TableCell align='center'>{index + 1}</TableCell>
-                      <TableCell>
-                        <b>{course.name}</b> <br />
-                        <Typography variant='caption' component='span'>
-                          ({course._id})
-                        </Typography>
-                      </TableCell>
-                      <TableCell align='center'>
-                        {course.isPublished ? (
-                          <span>Yes</span>
-                        ) : (
-                          <span>No</span>
-                        )}
-                      </TableCell>
-                      <TableCell align='center'>{course.price}</TableCell>
-                      <TableCell align='center'>{course.instructor}</TableCell>
-                      <TableCell align='center'>
-                        {course.courseContents.length}
-                      </TableCell>
-                      <TableCell>
-                        <Button
-                          onClick={() => goToEdit(course._id)}
-                          variant='outlined'
-                        >
-                          Edit Info
-                        </Button>
-                      </TableCell>
+
+              {createCourseError && <Message>{createCourseError}</Message>}
+              {createCourseLoading && <Loader left />}
+            </Grid>
+
+            <Grid item xs={12}>
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align='center'>No</TableCell>
+                      <TableCell>Name</TableCell>
+                      <TableCell align='center'>Published</TableCell>
+                      <TableCell align='center'>Price (MYR)</TableCell>
+                      <TableCell align='center'>Instructor</TableCell>
+                      <TableCell align='center'>Chapters </TableCell>
+                      <TableCell></TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          )}
-        </Grid>
+                  </TableHead>
+                  <TableBody>
+                    {courses.map((course, index) => (
+                      <TableRow key={course._id}>
+                        <TableCell align='center'>{index + 1}</TableCell>
+                        <TableCell>
+                          <b>{course.name}</b> <br />
+                          <Typography variant='caption' component='span'>
+                            ({course._id})
+                          </Typography>
+                        </TableCell>
+                        <TableCell align='center'>
+                          {course.isPublished ? (
+                            <span>Yes</span>
+                          ) : (
+                            <span>No</span>
+                          )}
+                        </TableCell>
+                        <TableCell align='center'>{course.price}</TableCell>
+                        <TableCell align='center'>
+                          {course.instructor}
+                        </TableCell>
+                        <TableCell align='center'>
+                          {course.courseContents.length}
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            onClick={() => goToEdit(course._id)}
+                            variant='outlined'
+                          >
+                            Edit Info
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Grid>
+          </>
+        ) : (
+          <Grid
+            container
+            direction='column'
+            justify='center'
+            alignItems='center'
+          >
+            <Grid item xs={12}>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  padding: '20px',
+                  textAlign: 'center',
+                  marginTop: 10,
+                }}
+              >
+                <div>
+                  <CreateNewFolderIcon
+                    color='inherit'
+                    style={{
+                      fontSize: 180,
+                      opacity: 0.7,
+                      transform: 'rotate(-8deg)',
+                    }}
+                  />
+                  <p>You don't have any course. Create a new course?</p>
+                </div>
+                <Button
+                  variant='contained'
+                  color='secondary'
+                  onClick={() => dispatch(createCourse())}
+                >
+                  Create Now
+                </Button>
+              </div>
+            </Grid>
+          </Grid>
+        )}
       </Grid>
     </>
   )

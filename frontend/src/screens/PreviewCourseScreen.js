@@ -68,9 +68,6 @@ const PreviewCourseScreen = ({ match, history }) => {
   const courseId = match.params.id
   const dispatch = useDispatch()
 
-  const addToCartHandler = () => {
-    history.push(`/cart/${courseId}`)
-  }
   const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -133,7 +130,10 @@ const PreviewCourseScreen = ({ match, history }) => {
   const { userInfo } = userLogin
 
   useEffect(() => {
-    if (!userInfo || !userInfo.isAdmin || !userInfo.isInstructor) {
+    if (
+      (!userInfo && !userInfo.isAdmin) ||
+      (!userInfo && !userInfo.isInstructor)
+    ) {
       history.push('/')
     } else {
       dispatch(listCourseDetails(courseId))
