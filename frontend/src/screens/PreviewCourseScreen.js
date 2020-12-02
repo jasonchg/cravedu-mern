@@ -25,7 +25,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled'
 import { makeStyles } from '@material-ui/core/styles'
 import { listCourseDetails } from '../actions/courseActions'
-import { getUserCourses } from '../actions/userActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
@@ -65,7 +64,7 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired,
 }
 
-const CourseScreen = ({ match, history }) => {
+const PreviewCourseScreen = ({ match, history }) => {
   const courseId = match.params.id
   const dispatch = useDispatch()
 
@@ -133,49 +132,13 @@ const CourseScreen = ({ match, history }) => {
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
-  const userCourses = useSelector((state) => state.userCourses)
-  const { userPaidCourses } = userCourses
-
-  const [bought, setBought] = useState(false)
-
-  const checkBought = (currentCourse, courseHere) => {
-    return (
-      currentCourse &&
-      courseHere &&
-      currentCourse.some((curCourse) => {
-        if (curCourse._id === courseHere._id) {
-          return true
-        } else {
-          return null
-        }
-      })
-    )
-  }
-
   useEffect(() => {
-    if (userPaidCourses && course) {
-      setBought(checkBought(userPaidCourses, course))
+    if (!userInfo || !userInfo.isAdmin || !userInfo.isInstructor) {
+      history.push('/')
+    } else {
+      dispatch(listCourseDetails(courseId))
     }
-  }, [userPaidCourses, course])
-
-  useEffect(() => {
-    const redirectToLearningScreen = () => {
-      alert(
-        'You have already bought this course. Redirect to the learning screen now.',
-        history.push(`/course/${courseId}/learn`)
-      )
-    }
-
-    dispatch(listCourseDetails(courseId))
-
-    if (userInfo) {
-      if (bought) {
-        redirectToLearningScreen()
-      } else {
-        dispatch(getUserCourses())
-      }
-    }
-  }, [history, bought, courseId, userInfo, dispatch])
+  }, [history, courseId, userInfo, dispatch])
 
   return (
     <>
@@ -261,21 +224,17 @@ const CourseScreen = ({ match, history }) => {
                     </TableRow>
                   </TableBody>
                 </Table>
-                {bought || course.isPublished === false ? null : (
-                  <>
-                    <Button
-                      className={classes.button}
-                      variant='contained'
-                      color='primary'
-                      size='medium'
-                      startIcon={<AddShoppingCartIcon />}
-                      onClick={addToCartHandler}
-                      disabled={bought}
-                    >
-                      Add To Cart
-                    </Button>
-                  </>
-                )}
+                <Button
+                  className={classes.button}
+                  variant='contained'
+                  color='primary'
+                  size='medium'
+                  startIcon={<AddShoppingCartIcon />}
+                  onClick={() => alert('Add to cart')}
+                  disabled={true}
+                >
+                  Add To Cart
+                </Button>
               </Grid>
             </Grid>
             <Grid container>
@@ -339,4 +298,4 @@ const CourseScreen = ({ match, history }) => {
   )
 }
 
-export default CourseScreen
+export default PreviewCourseScreen

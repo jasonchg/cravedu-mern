@@ -20,6 +20,7 @@ import AdminCourseEditScreen from './screens/AdminCourseEditScreen'
 import BrowseScreen from './screens/BrowseScreen'
 import InstructorScreen from './screens/InstructorScreen'
 import InstructorCourseEditScreen from './screens/InstructorCourseEditScreen'
+import PreviewCourseScreen from './screens/PreviewCourseScreen'
 
 function App() {
   return (
@@ -56,6 +57,11 @@ function App() {
               <Route path='/cart' component={CartScreen} exact />
               <Route path='/cart/:id' component={CartScreen} exact />
               <Route path='/course/:id' component={CourseScreen} exact />
+              <Route
+                path='/course/:id/preview'
+                component={PreviewCourseScreen}
+                exact
+              />
               <Route path='/course' component={BrowseScreen} exact />
             </Container>
           </Switch>

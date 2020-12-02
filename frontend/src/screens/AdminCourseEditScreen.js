@@ -8,7 +8,6 @@ import {
   ListItem,
   ListItemText,
   Divider,
-  TextareaAutosize,
   Paper,
   Checkbox,
   FormControlLabel,
@@ -25,6 +24,7 @@ import {
   ADMIN_COURSE_DETAILS_RESET,
   ADMIN_COURSE_UPDATE_RESET,
 } from '../constants/adminConstants'
+import TextEditor from '../components/TextEditor'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -132,8 +132,6 @@ const AdminCourseEditScreen = ({ match, history }) => {
         if (
           !courseDetails ||
           !courseDetails.name ||
-          !courseDetails.image ||
-          !courseDetails.description ||
           courseDetails._id !== courseId
         ) {
           setName('')
@@ -174,6 +172,14 @@ const AdminCourseEditScreen = ({ match, history }) => {
       {updateError && <Message>{updateError}</Message>}
       <Grid container spacing={3}>
         <Grid item md={5} xs={12}>
+          <Button
+            style={{ margin: '7px 0' }}
+            onClick={() =>
+              window.open(`/course/${courseId}/preview`, '_blank').focus()
+            }
+          >
+            Preview This Course
+          </Button>
           <Paper className={classes.leftPanel}>
             <img src={image} alt='' className={classes.img} />
             <p style={{ background: '#eee', padding: 7 }}>
@@ -223,18 +229,12 @@ const AdminCourseEditScreen = ({ match, history }) => {
                 />
               </FormContainer>
               <FormContainer>
-                <TextareaAutosize
-                  className={classes.formTextArea}
-                  required
-                  id='description'
-                  type='text'
-                  label='Description'
-                  placeholder=''
-                  variant='filled'
-                  defaultValue={description}
-                  autoComplete='text'
-                  onChange={(e) => setDescription(e.target.value)}
-                />
+                <FormContainer>
+                  <TextEditor
+                    description={description}
+                    setter={setDescription}
+                  />
+                </FormContainer>
               </FormContainer>
 
               <FormContainer>

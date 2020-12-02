@@ -8,7 +8,6 @@ import {
   ListItem,
   ListItemText,
   Divider,
-  TextareaAutosize,
   Paper,
   Typography,
 } from '@material-ui/core'
@@ -24,6 +23,7 @@ import {
   INSTRUCTOR_COURSE_DETAILS_RESET,
   INSTRUCTOR_COURSE_UPDATE_RESET,
 } from '../constants/instructorConstants'
+import TextEditor from '../components/TextEditor'
 
 const useStyles = makeStyles({
   root: {
@@ -56,12 +56,14 @@ const InstructorCourseEditScreen = ({ match, history }) => {
   )
   const { courseDetails, loading, error } = instructorCourseDetails
 
-  const adminCourseUpdate = useSelector((state) => state.adminCourseUpdate)
+  const instructorCourseUpdate = useSelector(
+    (state) => state.instructorCourseUpdate
+  )
   const {
     loading: updateLoading,
     success: updateSuccess,
     error: updateError,
-  } = adminCourseUpdate
+  } = instructorCourseUpdate
 
   const [name, setName] = useState('')
   const [price, setPrice] = useState(0)
@@ -114,9 +116,6 @@ const InstructorCourseEditScreen = ({ match, history }) => {
     )
   }
 
-  // useEffect
-  // check if user existed
-  // check if course details exisited
   useEffect(() => {
     if (updateSuccess) {
       dispatch({ type: INSTRUCTOR_COURSE_DETAILS_RESET })
@@ -127,8 +126,6 @@ const InstructorCourseEditScreen = ({ match, history }) => {
         if (
           !courseDetails ||
           !courseDetails.name ||
-          !courseDetails.image ||
-          !courseDetails.description ||
           courseDetails._id !== courseId
         ) {
           setName('')
@@ -155,15 +152,36 @@ const InstructorCourseEditScreen = ({ match, history }) => {
   ) : (
     <Grid container className={classes.root}>
       <Grid item xs={12}>
-        <Button onClick={() => history.push('/instructor')}>Go Back</Button>|
+        <Button
+          onClick={() => history.push('/instructor')}
+          style={{ marginRight: 10 }}
+        >
+          Go Back
+        </Button>
+        <Button
+          onClick={() => history.push('/instructor')}
+          variant='outlined'
+          color='inherit'
+        >
+          I Wish to Publish this course
+        </Button>
       </Grid>
       <h1>
-        <SubdirectoryArrowRightIcon /> {courseDetails.name}
+        <SubdirectoryArrowRightIcon /> {courseDetails && courseDetails.name}{' '}
       </h1>
+
       {updateLoading && <Loader />}
       {updateError && <Message>{updateError}</Message>}
       <Grid container spacing={3}>
         <Grid item md={5} xs={12}>
+          <Button
+            style={{ margin: '7px 0' }}
+            onClick={() =>
+              window.open(`/course/${courseId}/preview`, '_blank').focus()
+            }
+          >
+            Preview This Course
+          </Button>
           <Paper className={classes.leftPanel}>
             <img src={image} alt='' className={classes.img} />
             <p style={{ background: '#eee', padding: 7 }}>
@@ -213,18 +231,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                 />
               </FormContainer>
               <FormContainer>
-                <TextareaAutosize
-                  className={classes.formTextArea}
-                  required
-                  id='description'
-                  type='text'
-                  label='Description'
-                  placeholder=''
-                  variant='filled'
-                  defaultValue={description}
-                  autoComplete='text'
-                  onChange={(e) => setDescription(e.target.value)}
-                />
+                <TextEditor description={description} setter={setDescription} />
               </FormContainer>
 
               <Button
@@ -236,6 +243,10 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                 Update
               </Button>
             </form>
+            <p>
+              *Your course will be appear at the admin's site for reviews once
+              update.
+            </p>
           </Paper>
 
           <Divider />

@@ -64,8 +64,36 @@ const getCourseById = asyncHandler(async (req, res) => {
 // @route   PUT /api/instructor/courses/:id
 // @access  Private
 
+const updateCourse = asyncHandler(async (req, res) => {
+  const course = await Course.findById(req.params.id)
+
+  if (course) {
+    course.name = req.body.name || course.name
+    course.image = req.body.image || course.image
+    course.price = req.body.price || course.price
+    course.description = req.body.description || course.description
+
+    try {
+      const courseUpdated = await course.save()
+      res.json({
+        _id: courseUpdated._id,
+        name: courseUpdated.name,
+        image: courseUpdated.image,
+        price: courseUpdated.price,
+        description: courseUpdated.description,
+      })
+    } catch (e) {
+      res.status(401)
+      throw new Error('Something went wrong.')
+    }
+  } else {
+    res.status(404)
+    throw new Error('Course not found')
+  }
+})
+
 // @desc    Delete a course
 // @route   DELETE /api/instructor/courses/:id
 // @access  Private
 
-export { createCourse, getCourses, getCourseById }
+export { createCourse, getCourses, getCourseById, updateCourse }
