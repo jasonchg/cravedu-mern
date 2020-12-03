@@ -7,6 +7,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  ListItemIcon,
   Table,
   Paper,
   TableRow,
@@ -20,6 +21,7 @@ import {
   Tabs,
   Box,
 } from '@material-ui/core'
+import AccessTimeIcon from '@material-ui/icons/AccessTime'
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled'
@@ -31,6 +33,8 @@ import Message from '../components/Message'
 import Rating from '../components/Rating'
 import Breadcrumbs from '../components/Breadcrumbs'
 import PropTypes from 'prop-types'
+import ArchiveIcon from '@material-ui/icons/Archive'
+import PeopleIcon from '@material-ui/icons/People'
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props
@@ -187,6 +191,23 @@ const PreviewCourseScreen = ({ match, history }) => {
                         </ListItem>
                         <Divider />
                         <ListItem>
+                          <ListItemIcon>
+                            <AccessTimeIcon />
+                          </ListItemIcon>
+                          <ListItemText primary='5 hours' />
+                          <ListItemIcon>
+                            <ArchiveIcon />
+                          </ListItemIcon>
+                          <ListItemText
+                            primary={`${
+                              course && course.courseContents
+                                ? course.courseContents.length
+                                : 0
+                            } Chapters`}
+                          />
+                        </ListItem>
+                        <Divider />
+                        <ListItem>
                           <ListItemText
                             primary={
                               <Rating
@@ -197,8 +218,11 @@ const PreviewCourseScreen = ({ match, history }) => {
                           />
                         </ListItem>
                         <Divider />
-                        <Divider />
+
                         <ListItem>
+                          <ListItemIcon>
+                            <PeopleIcon />
+                          </ListItemIcon>
                           <ListItemText
                             primary={`${course.totalSold} students`}
                           />

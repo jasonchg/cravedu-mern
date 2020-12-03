@@ -320,14 +320,13 @@ const VideoLearningScreen = ({ match, history }) => {
                 </Paper>
 
                 <TabPanel value={value} index={0}>
-                  <List>
-                    <ListItem className={classes.description}>
-                      <ListItemText
-                        primary={`Description: ${course.description}`}
-                      />
-                    </ListItem>
-                    <Divider />
-                  </List>
+                  <div className={classes.description}>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: course.description,
+                      }}
+                    />
+                  </div>
                 </TabPanel>
 
                 <Modal

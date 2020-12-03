@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import SubdirectoryArrowRightIcon from '@material-ui/icons/SubdirectoryArrowRight'
+
 import {
   ADMIN_COURSE_DETAILS_RESET,
   ADMIN_COURSE_UPDATE_RESET,
@@ -282,7 +283,9 @@ const AdminCourseEditScreen = ({ match, history }) => {
             <List>
               {courseDetails.courseContents ? (
                 courseDetails.courseContents.length === 0 ? (
-                  <Message severity='info'>Nothing...</Message>
+                  <ListItem>
+                    <Message severity='info'>Zero content yet.</Message>
+                  </ListItem>
                 ) : (
                   courseDetails.courseContents.map((course, index) => (
                     <div key={course._id}>
@@ -297,7 +300,9 @@ const AdminCourseEditScreen = ({ match, history }) => {
                   ))
                 )
               ) : (
-                <Message>Something went wrong</Message>
+                <ListItem>
+                  <Message>Something went wrong</Message>
+                </ListItem>
               )}
             </List>
           </Paper>

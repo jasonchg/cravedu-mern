@@ -10,6 +10,9 @@ import {
   Divider,
   Paper,
   Typography,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from '@material-ui/core'
 import FormContainer from '../components/FormContainer'
 import { makeStyles } from '@material-ui/core/styles'
@@ -18,7 +21,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import SubdirectoryArrowRightIcon from '@material-ui/icons/SubdirectoryArrowRight'
-
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import AccessTimeIcon from '@material-ui/icons/AccessTime'
 import {
   INSTRUCTOR_COURSE_DETAILS_RESET,
   INSTRUCTOR_COURSE_UPDATE_RESET,
@@ -265,11 +269,66 @@ const InstructorCourseEditScreen = ({ match, history }) => {
         </Grid>
         <Grid item md={7} xs={12}>
           <h2>Course Contents</h2>
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              Add New Content
+            </AccordionSummary>
+            <AccordionDetails>
+              <form>
+                <FormContainer>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <input type='file' />
+                    <div>
+                      <AccessTimeIcon />
+                    </div>
+                    <div>0:00:00</div>
+                  </div>
+                </FormContainer>
+
+                <FormContainer>
+                  <TextField
+                    required
+                    fullWidth
+                    id='content-name'
+                    type='number'
+                    label='Chapter'
+                    placeholder='1'
+                    variant='filled'
+                    value={''}
+                  />
+                </FormContainer>
+                <FormContainer>
+                  <TextField
+                    required
+                    fullWidth
+                    id='content-name'
+                    type='text'
+                    label='Chapter Name'
+                    placeholder='Get Started'
+                    variant='filled'
+                    value={''}
+                  />
+                </FormContainer>
+                <Button variant='contained' color='primary'>
+                  Push
+                </Button>
+              </form>
+            </AccordionDetails>
+          </Accordion>
+
           <Paper>
             <List>
               {courseDetails.courseContents ? (
                 courseDetails.courseContents.length === 0 ? (
-                  <Message severity='info'>Nothing...</Message>
+                  <ListItem>
+                    <Message severity='info'>Zero content yet.</Message>
+                  </ListItem>
                 ) : (
                   courseDetails.courseContents.map((course, index) => (
                     <div key={course._id}>
@@ -284,7 +343,9 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                   ))
                 )
               ) : (
-                <Message>Something went wrong</Message>
+                <ListItem>
+                  <Message>Something went wrong</Message>
+                </ListItem>
               )}
             </List>
           </Paper>

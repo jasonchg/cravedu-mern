@@ -7,6 +7,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  ListItemIcon,
   Table,
   Paper,
   TableRow,
@@ -23,6 +24,8 @@ import {
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled'
+import ArchiveIcon from '@material-ui/icons/Archive'
+import PeopleIcon from '@material-ui/icons/People'
 import { makeStyles } from '@material-ui/core/styles'
 import { listCourseDetails } from '../actions/courseActions'
 import { getUserCourses } from '../actions/userActions'
@@ -32,6 +35,7 @@ import Message from '../components/Message'
 import Rating from '../components/Rating'
 import Breadcrumbs from '../components/Breadcrumbs'
 import PropTypes from 'prop-types'
+import AccessTimeIcon from '@material-ui/icons/AccessTime'
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props
@@ -224,6 +228,24 @@ const CourseScreen = ({ match, history }) => {
                         </ListItem>
                         <Divider />
                         <ListItem>
+                          <ListItemIcon>
+                            <AccessTimeIcon />
+                          </ListItemIcon>
+                          <ListItemText primary='5 hours' />
+                          <ListItemIcon>
+                            <ArchiveIcon />
+                          </ListItemIcon>
+                          <ListItemText
+                            primary={`${
+                              course && course.courseContents
+                                ? course.courseContents.length
+                                : 0
+                            } Chapters`}
+                          />
+                        </ListItem>
+
+                        <Divider />
+                        <ListItem>
                           <ListItemText
                             primary={
                               <Rating
@@ -234,8 +256,10 @@ const CourseScreen = ({ match, history }) => {
                           />
                         </ListItem>
                         <Divider />
-                        <Divider />
                         <ListItem>
+                          <ListItemIcon>
+                            <PeopleIcon />
+                          </ListItemIcon>
                           <ListItemText
                             primary={`${course.totalSold} students`}
                           />
