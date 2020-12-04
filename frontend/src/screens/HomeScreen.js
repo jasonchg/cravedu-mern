@@ -7,7 +7,7 @@ import {
   useMediaQuery,
 } from '@material-ui/core'
 import Course from '../components/Course'
-import { listCourses } from '../actions/courseActions'
+import { listCourses, bestSoldCourses } from '../actions/courseActions'
 import { getUserCourses } from '../actions/userActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
@@ -29,8 +29,16 @@ const HomeScreen = ({ history }) => {
   const userCourses = useSelector((state) => state.userCourses)
   const { userPaidCourses } = userCourses
 
+  const courseBestReviews = useSelector((state) => state.courseBestReviews)
+  const {
+    loading: courseBestLoading,
+    error: courseBestError,
+    courses: courseBestList,
+  } = courseBestReviews
+
   useEffect(() => {
     dispatch(listCourses())
+    dispatch(bestSoldCourses())
 
     if (userInfo) {
       dispatch(getUserCourses())
@@ -118,11 +126,17 @@ const HomeScreen = ({ history }) => {
           <Loader />
         ) : (
           <Grid container style={{ marginBottom: 30 }}>
-            {matchesLG === true ? (
-              <Grid item xs={12} className='homeHeaderText'>
-                <h2>Trending</h2>
-                <Carousels courses={courses} />
-              </Grid>
+            {matchesLG ? (
+              courseBestLoading ? (
+                <Loader />
+              ) : courseBestError ? (
+                <Message>{courseBestError}</Message>
+              ) : (
+                <Grid item xs={12} className='homeHeaderText'>
+                  <h2>Trending</h2>
+                  <Carousels courses={courseBestList} />
+                </Grid>
+              )
             ) : null}
 
             <Grid item xs={12} style={{ marginTop: 20 }}>

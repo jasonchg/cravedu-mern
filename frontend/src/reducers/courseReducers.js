@@ -9,6 +9,9 @@ import {
   COURSE_QANDA_SUCCESS,
   COURSE_QANDA_FAIL,
   COURSE_QANDA_RESET,
+  COURSE_BEST_REQUEST,
+  COURSE_BEST_SUCCESS,
+  COURSE_BEST_FAIL,
 } from '../constants/courseConstants'
 
 const courseListReducer = (state = { courses: [] }, action) => {
@@ -52,4 +55,22 @@ const courseQandaReducer = (state = {}, action) => {
   }
 }
 
-export { courseListReducer, courseDetailsReducer, courseQandaReducer }
+const courseBestSoldReducer = (state = { courses: {} }, action) => {
+  switch (action.type) {
+    case COURSE_BEST_REQUEST:
+      return { loading: true }
+    case COURSE_BEST_SUCCESS:
+      return { loading: false, courses: action.payload }
+    case COURSE_BEST_FAIL:
+      return { loading: false, error: action.payload }
+    default:
+      return state
+  }
+}
+
+export {
+  courseListReducer,
+  courseDetailsReducer,
+  courseQandaReducer,
+  courseBestSoldReducer,
+}

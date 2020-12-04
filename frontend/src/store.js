@@ -5,6 +5,7 @@ import {
   courseListReducer,
   courseDetailsReducer,
   courseQandaReducer,
+  courseBestSoldReducer,
 } from './reducers/courseReducers'
 import {
   userLoginReducer,
@@ -49,6 +50,7 @@ const reducer = combineReducers({
   instructorCourseDetails: instructorCourseDetailsReducer,
   instructorCourseList: instructorCourseListReducer,
   instructorCourseCreate: instructorCourseCreateReducer,
+  courseBestSold: courseBestSoldReducer,
   courseList: courseListReducer,
   courseDetails: courseDetailsReducer,
   courseQanda: courseQandaReducer,

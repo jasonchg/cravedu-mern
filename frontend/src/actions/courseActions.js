@@ -9,6 +9,9 @@ import {
   COURSE_QANDA_REQUEST,
   COURSE_QANDA_SUCCESS,
   COURSE_QANDA_FAIL,
+  COURSE_BEST_REQUEST,
+  COURSE_BEST_SUCCESS,
+  COURSE_BEST_FAIL,
 } from '../constants/courseConstants'
 
 const listCourses = () => async (dispatch) => {
@@ -85,4 +88,25 @@ const addQanda = (courseId, qanda) => async (dispatch, getState) => {
   }
 }
 
-export { listCourses, listCourseDetails, addQanda }
+const bestSoldCourses = () => async (dispatch) => {
+  try {
+    dispatch({ type: COURSE_BEST_REQUEST })
+
+    const { data } = await axios.get('/api/courses/bestsold')
+
+    dispatch({
+      type: COURSE_BEST_SUCCESS,
+      payload: data,
+    })
+  } catch (e) {
+    dispatch({
+      type: COURSE_BEST_FAIL,
+      payload:
+        e.response && e.response.data.message
+          ? e.response.data.message
+          : e.message,
+    })
+  }
+}
+
+export { listCourses, listCourseDetails, addQanda, bestSoldCourses }

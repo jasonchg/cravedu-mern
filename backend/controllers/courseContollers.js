@@ -63,4 +63,13 @@ const createCourseQandA = asyncHandler(async (req, res) => {
 // @route   PUT /api/courses/:id/qanda
 // @access  Private
 
-export { getCourses, getCourseById, createCourseQandA }
+// @desc    Get Best sold Courses
+// @route   GET /api/courses/bestsold
+// @access  Private
+
+const getBestCourses = asyncHandler(async (req, res) => {
+  const courses = await Course.find({}).sort({ totalSold: -1 }).limit(3)
+  res.json(courses)
+})
+
+export { getCourses, getCourseById, createCourseQandA, getBestCourses }
