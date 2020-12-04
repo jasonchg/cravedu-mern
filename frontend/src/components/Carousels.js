@@ -2,6 +2,7 @@ import React from 'react'
 import Carousel from 'react-material-ui-carousel'
 import { makeStyles } from '@material-ui/core'
 import PeopleIcon from '@material-ui/icons/People'
+import { truncate } from '../utils'
 
 const useStyles = makeStyles({
   carousel: {
@@ -44,13 +45,17 @@ const Carousels = ({ autoPlay = true, courses }) => {
 
           <div className={classes.slideTextContainer}>
             <h2 className={classes.slideText}>{course.name}</h2>
-            <p
+
+            <div
               style={{
                 fontSize: 16,
+                margin: '10 0',
+                display: 'block',
               }}
-            >
-              {course.description}
-            </p>
+              dangerouslySetInnerHTML={{
+                __html: truncate(course.description, 70),
+              }}
+            />
 
             <div
               style={{
