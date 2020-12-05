@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-
+import { Route } from 'react-router-dom'
 import CraveduLogo from '../assets/images/logo.png'
 import {
   AppBar,
@@ -33,6 +33,7 @@ import { logout } from '../actions/userActions'
 import MenuOpenIcon from '@material-ui/icons/MenuOpen'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
+import SearchBox from './SearchBox'
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -120,6 +121,7 @@ const Header = () => {
                 style={{ width: 90, marginLeft: 0, paddingLeft: 0 }}
               />
             </Link>
+
             <Typography variant='h6' className={classes.title}></Typography>
             {matchesSM ? (
               <>
@@ -234,11 +236,25 @@ const Header = () => {
                       </ListItemIcon>
                       <ListItemText primary='Cart' />
                     </ListItem>
+
+                    <ListItem>
+                      <Route
+                        render={({ history }) => (
+                          <SearchBox history={history} />
+                        )}
+                      />
+                    </ListItem>
                   </List>
                 </Drawer>
               </>
             ) : (
               <>
+                <div style={{ marginRight: 10, width: '75%' }}>
+                  <Route
+                    render={({ history }) => <SearchBox history={history} />}
+                  />
+                </div>
+
                 <Button
                   color='inherit'
                   startIcon={<ShoppingCartIcon />}

@@ -1,14 +1,19 @@
 import asyncHandler from 'express-async-handler'
 import Course from '../models/courseModel.js'
 
-// @desc    Fetch all courses
+// @desc    Fetch all courses/ Search features
 // @route   GET /api/courses
 // @access  Public
 
 const getCourses = asyncHandler(async (req, res) => {
-  // do not display the item that user had bought
+  const params = req.query.keyword
+    ? {
+        isPublished: true,
+        name: { $regex: req.query.keyword, $options: 'i' },
+      }
+    : { isPublished: true }
 
-  const courses = await Course.find({ isPublished: true })
+  const courses = await Course.find(params)
 
   if (courses) {
     res.json(courses)

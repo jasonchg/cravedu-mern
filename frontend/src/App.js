@@ -25,9 +25,9 @@ import PreviewCourseScreen from './screens/PreviewCourseScreen'
 function App() {
   return (
     <div className='app'>
-      <Header />
       <main>
         <Router>
+          <Header />
           {/* Video Learning */}
           <Switch className='video-learning'>
             <>
@@ -60,6 +60,11 @@ function App() {
               <Route
                 path='/course/:id/preview'
                 component={PreviewCourseScreen}
+                exact
+              />
+              <Route
+                path='/course/search/:keyword'
+                component={BrowseScreen}
                 exact
               />
               <Route path='/course' component={BrowseScreen} exact />
@@ -98,8 +103,8 @@ function App() {
 
           <Route path='/' component={HomeScreen} exact />
         </Router>
+        <Footer />
       </main>
-      <Footer />
     </div>
   )
 }

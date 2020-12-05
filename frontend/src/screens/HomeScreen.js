@@ -29,12 +29,12 @@ const HomeScreen = ({ history }) => {
   const userCourses = useSelector((state) => state.userCourses)
   const { userPaidCourses } = userCourses
 
-  const courseBestReviews = useSelector((state) => state.courseBestReviews)
+  const courseBestSold = useSelector((state) => state.courseBestSold)
   const {
     loading: courseBestLoading,
     error: courseBestError,
     courses: courseBestList,
-  } = courseBestReviews
+  } = courseBestSold
 
   useEffect(() => {
     dispatch(listCourses())

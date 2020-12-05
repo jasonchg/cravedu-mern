@@ -14,11 +14,11 @@ import {
   COURSE_BEST_FAIL,
 } from '../constants/courseConstants'
 
-const listCourses = () => async (dispatch) => {
+const listCourses = (keyword = '') => async (dispatch) => {
   try {
     dispatch({ type: COURSE_LIST_REQUEST })
 
-    const { data } = await axios.get('/api/courses')
+    const { data } = await axios.get(`/api/courses?keyword=${keyword}`)
 
     dispatch({
       type: COURSE_LIST_SUCCESS,

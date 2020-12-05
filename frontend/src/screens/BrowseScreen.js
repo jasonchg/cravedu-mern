@@ -14,15 +14,15 @@ import Loader from '../components/Loader'
 import Category from '../components/Category'
 import Carousels from '../components/Carousels'
 
-const BrowseScreen = () => {
+const BrowseScreen = ({ match }) => {
   const dispatch = useDispatch()
-
+  const keyword = match.params.keyword
   const courseList = useSelector((state) => state.courseList)
   const { loading, error, courses } = courseList
 
   useEffect(() => {
-    dispatch(listCourses())
-  }, [dispatch])
+    dispatch(listCourses(keyword))
+  }, [dispatch, keyword])
 
   const category = [
     { name: 'All Courses', link: '#' },
@@ -71,28 +71,43 @@ const BrowseScreen = () => {
   return (
     <Container>
       <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <div style={{ fontSize: '20px' }}>
-            <h1>{currentCategory}</h1>
-            <Divider />
-          </div>
-        </Grid>
-
-        <Grid item xs={12}>
-          {category &&
-            category.map((item, index) => (
-              <span key={index} onClick={() => setCatHandler(item.name)}>
-                <Category category={item} color='primary' />
-              </span>
-            ))}
-        </Grid>
+        {keyword ? null : (
+          <>
+            <Grid item xs={12}>
+              <div style={{ fontSize: '20px' }}>
+                <h1>{currentCategory}</h1>
+                <Divider />
+              </div>
+            </Grid>
+            <Grid item xs={12}>
+              {category &&
+                category.map((item, index) => (
+                  <span key={index} onClick={() => setCatHandler(item.name)}>
+                    <Category category={item} color='primary' />
+                  </span>
+                ))}
+            </Grid>
+          </>
+        )}
 
         <Grid item xs={12}>
           <Grid container wrap='wrap'>
+            <h2>Seatch terms : {keyword}</h2>
             {error ? (
               <Message>{error}</Message>
             ) : loading ? (
               <Loader />
+            ) : courses.length === 0 ? (
+              <div
+                style={{
+                  minHeight: '70vh',
+                  width: '100%',
+                }}
+              >
+                <div style={{ marginTop: 10 }}>
+                  <Message severity='info'>Nothing found</Message>
+                </div>
+              </div>
             ) : (
               courses.map((course, i) => (
                 <Grid item key={i} style={{ marginTop: 7 }}>
@@ -103,7 +118,7 @@ const BrowseScreen = () => {
           </Grid>
         </Grid>
 
-        {matchesLG === true ? (
+        {matchesLG && !keyword ? (
           <Grid item xs={12} className='homeHeaderText'>
             <h2>Trending</h2>
             <Carousels courses={courses} />
