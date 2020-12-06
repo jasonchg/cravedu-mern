@@ -125,7 +125,10 @@ const Course = ({ course, learning }) => {
               ) : null}
             </CardContent>
             {course.rating ? (
-              <Rating value={course.rating} text={`(${course.numReviews})`} />
+              <div style={{ display: 'flex' }}>
+                <span style={{ marginLeft: 10 }}></span>
+                <Rating value={course.rating} text={`(${course.numReviews})`} />
+              </div>
             ) : null}
           </CardActionArea>
         </Link>

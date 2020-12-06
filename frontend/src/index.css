@@ -48,7 +48,6 @@ main {
 .rating {
   display: flex;
   align-items: center;
-  padding-left: 10px;
   font-size: 13.5px;
 }
 

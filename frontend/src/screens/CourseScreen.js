@@ -20,6 +20,8 @@ import {
   Tab,
   Tabs,
   Box,
+  ListItemAvatar,
+  Avatar,
 } from '@material-ui/core'
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
@@ -128,6 +130,12 @@ const CourseScreen = ({ match, history }) => {
     blurBackground: {
       opacity: 0.7,
       background: '#111',
+    },
+    reviewSection: {
+      background: '#fff',
+      maxHeight: 400,
+      overflow: 'scroll',
+      overflowX: 'hidden',
     },
   }))
 
@@ -336,7 +344,51 @@ const CourseScreen = ({ match, history }) => {
                   {course.instructor}
                 </TabPanel>
                 <TabPanel value={value} index={2}>
-                  {course.numReviews}
+                  <p>
+                    {course && course.reviews ? course.reviews.length : 0}{' '}
+                    reviews for this course
+                  </p>
+                  <div className={classes.reviewSection}>
+                    {course && course.reviews && course.reviews.length !== 0 ? (
+                      course.reviews.map((review) => (
+                        <div key={review._id}>
+                          <ListItem
+                            alignItems='flex-start'
+                            style={{
+                              textDecoration: 'none',
+                              listStyle: 'none',
+                            }}
+                          >
+                            <ListItemAvatar>
+                              <Avatar style={{ marginRight: 10 }}>
+                                {review.name.charAt(0)}
+                              </Avatar>
+                            </ListItemAvatar>
+
+                            <ListItemText
+                              primary={<strong>{review.comment}</strong>}
+                              secondary={
+                                <span>
+                                  <Rating value={review.ratingStars} text='' />
+                                  <Typography
+                                    component='span'
+                                    variant='body2'
+                                    color='textPrimary'
+                                  >
+                                    {review.name}
+                                  </Typography>{' '}
+                                  {review.createdAt.substring(10, 0)}
+                                </span>
+                              }
+                            />
+                          </ListItem>
+                          <Divider />
+                        </div>
+                      ))
+                    ) : (
+                      <ListItem>No review yet.</ListItem>
+                    )}
+                  </div>
                 </TabPanel>
               </Grid>
 
