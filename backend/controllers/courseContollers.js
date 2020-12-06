@@ -64,10 +64,6 @@ const createCourseQandA = asyncHandler(async (req, res) => {
   }
 })
 
-// @desc    Reply QandA
-// @route   PUT /api/courses/:id/qanda
-// @access  Private
-
 // @desc    Get Best sold Courses
 // @route   GET /api/courses/bestsold
 // @access  Private
@@ -77,4 +73,56 @@ const getBestCourses = asyncHandler(async (req, res) => {
   res.json(courses)
 })
 
-export { getCourses, getCourseById, createCourseQandA, getBestCourses }
+// @desc    Review
+// @route   POST /api/courses/:id/review
+// @access  Private
+
+const createCourseReview = asyncHandler(async (req, res) => {
+  const { ratingStars, comment } = req.body
+
+  const course = await Course.findById(req.params.id)
+
+  if (course) {
+    const alreadyReview = course.reviews.find(
+      (r) => r.user.toString() === req.user._id.toString()
+    )
+
+    if (alreadyReview) {
+      res.status(400)
+      throw new Error('Already reviewed.')
+    }
+
+    const review = {
+      name: req.user.name,
+      ratingStars,
+      comment,
+      user: req.user._id,
+    }
+
+    await course.reviews.push(review)
+
+    course.numReviews = course.reviews.length
+
+    // course.rating =
+    //   course.reviews.reduce((acc, item) => item.rating + acc, 0) /
+    //   course.reviews.length
+
+    await course.save()
+    res.status(201).json({ message: 'Review added' })
+  } else {
+    res.status(404)
+    throw new Error('Course not found.')
+  }
+})
+
+// @desc    Reply QandA
+// @route   PUT /api/courses/:id/qanda
+// @access  Private
+
+export {
+  getCourses,
+  getCourseById,
+  createCourseQandA,
+  getBestCourses,
+  createCourseReview,
+}
