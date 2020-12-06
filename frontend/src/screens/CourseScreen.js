@@ -90,6 +90,9 @@ const CourseScreen = ({ match, history }) => {
       margin: 10,
       padding: 10,
       paddingRight: 10,
+      [theme.breakpoints.down('sm')]: {
+        width: 265,
+      },
     },
     img: {
       margin: 'auto',
@@ -100,6 +103,10 @@ const CourseScreen = ({ match, history }) => {
     titleBox: {
       paddingLeft: 40,
       paddingRight: 40,
+      [theme.breakpoints.down('sm')]: {
+        paddingLeft: 20,
+        paddingRight: 20,
+      },
     },
     divider: {
       margin: theme.spacing(2, 0),
@@ -201,10 +208,10 @@ const CourseScreen = ({ match, history }) => {
           />
           <Container className={classes.root}>
             <Grid container spacing={2}>
-              <Grid item xs={9}>
+              <Grid item md={9} xs={12}>
                 <Paper className={classes.paper}>
                   <Grid container>
-                    <Grid item xs={6}>
+                    <Grid item md={6} xs={12}>
                       <div className='image'>
                         <img
                           src={course.image}
@@ -214,7 +221,7 @@ const CourseScreen = ({ match, history }) => {
                       </div>
                     </Grid>
 
-                    <Grid item xs={6} className={classes.titleBox}>
+                    <Grid item md={6} xs={12} className={classes.titleBox}>
                       <List>
                         <ListItem>
                           <ListItemText
@@ -270,7 +277,7 @@ const CourseScreen = ({ match, history }) => {
                 </Paper>
               </Grid>
 
-              <Grid item xs={3} className={classes.priceTable}>
+              <Grid item md={3} xs={12} className={classes.priceTable}>
                 <Table>
                   <TableBody>
                     <TableRow>

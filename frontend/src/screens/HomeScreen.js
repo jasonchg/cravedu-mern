@@ -85,7 +85,7 @@ const HomeScreen = ({ history }) => {
   const matchesMD = useMediaQuery(theme.breakpoints.down('md'))
   const matchesLG = useMediaQuery(theme.breakpoints.up('lg'))
 
-  let itemToShow = matchesSM ? 2 : matchesMD ? 4 : matchesLG ? 5 : 4
+  let itemToShow = matchesSM ? 1 : matchesMD ? 3 : matchesLG ? 5 : 4
   let itemToShowLeaning = matchesSM ? 1 : matchesMD ? 2 : matchesLG ? 3 : 2
 
   return (

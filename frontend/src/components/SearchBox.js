@@ -9,7 +9,8 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
-    width: '100%',
+    width: '98%',
+    marginLeft: 7,
   },
   inputRoot: {
     color: 'inherit',
@@ -23,14 +24,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const SearchBox = ({ history }) => {
+const SearchBox = ({ history, closeDrawer }) => {
   const [keyword, setKeyword] = useState('')
   const classes = useStyles()
 
   const submitHandler = (e) => {
     e.preventDefault()
+    closeDrawer(false)
     if (keyword.trim()) {
-      history.push(`/course/search/${keyword}`)
+      history.push(`/search/${keyword}`)
     } else {
       history.push('/')
     }

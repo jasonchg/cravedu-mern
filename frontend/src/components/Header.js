@@ -240,7 +240,10 @@ const Header = () => {
                     <ListItem>
                       <Route
                         render={({ history }) => (
-                          <SearchBox history={history} />
+                          <SearchBox
+                            history={history}
+                            closeDrawer={setOpenDrawer}
+                          />
                         )}
                       />
                     </ListItem>
@@ -256,6 +259,7 @@ const Header = () => {
                 </div>
 
                 <Button
+                  style={{ marginRight: 7 }}
                   color='inherit'
                   startIcon={<ShoppingCartIcon />}
                   onClick={() => (window.location.href = '/cart')}
@@ -267,6 +271,7 @@ const Header = () => {
                   <>
                     {userInfo.isInstructor && (
                       <Button
+                        style={{ marginRight: 7 }}
                         color='inherit'
                         startIcon={<BallotIcon />}
                         onClick={goInstructor}

@@ -32,6 +32,7 @@ import VideoPlayer from '../components/VideoPlayer'
 import PropTypes from 'prop-types'
 import FormContainer from '../components/FormContainer'
 import { COURSE_QANDA_RESET } from '../constants/courseConstants'
+import ReactStars from 'react-rating-stars-component'
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props
@@ -155,6 +156,8 @@ const VideoLearningScreen = ({ match, history }) => {
   const { error: qandaError, success: qandaSuccess } = courseQanda
   const [value, setValue] = useState(0)
   const [question, setQuestion] = useState('')
+  const [ratingStar, setRatingStar] = useState(5)
+  const [review, setReview] = useState('')
   const tabHandler = (event, newValue) => {
     setValue(newValue)
   }
@@ -210,6 +213,12 @@ const VideoLearningScreen = ({ match, history }) => {
     e.preventDefault()
     dispatch(addQanda(courseId, { question }))
     setModalOpen(false)
+  }
+
+  const reviewSubmitHandler = (e) => {
+    e.preventDefault()
+    alert('Submmited')
+    console.table({ ratingStar, review })
   }
 
   return (
@@ -316,6 +325,8 @@ const VideoLearningScreen = ({ match, history }) => {
                     <Tab label='About this Course' {...a11yProps(0)} />
                     <Tab label='Q&A' {...a11yProps(1)} />
                     <Tab label='Annoucement' {...a11yProps(2)} />
+                    {/* on show when user havent review yet */}
+                    <Tab label='Review This Course' {...a11yProps(3)} />
                   </Tabs>
                 </Paper>
 
@@ -448,6 +459,39 @@ const VideoLearningScreen = ({ match, history }) => {
                     </ListItem>
                     <Divider />
                   </List>
+                </TabPanel>
+
+                <TabPanel value={value} index={3}>
+                  <h2>Please rate this course!</h2>
+                  <form
+                    onSubmit={reviewSubmitHandler}
+                    style={{ width: '500px' }}
+                  >
+                    Your rating:
+                    <ReactStars
+                      className={classes.ratingStar}
+                      count={5}
+                      value={ratingStar}
+                      onChange={(newRating) => setRatingStar(newRating)}
+                      size={24}
+                      activeColor='#ffd700'
+                      isHalf
+                    />
+                    <FormContainer>
+                      <TextField
+                        required
+                        fullWidth
+                        id='review'
+                        label='Review'
+                        type='text'
+                        variant='filled'
+                        onChange={(e) => setReview(e.target.value)}
+                      />
+                    </FormContainer>
+                    <Button variant='contained' type='submit'>
+                      Submit
+                    </Button>
+                  </form>
                 </TabPanel>
               </Grid>
             </Grid>

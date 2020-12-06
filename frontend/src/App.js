@@ -28,20 +28,49 @@ function App() {
       <main>
         <Router>
           <Header />
+
+          {/* For Admin */}
+          <Switch className='admin'>
+            <Container>
+              <Route
+                path='/admin/:id/edit'
+                component={AdminCourseEditScreen}
+                exact
+              />
+              <Route
+                path='/admin/users/:id/edit'
+                component={AdminUserEditScreen}
+                exact
+              />
+              <Route path='/admin/users' component={ManageUsersScreen} exact />
+              <Route path='/admin' component={ManageCoursesScreen} exact />
+            </Container>
+          </Switch>
+
+          {/* For Admin */}
+          <Switch className='instructor'>
+            <Container>
+              <Route
+                path='/instructor/:id/edit'
+                component={InstructorCourseEditScreen}
+                exact
+              />
+              <Route path='/instructor' component={InstructorScreen} exact />
+            </Container>
+          </Switch>
+
           {/* Video Learning */}
           <Switch className='video-learning'>
-            <>
-              <Route
-                path='/course/:id/learn?:chapter'
-                component={VideoLearningScreen}
-                exact
-              />
-              <Route
-                path='/course/:id/learn'
-                component={VideoLearningScreen}
-                exact
-              />
-            </>
+            <Route
+              path='/course/:id/learn?:chapter'
+              component={VideoLearningScreen}
+              exact
+            />
+            <Route
+              path='/course/:id/learn'
+              component={VideoLearningScreen}
+              exact
+            />
           </Switch>
 
           {/* Main Screen */}
@@ -62,46 +91,11 @@ function App() {
                 component={PreviewCourseScreen}
                 exact
               />
-              <Route
-                path='/course/search/:keyword'
-                component={BrowseScreen}
-                exact
-              />
+              <Route path='/search/:keyword' component={BrowseScreen} exact />
               <Route path='/course' component={BrowseScreen} exact />
+              <Route path='/' component={HomeScreen} exact />
             </Container>
           </Switch>
-
-          {/* For Admin */}
-          <Switch className='admin'>
-            <Container>
-              <Route
-                path='/admin/:id/edit'
-                component={AdminCourseEditScreen}
-                exact
-              />
-              <Route path='/admin' component={ManageCoursesScreen} exact />
-              <Route
-                path='/admin/users/:id/edit'
-                component={AdminUserEditScreen}
-                exact
-              />
-              <Route path='/admin/users' component={ManageUsersScreen} exact />
-            </Container>
-          </Switch>
-
-          {/* For Admin */}
-          <Switch className='instructor'>
-            <Container>
-              <Route
-                path='/instructor/:id/edit'
-                component={InstructorCourseEditScreen}
-                exact
-              />
-              <Route path='/instructor' component={InstructorScreen} exact />
-            </Container>
-          </Switch>
-
-          <Route path='/' component={HomeScreen} exact />
         </Router>
         <Footer />
       </main>

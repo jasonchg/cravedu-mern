@@ -71,7 +71,11 @@ const BrowseScreen = ({ match }) => {
   return (
     <Container>
       <Grid container spacing={3}>
-        {keyword ? null : (
+        {keyword ? (
+          <div style={{ margin: '10px 0' }}>
+            <h2>Search terms : {keyword}</h2>
+          </div>
+        ) : (
           <>
             <Grid item xs={12}>
               <div style={{ fontSize: '20px' }}>
@@ -89,10 +93,8 @@ const BrowseScreen = ({ match }) => {
             </Grid>
           </>
         )}
-
         <Grid item xs={12}>
           <Grid container wrap='wrap'>
-            <h2>Seatch terms : {keyword}</h2>
             {error ? (
               <Message>{error}</Message>
             ) : loading ? (
@@ -117,7 +119,6 @@ const BrowseScreen = ({ match }) => {
             )}
           </Grid>
         </Grid>
-
         {matchesLG && !keyword ? (
           <Grid item xs={12} className='homeHeaderText'>
             <h2>Trending</h2>
