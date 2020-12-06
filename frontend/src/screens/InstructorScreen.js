@@ -20,6 +20,7 @@ import {
 } from '../constants/instructorConstants'
 import Breadcrumbs from '../components/Breadcrumbs'
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder'
+import CreateCourseGuide from '../components/CreateCourseGuide'
 
 const InstructorScreen = ({ history }) => {
   const dispatch = useDispatch()
@@ -170,6 +171,7 @@ const InstructorScreen = ({ history }) => {
                   padding: '20px',
                   textAlign: 'center',
                   marginTop: 10,
+                  padding: '50px 0',
                 }}
               >
                 <div>
@@ -195,6 +197,7 @@ const InstructorScreen = ({ history }) => {
           </Grid>
         )}
       </Grid>
+      <CreateCourseGuide />
     </>
   )
 }
