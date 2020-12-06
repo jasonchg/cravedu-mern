@@ -12,6 +12,10 @@ import {
   COURSE_BEST_REQUEST,
   COURSE_BEST_SUCCESS,
   COURSE_BEST_FAIL,
+  COURSE_REVIEW_REQUEST,
+  COURSE_REVIEW_SUCCESS,
+  COURSE_REVIEW_FAIL,
+  COURSE_REVIEW_RESET,
 } from '../constants/courseConstants'
 
 const courseListReducer = (state = { courses: [] }, action) => {
@@ -68,9 +72,25 @@ const courseBestSoldReducer = (state = { courses: {} }, action) => {
   }
 }
 
+const courseReviewReducer = (state = {}, action) => {
+  switch (action.type) {
+    case COURSE_REVIEW_REQUEST:
+      return { loading: true }
+    case COURSE_REVIEW_SUCCESS:
+      return { loading: false, success: true }
+    case COURSE_REVIEW_FAIL:
+      return { loading: false, error: action.payload }
+    case COURSE_REVIEW_RESET:
+      return {}
+    default:
+      return state
+  }
+}
+
 export {
   courseListReducer,
   courseDetailsReducer,
   courseQandaReducer,
   courseBestSoldReducer,
+  courseReviewReducer,
 }

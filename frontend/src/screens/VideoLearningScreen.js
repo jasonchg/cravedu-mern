@@ -24,14 +24,21 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled'
 import { makeStyles } from '@material-ui/core/styles'
-import { addQanda, listCourseDetails } from '../actions/courseActions'
+import {
+  addQanda,
+  createReview,
+  listCourseDetails,
+} from '../actions/courseActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import VideoPlayer from '../components/VideoPlayer'
 import PropTypes from 'prop-types'
 import FormContainer from '../components/FormContainer'
-import { COURSE_QANDA_RESET } from '../constants/courseConstants'
+import {
+  COURSE_QANDA_RESET,
+  COURSE_REVIEW_RESET,
+} from '../constants/courseConstants'
 import ReactStars from 'react-rating-stars-component'
 
 const TabPanel = (props) => {
@@ -154,10 +161,19 @@ const VideoLearningScreen = ({ match, history }) => {
   const { userInfo } = userLogin
   const courseQanda = useSelector((state) => state.courseQanda)
   const { error: qandaError, success: qandaSuccess } = courseQanda
+  const courseReview = useSelector((state) => state.courseReview)
+  const {
+    error: reviewError,
+    success: reviewSuccess,
+    loading: reviewLoading,
+  } = courseReview
+
   const [value, setValue] = useState(0)
   const [question, setQuestion] = useState('')
-  const [ratingStar, setRatingStar] = useState(5)
-  const [review, setReview] = useState('')
+  const [ratingStars, setRatingStars] = useState(5)
+  const [comment, setComment] = useState('')
+  const [alreadyReview, setAlreadyReview] = useState(false)
+
   const tabHandler = (event, newValue) => {
     setValue(newValue)
   }
@@ -175,11 +191,29 @@ const VideoLearningScreen = ({ match, history }) => {
   }
 
   useEffect(() => {
+    const checkReview = (reviews, userId) => {
+      return reviews.some((revItem) => {
+        if (revItem.user === userId) {
+          return true
+        } else {
+          return null
+        }
+      })
+    }
+
     if (qandaSuccess) {
       setQuestion('')
       dispatch({ type: COURSE_QANDA_RESET })
       alert('Question Submitted')
     }
+
+    if (reviewSuccess) {
+      setComment('')
+      dispatch({ type: COURSE_REVIEW_RESET })
+      setAlreadyReview(true)
+      alert('Review Submitted')
+    }
+
     if (!userInfo) {
       history.push('/login')
     } else {
@@ -187,6 +221,7 @@ const VideoLearningScreen = ({ match, history }) => {
         dispatch(listCourseDetails(courseId))
         setSelectedVideo('')
       } else {
+        setAlreadyReview(checkReview(course.reviews, userInfo._id))
         history.push(
           `/course/${courseId}/learn?chapter=${course.courseContents[0]._id}`
         )
@@ -199,7 +234,15 @@ const VideoLearningScreen = ({ match, history }) => {
         )
       }
     }
-  }, [userInfo, history, dispatch, courseId, course, qandaSuccess])
+  }, [
+    userInfo,
+    history,
+    dispatch,
+    courseId,
+    course,
+    qandaSuccess,
+    reviewSuccess,
+  ])
 
   // 2 func : set video to the video player
   const selectTopicHandler = (chapterId) => {
@@ -216,9 +259,7 @@ const VideoLearningScreen = ({ match, history }) => {
   }
 
   const reviewSubmitHandler = (e) => {
-    e.preventDefault()
-    alert('Submmited')
-    console.table({ ratingStar, review })
+    dispatch(createReview(courseId, { ratingStars, comment }))
   }
 
   return (
@@ -325,8 +366,12 @@ const VideoLearningScreen = ({ match, history }) => {
                     <Tab label='About this Course' {...a11yProps(0)} />
                     <Tab label='Q&A' {...a11yProps(1)} />
                     <Tab label='Annoucement' {...a11yProps(2)} />
-                    {/* on show when user havent review yet */}
-                    <Tab label='Review This Course' {...a11yProps(3)} />
+
+                    {alreadyReview === false ? (
+                      <Tab label='Review This Course' {...a11yProps(3)} />
+                    ) : (
+                      <Tab label='Alraedy Reviewed' disabled />
+                    )}
                   </Tabs>
                 </Paper>
 
@@ -462,7 +507,9 @@ const VideoLearningScreen = ({ match, history }) => {
                 </TabPanel>
 
                 <TabPanel value={value} index={3}>
-                  <h2>Please rate this course!</h2>
+                  <h2>Tell us what you think? </h2>
+                  {reviewLoading && <Loader left />}
+                  {reviewError && <Message>{reviewError}</Message>}
                   <form
                     onSubmit={reviewSubmitHandler}
                     style={{ width: '500px' }}
@@ -471,8 +518,8 @@ const VideoLearningScreen = ({ match, history }) => {
                     <ReactStars
                       className={classes.ratingStar}
                       count={5}
-                      value={ratingStar}
-                      onChange={(newRating) => setRatingStar(newRating)}
+                      value={ratingStars}
+                      onChange={(newRating) => setRatingStars(newRating)}
                       size={24}
                       activeColor='#ffd700'
                       isHalf
@@ -485,7 +532,7 @@ const VideoLearningScreen = ({ match, history }) => {
                         label='Review'
                         type='text'
                         variant='filled'
-                        onChange={(e) => setReview(e.target.value)}
+                        onChange={(e) => setComment(e.target.value)}
                       />
                     </FormContainer>
                     <Button variant='contained' type='submit'>

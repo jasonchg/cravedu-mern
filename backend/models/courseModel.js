@@ -21,6 +21,7 @@ const contentSchema = mongoose.Schema(
     name: { type: String, required: true },
     chapter: { type: String, required: true },
     video: { type: String, required: true },
+    duration: { type: String, required: true },
   },
   {
     timestamps: true,
@@ -89,6 +90,7 @@ const courseSchema = mongoose.Schema(
     annoucement: {
       type: String,
     },
+    totalDuration: { type: String, required: true },
     reviews: [reviewSchema],
     courseContents: [contentSchema],
     courseQASection: [questionAskedSchema],

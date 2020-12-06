@@ -12,6 +12,9 @@ import {
   COURSE_BEST_REQUEST,
   COURSE_BEST_SUCCESS,
   COURSE_BEST_FAIL,
+  COURSE_REVIEW_REQUEST,
+  COURSE_REVIEW_SUCCESS,
+  COURSE_REVIEW_FAIL,
 } from '../constants/courseConstants'
 
 const listCourses = (keyword = '') => async (dispatch) => {
@@ -109,4 +112,39 @@ const bestSoldCourses = () => async (dispatch) => {
   }
 }
 
-export { listCourses, listCourseDetails, addQanda, bestSoldCourses }
+const createReview = (courseId, review) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: COURSE_REVIEW_REQUEST })
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    await axios.post(`/api/courses/${courseId}/reviews`, review, config)
+
+    dispatch({ type: COURSE_REVIEW_SUCCESS })
+  } catch (e) {
+    dispatch({
+      type: COURSE_REVIEW_FAIL,
+      payload:
+        e.response && e.response.data.message
+          ? e.response.data.message
+          : e.message,
+    })
+  }
+}
+
+export {
+  listCourses,
+  listCourseDetails,
+  addQanda,
+  bestSoldCourses,
+  createReview,
+}
