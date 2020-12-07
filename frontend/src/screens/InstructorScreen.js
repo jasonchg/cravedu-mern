@@ -168,10 +168,9 @@ const InstructorScreen = ({ history }) => {
                   flexDirection: 'column',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  padding: '20px',
                   textAlign: 'center',
                   marginTop: 10,
-                  padding: '50px 0',
+                  padding: '50px 20px',
                 }}
               >
                 <div>
