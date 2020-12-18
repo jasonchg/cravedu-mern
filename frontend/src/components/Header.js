@@ -21,6 +21,7 @@ import {
   ListItem,
   ListItemText,
   Collapse,
+  Divider,
 } from '@material-ui/core'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
@@ -41,6 +42,11 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {},
   title: {
     flexGrow: 1,
+  },
+  excludeFromPrint: {
+    '@media print': {
+      display: 'none',
+    },
   },
 }))
 
@@ -110,7 +116,7 @@ const Header = () => {
   const matchesSM = useMediaQuery(theme.breakpoints.down('sm'))
 
   return (
-    <div className={classes.root}>
+    <div className={`${classes.root} ${classes.excludeFromPrint}`}>
       <AppBar position='static' className='header'>
         <Container>
           <Toolbar style={{ margin: 0, padding: 0 }}>
@@ -169,6 +175,8 @@ const Header = () => {
                             </ListItem>
                           </List>
                         </Collapse>
+                        <Divider />
+
                         {userInfo.isInstructor && (
                           <ListItem button onClick={goInstructor}>
                             <ListItemIcon>
@@ -243,6 +251,7 @@ const Header = () => {
                           <SearchBox
                             history={history}
                             closeDrawer={setOpenDrawer}
+                            phone
                           />
                         )}
                       />

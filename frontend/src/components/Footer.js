@@ -1,12 +1,22 @@
 import React from 'react'
-import { Typography, Container } from '@material-ui/core'
+import { Typography, Container, makeStyles } from '@material-ui/core'
 import InstagramIcon from '@material-ui/icons/Instagram'
 import FacebookIcon from '@material-ui/icons/Facebook'
 import TwitterIcon from '@material-ui/icons/Twitter'
 import Logo from '../assets/images/logo.png'
+
+const useStyles = makeStyles({
+  excludeFromPrint: {
+    '@media print': {
+      display: 'none',
+    },
+  },
+})
+
 const Footer = () => {
+  const classes = useStyles()
   return (
-    <footer>
+    <footer className={classes.excludeFromPrint}>
       <div className='footer'>
         <Container>
           <div className='left-footer'>

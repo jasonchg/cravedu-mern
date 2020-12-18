@@ -46,16 +46,16 @@ const ManageUsersScreen = ({ history }) => {
       <Breadcrumbs
         previousPage={[
           {
-            name: 'Admin',
-            link: '/admin',
+            name: 'Home',
+            link: '/',
           },
         ]}
         currentPage='Users'
       />
       <Grid container style={{ marginTop: 10 }}>
         <Grid item xs={12}>
-          <Button onClick={() => history.push('/admin')}>Go Back</Button> |
-          <Button onClick={() => history.push('/admin/courses')}>
+          <Button onClick={() => history.push('/')}>Home</Button> |
+          <Button onClick={() => history.push('/admin')}>
             Go To Manage Courses
           </Button>
         </Grid>

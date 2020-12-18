@@ -88,12 +88,14 @@ const CourseScreen = ({ match, history }) => {
       marginTop: 10,
     },
     image: {
-      width: 325,
+      // width: 325,
+      width: 375,
       margin: 10,
       padding: 10,
       paddingRight: 10,
       [theme.breakpoints.down('sm')]: {
         width: 265,
+        objectFit: 'cover',
       },
     },
     img: {
@@ -246,7 +248,11 @@ const CourseScreen = ({ match, history }) => {
                           <ListItemIcon>
                             <AccessTimeIcon />
                           </ListItemIcon>
-                          <ListItemText primary='5 hours' />
+                          <ListItemText
+                            primary={`${Math.round(
+                              course.totalDuration / 60
+                            )} hours`}
+                          />
                           <ListItemIcon>
                             <ArchiveIcon />
                           </ListItemIcon>

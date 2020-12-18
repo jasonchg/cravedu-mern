@@ -105,6 +105,7 @@ const UserProfileScreen = ({ history }) => {
         ) : (
           <Grid container spacing={3} className={classes.root}>
             <Grid item md={5} xs={12}>
+              <h2>My Info</h2>
               <FormContainer>
                 <form className={classes.form} onSubmit={submitHandler}>
                   <FormContainer>
@@ -189,6 +190,9 @@ const UserProfileScreen = ({ history }) => {
             <Grid item md={7} xs={12}>
               <div className={classes.list}>
                 <h2>My Orders History</h2>
+                {myOrders && myOrders.length !== 0 ? (
+                  <p>{`${myOrders.length} orders in total.`}</p>
+                ) : null}
                 {orderMyError && <Message>{orderMyError}</Message>}
                 {orderMyLoading && <Loader />}
                 <List>

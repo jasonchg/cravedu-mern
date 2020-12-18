@@ -22,6 +22,7 @@ const useStyles = makeStyles({
   slideImg: {
     maxWidth: '330px',
     marginRight: 10,
+    objectFit: 'cover',
   },
   slideTextContainer: {
     padding: 10,

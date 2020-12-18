@@ -12,25 +12,38 @@ const useStyles = makeStyles((theme) => ({
     width: '98%',
     marginLeft: 7,
   },
-  inputRoot: {
+  inputRootDef: {
     color: 'inherit',
     width: '94%',
+  },
+  inputRootPH: {
+    background: '#eaeaea',
+    padding: '5px',
+    marginRight: 3,
+    width: '83%',
+    borderRadius: 7,
   },
   inputInput: {
     paddingLeft: 10,
   },
-  iconButton: {
+  iconButtonDef: {
     padding: 7,
+  },
+  iconButtonPH: {
+    padding: 5,
   },
 }))
 
-const SearchBox = ({ history, closeDrawer }) => {
+const SearchBox = ({ history, closeDrawer, phone }) => {
   const [keyword, setKeyword] = useState('')
   const classes = useStyles()
 
   const submitHandler = (e) => {
     e.preventDefault()
-    closeDrawer(false)
+    if (closeDrawer) {
+      closeDrawer(false)
+    }
+
     if (keyword.trim()) {
       history.push(`/search/${keyword}`)
     } else {
@@ -44,7 +57,7 @@ const SearchBox = ({ history, closeDrawer }) => {
         <InputBase
           placeholder='Search…'
           classes={{
-            root: classes.inputRoot,
+            root: phone ? classes.inputRootPH : classes.inputRootDef,
             input: classes.inputInput,
           }}
           inputProps={{ 'aria-label': 'search' }}
@@ -52,7 +65,7 @@ const SearchBox = ({ history, closeDrawer }) => {
         />
         <IconButton
           type='submit'
-          className={classes.iconButton}
+          className={phone ? classes.iconButtonPH : classes.iconButtonDef}
           aria-label='search'
         >
           <SearchIcon />

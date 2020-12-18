@@ -38,6 +38,7 @@ const learningStyles = makeStyles({
     height: '100%',
     backgroundSize: 'auto 100%',
     backgroundPosition: 'cover',
+    objectFit: 'cover',
   },
   playIcon: {
     position: 'absolute',

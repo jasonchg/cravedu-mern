@@ -63,11 +63,6 @@ const AdminUserEditScreen = ({ history, match }) => {
   const [isAdmin, setIsAdmin] = useState(false)
   const [isInstructor, setIsInstructor] = useState(false)
 
-  // useEffect
-  // check if user existed
-  // check if user details exisited
-  // check if user update success
-
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
       if (updateSuccess) {

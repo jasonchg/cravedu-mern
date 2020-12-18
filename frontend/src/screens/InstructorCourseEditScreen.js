@@ -74,12 +74,16 @@ const InstructorCourseEditScreen = ({ match, history }) => {
   const [description, setDescription] = useState('')
   const [image, setImage] = useState('')
   const [uploading, setUploading] = useState(false)
+  const [chapter, setChapter] = useState(1)
+  const [chapterName, setChapterName] = useState('')
+  const [video, setVideo] = useState('')
+  const [videoDuration, setVideoDuration] = useState('0:00:00')
 
   const myTrim = (name) => {
     return String(name.replace(/ /g, '').toLowerCase())
   }
 
-  const uploadFileHandler = async (e) => {
+  const uploadImageHandler = async (e) => {
     const file = e.target.files[0]
     const formData = new FormData()
     formData.append(myTrim(name), file)
@@ -105,6 +109,20 @@ const InstructorCourseEditScreen = ({ match, history }) => {
       console.error(error)
       setUploading(false)
     }
+  }
+
+  const uploadVideoHandler = (e) => {
+    e.preventDefault()
+    console.log('video added')
+  }
+
+  // upload content happen here
+  const submitContentHandler = (e) => {
+    e.preventDefault()
+    console.log('Uploaded', {
+      chapter: chapter,
+      name: chapterName,
+    })
   }
 
   const submitHandler = (e) => {
@@ -201,7 +219,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                   type='file'
                   name={myTrim(name)}
                   placeholder='Enter Image Url'
-                  onChange={uploadFileHandler}
+                  onChange={uploadImageHandler}
                 />
                 {uploading && <Loader left />}
               </FormContainer>
@@ -274,51 +292,72 @@ const InstructorCourseEditScreen = ({ match, history }) => {
               Add New Content
             </AccordionSummary>
             <AccordionDetails>
-              <form>
-                <FormContainer>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
+              <Grid container spacing={3}>
+                <Grid item md={6}>
+                  <form
+                    onSubmit={submitContentHandler}
+                    method='post'
+                    encType='multipart/form-data'
                   >
-                    <input type='file' />
-                    <div>
-                      <AccessTimeIcon />
-                    </div>
-                    <div>0:00:00</div>
-                  </div>
-                </FormContainer>
+                    <FormContainer>
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <input
+                          type='file'
+                          name={myTrim(video)}
+                          placeholder='Enter Video Url'
+                          onChange={uploadVideoHandler}
+                        />
+                        <div>
+                          <AccessTimeIcon />
+                        </div>
+                        <div>{videoDuration}</div>
+                      </div>
+                    </FormContainer>
 
-                <FormContainer>
-                  <TextField
-                    required
-                    fullWidth
-                    id='content-name'
-                    type='number'
-                    label='Chapter'
-                    placeholder='1'
-                    variant='filled'
-                    value={''}
-                  />
-                </FormContainer>
-                <FormContainer>
-                  <TextField
-                    required
-                    fullWidth
-                    id='content-name'
-                    type='text'
-                    label='Chapter Name'
-                    placeholder='Get Started'
-                    variant='filled'
-                    value={''}
-                  />
-                </FormContainer>
-                <Button variant='contained' color='primary'>
-                  Push
-                </Button>
-              </form>
+                    <FormContainer>
+                      <TextField
+                        required
+                        fullWidth
+                        id='content-chapter'
+                        type='number'
+                        label='Chapter'
+                        placeholder='1'
+                        variant='filled'
+                        value={chapter}
+                        onChange={(e) => setChapter(e.target.value)}
+                      />
+                    </FormContainer>
+                    <FormContainer>
+                      <TextField
+                        required
+                        fullWidth
+                        id='content-name'
+                        type='text'
+                        label='Chapter Name'
+                        placeholder='Get Started'
+                        variant='filled'
+                        value={chapterName}
+                        onChange={(e) => setChapterName(e.target.value)}
+                      />
+                    </FormContainer>
+                    <Button variant='contained' color='primary' type='submit'>
+                      Push
+                    </Button>
+                  </form>
+                </Grid>
+                <Grid item md={6}>
+                  <video id='myVideo' width='275' height='176' controls>
+                    <source src={video} type='video/mp4' />
+                    Your browser does not support HTML5 video.
+                  </video>
+                </Grid>
+              </Grid>
             </AccordionDetails>
           </Accordion>
 
