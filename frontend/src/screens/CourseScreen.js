@@ -32,6 +32,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { listCourseDetails } from '../actions/courseActions'
 import { getUserCourses } from '../actions/userActions'
 import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import Rating from '../components/Rating'
@@ -71,8 +72,9 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired,
 }
 
-const CourseScreen = ({ match, history }) => {
-  const courseId = match.params.id
+const CourseScreen = ({ history }) => {
+  const { course_slug } = useParams()
+
   const dispatch = useDispatch()
 
   const addToCartHandler = () => {
@@ -141,6 +143,8 @@ const CourseScreen = ({ match, history }) => {
     },
   }))
 
+  const [courseId, setCourseId] = useState('')
+
   const [value, setValue] = useState(0)
   const tabHandler = (event, newValue) => {
     setValue(newValue)
@@ -174,6 +178,10 @@ const CourseScreen = ({ match, history }) => {
   }
 
   useEffect(() => {
+    if (course) {
+      setCourseId(course._id)
+    }
+
     if (userPaidCourses && course) {
       setBought(checkBought(userPaidCourses, course))
     }
@@ -187,7 +195,7 @@ const CourseScreen = ({ match, history }) => {
       )
     }
 
-    dispatch(listCourseDetails(courseId))
+    dispatch(listCourseDetails(course_slug))
 
     if (userInfo) {
       if (bought) {
@@ -196,7 +204,7 @@ const CourseScreen = ({ match, history }) => {
         dispatch(getUserCourses())
       }
     }
-  }, [history, bought, courseId, userInfo, dispatch])
+  }, [history, bought, userInfo, dispatch])
 
   return (
     <>

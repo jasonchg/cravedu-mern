@@ -1,6 +1,7 @@
 const courses = [
   {
     name: 'Introduction to Javascript',
+    slug: 'introduction-to-javascript',
     image: '/uploads/introductiontojavascript.jpg',
     description: 'Javascript is the most high demand in the industry nowaday.',
     instructor: 'John Doe',
@@ -28,6 +29,7 @@ const courses = [
   },
   {
     name: 'Introduction to C++',
+    slug: 'introduction-to-c++',
     image: '/uploads/introductiontoc++.jpg',
     description: 'C++ is the most high demand in the industry nowaday.',
     instructor: 'John Doe',
@@ -61,6 +63,7 @@ const courses = [
   },
   {
     name: 'Introduction to Typescript',
+    slug: 'introduction-to-typescript',
     image: '/uploads/introductiontotypescript.jpg',
     description: 'Typescript is the most high demand in the industry nowaday.',
     instructor: 'John Doe',
@@ -88,6 +91,7 @@ const courses = [
   },
   {
     name: 'Introduction to Python',
+    slug: 'introduction-to-python',
     image: '/uploads/introductiontopython.jpg',
     description: 'Python is the most high demand in the industry nowaday.',
     instructor: 'John Doe',
@@ -115,6 +119,7 @@ const courses = [
   },
   {
     name: 'Learn HTML CSS To Build A Webpage',
+    slug: 'learn-html-css-to-build-a-webpage',
     image: '/uploads/learnhtmlcsstobuildawebpage.jpg',
     description: 'HTML CSS is the most high demand in the industry nowaday.',
     instructor: 'Brad',

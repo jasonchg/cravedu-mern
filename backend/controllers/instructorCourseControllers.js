@@ -25,6 +25,7 @@ const createCourse = asyncHandler(async (req, res) => {
   const course = new Course({
     user: req.user._id,
     name: 'My New Course',
+    slug: 'my-new-course-123',
     image: '/uploads/sample.jpg',
     description: 'New Course',
     instructor: req.user.name,

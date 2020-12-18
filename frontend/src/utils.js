@@ -10,4 +10,13 @@ const truncate = (str, len) => {
   return str
 }
 
-export { truncate }
+const myTrim = (name) => {
+  return String(name.replace(/ /g, '').toLowerCase())
+}
+
+const generateSlug = (name) => {
+  let ranText = Math.random().toString(36).substring(7)
+  return String(name.replace(/ /g, '-').toLowerCase() + '-' + ranText)
+}
+
+export { truncate, myTrim, generateSlug }

@@ -37,6 +37,20 @@ const getCourseById = asyncHandler(async (req, res) => {
     throw new Error('Course not found')
   }
 })
+// @desc    Fetch single course
+// @route   GET /api/courses/:slug
+// @access  Public
+
+const getCourseBySlug = asyncHandler(async (req, res) => {
+  const course = await Course.find({ slug: req.params.slug })
+
+  if (course) {
+    res.json(course[0])
+  } else {
+    res.status(404)
+    throw new Error('Course not found')
+  }
+})
 
 // @desc    Create QandA
 // @route   POST /api/courses/:id/qanda
@@ -125,4 +139,5 @@ export {
   createCourseQandA,
   getBestCourses,
   createCourseReview,
+  getCourseBySlug,
 }

@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import SubdirectoryArrowRightIcon from '@material-ui/icons/SubdirectoryArrowRight'
-
+import { myTrim, generateSlug } from '../utils'
 import {
   ADMIN_COURSE_DETAILS_RESET,
   ADMIN_COURSE_UPDATE_RESET,
@@ -69,10 +69,7 @@ const AdminCourseEditScreen = ({ match, history }) => {
   const [image, setImage] = useState('')
   const [isPublished, setIsPublished] = useState(false)
   const [uploading, setUploading] = useState(false)
-
-  const myTrim = (name) => {
-    return String(name.replace(/ /g, '').toLowerCase())
-  }
+  const [slug, setSlug] = useState('')
 
   const uploadFileHandler = async (e) => {
     const file = e.target.files[0]
@@ -140,9 +137,11 @@ const AdminCourseEditScreen = ({ match, history }) => {
           setDescription('')
           setImage('')
           setIsPublished(false)
+          setSlug('')
           dispatch(getCourseById(courseId))
         } else {
           setName(courseDetails.name)
+          setSlug(courseDetails.slug)
           setPrice(courseDetails.price)
           setDescription(courseDetails.description)
           setImage(courseDetails.image)
@@ -215,6 +214,24 @@ const AdminCourseEditScreen = ({ match, history }) => {
                   onChange={(e) => setName(e.target.value)}
                 />
               </FormContainer>
+              <FormContainer>
+                <TextField
+                  required
+                  fullWidth
+                  id='slug'
+                  type='text'
+                  label='Slug URL'
+                  placeholder=''
+                  variant='filled'
+                  value={slug}
+                  autoComplete='text'
+                  onChange={(e) => setSlug(e.target.value)}
+                />
+                <Button onClick={() => setSlug(generateSlug(name))}>
+                  Generate
+                </Button>
+              </FormContainer>
+
               <FormContainer>
                 <TextField
                   required

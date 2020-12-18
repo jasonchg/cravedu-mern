@@ -99,7 +99,7 @@ const Course = ({ course, learning }) => {
         </Link>
       )}
       {learning ? null : (
-        <Link href={`/course/${course._id}`}>
+        <Link href={`/course/${course.slug}`}>
           <CardActionArea>
             <CardMedia
               className={classes.media}

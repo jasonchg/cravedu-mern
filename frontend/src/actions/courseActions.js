@@ -38,11 +38,11 @@ const listCourses = (keyword = '') => async (dispatch) => {
   }
 }
 
-const listCourseDetails = (courseId) => async (dispatch) => {
+const listCourseDetails = (courseSlug) => async (dispatch) => {
   try {
     dispatch({ type: COURSE_DETAILS_REQUEST })
 
-    const { data } = await axios.get(`/api/courses/${courseId}`)
+    const { data } = await axios.get(`/api/courses/${courseSlug}`)
 
     dispatch({
       type: COURSE_DETAILS_SUCCESS,

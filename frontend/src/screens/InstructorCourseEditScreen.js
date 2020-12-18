@@ -28,6 +28,7 @@ import {
   INSTRUCTOR_COURSE_UPDATE_RESET,
 } from '../constants/instructorConstants'
 import TextEditor from '../components/TextEditor'
+import { myTrim, generateSlug } from '../utils'
 
 const useStyles = makeStyles({
   root: {
@@ -70,6 +71,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
   } = instructorCourseUpdate
 
   const [name, setName] = useState('')
+  const [slug, setSlug] = useState('')
   const [price, setPrice] = useState(0)
   const [description, setDescription] = useState('')
   const [image, setImage] = useState('')
@@ -78,10 +80,6 @@ const InstructorCourseEditScreen = ({ match, history }) => {
   const [chapterName, setChapterName] = useState('')
   const [video, setVideo] = useState('')
   const [videoDuration, setVideoDuration] = useState('0:00:00')
-
-  const myTrim = (name) => {
-    return String(name.replace(/ /g, '').toLowerCase())
-  }
 
   const uploadImageHandler = async (e) => {
     const file = e.target.files[0]
@@ -131,6 +129,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
       updateCourse({
         _id: courseId,
         name,
+        slug,
         price,
         image,
         description,
@@ -151,12 +150,14 @@ const InstructorCourseEditScreen = ({ match, history }) => {
           courseDetails._id !== courseId
         ) {
           setName('')
+          setSlug('')
           setPrice(0)
           setDescription('')
           setImage('')
           dispatch(getCourseById(courseId))
         } else {
           setName(courseDetails.name)
+          setSlug(courseDetails.slug)
           setPrice(courseDetails.price)
           setDescription(courseDetails.description)
           setImage(courseDetails.image)
@@ -237,6 +238,23 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                   autoComplete='text'
                   onChange={(e) => setName(e.target.value)}
                 />
+              </FormContainer>
+              <FormContainer>
+                <TextField
+                  required
+                  fullWidth
+                  id='slug'
+                  type='text'
+                  label='Slug URL'
+                  placeholder=''
+                  variant='filled'
+                  value={slug}
+                  autoComplete='text'
+                  onChange={(e) => setSlug(e.target.value)}
+                />
+                <Button onClick={() => setSlug(generateSlug(name))}>
+                  Generate
+                </Button>
               </FormContainer>
               <FormContainer>
                 <TextField

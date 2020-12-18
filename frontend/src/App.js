@@ -78,7 +78,7 @@ function App() {
             <Route path='/payment' component={PaymentScreen} />
             <Route path='/cart' component={CartScreen} exact />
             <Route path='/cart/:id' component={CartScreen} exact />
-            <Route path='/course/:id' component={CourseScreen} exact />
+            <Route path='/course/:course_slug' component={CourseScreen} exact />
             <Route
               path='/course/:id/preview'
               component={PreviewCourseScreen}
