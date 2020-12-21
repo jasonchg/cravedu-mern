@@ -40,6 +40,8 @@ import Breadcrumbs from '../components/Breadcrumbs'
 import PropTypes from 'prop-types'
 import AccessTimeIcon from '@material-ui/icons/AccessTime'
 
+import { addToCart } from '../actions/cartActions'
+
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props
 
@@ -71,79 +73,73 @@ TabPanel.propTypes = {
   index: PropTypes.any.isRequired,
   value: PropTypes.any.isRequired,
 }
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  paper: {
+    background: '#f0f0f0',
+    margin: 'auto',
+    marginTop: 10,
+  },
+  image: {
+    // width: 325,
+    width: 375,
+    margin: 10,
+    padding: 10,
+    paddingRight: 10,
+    [theme.breakpoints.down('sm')]: {
+      width: 265,
+      objectFit: 'cover',
+    },
+  },
+  img: {
+    margin: 'auto',
+    display: 'block',
+    maxWidth: '100%',
+    maxHeight: '100%',
+  },
+  titleBox: {
+    paddingLeft: 40,
+    paddingRight: 40,
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: 20,
+      paddingRight: 20,
+    },
+  },
+  divider: {
+    margin: theme.spacing(2, 0),
+  },
+  description: {
+    textAlign: 'justify',
+  },
+  priceTable: {
+    paddingLeft: 10,
+  },
+  button: {
+    margin: 12,
+    width: 175,
+    padding: 15,
+  },
+  accordion: {
+    background: '#f0f0f0',
+  },
+  blurBackground: {
+    opacity: 0.7,
+    background: '#111',
+  },
+  reviewSection: {
+    background: '#fff',
+    maxHeight: 400,
+    overflow: 'scroll',
+    overflowX: 'hidden',
+  },
+}))
 
 const CourseScreen = ({ history }) => {
   const { course_slug } = useParams()
 
   const dispatch = useDispatch()
-
-  const addToCartHandler = () => {
-    history.push(`/cart/${courseId}`)
-  }
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      flexGrow: 1,
-    },
-    paper: {
-      background: '#f0f0f0',
-      margin: 'auto',
-      marginTop: 10,
-    },
-    image: {
-      // width: 325,
-      width: 375,
-      margin: 10,
-      padding: 10,
-      paddingRight: 10,
-      [theme.breakpoints.down('sm')]: {
-        width: 265,
-        objectFit: 'cover',
-      },
-    },
-    img: {
-      margin: 'auto',
-      display: 'block',
-      maxWidth: '100%',
-      maxHeight: '100%',
-    },
-    titleBox: {
-      paddingLeft: 40,
-      paddingRight: 40,
-      [theme.breakpoints.down('sm')]: {
-        paddingLeft: 20,
-        paddingRight: 20,
-      },
-    },
-    divider: {
-      margin: theme.spacing(2, 0),
-    },
-    description: {
-      textAlign: 'justify',
-    },
-    priceTable: {
-      paddingLeft: 10,
-    },
-    button: {
-      margin: 12,
-      width: 175,
-      padding: 15,
-    },
-    accordion: {
-      background: '#f0f0f0',
-    },
-    blurBackground: {
-      opacity: 0.7,
-      background: '#111',
-    },
-    reviewSection: {
-      background: '#fff',
-      maxHeight: 400,
-      overflow: 'scroll',
-      overflowX: 'hidden',
-    },
-  }))
-
-  const [courseId, setCourseId] = useState('')
 
   const [value, setValue] = useState(0)
   const tabHandler = (event, newValue) => {
@@ -163,6 +159,13 @@ const CourseScreen = ({ history }) => {
 
   const [bought, setBought] = useState(false)
 
+  const addToCartHandler = () => {
+    dispatch(addToCart(course.slug))
+    if (window.confirm('Course added to cart. Want to view your cart?')) {
+      history.push('/cart')
+    }
+  }
+
   const checkBought = (currentCourse, courseHere) => {
     return (
       currentCourse &&
@@ -178,10 +181,6 @@ const CourseScreen = ({ history }) => {
   }
 
   useEffect(() => {
-    if (course) {
-      setCourseId(course._id)
-    }
-
     if (userPaidCourses && course) {
       setBought(checkBought(userPaidCourses, course))
     }
@@ -191,7 +190,7 @@ const CourseScreen = ({ history }) => {
     const redirectToLearningScreen = () => {
       alert(
         'You have already bought this course. Redirect to the learning screen now.',
-        history.push(`/course/${courseId}/learn`)
+        history.push(`/course/${course_slug}/learn`)
       )
     }
 
@@ -204,7 +203,7 @@ const CourseScreen = ({ history }) => {
         dispatch(getUserCourses())
       }
     }
-  }, [history, bought, userInfo, dispatch])
+  }, [history, bought, userInfo, dispatch, course_slug])
 
   return (
     <>

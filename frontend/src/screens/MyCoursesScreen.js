@@ -61,7 +61,7 @@ const MyCoursesScreen = ({ history }) => {
             ) : (
               userPaidCourses.map((courseItem, index) => (
                 <Grid key={index}>
-                  <Link href={`/course/${courseItem._id}/learn`}>
+                  <Link href={`/course/${courseItem.slug}/learn`}>
                     <div style={{ pointerEvents: 'none' }}>
                       <Course course={courseItem} />
                     </div>

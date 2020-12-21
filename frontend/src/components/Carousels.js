@@ -39,7 +39,7 @@ const Carousels = ({ autoPlay = true, courses }) => {
     return (
       <div
         className={classes.slideContainer}
-        onClick={() => (window.location.href = `/course/${course._id}`)}
+        onClick={() => (window.location.href = `/course/${course.slug}`)}
       >
         <div className={classes.slideBody}>
           <img className={classes.slideImg} src={course.image} alt='' />

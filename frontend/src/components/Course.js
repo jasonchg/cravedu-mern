@@ -68,7 +68,7 @@ const Course = ({ course, learning }) => {
   return (
     <Card className={learning ? classesLearning.root : classes.root}>
       {learning && (
-        <Link href={`/course/${course._id}/learn`}>
+        <Link href={`/course/${course.slug}/learn`}>
           <div className={classesLearning.learningBody}>
             <div className={classesLearning.media}>
               <CardMedia

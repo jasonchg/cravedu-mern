@@ -48,6 +48,21 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  cartHeading: {
+    position: 'relative',
+  },
+  cartCount: {
+    position: 'absolute',
+    top: 0,
+    padding: 2,
+    right: 0,
+    background: 'orange',
+    color: '#fff',
+    fontSize: 9,
+    width: 13,
+    height: 13,
+    borderRadius: '50%',
+  },
 }))
 
 const Header = () => {
@@ -61,6 +76,9 @@ const Header = () => {
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
+
+  const cart = useSelector((state) => state.cart)
+  const { cartItems } = cart
 
   const toggleDrawer = () => {
     setOpenDrawer(true)
@@ -270,7 +288,14 @@ const Header = () => {
                 <Button
                   style={{ marginRight: 7 }}
                   color='inherit'
-                  startIcon={<ShoppingCartIcon />}
+                  startIcon={
+                    <div className={classes.cartHeading}>
+                      <ShoppingCartIcon />
+                      <span className={classes.cartCount}>
+                        {cartItems ? cartItems.length : null}
+                      </span>
+                    </div>
+                  }
                   onClick={() => (window.location.href = '/cart')}
                 >
                   Cart
