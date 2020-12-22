@@ -39,7 +39,6 @@ import Rating from '../components/Rating'
 import Breadcrumbs from '../components/Breadcrumbs'
 import PropTypes from 'prop-types'
 import AccessTimeIcon from '@material-ui/icons/AccessTime'
-
 import { addToCart } from '../actions/cartActions'
 
 const TabPanel = (props) => {
@@ -161,7 +160,7 @@ const CourseScreen = ({ history }) => {
 
   const addToCartHandler = () => {
     dispatch(addToCart(course.slug))
-    if (window.confirm('Course added to cart. Want to view your cart?')) {
+    if (window.confirm('Course added to cart. View your cart?')) {
       history.push('/cart')
     }
   }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-
+import { useParams } from 'react-router-dom'
 import {
   Container,
   Grid,
@@ -144,10 +144,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const VideoLearningScreen = ({ match, history }) => {
-  const courseId = match.params.id
+const VideoLearningScreen = ({ history }) => {
   const dispatch = useDispatch()
-
   const classes = useStyles()
   const [modalOpen, setModalOpen] = useState(false)
   const [selectedVideo, setSelectedVideo] = useState('')
@@ -167,12 +165,13 @@ const VideoLearningScreen = ({ match, history }) => {
     success: reviewSuccess,
     loading: reviewLoading,
   } = courseReview
-
   const [value, setValue] = useState(0)
   const [question, setQuestion] = useState('')
   const [ratingStars, setRatingStars] = useState(5)
   const [comment, setComment] = useState('')
   const [alreadyReview, setAlreadyReview] = useState(false)
+
+  const { course_slug } = useParams()
 
   const tabHandler = (event, newValue) => {
     setValue(newValue)
@@ -217,13 +216,13 @@ const VideoLearningScreen = ({ match, history }) => {
     if (!userInfo) {
       history.push('/login')
     } else {
-      if (!course || !course.name || course._id !== courseId) {
-        dispatch(listCourseDetails(courseId))
+      if (!course || !course.name || course.slug !== course_slug) {
+        dispatch(listCourseDetails(course_slug))
         setSelectedVideo('')
       } else {
         setAlreadyReview(checkReview(course.reviews, userInfo._id))
         history.push(
-          `/course/${courseId}/learn?chapter=${course.courseContents[0]._id}`
+          `/course/${course_slug}/learn?chapter=${course.courseContents[0]._id}`
         )
         setSelectedVideoName({
           name: course.courseContents[0].name,
@@ -238,7 +237,7 @@ const VideoLearningScreen = ({ match, history }) => {
     userInfo,
     history,
     dispatch,
-    courseId,
+    course_slug,
     course,
     qandaSuccess,
     reviewSuccess,
@@ -247,19 +246,19 @@ const VideoLearningScreen = ({ match, history }) => {
   // 2 func : set video to the video player
   const selectTopicHandler = (chapterId) => {
     setSelectedVideo(getVideoPath(course.courseContents, chapterId))
-    history.push(`/course/${courseId}/learn?chapter=${chapterId}`)
+    history.push(`/course/${course_slug}/learn?chapter=${chapterId}`)
   }
 
   // 3 func : add qanda handler
 
   const qandaHandler = (e) => {
     e.preventDefault()
-    dispatch(addQanda(courseId, { question }))
+    dispatch(addQanda(course._id, { question }))
     setModalOpen(false)
   }
 
   const reviewSubmitHandler = (e) => {
-    dispatch(createReview(courseId, { ratingStars, comment }))
+    dispatch(createReview(course._id, { ratingStars, comment }))
   }
 
   return (

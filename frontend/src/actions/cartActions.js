@@ -16,6 +16,7 @@ const addToCart = (slug) => async (dispatch, getState) => {
       name: data.name,
       image: data.image,
       price: data.price,
+      slug: data.slug,
       instructor: data.instructor,
     },
   })

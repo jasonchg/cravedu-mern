@@ -38,6 +38,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
               _id: orderItems[key].course,
               image: orderItems[key].image,
               name: orderItems[key].name,
+              slug: orderItems[key].slug,
               orderId,
               completedCertificate: '',
             },

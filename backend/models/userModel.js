@@ -13,6 +13,34 @@ const courseContentsSchema = mongoose.Schema({
   },
 })
 
+const myCoursesSchema = mongoose.Schema({
+  _id: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'Course',
+  },
+  slug: {
+    type: String,
+    required: true,
+  },
+  image: { type: String, required: true },
+  name: {
+    type: String,
+    required: true,
+  },
+  orderId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Order',
+  },
+  courseContents: [courseContentsSchema],
+  finishedAt: {
+    type: Date,
+  },
+  completedCertificate: {
+    type: String,
+  },
+})
+
 const userSchema = mongoose.Schema(
   {
     name: {
@@ -38,31 +66,7 @@ const userSchema = mongoose.Schema(
       required: true,
       default: false,
     },
-    myCourses: [
-      {
-        _id: {
-          type: mongoose.Schema.Types.ObjectId,
-          required: true,
-          ref: 'Course',
-        },
-        image: { type: String, required: true },
-        name: {
-          type: String,
-          required: true,
-        },
-        orderId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'Order',
-        },
-        courseContents: [courseContentsSchema],
-        finishedAt: {
-          type: Date,
-        },
-        completedCertificate: {
-          type: String,
-        },
-      },
-    ],
+    myCourses: [myCoursesSchema],
   },
   {
     timestamps: true,

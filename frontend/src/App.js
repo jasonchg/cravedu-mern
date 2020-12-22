@@ -57,12 +57,12 @@ function App() {
           {/* Video Learning */}
           <div>
             <Route
-              path='/course/:id/learn?:chapter'
+              path='/course/:course_slug/learn?:chapter'
               component={VideoLearningScreen}
               exact
             />
             <Route
-              path='/course/:id/learn'
+              path='/course/:course_slug/learn'
               component={VideoLearningScreen}
               exact
             />
