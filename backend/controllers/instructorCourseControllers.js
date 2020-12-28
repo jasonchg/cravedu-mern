@@ -94,8 +94,42 @@ const updateCourse = asyncHandler(async (req, res) => {
   }
 })
 
+// @desc    Add a course content
+// @route   POST /api/instructor/courses/:id/addcontent
+// @access  Private
+
+const addCourseContent = asyncHandler(async (req, res) => {
+  const course = await Course.findById(req.params.id)
+
+  if (course) {
+    try {
+      const newContent = {
+        chapter: req.body.chapter,
+        name: req.body.name,
+      }
+
+      course.courseContents.push(newContent)
+      const newlyAddedContent = await course.save()
+
+      res.status(201).json({ newlyAddedContent })
+    } catch (e) {
+      res.status(401)
+      throw new Error('Something went wrong.')
+    }
+  } else {
+    res.status(404)
+    throw new Error('Course not found')
+  }
+})
+
 // @desc    Delete a course
 // @route   DELETE /api/instructor/courses/:id
 // @access  Private
 
-export { createCourse, getCourses, getCourseById, updateCourse }
+export {
+  createCourse,
+  getCourses,
+  getCourseById,
+  updateCourse,
+  addCourseContent,
+}

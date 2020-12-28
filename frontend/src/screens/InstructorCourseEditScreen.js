@@ -78,8 +78,6 @@ const InstructorCourseEditScreen = ({ match, history }) => {
   const [uploading, setUploading] = useState(false)
   const [chapter, setChapter] = useState(1)
   const [chapterName, setChapterName] = useState('')
-  const [video, setVideo] = useState('')
-  const [videoDuration, setVideoDuration] = useState('0:00:00')
 
   const uploadImageHandler = async (e) => {
     const file = e.target.files[0]
@@ -312,32 +310,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
             <AccordionDetails>
               <Grid container spacing={3}>
                 <Grid item md={6}>
-                  <form
-                    onSubmit={submitContentHandler}
-                    method='post'
-                    encType='multipart/form-data'
-                  >
-                    <FormContainer>
-                      <div
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <input
-                          type='file'
-                          name={myTrim(video)}
-                          placeholder='Enter Video Url'
-                          onChange={uploadVideoHandler}
-                        />
-                        <div>
-                          <AccessTimeIcon />
-                        </div>
-                        <div>{videoDuration}</div>
-                      </div>
-                    </FormContainer>
-
+                  <form onSubmit={submitContentHandler}>
                     <FormContainer>
                       <TextField
                         required
@@ -369,12 +342,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                     </Button>
                   </form>
                 </Grid>
-                <Grid item md={6}>
-                  <video id='myVideo' width='275' height='176' controls>
-                    <source src={video} type='video/mp4' />
-                    Your browser does not support HTML5 video.
-                  </video>
-                </Grid>
+                <Grid item md={6}></Grid>
               </Grid>
             </AccordionDetails>
           </Accordion>
