@@ -16,14 +16,18 @@ import {
 } from '@material-ui/core'
 import FormContainer from '../components/FormContainer'
 import { makeStyles } from '@material-ui/core/styles'
-import { getCourseById, updateCourse } from '../actions/instructorActions'
+import {
+  getCourseById,
+  updateCourse,
+  createContent,
+} from '../actions/instructorActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import SubdirectoryArrowRightIcon from '@material-ui/icons/SubdirectoryArrowRight'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import AccessTimeIcon from '@material-ui/icons/AccessTime'
 import {
+  INSTRUCTOR_ADD_CONTENT_RESET,
   INSTRUCTOR_COURSE_DETAILS_RESET,
   INSTRUCTOR_COURSE_UPDATE_RESET,
 } from '../constants/instructorConstants'
@@ -70,6 +74,15 @@ const InstructorCourseEditScreen = ({ match, history }) => {
     error: updateError,
   } = instructorCourseUpdate
 
+  const instructorContentCreate = useSelector(
+    (state) => state.instructorContentCreate
+  )
+  const {
+    loading: createContentLoading,
+    error: createContentError,
+    success: createContentSuccess,
+  } = instructorContentCreate
+
   const [name, setName] = useState('')
   const [slug, setSlug] = useState('')
   const [price, setPrice] = useState(0)
@@ -112,13 +125,14 @@ const InstructorCourseEditScreen = ({ match, history }) => {
     console.log('video added')
   }
 
-  // upload content happen here
   const submitContentHandler = (e) => {
     e.preventDefault()
-    console.log('Uploaded', {
-      chapter: chapter,
-      name: chapterName,
-    })
+    dispatch(
+      createContent(courseId, {
+        chapter: `Chapter ${chapter}`,
+        name: chapterName,
+      })
+    )
   }
 
   const submitHandler = (e) => {
@@ -136,6 +150,11 @@ const InstructorCourseEditScreen = ({ match, history }) => {
   }
 
   useEffect(() => {
+    if (createContentSuccess) {
+      dispatch({ type: INSTRUCTOR_ADD_CONTENT_RESET })
+      history.push(`/instructor/${courseId}/edit`)
+      dispatch(getCourseById(courseId))
+    }
     if (updateSuccess) {
       dispatch({ type: INSTRUCTOR_COURSE_DETAILS_RESET })
       dispatch({ type: INSTRUCTOR_COURSE_UPDATE_RESET })
@@ -164,7 +183,15 @@ const InstructorCourseEditScreen = ({ match, history }) => {
         history.push('/login')
       }
     }
-  }, [userInfo, courseDetails, dispatch, courseId, history, updateSuccess])
+  }, [
+    userInfo,
+    courseDetails,
+    dispatch,
+    courseId,
+    history,
+    updateSuccess,
+    createContentSuccess,
+  ])
 
   return loading ? (
     <Loader />
@@ -290,7 +317,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
           <Divider />
           <h2>Total Sales</h2>
           <Paper>
-            {courseDetails.totalSold ? (
+            {courseDetails && courseDetails.totalSold ? (
               <Typography variant='h3' component='h3' style={{ padding: 10 }}>
                 {courseDetails.totalSold}
               </Typography>
@@ -342,7 +369,12 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                     </Button>
                   </form>
                 </Grid>
-                <Grid item md={6}></Grid>
+                <Grid item md={6}>
+                  {createContentLoading && <Loader left />}
+                  {createContentError && (
+                    <Message>{createContentError}</Message>
+                  )}
+                </Grid>
               </Grid>
             </AccordionDetails>
           </Accordion>
@@ -352,7 +384,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
               {courseDetails.courseContents ? (
                 courseDetails.courseContents.length === 0 ? (
                   <ListItem>
-                    <Message severity='info'>Zero content yet.</Message>
+                    <Message severity='info'>No content yet.</Message>
                   </ListItem>
                 ) : (
                   courseDetails.courseContents.map((course, index) => (
