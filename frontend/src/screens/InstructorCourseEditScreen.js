@@ -6,7 +6,6 @@ import {
   Button,
   List,
   ListItem,
-  ListItemText,
   Divider,
   Paper,
   Typography,
@@ -33,6 +32,7 @@ import {
 } from '../constants/instructorConstants'
 import TextEditor from '../components/TextEditor'
 import { myTrim, generateSlug } from '../utils'
+import ProgressBar from '../components/ProgressBar'
 
 const useStyles = makeStyles({
   root: {
@@ -48,6 +48,12 @@ const useStyles = makeStyles({
   formTextArea: {
     minHeight: 200,
     minWidth: '100%',
+  },
+  contentDropdown: {
+    display: 'flex',
+    alignContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 })
 
@@ -91,6 +97,9 @@ const InstructorCourseEditScreen = ({ match, history }) => {
   const [uploading, setUploading] = useState(false)
   const [chapter, setChapter] = useState(1)
   const [chapterName, setChapterName] = useState('')
+  const [courseContents, setCourseContents] = useState([])
+  const [progress, setProgress] = useState(0)
+  const [videoUploading, setVideoUploading] = useState(false)
 
   const uploadImageHandler = async (e) => {
     const file = e.target.files[0]
@@ -122,7 +131,18 @@ const InstructorCourseEditScreen = ({ match, history }) => {
 
   const uploadVideoHandler = (e) => {
     e.preventDefault()
-    console.log('video added')
+    setVideoUploading(true)
+
+    const timer = setInterval(() => {
+      setProgress((prevProgress) =>
+        prevProgress >= 100 ? 10 : prevProgress + 10
+      )
+    }, 700)
+
+    if (progress >= 100) {
+      setVideoUploading(false)
+      clearInterval(timer)
+    }
   }
 
   const submitContentHandler = (e) => {
@@ -150,15 +170,12 @@ const InstructorCourseEditScreen = ({ match, history }) => {
   }
 
   useEffect(() => {
-    if (createContentSuccess) {
+    if (updateSuccess || createContentSuccess) {
       dispatch({ type: INSTRUCTOR_ADD_CONTENT_RESET })
-      history.push(`/instructor/${courseId}/edit`)
-      dispatch(getCourseById(courseId))
-    }
-    if (updateSuccess) {
       dispatch({ type: INSTRUCTOR_COURSE_DETAILS_RESET })
       dispatch({ type: INSTRUCTOR_COURSE_UPDATE_RESET })
-      history.push('/instructor')
+      setChapterName('')
+      dispatch(getCourseById(courseId))
     } else {
       if (userInfo && userInfo.isInstructor) {
         if (
@@ -172,12 +189,15 @@ const InstructorCourseEditScreen = ({ match, history }) => {
           setDescription('')
           setImage('')
           dispatch(getCourseById(courseId))
+          setCourseContents([])
         } else {
           setName(courseDetails.name)
           setSlug(courseDetails.slug)
           setPrice(courseDetails.price)
           setDescription(courseDetails.description)
           setImage(courseDetails.image)
+          setCourseContents(courseDetails.courseContents)
+          setChapter(courseDetails.courseContents.length + 1)
         }
       } else {
         history.push('/login')
@@ -225,12 +245,16 @@ const InstructorCourseEditScreen = ({ match, history }) => {
           <Button
             style={{ margin: '7px 0' }}
             onClick={() =>
-              window.open(`/course/${courseId}/preview`, '_blank').focus()
+              window
+                .open(`/course/${courseDetails.slug}/preview`, '_blank')
+                .focus()
             }
           >
             Preview This Course
           </Button>
           <Paper className={classes.leftPanel}>
+            <Typography variant='body1'>Course Details</Typography>
+            <Divider style={{ marginBottom: 10 }} />
             <img src={image} alt='' className={classes.img} />
             <p style={{ background: '#eee', padding: 7 }}>
               {image.substr(8, 40)}
@@ -381,23 +405,48 @@ const InstructorCourseEditScreen = ({ match, history }) => {
 
           <Paper>
             <List>
-              {courseDetails.courseContents ? (
-                courseDetails.courseContents.length === 0 ? (
+              {courseContents ? (
+                courseContents.length === 0 ? (
                   <ListItem>
                     <Message severity='info'>No content yet.</Message>
                   </ListItem>
                 ) : (
-                  courseDetails.courseContents.map((course, index) => (
-                    <div key={course._id}>
-                      <ListItem>
-                        <ListItemText
-                          primary={`${index + 1}.  ${course.name}`}
-                        />
-                        <Button>Edit</Button>
-                      </ListItem>
-                      <Divider />
-                    </div>
-                  ))
+                  <>
+                    {courseContents.map((course, index) => (
+                      <div key={course._id}>
+                        <ListItem>
+                          <Accordion
+                            style={{ width: '100%', background: '#efefef' }}
+                          >
+                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                              {`${index + 1}.  ${course.name}`}
+                            </AccordionSummary>
+                            {videoUploading ? (
+                              <ProgressBar progress={progress} />
+                            ) : null}
+
+                            <AccordionDetails>
+                              <form
+                                className={classes.contentDropdown}
+                                onSubmit={uploadVideoHandler}
+                              >
+                                <div>
+                                  <input type='file' />
+                                </div>
+                                <div>
+                                  <Button variant='contained' type='submit'>
+                                    Upload
+                                  </Button>
+                                  <Button>Delete</Button>
+                                </div>
+                              </form>
+                            </AccordionDetails>
+                          </Accordion>
+                        </ListItem>
+                        <Divider />
+                      </div>
+                    ))}
+                  </>
                 )
               ) : (
                 <ListItem>

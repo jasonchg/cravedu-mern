@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { getUserCourses } from '../actions/userActions'
+import { listCourses } from '../actions/courseActions'
 import Breadcrumbs from '../components/Breadcrumbs'
 import Banner from '../components/Banner'
 
@@ -17,10 +18,14 @@ const MyCoursesScreen = ({ history }) => {
   const userCourses = useSelector((state) => state.userCourses)
   const { error, loading, userPaidCourses } = userCourses
 
+  const courseList = useSelector((state) => state.courseList)
+  const { courses } = courseList
+
   useEffect(() => {
     if (!userInfo) {
       history.push('/login')
     } else {
+      dispatch(listCourses())
       dispatch(getUserCourses())
     }
   }, [dispatch, history, userInfo])
@@ -59,11 +64,11 @@ const MyCoursesScreen = ({ history }) => {
             ) : loading ? (
               <Loader />
             ) : (
-              userPaidCourses.map((courseItem, index) => (
-                <Grid key={index}>
-                  <Link href={`/course/${courseItem.slug}/learn`}>
+              userPaidCourses.map((item, index) => (
+                <Grid item key={index}>
+                  <Link href={`/course/${item.slug}/learn`}>
                     <div style={{ pointerEvents: 'none' }}>
-                      <Course course={courseItem} />
+                      <Course course={item} />
                     </div>
                   </Link>
                 </Grid>

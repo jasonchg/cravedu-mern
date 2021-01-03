@@ -121,7 +121,7 @@ const HomeScreen = ({ history }) => {
                 {userPaidCourses.map((currentCourse, index) => (
                   <Course
                     key={currentCourse._id}
-                    course={currentCourse}
+                    course={courses.find((x) => x._id === currentCourse._id)}
                     learning
                   />
                 ))}

@@ -35,6 +35,7 @@ import Breadcrumbs from '../components/Breadcrumbs'
 import PropTypes from 'prop-types'
 import ArchiveIcon from '@material-ui/icons/Archive'
 import PeopleIcon from '@material-ui/icons/People'
+import { useParams } from 'react-router-dom'
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props
@@ -69,7 +70,8 @@ TabPanel.propTypes = {
 }
 
 const PreviewCourseScreen = ({ match, history }) => {
-  const courseId = match.params.id
+  const { course_slug } = useParams()
+
   const dispatch = useDispatch()
 
   const useStyles = makeStyles((theme) => ({
@@ -140,9 +142,9 @@ const PreviewCourseScreen = ({ match, history }) => {
     ) {
       history.push('/')
     } else {
-      dispatch(listCourseDetails(courseId))
+      dispatch(listCourseDetails(course_slug))
     }
-  }, [history, courseId, userInfo, dispatch])
+  }, [history, course_slug, userInfo, dispatch])
 
   return (
     <>

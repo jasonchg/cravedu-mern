@@ -71,6 +71,7 @@ const updateCourse = asyncHandler(async (req, res) => {
 
   if (course) {
     course.name = req.body.name || course.name
+    course.slug = req.body.slug || course.slug
     course.image = req.body.image || course.image
     course.price = req.body.price || course.price
     course.description = req.body.description || course.description
@@ -80,6 +81,7 @@ const updateCourse = asyncHandler(async (req, res) => {
       res.json({
         _id: courseUpdated._id,
         name: courseUpdated.name,
+        slug: courseUpdated.slug,
         image: courseUpdated.image,
         price: courseUpdated.price,
         description: courseUpdated.description,

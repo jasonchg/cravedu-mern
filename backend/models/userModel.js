@@ -22,6 +22,7 @@ const myCoursesSchema = mongoose.Schema({
   slug: {
     type: String,
     required: true,
+    ref: 'Course',
   },
   image: { type: String, required: true },
   name: {
