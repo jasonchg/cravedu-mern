@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
   res.send('API is running')
 })
 
-// Default Routes
+// Default End Points
 app.use('/api/courses', courseRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/orders', orderRoutes)
@@ -34,7 +34,7 @@ app.use('/api/mycourses', myCourseRoutes)
 app.use('/api/config/paypal', (req, res) => {
   res.send(process.env.PAYPAL_CLIENT_ID)
 })
-app.use('/api/upload', uploadRoutes)
+app.use('/api/upload/', uploadRoutes)
 
 const __dirname = path.resolve()
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))

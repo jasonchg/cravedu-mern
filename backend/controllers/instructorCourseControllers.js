@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler'
 import Course from '../models/courseModel.js'
+import fs from 'fs'
 
 // @desc    Get All Course That Created by this intructor
 // @route   GET /api/instructor/courses
@@ -25,7 +26,7 @@ const createCourse = asyncHandler(async (req, res) => {
   const course = new Course({
     user: req.user._id,
     name: 'My New Course',
-    slug: 'my-new-course-123',
+    slug: `my-new-course-${Math.random().toString(36).substring(7)}`,
     image: '/uploads/sample.jpg',
     description: 'New Course',
     instructor: req.user.name,
@@ -40,6 +41,10 @@ const createCourse = asyncHandler(async (req, res) => {
 
   try {
     const createdCourse = await course.save()
+    let dir = `./uploads/${createdCourse._id}`
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir)
+    }
     res.status(201).json(createdCourse._id)
   } catch (e) {
     res.status(500)

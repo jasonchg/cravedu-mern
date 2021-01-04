@@ -116,7 +116,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
       }
 
       const { data } = await axios.post(
-        '/api/upload/course-image',
+        `/api/upload/${courseId}/course-image`,
         formData,
         config
       )
@@ -124,7 +124,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
       setImage(myTrim(data))
       setUploading(false)
     } catch (e) {
-      console.error(error)
+      console.error(e)
       setUploading(false)
     }
   }
@@ -132,14 +132,12 @@ const InstructorCourseEditScreen = ({ match, history }) => {
   const uploadVideoHandler = (e) => {
     e.preventDefault()
     setVideoUploading(true)
-
     const timer = setInterval(() => {
       setProgress((prevProgress) =>
         prevProgress >= 100 ? 10 : prevProgress + 10
       )
     }, 700)
-
-    if (progress >= 100) {
+    return () => {
       setVideoUploading(false)
       clearInterval(timer)
     }
@@ -255,25 +253,12 @@ const InstructorCourseEditScreen = ({ match, history }) => {
           <Paper className={classes.leftPanel}>
             <Typography variant='body1'>Course Details</Typography>
             <Divider style={{ marginBottom: 10 }} />
-            <img src={image} alt='' className={classes.img} />
-            <p style={{ background: '#eee', padding: 7 }}>
-              {image.substr(8, 40)}
-            </p>
+
             <form
               onSubmit={submitHandler}
               method='post'
               encType='multipart/form-data'
             >
-              <FormContainer>
-                <input
-                  type='file'
-                  name={myTrim(name)}
-                  placeholder='Enter Image Url'
-                  onChange={uploadImageHandler}
-                />
-                {uploading && <Loader left />}
-              </FormContainer>
-
               <FormContainer>
                 <TextField
                   required
@@ -322,6 +307,27 @@ const InstructorCourseEditScreen = ({ match, history }) => {
               <FormContainer>
                 <TextEditor description={description} setter={setDescription} />
               </FormContainer>
+
+              <Grid container alignItems='center'>
+                <Grid item xs={6}>
+                  <img src={image} alt='' className={classes.img} />
+                </Grid>
+                <Grid item xs={6}>
+                  <FormContainer>
+                    <input
+                      type='file'
+                      name={myTrim(name)}
+                      placeholder='Enter Image Url'
+                      onChange={uploadImageHandler}
+                    />
+                    {uploading && <Loader left />}
+                  </FormContainer>
+                </Grid>
+              </Grid>
+
+              <p style={{ background: '#eee', padding: 7 }}>
+                {image.substr(8, 40)}
+              </p>
 
               <Button
                 type='submit'
@@ -421,6 +427,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                               {`${index + 1}.  ${course.name}`}
                             </AccordionSummary>
+
                             {videoUploading ? (
                               <ProgressBar progress={progress} />
                             ) : null}
@@ -434,10 +441,11 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                                   <input type='file' />
                                 </div>
                                 <div>
-                                  <Button variant='contained' type='submit'>
-                                    Upload
+                                  <Button variant='outlined' type='submit'>
+                                    Upload Now
                                   </Button>
-                                  <Button>Delete</Button>
+                                  <Button>Delete Video</Button>
+                                  <Button>Delete Topic</Button>
                                 </div>
                               </form>
                             </AccordionDetails>
