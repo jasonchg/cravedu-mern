@@ -19,6 +19,10 @@ import {
   INSTRUCTOR_ADD_CONTENT_SUCCESS,
   INSTRUCTOR_ADD_CONTENT_FAIL,
   INSTRUCTOR_ADD_CONTENT_RESET,
+  INSTRUCTOR_UPDATE_CONTENT_REQUEST,
+  INSTRUCTOR_UPDATE_CONTENT_SUCCESS,
+  INSTRUCTOR_UPDATE_CONTENT_FAIL,
+  INSTRUCTOR_UPDATE_CONTENT_RESET,
 } from '../constants/instructorConstants'
 
 const instructorCourseListReducer = (state = { courses: [] }, action) => {
@@ -102,10 +106,29 @@ const instructorContentCreateReducer = (state = {}, action) => {
   }
 }
 
+const instructorContentUpdateReducer = (
+  state = { courseVideoContent: {} },
+  action
+) => {
+  switch (action.type) {
+    case INSTRUCTOR_UPDATE_CONTENT_REQUEST:
+      return { loading: true, courseVideoContent: [] }
+    case INSTRUCTOR_UPDATE_CONTENT_SUCCESS:
+      return { loading: false, success: true }
+    case INSTRUCTOR_UPDATE_CONTENT_FAIL:
+      return { loading: false, error: action.payload }
+    case INSTRUCTOR_UPDATE_CONTENT_RESET:
+      return { courseVideoContent: {} }
+    default:
+      return state
+  }
+}
+
 export {
   instructorCourseListReducer,
   instructorCourseDetailsReducer,
   instructorCourseUpdateReducer,
   instructorCourseCreateReducer,
   instructorContentCreateReducer,
+  instructorContentUpdateReducer,
 }

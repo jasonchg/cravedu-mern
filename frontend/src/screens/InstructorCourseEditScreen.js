@@ -129,17 +129,29 @@ const InstructorCourseEditScreen = ({ match, history }) => {
     }
   }
 
-  const uploadVideoHandler = (e) => {
+  const uploadVideoHandler = async (e) => {
     e.preventDefault()
+    const file = e.target.files[0]
     setVideoUploading(true)
-    const timer = setInterval(() => {
-      setProgress((prevProgress) =>
-        prevProgress >= 100 ? 10 : prevProgress + 10
+
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+
+      const { data } = await axios.post(
+        `/api/upload/${courseId}/course-content`,
+        file,
+        config
       )
-    }, 700)
-    return () => {
+
       setVideoUploading(false)
-      clearInterval(timer)
+    } catch (e) {
+      console.error(e)
+      setVideoUploading(false)
     }
   }
 
@@ -309,6 +321,10 @@ const InstructorCourseEditScreen = ({ match, history }) => {
               </FormContainer>
 
               <Grid container alignItems='center'>
+                <p>
+                  Important: Name your course first before upload any cover
+                  picture.
+                </p>
                 <Grid item xs={6}>
                   <img src={image} alt='' className={classes.img} />
                 </Grid>
@@ -326,7 +342,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
               </Grid>
 
               <p style={{ background: '#eee', padding: 7 }}>
-                {image.substr(8, 40)}
+                {image.substr(34)}
               </p>
 
               <Button
@@ -436,9 +452,16 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                               <form
                                 className={classes.contentDropdown}
                                 onSubmit={uploadVideoHandler}
+                                method='post'
+                                encType='multipart/form-data'
                               >
                                 <div>
-                                  <input type='file' />
+                                  <input
+                                    type='file'
+                                    type='file'
+                                    name={myTrim(course.name)}
+                                    placeholder='Enter Image Url'
+                                  />
                                 </div>
                                 <div>
                                   <Button variant='outlined' type='submit'>
@@ -462,6 +485,17 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                 </ListItem>
               )}
             </List>
+            {courseContents && courseContents.length !== 0 ? (
+              <span
+                style={{
+                  textAlign: 'center',
+                  display: 'block',
+                  padding: '7px 0',
+                }}
+              >
+                You've total {courseContents.length} chapters.
+              </span>
+            ) : null}
           </Paper>
         </Grid>
       </Grid>

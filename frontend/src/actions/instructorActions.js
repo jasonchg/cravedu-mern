@@ -15,6 +15,9 @@ import {
   INSTRUCTOR_ADD_CONTENT_REQUEST,
   INSTRUCTOR_ADD_CONTENT_SUCCESS,
   INSTRUCTOR_ADD_CONTENT_FAIL,
+  INSTRUCTOR_UPDATE_CONTENT_REQUEST,
+  INSTRUCTOR_UPDATE_CONTENT_SUCCESS,
+  INSTRUCTOR_UPDATE_CONTENT_FAIL,
 } from '../constants/instructorConstants'
 
 const createCourse = () => async (dispatch, getState) => {
@@ -168,4 +171,43 @@ const createContent = (id, content) => async (dispatch, getState) => {
   }
 }
 
-export { listCourses, getCourseById, updateCourse, createCourse, createContent }
+const updateContent = (courseId, content) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: INSTRUCTOR_UPDATE_CONTENT_REQUEST })
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    await axios.put(
+      `/api/instructor/courses/${courseId}/updatecontent/${content.id}`,
+      content,
+      config
+    )
+
+    dispatch({ type: INSTRUCTOR_UPDATE_CONTENT_SUCCESS })
+  } catch (e) {
+    dispatch({
+      type: INSTRUCTOR_UPDATE_CONTENT_FAIL,
+      payload:
+        e.response && e.response.data.message
+          ? e.response.data.message
+          : e.message,
+    })
+  }
+}
+
+export {
+  listCourses,
+  getCourseById,
+  updateCourse,
+  createCourse,
+  createContent,
+  updateContent,
+}

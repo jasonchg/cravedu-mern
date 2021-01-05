@@ -34,6 +34,8 @@ const checkVideoFileType = (file, cb) => {
   }
 }
 
+const maxSizeUpload = 300 * 1024 * 1024
+
 const uploadVideoContent = multer({
   storage,
   fileFilter: (req, file, cb) => {
@@ -46,5 +48,6 @@ const uploadCourseImage = multer({
   fileFilter: (req, file, cb) => {
     checkImageType(file, cb)
   },
+  limits: { fileSize: maxSizeUpload },
 })
 export { uploadCourseImage, uploadVideoContent }

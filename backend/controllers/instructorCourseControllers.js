@@ -67,7 +67,7 @@ const getCourseById = asyncHandler(async (req, res) => {
   }
 })
 
-// @desc    Update a course content
+// @desc    Update a course details
 // @route   PUT /api/instructor/courses/:id
 // @access  Private
 
