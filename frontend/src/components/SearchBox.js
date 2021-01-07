@@ -9,8 +9,8 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
-    width: '98%',
-    marginLeft: 7,
+    width: '96%',
+    marginLeft: 10,
   },
   inputRootDef: {
     color: 'inherit',

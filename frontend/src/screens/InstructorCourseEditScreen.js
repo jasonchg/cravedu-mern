@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+
 import axios from 'axios'
 import {
   Grid,
@@ -19,6 +20,7 @@ import {
   getCourseById,
   updateCourse,
   createContent,
+  updateContent,
 } from '../actions/instructorActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
@@ -29,11 +31,12 @@ import {
   INSTRUCTOR_ADD_CONTENT_RESET,
   INSTRUCTOR_COURSE_DETAILS_RESET,
   INSTRUCTOR_COURSE_UPDATE_RESET,
+  INSTRUCTOR_UPDATE_CONTENT_RESET,
 } from '../constants/instructorConstants'
 import TextEditor from '../components/TextEditor'
 import { myTrim, generateSlug } from '../utils'
-import ProgressBar from '../components/ProgressBar'
 
+import Modals from '../components/Modals'
 const useStyles = makeStyles({
   root: {
     marginTop: 10,
@@ -48,12 +51,6 @@ const useStyles = makeStyles({
   formTextArea: {
     minHeight: 200,
     minWidth: '100%',
-  },
-  contentDropdown: {
-    display: 'flex',
-    alignContent: 'center',
-    flexDirection: 'row',
-    alignItems: 'center',
   },
 })
 
@@ -89,6 +86,15 @@ const InstructorCourseEditScreen = ({ match, history }) => {
     success: createContentSuccess,
   } = instructorContentCreate
 
+  const instructorContentUpdate = useSelector(
+    (state) => state.instructorContentUpdate
+  )
+  const {
+    loading: contentUpdateLoading,
+    success: contentUpdateSuccess,
+    error: contentUpdateError,
+  } = instructorContentUpdate
+
   const [name, setName] = useState('')
   const [slug, setSlug] = useState('')
   const [price, setPrice] = useState(0)
@@ -100,6 +106,8 @@ const InstructorCourseEditScreen = ({ match, history }) => {
   const [courseContents, setCourseContents] = useState([])
   const [progress, setProgress] = useState(0)
   const [videoUploading, setVideoUploading] = useState(false)
+
+  const [modalOpen, setModalOpen] = useState(null)
 
   const uploadImageHandler = async (e) => {
     const file = e.target.files[0]
@@ -129,23 +137,33 @@ const InstructorCourseEditScreen = ({ match, history }) => {
     }
   }
 
-  const uploadVideoHandler = async (e) => {
+  const uploadVideoHandler = async (e, content) => {
     e.preventDefault()
-    const file = e.target.files[0]
+    // const file = e.target.files[0]
     setVideoUploading(true)
 
     try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${userInfo.token}`,
-          'Content-Type': 'multipart/form-data',
-        },
-      }
+      // const config = {
+      //   headers: {
+      //     Authorization: `Bearer ${userInfo.token}`,
+      //     'Content-Type': 'multipart/form-data',
+      //   },
+      // }
+      // const { data } = await axios.post(
+      //   `/api/upload/${courseId}/course-content`,
+      //   file,
+      //   config
+      // )
 
-      const { data } = await axios.post(
-        `/api/upload/${courseId}/course-content`,
-        file,
-        config
+      // problems here
+
+      dispatch(
+        updateContent(courseId, {
+          contentId: '5ff45fa051f15815403d9ae3',
+          name: 'Installing',
+          chapter: 'Chapter 2',
+          video: '123/123.mp4',
+        })
       )
 
       setVideoUploading(false)
@@ -180,7 +198,8 @@ const InstructorCourseEditScreen = ({ match, history }) => {
   }
 
   useEffect(() => {
-    if (updateSuccess || createContentSuccess) {
+    if (updateSuccess || createContentSuccess || contentUpdateSuccess) {
+      dispatch({ type: INSTRUCTOR_UPDATE_CONTENT_RESET })
       dispatch({ type: INSTRUCTOR_ADD_CONTENT_RESET })
       dispatch({ type: INSTRUCTOR_COURSE_DETAILS_RESET })
       dispatch({ type: INSTRUCTOR_COURSE_UPDATE_RESET })
@@ -221,6 +240,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
     history,
     updateSuccess,
     createContentSuccess,
+    contentUpdateSuccess,
   ])
 
   return loading ? (
@@ -395,6 +415,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                         variant='filled'
                         value={chapter}
                         onChange={(e) => setChapter(e.target.value)}
+                        disabled
                       />
                     </FormContainer>
                     <FormContainer>
@@ -434,43 +455,32 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                   </ListItem>
                 ) : (
                   <>
-                    {courseContents.map((course, index) => (
-                      <div key={course._id}>
+                    {courseContents.map((content, index) => (
+                      <div key={content._id}>
                         <ListItem>
                           <Accordion
                             style={{ width: '100%', background: '#efefef' }}
                           >
                             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                              {`${index + 1}.  ${course.name}`}
+                              {`${index + 1}.  ${content.name}`}
                             </AccordionSummary>
 
-                            {videoUploading ? (
-                              <ProgressBar progress={progress} />
-                            ) : null}
-
                             <AccordionDetails>
-                              <form
-                                className={classes.contentDropdown}
-                                onSubmit={uploadVideoHandler}
-                                method='post'
-                                encType='multipart/form-data'
+                              <Button
+                                type='button'
+                                onClick={() => setModalOpen(true)}
                               >
-                                <div>
-                                  <input
-                                    type='file'
-                                    type='file'
-                                    name={myTrim(course.name)}
-                                    placeholder='Enter Image Url'
-                                  />
-                                </div>
-                                <div>
-                                  <Button variant='outlined' type='submit'>
-                                    Upload Now
-                                  </Button>
-                                  <Button>Delete Video</Button>
-                                  <Button>Delete Topic</Button>
-                                </div>
-                              </form>
+                                Edit
+                              </Button>
+                              <Button type='button'>Delete Topic</Button>
+                              <Modals
+                                modalOpen={modalOpen}
+                                modalClose={() => setModalOpen(false)}
+                                uploadVideoHandler={uploadVideoHandler}
+                                videoUploading={videoUploading}
+                                progress={progress}
+                                content={content}
+                              />
                             </AccordionDetails>
                           </Accordion>
                         </ListItem>

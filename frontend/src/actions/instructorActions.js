@@ -185,8 +185,10 @@ const updateContent = (courseId, content) => async (dispatch, getState) => {
       },
     }
 
+    console.log('Clicked')
+
     await axios.put(
-      `/api/instructor/courses/${courseId}/updatecontent/${content.id}`,
+      `/api/instructor/courses/${courseId}/updatecontent`,
       content,
       config
     )

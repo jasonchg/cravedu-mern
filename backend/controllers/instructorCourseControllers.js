@@ -129,6 +129,37 @@ const addCourseContent = asyncHandler(async (req, res) => {
   }
 })
 
+// @desc    Update a course content
+// @route   PUT /api/instructor/courses/:id/updatecontent
+// @access  Private
+
+const updateContent = asyncHandler(async (req, res) => {
+  const course = await Course.findById(req.params.id)
+
+  if (course) {
+    let courseContents = course.courseContents
+
+    let content = courseContents.find((x) => x.id === req.body.contentId)
+
+    if (content) {
+      content.name = req.body.name || content.name
+      content.chapter = req.body.chapter || content.chapter
+      content.video = req.body.video || content.video
+
+      try {
+        await course.save()
+        res.send('saved')
+      } catch (e) {
+        res.status(401)
+        throw new Error('Something went wrong.')
+      }
+    }
+  } else {
+    res.status(404)
+    throw new Error('Content not found')
+  }
+})
+
 // @desc    Delete a course
 // @route   DELETE /api/instructor/courses/:id
 // @access  Private
@@ -139,4 +170,5 @@ export {
   getCourseById,
   updateCourse,
   addCourseContent,
+  updateContent,
 }

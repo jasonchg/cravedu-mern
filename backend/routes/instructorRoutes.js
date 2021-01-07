@@ -9,9 +9,14 @@ import {
   getCourses,
   updateCourse,
   addCourseContent,
+  updateContent,
 } from '../controllers/instructorCourseControllers.js'
 
 const router = express.Router()
+
+router
+  .route('/:id/updatecontent')
+  .put(protectedRoute, instructorRoute, updateContent)
 
 router
   .route('/:id/addcontent')
