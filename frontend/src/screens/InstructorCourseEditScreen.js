@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-
 import axios from 'axios'
 import {
   Grid,
@@ -35,8 +34,7 @@ import {
 } from '../constants/instructorConstants'
 import TextEditor from '../components/TextEditor'
 import { myTrim, generateSlug } from '../utils'
-
-import Modals from '../components/Modals'
+import ContentListItem from '../components/ContentListItem'
 const useStyles = makeStyles({
   root: {
     marginTop: 10,
@@ -104,10 +102,6 @@ const InstructorCourseEditScreen = ({ match, history }) => {
   const [chapter, setChapter] = useState(1)
   const [chapterName, setChapterName] = useState('')
   const [courseContents, setCourseContents] = useState([])
-  const [progress, setProgress] = useState(0)
-  const [videoUploading, setVideoUploading] = useState(false)
-
-  const [modalOpen, setModalOpen] = useState(null)
 
   const uploadImageHandler = async (e) => {
     const file = e.target.files[0]
@@ -134,42 +128,6 @@ const InstructorCourseEditScreen = ({ match, history }) => {
     } catch (e) {
       console.error(e)
       setUploading(false)
-    }
-  }
-
-  const uploadVideoHandler = async (e, content) => {
-    e.preventDefault()
-    // const file = e.target.files[0]
-    setVideoUploading(true)
-
-    try {
-      // const config = {
-      //   headers: {
-      //     Authorization: `Bearer ${userInfo.token}`,
-      //     'Content-Type': 'multipart/form-data',
-      //   },
-      // }
-      // const { data } = await axios.post(
-      //   `/api/upload/${courseId}/course-content`,
-      //   file,
-      //   config
-      // )
-
-      // problems here
-
-      dispatch(
-        updateContent(courseId, {
-          contentId: '5ff45fa051f15815403d9ae3',
-          name: 'Installing',
-          chapter: 'Chapter 2',
-          video: '123/123.mp4',
-        })
-      )
-
-      setVideoUploading(false)
-    } catch (e) {
-      console.error(e)
-      setVideoUploading(false)
     }
   }
 
@@ -456,36 +414,11 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                 ) : (
                   <>
                     {courseContents.map((content, index) => (
-                      <div key={content._id}>
-                        <ListItem>
-                          <Accordion
-                            style={{ width: '100%', background: '#efefef' }}
-                          >
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                              {`${index + 1}.  ${content.name}`}
-                            </AccordionSummary>
-
-                            <AccordionDetails>
-                              <Button
-                                type='button'
-                                onClick={() => setModalOpen(true)}
-                              >
-                                Edit
-                              </Button>
-                              <Button type='button'>Delete Topic</Button>
-                              <Modals
-                                modalOpen={modalOpen}
-                                modalClose={() => setModalOpen(false)}
-                                uploadVideoHandler={uploadVideoHandler}
-                                videoUploading={videoUploading}
-                                progress={progress}
-                                content={content}
-                              />
-                            </AccordionDetails>
-                          </Accordion>
-                        </ListItem>
-                        <Divider />
-                      </div>
+                      <ContentListItem
+                        key={index}
+                        courseId={courseId}
+                        content={content}
+                      />
                     ))}
                   </>
                 )

@@ -46,18 +46,9 @@ const Modals = ({
 }) => {
   const classes = useStyles()
   const [optionOpen, setOptionOpen] = useState(null)
-  const [contentName, setContentName] = useState('')
-  const [contentChapter, setContentChapter] = useState('')
-  const [videoPath, setVideoPath] = useState('')
-
-  useEffect(() => {
-    if (content) {
-      setContentName(content.name)
-      setVideoPath(content.video)
-    } else {
-      modalClose()
-    }
-  }, [content])
+  const [contentName, setContentName] = useState(content.name)
+  const [contentChapter, setContentChapter] = useState(content.chapter)
+  const [videoPath, setVideoPath] = useState(content.video)
 
   return (
     <Modal
@@ -70,9 +61,14 @@ const Modals = ({
     >
       <div className={classes.paper}>
         <Typography variant='caption'>{contentChapter}</Typography>
-        <Typography variant='h4'>{contentName}</Typography>
-        <Divider />
+        <Typography variant='h4'>
+          {contentName}{' '}
+          <Button size='small' onClick={() => modalClose()}>
+            Close
+          </Button>
+        </Typography>
 
+        <Divider />
         <form
           onSubmit={uploadVideoHandler}
           method='post'
