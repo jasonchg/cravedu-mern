@@ -19,7 +19,6 @@ import {
   getCourseById,
   updateCourse,
   createContent,
-  updateContent,
 } from '../actions/instructorActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
@@ -84,15 +83,6 @@ const InstructorCourseEditScreen = ({ match, history }) => {
     success: createContentSuccess,
   } = instructorContentCreate
 
-  const instructorContentUpdate = useSelector(
-    (state) => state.instructorContentUpdate
-  )
-  const {
-    loading: contentUpdateLoading,
-    success: contentUpdateSuccess,
-    error: contentUpdateError,
-  } = instructorContentUpdate
-
   const [name, setName] = useState('')
   const [slug, setSlug] = useState('')
   const [price, setPrice] = useState(0)
@@ -156,8 +146,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
   }
 
   useEffect(() => {
-    if (updateSuccess || createContentSuccess || contentUpdateSuccess) {
-      dispatch({ type: INSTRUCTOR_UPDATE_CONTENT_RESET })
+    if (updateSuccess || createContentSuccess) {
       dispatch({ type: INSTRUCTOR_ADD_CONTENT_RESET })
       dispatch({ type: INSTRUCTOR_COURSE_DETAILS_RESET })
       dispatch({ type: INSTRUCTOR_COURSE_UPDATE_RESET })
@@ -198,7 +187,6 @@ const InstructorCourseEditScreen = ({ match, history }) => {
     history,
     updateSuccess,
     createContentSuccess,
-    contentUpdateSuccess,
   ])
 
   return loading ? (
@@ -414,11 +402,14 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                 ) : (
                   <>
                     {courseContents.map((content, index) => (
-                      <ContentListItem
-                        key={index}
-                        courseId={courseId}
-                        content={content}
-                      />
+                      <>
+                        <ContentListItem
+                          key={index}
+                          count={index + 1}
+                          courseId={courseId}
+                          content={content}
+                        />
+                      </>
                     ))}
                   </>
                 )

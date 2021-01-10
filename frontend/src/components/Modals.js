@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import {
   makeStyles,
   Modal,
@@ -10,10 +10,12 @@ import {
   Divider,
   TextField,
 } from '@material-ui/core'
-import { myTrim } from '../utils'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import FormContainer from './FormContainer'
 import ProgressBar from '../components/ProgressBar'
+import { updateContent } from '../actions/instructorActions'
+import { useDispatch } from 'react-redux'
+import { myTrim } from '../utils'
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'absolute',
@@ -36,19 +38,49 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Modals = ({
-  modalOpen,
-  modalClose,
-  content,
-  uploadVideoHandler,
-  videoUploading,
-  progress,
-}) => {
+const Modals = ({ modalOpen, modalClose, content, courseId }) => {
   const classes = useStyles()
+  const dispatch = useDispatch()
+  const [videoUploading, setVideoUploading] = useState(false)
+  const [progress, setProgress] = useState(0)
+  const [name, setName] = useState(content.name)
+  const [chapter, setChapter] = useState(content.chapter)
   const [optionOpen, setOptionOpen] = useState(null)
-  const [contentName, setContentName] = useState(content.name)
-  const [contentChapter, setContentChapter] = useState(content.chapter)
-  const [videoPath, setVideoPath] = useState(content.video)
+  const [video, setVideo] = useState('')
+
+  const uploadVideoHandler = async (e) => {
+    e.preventDefault()
+    // const file = e.target.files[0]
+    setVideoUploading(true)
+
+    try {
+      // const config = {
+      //   headers: {
+      //     Authorization: `Bearer ${userInfo.token}`,
+      //     'Content-Type': 'multipart/form-data',
+      //   },
+      // }
+      // const { data } = await axios.post(
+      //   `/api/upload/${courseId}/course-content`,
+      //   file,
+      //   config
+      // )
+
+      dispatch(
+        updateContent(courseId, {
+          contentId: content._id,
+          name,
+          chapter,
+          video: '/',
+        })
+      )
+      modalClose()
+      setVideoUploading(false)
+    } catch (e) {
+      console.error(e)
+      setVideoUploading(false)
+    }
+  }
 
   return (
     <Modal
@@ -60,9 +92,9 @@ const Modals = ({
       aria-describedby='simple-modal-description'
     >
       <div className={classes.paper}>
-        <Typography variant='caption'>{contentChapter}</Typography>
+        <Typography variant='caption'>{content.chapter}</Typography>
         <Typography variant='h4'>
-          {contentName}{' '}
+          {content.name}{' '}
           <Button size='small' onClick={() => modalClose()}>
             Close
           </Button>
@@ -79,14 +111,12 @@ const Modals = ({
               <TextField
                 required
                 fullWidth
-                id='name'
                 type='text'
                 label='Content Name'
                 placeholder=''
                 variant='filled'
-                value={contentName}
-                autoComplete='text'
-                onChange={(e) => setContentName(e.target.value)}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </FormContainer>
 
@@ -94,14 +124,15 @@ const Modals = ({
               <Typography>Video</Typography>
               <input
                 type='file'
-                name={myTrim(contentName)}
+                // name={myTrim(content.video)}
                 placeholder='Enter Image Url'
               />
 
               <p style={{ background: '#eee', padding: 7 }}>
-                {videoPath !== '' && videoPath.length == 0
-                  ? videoPath.substr(34)
+                {content && video !== '' && video.length !== 0
+                  ? video.substr(34)
                   : '/'}
+                s
               </p>
               {videoUploading && <ProgressBar progress={progress} />}
             </FormContainer>
