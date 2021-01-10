@@ -80,7 +80,7 @@ function App() {
             <Route path='/cart/:id' component={CartScreen} exact />
             <Route path='/course/:course_slug' component={CourseScreen} exact />
             <Route
-              path='/course/:id/preview'
+              path='/course/:course_slug/preview'
               component={PreviewCourseScreen}
               exact
             />
