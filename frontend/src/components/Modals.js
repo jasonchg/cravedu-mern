@@ -14,8 +14,10 @@ import MoreVertIcon from '@material-ui/icons/MoreVert'
 import FormContainer from './FormContainer'
 import ProgressBar from '../components/ProgressBar'
 import { updateContent } from '../actions/instructorActions'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { myTrim } from '../utils'
+import axios from 'axios'
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'absolute',
@@ -39,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const Modals = ({ modalOpen, modalClose, content, courseId }) => {
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
   const classes = useStyles()
   const dispatch = useDispatch()
   const [videoUploading, setVideoUploading] = useState(false)
@@ -50,36 +55,41 @@ const Modals = ({ modalOpen, modalClose, content, courseId }) => {
 
   const uploadVideoHandler = async (e) => {
     e.preventDefault()
-    // const file = e.target.files[0]
+    const file = e.target.files[0]
+    const formData = new FormData()
+    formData.append(myTrim(name), file)
     setVideoUploading(true)
-
     try {
-      // const config = {
-      //   headers: {
-      //     Authorization: `Bearer ${userInfo.token}`,
-      //     'Content-Type': 'multipart/form-data',
-      //   },
-      // }
-      // const { data } = await axios.post(
-      //   `/api/upload/${courseId}/course-content`,
-      //   file,
-      //   config
-      // )
-
-      dispatch(
-        updateContent(courseId, {
-          contentId: content._id,
-          name,
-          chapter,
-          video: '/',
-        })
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+      const { data } = await axios.post(
+        `/api/upload/${courseId}/course-content`,
+        formData,
+        config
       )
-      modalClose()
+      setVideo(myTrim(data))
       setVideoUploading(false)
     } catch (e) {
       console.error(e)
       setVideoUploading(false)
     }
+  }
+
+  const updateContentHandler = (e) => {
+    e.preventDefault()
+    dispatch(
+      updateContent(courseId, {
+        contentId: content._id,
+        name,
+        chapter,
+        video,
+      })
+    )
+    modalClose()
   }
 
   return (
@@ -102,7 +112,7 @@ const Modals = ({ modalOpen, modalClose, content, courseId }) => {
 
         <Divider />
         <form
-          onSubmit={uploadVideoHandler}
+          onSubmit={updateContentHandler}
           method='post'
           encType='multipart/form-data'
         >
@@ -124,15 +134,15 @@ const Modals = ({ modalOpen, modalClose, content, courseId }) => {
               <Typography>Video</Typography>
               <input
                 type='file'
-                // name={myTrim(content.video)}
+                name={myTrim(video)}
                 placeholder='Enter Image Url'
+                onChange={uploadVideoHandler}
               />
 
               <p style={{ background: '#eee', padding: 7 }}>
-                {content && video !== '' && video.length !== 0
-                  ? video.substr(34)
+                {content && content.video !== '' && content.video.length !== 0
+                  ? content.video.substr(34)
                   : '/'}
-                s
               </p>
               {videoUploading && <ProgressBar progress={progress} />}
             </FormContainer>

@@ -29,7 +29,6 @@ import {
   INSTRUCTOR_ADD_CONTENT_RESET,
   INSTRUCTOR_COURSE_DETAILS_RESET,
   INSTRUCTOR_COURSE_UPDATE_RESET,
-  INSTRUCTOR_UPDATE_CONTENT_RESET,
 } from '../constants/instructorConstants'
 import TextEditor from '../components/TextEditor'
 import { myTrim, generateSlug } from '../utils'
