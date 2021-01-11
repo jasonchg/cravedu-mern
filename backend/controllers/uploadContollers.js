@@ -1,6 +1,9 @@
 import path from 'path'
 import multer from 'multer'
 
+const maxSizeUpload = 300 * 1024 * 1024 //300MB MAX
+const maxImageSize = 5 * 1024 * 1024 //5MB MAX
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, `uploads/${req.params.id}`)
@@ -34,13 +37,12 @@ const checkVideoFileType = (file, cb) => {
   }
 }
 
-const maxSizeUpload = 300 * 1024 * 1024
-
 const uploadVideoContent = multer({
   storage,
   fileFilter: (req, file, cb) => {
     checkVideoFileType(file, cb)
   },
+  limits: { fileSize: maxSizeUpload },
 })
 
 const uploadCourseImage = multer({
@@ -48,6 +50,6 @@ const uploadCourseImage = multer({
   fileFilter: (req, file, cb) => {
     checkImageType(file, cb)
   },
-  limits: { fileSize: maxSizeUpload },
+  limits: { fileSize: maxImageSize },
 })
 export { uploadCourseImage, uploadVideoContent }

@@ -10,6 +10,7 @@ import {
   Divider,
   TextField,
 } from '@material-ui/core'
+import Message from '../components/Message'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import FormContainer from './FormContainer'
 import ProgressBar from '../components/ProgressBar'
@@ -17,6 +18,7 @@ import { updateContent } from '../actions/instructorActions'
 import { useDispatch, useSelector } from 'react-redux'
 import { myTrim } from '../utils'
 import axios from 'axios'
+import { INSTRUCTOR_UPDATE_CONTENT_FAIL } from '../constants/instructorConstants'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -46,6 +48,7 @@ const Modals = ({ modalOpen, modalClose, content, courseId }) => {
 
   const classes = useStyles()
   const dispatch = useDispatch()
+  const [error, setError] = useState('')
   const [videoUploading, setVideoUploading] = useState(false)
   const [progress, setProgress] = useState(0)
   const [name, setName] = useState(content.name)
@@ -66,16 +69,18 @@ const Modals = ({ modalOpen, modalClose, content, courseId }) => {
           'Content-Type': 'multipart/form-data',
         },
       }
-      const { data } = await axios.post(
+      const { data, progress } = await axios.post(
         `/api/upload/${courseId}/course-content`,
         formData,
         config
       )
+      setProgress(progress)
       setVideo(myTrim(data))
       setVideoUploading(false)
     } catch (e) {
-      console.error(e)
       setVideoUploading(false)
+      setError(e.message)
+      dispatch({ type: INSTRUCTOR_UPDATE_CONTENT_FAIL })
     }
   }
 
@@ -138,13 +143,13 @@ const Modals = ({ modalOpen, modalClose, content, courseId }) => {
                 placeholder='Enter Image Url'
                 onChange={uploadVideoHandler}
               />
-
               <p style={{ background: '#eee', padding: 7 }}>
                 {content && content.video !== '' && content.video.length !== 0
                   ? content.video.substr(34)
                   : '/'}
               </p>
               {videoUploading && <ProgressBar progress={progress} />}
+              {error && <Message>{error}</Message>}
             </FormContainer>
 
             <FormContainer>

@@ -1,7 +1,20 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { LinearProgress, Typography, Box } from '@material-ui/core'
 
-const ProgressBar = ({ progress }) => {
+const ProgressBar = ({ progress: progressing }) => {
+  const [progress, setProgress] = useState(progressing)
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((prevProgress) =>
+        prevProgress >= 100 ? 10 : prevProgress + 10
+      )
+    }, 200)
+    return () => {
+      clearInterval(timer)
+    }
+  }, [])
+
   function LinearProgressWithLabel(props) {
     return (
       <Box display='flex' alignItems='center'>
@@ -17,7 +30,7 @@ const ProgressBar = ({ progress }) => {
     )
   }
 
-  return <LinearProgressWithLabel value={progress} />
+  return <LinearProgressWithLabel value={progress >= 100 ? 100 : progress} />
 }
 
 export default ProgressBar

@@ -4,6 +4,11 @@ import {
   uploadVideoContent,
 } from '../controllers/uploadContollers.js'
 import { protectedRoute } from '../middlewares/authMiddlewares.js'
+import progress from 'progress-stream'
+
+const p = progress({
+  time: 1000,
+})
 
 const router = express.Router()
 
@@ -16,7 +21,12 @@ router
 router
   .route('/:id/course-content')
   .post(protectedRoute, uploadVideoContent.any(), (req, res) => {
-    res.send('/' + req.files[0].path.replace('\\', '/'))
+    req.pipe(p)
+    p.on('progress', (progress) => {
+      res.write({ progress: progress.percentage })
+      res.write({ data: '/' + req.files[0].path.replace('\\', '/') })
+    })
+    res.end()
   })
 
 export default router
