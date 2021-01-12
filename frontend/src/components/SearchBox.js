@@ -27,7 +27,10 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 10,
   },
   iconButtonDef: {
-    padding: 7,
+    paddingTop: 3,
+    paddingBottom: 3,
+    paddingLeft: 0,
+    paddingRight: 0,
   },
   iconButtonPH: {
     padding: 5,

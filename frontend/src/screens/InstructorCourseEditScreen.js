@@ -91,6 +91,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
   const [chapter, setChapter] = useState(1)
   const [chapterName, setChapterName] = useState('')
   const [courseContents, setCourseContents] = useState([])
+  const [errorUpdate, setErrorUpdate] = useState(false)
 
   const uploadImageHandler = async (e) => {
     const file = e.target.files[0]
@@ -115,8 +116,8 @@ const InstructorCourseEditScreen = ({ match, history }) => {
       setImage(myTrim(data))
       setUploading(false)
     } catch (e) {
-      console.error(e)
       setUploading(false)
+      setErrorUpdate(true)
     }
   }
 
@@ -142,6 +143,20 @@ const InstructorCourseEditScreen = ({ match, history }) => {
         description,
       })
     )
+  }
+
+  const deleteHandler = () => {
+    const content =
+      courseDetails && courseContents && courseContents.length
+        ? courseContents.length
+        : 0
+    const deleteMsg = `Are you wish to delete this course and it's contents?\n${
+      content != 0 ? `This course consist of ${content} chapters.` : null
+    }\n(*This action is not reversable. Think twice!)`
+
+    if (window.confirm(deleteMsg)) {
+      console.log('deleted')
+    }
   }
 
   useEffect(() => {
@@ -217,16 +232,18 @@ const InstructorCourseEditScreen = ({ match, history }) => {
       {updateError && <Message>{updateError}</Message>}
       <Grid container spacing={3}>
         <Grid item md={5} xs={12}>
-          <Button
-            style={{ margin: '7px 0' }}
-            onClick={() =>
-              window
-                .open(`/course/${courseDetails.slug}/preview`, '_blank')
-                .focus()
-            }
-          >
-            Preview This Course
-          </Button>
+          <div style={{ margin: '7px 0' }}>
+            <Button
+              onClick={() =>
+                window
+                  .open(`/course/${courseDetails.slug}/preview`, '_blank')
+                  .focus()
+              }
+            >
+              Preview This Course
+            </Button>
+          </div>
+
           <Paper className={classes.leftPanel}>
             <Typography variant='body1'>Course Details</Typography>
             <Divider style={{ marginBottom: 10 }} />
@@ -310,11 +327,21 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                 {image.substr(34)}
               </p>
 
+              {errorUpdate && (
+                <>
+                  <Message>
+                    Error occured while updating the image. Please try again.
+                  </Message>{' '}
+                  <br />
+                </>
+              )}
+
               <Button
                 type='submit'
                 variant='contained'
                 color='primary'
                 fullWidth
+                disabled={errorUpdate ? true : false}
               >
                 Update
               </Button>
@@ -325,7 +352,6 @@ const InstructorCourseEditScreen = ({ match, history }) => {
             </p>
           </Paper>
 
-          <Divider />
           <h2>Total Sales</h2>
           <Paper>
             {courseDetails && courseDetails.totalSold ? (
@@ -337,7 +363,10 @@ const InstructorCourseEditScreen = ({ match, history }) => {
             )}
           </Paper>
 
-          <Divider />
+          <br />
+          <Button onClick={deleteHandler} variant='outlined' color='secondary'>
+            I Wish To Delete This Course
+          </Button>
         </Grid>
         <Grid item md={7} xs={12}>
           <h2>Course Contents</h2>
@@ -401,14 +430,12 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                 ) : (
                   <>
                     {courseContents.map((content, index) => (
-                      <>
-                        <ContentListItem
-                          key={index}
-                          count={index + 1}
-                          courseId={courseId}
-                          content={content}
-                        />
-                      </>
+                      <ContentListItem
+                        key={index}
+                        count={index + 1}
+                        courseId={courseId}
+                        content={content}
+                      />
                     ))}
                   </>
                 )

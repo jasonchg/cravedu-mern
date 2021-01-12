@@ -1,7 +1,8 @@
 import asyncHandler from 'express-async-handler'
 import Course from '../models/courseModel.js'
 import fs from 'fs'
-
+import { removeDir } from '../utils/deleteFolder.js'
+import path from 'path'
 // @desc    Get All Course That Created by this intructor
 // @route   GET /api/instructor/courses
 // @access  Private
@@ -41,14 +42,14 @@ const createCourse = asyncHandler(async (req, res) => {
 
   try {
     const createdCourse = await course.save()
-    let dir = `./uploads/${createdCourse._id}`
+    let dir = `./uploads/${createdCourse._id}/`
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir)
     }
     res.status(201).json(createdCourse._id)
   } catch (e) {
     res.status(500)
-    throw new Error('Internal Error with this one, please try again later.')
+    throw new Error('Internal Error with this one, please try again later')
   }
 })
 
@@ -93,7 +94,7 @@ const updateCourse = asyncHandler(async (req, res) => {
       })
     } catch (e) {
       res.status(401)
-      throw new Error('Something went wrong.')
+      throw new Error('Something went wrong')
     }
   } else {
     res.status(404)
@@ -121,7 +122,7 @@ const addCourseContent = asyncHandler(async (req, res) => {
       res.status(201).json({ newlyAddedContent })
     } catch (e) {
       res.status(401)
-      throw new Error('Something went wrong.')
+      throw new Error('Something went wrong')
     }
   } else {
     res.status(404)
@@ -148,10 +149,10 @@ const updateContent = asyncHandler(async (req, res) => {
 
       try {
         await course.save()
-        res.send('saved')
+        res.json({ message: 'Content updated.' })
       } catch (e) {
         res.status(401)
-        throw new Error('Something went wrong.')
+        throw new Error('Something went wrong')
       }
     }
   } else {
@@ -164,6 +165,33 @@ const updateContent = asyncHandler(async (req, res) => {
 // @route   DELETE /api/instructor/courses/:id
 // @access  Private
 
+const deleteCourse = asyncHandler(async (req, res) => {
+  const course = await Course.findById(req.params.id)
+
+  const __dirname = path.resolve()
+
+  if (course) {
+    try {
+      const removedDir = removeDir(
+        path.join(__dirname, `/uploads/${course._id}`)
+      )
+      const removedCourse = await course.remove()
+
+      if (removedCourse) {
+        if (removedDir) {
+          res.json({ message: 'Course deleted successfully' })
+        }
+      }
+    } catch (e) {
+      res.status(401)
+      throw new Error('Something went wrong')
+    }
+  } else {
+    res.status(404)
+    throw new Error('Course not found')
+  }
+})
+
 export {
   createCourse,
   getCourses,
@@ -171,4 +199,5 @@ export {
   updateCourse,
   addCourseContent,
   updateContent,
+  deleteCourse,
 }

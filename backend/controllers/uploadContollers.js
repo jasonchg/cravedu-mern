@@ -6,7 +6,7 @@ const maxImageSize = 5 * 1024 * 1024 //5MB MAX
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, `uploads/${req.params.id}`)
+    cb(null, `uploads/${req.params.id}/`)
   },
   filename: function (req, file, cb) {
     cb(null, `/${file.fieldname}${path.extname(file.originalname)}`)
@@ -20,9 +20,8 @@ const checkImageType = (file, cb) => {
 
   if (extname && mimetype) {
     return cb(null, true)
-  } else {
-    cb('Image Only!')
   }
+  cb('Error: File upload only supports the following filetypes - ' + filetypes)
 }
 
 const checkVideoFileType = (file, cb) => {
@@ -32,24 +31,23 @@ const checkVideoFileType = (file, cb) => {
 
   if (extname && mimetype) {
     return cb(null, true)
-  } else {
-    cb('Video Only!')
   }
+  cb('Error: File upload only supports the following filetypes - ' + filetypes)
 }
 
 const uploadVideoContent = multer({
   storage,
-  fileFilter: (req, file, cb) => {
-    checkVideoFileType(file, cb)
-  },
+  // fileFilter: (file, cb) => {
+  //   checkVideoFileType(file, cb)
+  // },
   limits: { fileSize: maxSizeUpload },
 })
 
 const uploadCourseImage = multer({
   storage,
-  fileFilter: (req, file, cb) => {
-    checkImageType(file, cb)
-  },
+  // fileFilter: (file, cb) => {
+  //   checkImageType(file, cb)
+  // },
   limits: { fileSize: maxImageSize },
 })
 export { uploadCourseImage, uploadVideoContent }

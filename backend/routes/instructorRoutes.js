@@ -10,6 +10,7 @@ import {
   updateCourse,
   addCourseContent,
   updateContent,
+  deleteCourse,
 } from '../controllers/instructorCourseControllers.js'
 
 const router = express.Router()
@@ -31,5 +32,6 @@ router
   .route('/:id')
   .get(protectedRoute, instructorRoute, getCourseById)
   .put(protectedRoute, instructorRoute, updateCourse)
+  .delete(protectedRoute, instructorRoute, deleteCourse)
 
 export default router

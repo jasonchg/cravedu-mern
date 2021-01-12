@@ -27,3 +27,5 @@ yarn-error.log*\
 
 E:\React Js\cravedu-mern\frontend\public\videos
 /frontend/public/videos
+/uploads
+/uploads/*
