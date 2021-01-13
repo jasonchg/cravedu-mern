@@ -21,6 +21,9 @@ import {
   INSTRUCTOR_DELETE_CONTENT_REQUEST,
   INSTRUCTOR_DELETE_CONTENT_SUCCESS,
   INSTRUCTOR_DELETE_CONTENT_FAIL,
+  INSTRUCTOR_DELETE_COURSE_REQUEST,
+  INSTRUCTOR_DELETE_COURSE_SUCCESS,
+  INSTRUCTOR_DELETE_COURSE_FAIL,
 } from '../constants/instructorConstants'
 
 const createCourse = () => async (dispatch, getState) => {
@@ -174,6 +177,35 @@ const createContent = (id, content) => async (dispatch, getState) => {
   }
 }
 
+const deleteCourse = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: INSTRUCTOR_DELETE_COURSE_REQUEST })
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    await axios.delete(`/api/instructor/courses/${id}`, config)
+
+    dispatch({
+      type: INSTRUCTOR_DELETE_COURSE_SUCCESS,
+    })
+  } catch (e) {
+    dispatch({
+      type: INSTRUCTOR_DELETE_COURSE_FAIL,
+      payload:
+        e.response && e.response.data.message
+          ? e.response.data.message
+          : e.message,
+    })
+  }
+}
+
 const updateContent = (courseId, content) => async (dispatch, getState) => {
   try {
     dispatch({ type: INSTRUCTOR_UPDATE_CONTENT_REQUEST })
@@ -242,6 +274,7 @@ export {
   getCourseById,
   updateCourse,
   createCourse,
+  deleteCourse,
   createContent,
   updateContent,
   deleteContent,

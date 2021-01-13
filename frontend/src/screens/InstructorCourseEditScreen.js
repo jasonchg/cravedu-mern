@@ -19,6 +19,7 @@ import {
   getCourseById,
   updateCourse,
   createContent,
+  deleteCourse,
 } from '../actions/instructorActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
@@ -29,6 +30,7 @@ import {
   INSTRUCTOR_ADD_CONTENT_RESET,
   INSTRUCTOR_COURSE_DETAILS_RESET,
   INSTRUCTOR_COURSE_UPDATE_RESET,
+  INSTRUCTOR_DELETE_COURSE_RESET,
 } from '../constants/instructorConstants'
 import TextEditor from '../components/TextEditor'
 import { myTrim, generateSlug } from '../utils'
@@ -82,6 +84,11 @@ const InstructorCourseEditScreen = ({ match, history }) => {
     success: createContentSuccess,
   } = instructorContentCreate
 
+  const instructorCourseDelete = useSelector(
+    (state) => state.instructorCourseDelete
+  )
+  const { success: deleteCourseSuccess } = instructorCourseDelete
+
   const [name, setName] = useState('')
   const [slug, setSlug] = useState('')
   const [price, setPrice] = useState(0)
@@ -92,6 +99,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
   const [chapterName, setChapterName] = useState('')
   const [courseContents, setCourseContents] = useState([])
   const [errorUpdate, setErrorUpdate] = useState(false)
+  const [cantDelete, setCantDelete] = useState(false)
 
   const uploadImageHandler = async (e) => {
     const file = e.target.files[0]
@@ -146,20 +154,30 @@ const InstructorCourseEditScreen = ({ match, history }) => {
   }
 
   const deleteHandler = () => {
-    const content =
-      courseDetails && courseContents && courseContents.length
-        ? courseContents.length
-        : 0
-    const deleteMsg = `Are you wish to delete this course and it's contents?\n${
-      content !== 0 ? `This course consist of ${content} chapters.` : null
-    }\n(*This action is not reversable. Think twice!)`
+    if (courseDetails.isPublished) {
+      setCantDelete(true)
+      alert('You cant delete a published course.')
+    } else {
+      const content =
+        courseDetails && courseContents && courseContents.length
+          ? courseContents.length
+          : 0
+      const deleteMsg = `Are you wish to delete this course and it's contents?\n${
+        content !== 0 ? `This course consist of ${content} chapters.` : null
+      }\n(*This action is not reversable. Think twice!)`
 
-    if (window.confirm(deleteMsg)) {
-      console.log('deleted')
+      if (window.confirm(deleteMsg)) {
+        dispatch(deleteCourse(courseId))
+      }
     }
   }
 
   useEffect(() => {
+    if (deleteCourseSuccess) {
+      dispatch({ type: INSTRUCTOR_DELETE_COURSE_RESET })
+      history.push('/instructor')
+    }
+
     if (updateSuccess || createContentSuccess) {
       dispatch({ type: INSTRUCTOR_ADD_CONTENT_RESET })
       dispatch({ type: INSTRUCTOR_COURSE_DETAILS_RESET })
@@ -201,6 +219,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
     history,
     updateSuccess,
     createContentSuccess,
+    deleteCourseSuccess,
   ])
 
   return loading ? (
@@ -364,7 +383,12 @@ const InstructorCourseEditScreen = ({ match, history }) => {
           </Paper>
 
           <br />
-          <Button onClick={deleteHandler} variant='outlined' color='secondary'>
+          <Button
+            onClick={deleteHandler}
+            variant='outlined'
+            color='secondary'
+            disabled={cantDelete ? true : false}
+          >
             I Wish To Delete This Course
           </Button>
         </Grid>
