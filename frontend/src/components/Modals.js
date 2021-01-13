@@ -3,15 +3,13 @@ import {
   makeStyles,
   Modal,
   Backdrop,
-  Menu,
-  MenuItem,
   Button,
   Typography,
   Divider,
   TextField,
 } from '@material-ui/core'
 import Message from '../components/Message'
-import MoreVertIcon from '@material-ui/icons/MoreVert'
+
 import FormContainer from './FormContainer'
 import ProgressBar from '../components/ProgressBar'
 import { updateContent } from '../actions/instructorActions'
@@ -53,7 +51,7 @@ const Modals = ({ modalOpen, modalClose, content, courseId }) => {
   const [progress, setProgress] = useState(0)
   const [name, setName] = useState(content.name)
   const [chapter, setChapter] = useState(content.chapter)
-  const [optionOpen, setOptionOpen] = useState(null)
+
   const [video, setVideo] = useState('')
 
   const uploadVideoHandler = async (e) => {
@@ -162,30 +160,6 @@ const Modals = ({ modalOpen, modalClose, content, courseId }) => {
               >
                 Done
               </Button>
-              <Button
-                aria-controls='simple-menu'
-                aria-haspopup='true'
-                onClick={(e) => setOptionOpen(e.currentTarget)}
-              >
-                <MoreVertIcon />
-              </Button>
-              <Menu
-                anchorEl={optionOpen}
-                keepMounted
-                open={Boolean(optionOpen)}
-                onClose={() => setOptionOpen(null)}
-              >
-                <MenuItem onClick={() => setOptionOpen(null)}>
-                  Delete Video
-                </MenuItem>
-                <Divider />
-                <MenuItem
-                  style={{ color: 'red' }}
-                  onClick={() => setOptionOpen(null)}
-                >
-                  Delete Topic
-                </MenuItem>
-              </Menu>
             </FormContainer>
           </div>
         </form>

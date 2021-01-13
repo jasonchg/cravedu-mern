@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-export const removeDir = (path) => {
+const removeDir = (path) => {
   if (fs.existsSync(path)) {
     const files = fs.readdirSync(path)
 
@@ -23,3 +23,15 @@ export const removeDir = (path) => {
     return false
   }
 }
+
+const removeFile = (path) => {
+  try {
+    fs.unlinkSync(path)
+    return true
+  } catch (err) {
+    console.log('Directory path not found.')
+    return false
+  }
+}
+
+export { removeDir, removeFile }

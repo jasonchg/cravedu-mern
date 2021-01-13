@@ -6,9 +6,6 @@ import User from '../models/userModel.js'
 // @access  Private
 
 const getMyCourses = asyncHandler(async (req, res) => {
-  // do not display the item that user had bought
-  // user:purchasedCourses:[{userModel}]
-
   const user = await User.findById(req.user.id)
   const { myCourses } = user
 

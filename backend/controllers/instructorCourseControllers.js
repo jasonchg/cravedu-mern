@@ -1,7 +1,7 @@
 import asyncHandler from 'express-async-handler'
 import Course from '../models/courseModel.js'
 import fs from 'fs'
-import { removeDir } from '../utils/deleteFolder.js'
+import { removeDir, removeFile } from '../utils/deleteFolder.js'
 import path from 'path'
 // @desc    Get All Course That Created by this intructor
 // @route   GET /api/instructor/courses
@@ -192,6 +192,42 @@ const deleteCourse = asyncHandler(async (req, res) => {
   }
 })
 
+// @desc    Delete a content
+// @route   DELETE /api/instructor/courses/:id/content
+// @access  Private
+
+const deleteContent = asyncHandler(async (req, res) => {
+  const course = await Course.findById(req.params.id)
+  const __dirname = path.resolve()
+  const courseContents = course.courseContents
+
+  if (course) {
+    let content = courseContents.find((x) => x.id === req.body.contentId)
+
+    if (content) {
+      try {
+        const removedDir = removeFile(path.join(__dirname, content.video))
+        const removedContent = await content.remove()
+        if (removedContent) {
+          if (removedDir) {
+            await course.save()
+            res.json({ message: 'Content deleted successfully' })
+          }
+        }
+      } catch (e) {
+        res.status(401)
+        throw new Error(e)
+      }
+    } else {
+      res.status(404)
+      throw new Error('Content not found')
+    }
+  } else {
+    res.status(404)
+    throw new Error('Content not found')
+  }
+})
+
 export {
   createCourse,
   getCourses,
@@ -200,4 +236,5 @@ export {
   addCourseContent,
   updateContent,
   deleteCourse,
+  deleteContent,
 }

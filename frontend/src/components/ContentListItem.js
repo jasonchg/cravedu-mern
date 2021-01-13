@@ -28,6 +28,16 @@ const ContentListItem = ({ courseId, content, count }) => {
     error: contentUpdateError,
   } = instructorContentUpdate
 
+  const deletChapter = () => {
+    const msg = `Are you sure to delete this chapter?\n${
+      content.video ? '(Video will be deleted as well)' : ''
+    }`
+
+    if (window.confirm(msg)) {
+      console.log('deleting', content)
+    }
+  }
+
   useEffect(() => {
     if (contentUpdateSuccess) {
       dispatch({ type: INSTRUCTOR_UPDATE_CONTENT_RESET })
@@ -51,7 +61,9 @@ const ContentListItem = ({ courseId, content, count }) => {
             >
               Edit
             </Button>
-            <Button type='button'>Delete This Chapter</Button>
+            <Button onClick={deletChapter} type='button'>
+              Delete This Chapter
+            </Button>
             <Modals
               modalOpen={modalOpen}
               modalClose={() => setModalOpen(false)}
