@@ -12,8 +12,11 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   INSTRUCTOR_COURSE_DETAILS_RESET,
+  INSTRUCTOR_DELETE_CONTENT_RESET,
   INSTRUCTOR_UPDATE_CONTENT_RESET,
 } from '../constants/instructorConstants'
+import { deleteContent } from '../actions/instructorActions'
+import Message from './Message'
 
 const ContentListItem = ({ courseId, content, count }) => {
   const dispatch = useDispatch()
@@ -22,11 +25,16 @@ const ContentListItem = ({ courseId, content, count }) => {
   const instructorContentUpdate = useSelector(
     (state) => state.instructorContentUpdate
   )
+  const { success: contentUpdateSuccess } = instructorContentUpdate
+
+  const instructorContentDelete = useSelector(
+    (state) => state.instructorContentDelete
+  )
   const {
-    loading: contentUpdateLoading,
-    success: contentUpdateSuccess,
-    error: contentUpdateError,
-  } = instructorContentUpdate
+    loading: contentDeleteLoading,
+    success: contentDeleteSuccess,
+    error: contentDeleteError,
+  } = instructorContentDelete
 
   const deletChapter = () => {
     const msg = `Are you sure to delete this chapter?\n${
@@ -34,16 +42,17 @@ const ContentListItem = ({ courseId, content, count }) => {
     }`
 
     if (window.confirm(msg)) {
-      console.log('deleting', content)
+      dispatch(deleteContent(courseId, content._id))
     }
   }
 
   useEffect(() => {
-    if (contentUpdateSuccess) {
+    if (contentUpdateSuccess || contentDeleteSuccess) {
+      dispatch({ type: INSTRUCTOR_DELETE_CONTENT_RESET })
       dispatch({ type: INSTRUCTOR_UPDATE_CONTENT_RESET })
       dispatch({ type: INSTRUCTOR_COURSE_DETAILS_RESET })
     }
-  }, [contentUpdateSuccess])
+  }, [contentUpdateSuccess, contentDeleteSuccess])
 
   return (
     <div key={content._id}>
@@ -64,6 +73,7 @@ const ContentListItem = ({ courseId, content, count }) => {
             <Button onClick={deletChapter} type='button'>
               Delete This Chapter
             </Button>
+
             <Modals
               modalOpen={modalOpen}
               modalClose={() => setModalOpen(false)}
@@ -71,6 +81,10 @@ const ContentListItem = ({ courseId, content, count }) => {
               content={content}
             />
           </AccordionDetails>
+          {contentDeleteLoading && (
+            <Message variant='info'>Deleting...</Message>
+          )}
+          {contentDeleteError && <Message>{contentDeleteError}</Message>}
         </Accordion>
       </ListItem>
       <Divider />

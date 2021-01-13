@@ -198,20 +198,22 @@ const deleteCourse = asyncHandler(async (req, res) => {
 
 const deleteContent = asyncHandler(async (req, res) => {
   const course = await Course.findById(req.params.id)
+
   const __dirname = path.resolve()
   const courseContents = course.courseContents
 
   if (course) {
-    let content = courseContents.find((x) => x.id === req.body.contentId)
+    let content = courseContents.find((x) => x.id === req.params.contentId)
 
     if (content) {
       try {
         const removedDir = removeFile(path.join(__dirname, content.video))
+
         const removedContent = await content.remove()
         if (removedContent) {
           if (removedDir) {
             await course.save()
-            res.json({ message: 'Content deleted successfully' })
+            res.json({ message: 'Content delete successfully' })
           }
         }
       } catch (e) {

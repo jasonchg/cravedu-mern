@@ -17,16 +17,16 @@ import {
 const router = express.Router()
 
 router
+  .route('/:id/:contentId')
+  .delete(protectedRoute, instructorRoute, deleteContent)
+
+router
   .route('/:id/updatecontent')
   .put(protectedRoute, instructorRoute, updateContent)
 
 router
   .route('/:id/addcontent')
   .post(protectedRoute, instructorRoute, addCourseContent)
-
-router
-  .route('/:id/content')
-  .delete(protectedRoute, instructorRoute, deleteContent)
 
 router
   .route('/')

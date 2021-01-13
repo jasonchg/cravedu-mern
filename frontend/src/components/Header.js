@@ -367,18 +367,20 @@ const Header = () => {
                       open={Boolean(openMenuUser)}
                       onClose={closeUserMenuHandler}
                     >
+                      <MenuItem onClick={goToMyAccount}>
+                        <ListItemIcon>
+                          <AccountBoxIcon fontSize='small' />
+                        </ListItemIcon>
+                        <Typography variant='inherit'>
+                          {userInfo.name}
+                        </Typography>
+                      </MenuItem>
+                      <Divider />
                       <MenuItem onClick={goToMyCourses}>
                         <ListItemIcon>
                           <ListIcon fontSize='small' />
                         </ListItemIcon>
                         <Typography variant='inherit'> My Learning</Typography>
-                      </MenuItem>
-
-                      <MenuItem onClick={goToMyAccount}>
-                        <ListItemIcon>
-                          <AccountBoxIcon fontSize='small' />
-                        </ListItemIcon>
-                        <Typography variant='inherit'> My Account</Typography>
                       </MenuItem>
 
                       <MenuItem onClick={logoutUser}>
