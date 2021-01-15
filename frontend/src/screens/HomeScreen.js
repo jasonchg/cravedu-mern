@@ -17,8 +17,9 @@ import Carousels from '../components/Carousels'
 import { default as CourseScroll, consts } from 'react-elastic-carousel'
 import Banner from '../components/Banner'
 
-const HomeScreen = ({ history }) => {
+const HomeScreen = ({ history, match }) => {
   const dispatch = useDispatch()
+  const pageNumber = match.params.pageNumber || 1
 
   const courseList = useSelector((state) => state.courseList)
   const { loading, error, courses } = courseList
@@ -37,13 +38,13 @@ const HomeScreen = ({ history }) => {
   } = courseBestSold
 
   useEffect(() => {
-    dispatch(listCourses())
+    dispatch(listCourses('', pageNumber))
     dispatch(bestSoldCourses())
 
     if (userInfo) {
       dispatch(getUserCourses())
     }
-  }, [dispatch, userInfo, history])
+  }, [dispatch, userInfo, pageNumber])
 
   const category = [
     {
@@ -118,7 +119,7 @@ const HomeScreen = ({ history }) => {
                 pagination={false}
                 itemPosition={consts.START}
               >
-                {userPaidCourses.map((currentCourse, index) => (
+                {userPaidCourses.map((currentCourse) => (
                   <Course
                     key={currentCourse._id}
                     course={courses.find((x) => x._id === currentCourse._id)}

@@ -3,17 +3,29 @@ import Course from '../models/courseModel.js'
 import fs from 'fs'
 import { removeDir, removeFile } from '../utils/deleteFolder.js'
 import path from 'path'
+
 // @desc    Get All Course That Created by this intructor
 // @route   GET /api/instructor/courses
 // @access  Private
 
 const getCourses = asyncHandler(async (req, res) => {
+  const pageSize = 10
+  const page = Number(req.query.pageNumber) || 1
+
+  const count = await Course.countDocuments({ user: req.user._id })
   const courses = await Course.find({
     user: req.user._id,
-  }).sort({ isPublished: 'desc' })
+  })
+    .sort({ isPublished: 'desc' })
+    .limit(pageSize)
+    .skip(pageSize * (page - 1))
 
   if (courses) {
-    res.json(courses)
+    res.json({
+      courses,
+      page,
+      pages: Math.ceil(count / pageSize),
+    })
   } else {
     res.status(404)
     throw new Error('Course not found')

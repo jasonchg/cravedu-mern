@@ -6,6 +6,9 @@ import Course from '../models/courseModel.js'
 // @access  Public
 
 const getCourses = asyncHandler(async (req, res) => {
+  const pageSize = 10
+  const page = Number(req.query.pageNumber) || 1
+
   const params = req.query.keyword
     ? {
         isPublished: true,
@@ -13,10 +16,17 @@ const getCourses = asyncHandler(async (req, res) => {
       }
     : { isPublished: true }
 
+  const count = await Course.countDocuments(params)
   const courses = await Course.find(params)
+    .limit(pageSize)
+    .skip(pageSize * (page - 1))
 
   if (courses) {
-    res.json(courses)
+    res.json({
+      courses,
+      page,
+      pages: Math.ceil(count / pageSize),
+    })
   } else {
     res.status(404)
     throw new Error('Courses not found')

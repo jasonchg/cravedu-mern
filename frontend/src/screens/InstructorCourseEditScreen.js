@@ -154,9 +154,11 @@ const InstructorCourseEditScreen = ({ match, history }) => {
   }
 
   const deleteHandler = () => {
-    if (courseDetails.isPublished) {
+    if (courseDetails.isPublished || courseDetails.totalSold !== 0) {
       setCantDelete(true)
-      alert('You cant delete a published course.')
+      alert(
+        `You cannot delete a published course with total sold of ${courseDetails.totalSold}.`
+      )
     } else {
       const content =
         courseDetails && courseContents && courseContents.length

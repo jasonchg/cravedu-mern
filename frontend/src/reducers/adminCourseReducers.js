@@ -18,7 +18,12 @@ const adminCourseListReducer = (state = { courses: [] }, action) => {
     case ADMIN_COURSE_LIST_REQUEST:
       return { loading: true, courses: [] }
     case ADMIN_COURSE_LIST_SUCCESS:
-      return { loading: false, courses: action.payload }
+      return {
+        loading: false,
+        courses: action.payload.courses,
+        page: action.payload.page,
+        pages: action.payload.pages,
+      }
     case ADMIN_COURSE_LIST_FAIL:
       return { loading: false, error: action.payload }
     case ADMIN_COURSE_LIST_RESET:

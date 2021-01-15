@@ -52,6 +52,11 @@ function App() {
               component={InstructorCourseEditScreen}
               exact
             />
+            <Route
+              path='/instructor/:pageNumber'
+              component={InstructorScreen}
+              exact
+            />
             <Route path='/instructor' component={InstructorScreen} exact />
           </Container>
           {/* Video Learning */}
@@ -84,7 +89,13 @@ function App() {
               component={PreviewCourseScreen}
               exact
             />
+            <Route
+              path='/search/:keyword/page/:pageNumber'
+              component={BrowseScreen}
+              exact
+            />
             <Route path='/search/:keyword' component={BrowseScreen} exact />
+            <Route path='/course/:pageNumber' component={BrowseScreen} exact />
             <Route path='/course' component={BrowseScreen} exact />
             <Route path='/' component={HomeScreen} exact />
           </Container>

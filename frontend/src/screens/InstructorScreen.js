@@ -22,8 +22,9 @@ import Breadcrumbs from '../components/Breadcrumbs'
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder'
 import CreateCourseGuide from '../components/CreateCourseGuide'
 
-const InstructorScreen = ({ history }) => {
+const InstructorScreen = ({ history, match }) => {
   const dispatch = useDispatch()
+  const pageNumber = match.params.pageNumber || 1
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
@@ -31,7 +32,7 @@ const InstructorScreen = ({ history }) => {
   const instructorCourseList = useSelector(
     (state) => state.instructorCourseList
   )
-  const { courses, loading, error } = instructorCourseList
+  const { courses, loading, error, page, pages } = instructorCourseList
 
   const instructorCourseCreate = useSelector(
     (state) => state.instructorCourseCreate
@@ -55,12 +56,19 @@ const InstructorScreen = ({ history }) => {
     } else {
       if (userInfo && userInfo.isInstructor) {
         dispatch({ type: INSTRUCTOR_COURSE_LIST_RESET })
-        dispatch(listCourses())
+        dispatch(listCourses('', pageNumber))
       } else {
         history.push('/login')
       }
     }
-  }, [userInfo, dispatch, history, createCourseSuccess, newCourseId])
+  }, [
+    userInfo,
+    dispatch,
+    history,
+    createCourseSuccess,
+    newCourseId,
+    pageNumber,
+  ])
 
   return (
     <>

@@ -6,10 +6,20 @@ import Course from '../models/courseModel.js'
 // @access  Private Admin
 
 const getCourses = asyncHandler(async (req, res) => {
-  const courses = await Course.find({}).sort({ isPublished: 'desc' })
+  const pageSize = 10
+  const page = Number(req.query.pageNumber) || 1
+
+  const courses = await Course.find({})
+    .sort({ isPublished: 'desc' })
+    .limit(pageSize)
+    .skip(pageSize * (page - 1))
 
   if (courses) {
-    res.json(courses)
+    res.json({
+      courses,
+      page,
+      pages: Math.ceil(count / pageSize),
+    })
   } else {
     res.status(404)
     throw new Error('Course not found')

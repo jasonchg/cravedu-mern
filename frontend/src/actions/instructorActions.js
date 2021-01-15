@@ -56,7 +56,10 @@ const createCourse = () => async (dispatch, getState) => {
   }
 }
 
-const listCourses = () => async (dispatch, getState) => {
+const listCourses = (keyword = '', pageNumber = '') => async (
+  dispatch,
+  getState
+) => {
   try {
     dispatch({ type: INSTRUCTOR_COURSE_LIST_REQUEST })
     const {
@@ -69,7 +72,10 @@ const listCourses = () => async (dispatch, getState) => {
       },
     }
 
-    const { data } = await axios.get('/api/instructor/courses', config)
+    const { data } = await axios.get(
+      `/api/instructor/courses/?pageNumber=${pageNumber}`,
+      config
+    )
 
     dispatch({ type: INSTRUCTOR_COURSE_LIST_SUCCESS, payload: data })
   } catch (e) {

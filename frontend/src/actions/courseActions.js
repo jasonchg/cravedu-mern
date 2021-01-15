@@ -17,11 +17,13 @@ import {
   COURSE_REVIEW_FAIL,
 } from '../constants/courseConstants'
 
-const listCourses = (keyword = '') => async (dispatch) => {
+const listCourses = (keyword = '', pageNumber = '') => async (dispatch) => {
   try {
     dispatch({ type: COURSE_LIST_REQUEST })
 
-    const { data } = await axios.get(`/api/courses?keyword=${keyword}`)
+    const { data } = await axios.get(
+      `/api/courses?keyword=${keyword}&pageNumber=${pageNumber}`
+    )
 
     dispatch({
       type: COURSE_LIST_SUCCESS,
