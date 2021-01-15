@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Grid,
   Button,
@@ -21,10 +21,12 @@ import {
 import Breadcrumbs from '../components/Breadcrumbs'
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder'
 import CreateCourseGuide from '../components/CreateCourseGuide'
+import Paginate from '../components/Paginate'
 
 const InstructorScreen = ({ history, match }) => {
   const dispatch = useDispatch()
   const pageNumber = match.params.pageNumber || 1
+  const [keyword, setKeyword] = useState('')
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
@@ -160,6 +162,14 @@ const InstructorScreen = ({ history, match }) => {
                   </TableBody>
                 </Table>
               </TableContainer>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Paginate
+                page={page}
+                pages={pages}
+                keyword={keyword ? keyword : ''}
+              />
             </Grid>
           </>
         ) : (

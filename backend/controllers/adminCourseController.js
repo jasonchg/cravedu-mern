@@ -8,7 +8,7 @@ import Course from '../models/courseModel.js'
 const getCourses = asyncHandler(async (req, res) => {
   const pageSize = 10
   const page = Number(req.query.pageNumber) || 1
-
+  const count = await Course.countDocuments({})
   const courses = await Course.find({})
     .sort({ isPublished: 'desc' })
     .limit(pageSize)

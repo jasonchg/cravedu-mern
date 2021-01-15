@@ -16,15 +16,17 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { ADMIN_COURSE_LIST_RESET } from '../constants/adminConstants'
 import Breadcrumbs from '../components/Breadcrumbs'
+import Paginate from '../components/Paginate'
 
-const ManageCourseScreen = ({ history }) => {
+const ManageCourseScreen = ({ history, match }) => {
   const dispatch = useDispatch()
+  const pageNumber = match.params.pageNumber || 1
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
   const adminCourseList = useSelector((state) => state.adminCourseList)
-  const { courses, loading, error } = adminCourseList
+  const { courses, loading, error, page, pages } = adminCourseList
 
   const goToEdit = (id) => {
     history.push(`/admin/${id}/edit`)
@@ -33,11 +35,11 @@ const ManageCourseScreen = ({ history }) => {
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
       dispatch({ type: ADMIN_COURSE_LIST_RESET })
-      dispatch(listCourses())
+      dispatch(listCourses('', pageNumber))
     } else {
       history.push('/login')
     }
-  }, [userInfo, dispatch, history])
+  }, [userInfo, dispatch, history, pageNumber])
 
   return (
     <>
@@ -114,6 +116,9 @@ const ManageCourseScreen = ({ history }) => {
               </Table>
             </TableContainer>
           )}
+        </Grid>
+        <Grid item xs={12}>
+          <Paginate isAdmin page={page} pages={pages} keyword='' />
         </Grid>
       </Grid>
     </>
