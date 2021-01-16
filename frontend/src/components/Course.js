@@ -50,7 +50,7 @@ const learningStyles = makeStyles({
     textAlign: 'center',
     fontSize: '5em',
     color: '#3e3f40',
-    opacity: '0.97',
+    opacity: '0',
     '&:hover': {
       opacity: '0.7',
     },

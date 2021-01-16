@@ -2,11 +2,12 @@ import mongoose from 'mongoose'
 import bcrypt from 'bcryptjs'
 
 const courseContentsSchema = mongoose.Schema({
-  chapter: {
-    type: String,
+  chapterId: {
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
+    ref: 'Course',
   },
-  progress: {
+  watched: {
     type: Boolean,
     default: false,
     required: true,

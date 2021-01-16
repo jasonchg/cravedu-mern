@@ -20,8 +20,8 @@ const contentSchema = mongoose.Schema(
   {
     name: { type: String, required: true },
     chapter: { type: String, required: true },
-    video: { type: String },
-    duration: { type: String },
+    video: { type: String, default: '' },
+    duration: { type: String, default: '' },
   },
   {
     timestamps: true,

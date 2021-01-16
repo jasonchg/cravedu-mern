@@ -126,6 +126,8 @@ const addCourseContent = asyncHandler(async (req, res) => {
       const newContent = {
         chapter: req.body.chapter,
         name: req.body.name,
+        video: '',
+        duration: '',
       }
 
       course.courseContents.push(newContent)
@@ -158,6 +160,7 @@ const updateContent = asyncHandler(async (req, res) => {
       content.name = req.body.name || content.name
       content.chapter = req.body.chapter || content.chapter
       content.video = req.body.video || content.video
+      content.duration = req.body.duration || content.duration
 
       try {
         await course.save()
