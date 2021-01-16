@@ -30,7 +30,7 @@ const removeFile = (path) => {
     return true
   } catch (err) {
     console.log('Directory path not found.')
-    return false
+    return true
   }
 }
 

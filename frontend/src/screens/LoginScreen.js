@@ -116,7 +116,6 @@ const LoginScreen = ({ history, location, match }) => {
 
           <Grid item md={6} xs={12} className={classes.rightLoginContainer}>
             {error && <Message>{error}</Message>}
-            {loading && <Loader />}
 
             <Typography variant='h5'>Social Logins</Typography>
             <div className={classes.socialButtons}>
@@ -162,7 +161,7 @@ const LoginScreen = ({ history, location, match }) => {
                   </Typography>
                 </FormContainer>
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} style={{ display: 'flex' }}>
                 <Button
                   type='submit'
                   variant='contained'
@@ -171,6 +170,7 @@ const LoginScreen = ({ history, location, match }) => {
                 >
                   Login
                 </Button>
+                {loading && <Loader />}
               </Grid>
               <Grid item xs={12}>
                 <FormContainer>

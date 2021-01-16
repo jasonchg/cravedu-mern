@@ -133,7 +133,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
     e.preventDefault()
     dispatch(
       createContent(courseId, {
-        chapter: `Chapter ${chapter}`,
+        chapter,
         name: chapterName,
       })
     )
@@ -415,7 +415,6 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                         variant='filled'
                         value={chapter}
                         onChange={(e) => setChapter(e.target.value)}
-                        disabled
                       />
                     </FormContainer>
                     <FormContainer>
@@ -455,10 +454,10 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                   </ListItem>
                 ) : (
                   <>
-                    {courseContents.map((content, index) => (
+                    {courseContents.map((content) => (
                       <ContentListItem
-                        key={index}
-                        count={index + 1}
+                        key={content._id}
+                        count={content.chapter}
                         courseId={courseId}
                         content={content}
                       />

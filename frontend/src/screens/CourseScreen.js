@@ -414,7 +414,7 @@ const CourseScreen = ({ history }) => {
                         aria-controls='course-content'
                         id='course-content-panel-header'
                       >
-                        <Typography>{content.chapter}</Typography>
+                        <Typography>Chapter {content.chapter}</Typography>
                       </AccordionSummary>
                       <AccordionDetails>
                         <Typography>{content.name}</Typography>{' '}

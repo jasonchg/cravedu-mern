@@ -24,12 +24,21 @@ const useStyles = makeStyles((theme) => ({
     background: '#eee',
     color: '#090b2f',
   },
+  materials: {
+    borderTop: '1px solid #090b2f',
+    background: '#eee',
+    color: '#090b2f',
+    paddingTop: 2,
+    paddingBottom: 10,
+  },
 }))
 
 const CourseContentList = ({
   content,
   selectTopicHandler,
   setSelectedVideoName,
+  expanded,
+  handleAccordion,
 }) => {
   const classes = useStyles()
 
@@ -37,14 +46,18 @@ const CourseContentList = ({
 
   return (
     <ListItemText key={content._id}>
-      <Accordion className={classes.accordion}>
+      <Accordion
+        className={classes.accordion}
+        expanded={expanded === content.chapter}
+        onChange={handleAccordion(content.chapter)}
+      >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon style={{ color: '#eee' }} />}
           aria-controls='course-content'
           id='course-content-panel-header'
         >
           <Typography variant='body1' component='span'>
-            {content.chapter}
+            Chapter {content.chapter}
           </Typography>
         </AccordionSummary>
         <AccordionDetails className={classes.accordionBody}>
@@ -53,8 +66,8 @@ const CourseContentList = ({
             onChange={(e) => setChecked(e.target.checked)}
             color='primary'
           />
-
           <Button
+            size='small'
             onClick={() => {
               selectTopicHandler(content._id)
               setSelectedVideoName({
@@ -63,9 +76,7 @@ const CourseContentList = ({
               })
             }}
           >
-            <Typography
-              variant='body1'
-              component='span'
+            <h4
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -74,9 +85,16 @@ const CourseContentList = ({
             >
               <PlayCircleFilledIcon />
               <div style={{ marginLeft: 7 }}>{content.name}</div>
-            </Typography>
+            </h4>
           </Button>
         </AccordionDetails>
+        <div className={classes.materials}>
+          <h4 style={{ marginLeft: 7 }}>Supporting Materials</h4>
+          <ul>
+            <li>PDF File</li>
+            <li>Slides File</li>
+          </ul>
+        </div>
       </Accordion>
     </ListItemText>
   )

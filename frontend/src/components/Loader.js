@@ -7,9 +7,9 @@ const useStyles = makeStyles({
     flexDirection: 'column',
   },
   spinner: {
-    width: 120,
-    height: 120,
-    margin: 10,
+    width: 80,
+    height: 80,
+    margin: 2,
     opacity: 0.7,
   },
   alignCenter: {

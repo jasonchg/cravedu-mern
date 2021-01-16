@@ -8,9 +8,6 @@ import {
   ListItem,
   ListItemText,
   Divider,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
   Tabs,
   Tab,
   Box,
@@ -243,13 +240,10 @@ const VideoLearningScreen = ({ history }) => {
     reviewSuccess,
   ])
 
-  // 2 func : set video to the video player
   const selectTopicHandler = (chapterId) => {
     setSelectedVideo(getVideoPath(course.courseContents, chapterId))
     history.push(`/course/${course_slug}/learn?chapter=${chapterId}`)
   }
-
-  // 3 func : add qanda handler
 
   const qandaHandler = (e) => {
     e.preventDefault()
@@ -259,6 +253,12 @@ const VideoLearningScreen = ({ history }) => {
 
   const reviewSubmitHandler = (e) => {
     dispatch(createReview(course._id, { ratingStars, comment }))
+  }
+
+  const [expanded, setExpanded] = useState(false)
+
+  const handleAccordion = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false)
   }
 
   return (
@@ -273,7 +273,7 @@ const VideoLearningScreen = ({ history }) => {
             <Container className={classes.root}>
               <span className={classes.titleHead}>
                 <Typography variant='h4' component='p'>
-                  {selectedVideoName.chapter} - {selectedVideoName.name}
+                  Chapter {selectedVideoName.chapter} - {selectedVideoName.name}
                 </Typography>
                 <Typography variant='subtitle1' component='p'>
                   From {course.name} by {course.instructor}
@@ -303,7 +303,10 @@ const VideoLearningScreen = ({ history }) => {
                       {course.courseContents ? (
                         course.courseContents.map((content) => (
                           <CourseContentList
+                            key={content._id}
                             content={content}
+                            expanded={expanded}
+                            handleAccordion={handleAccordion}
                             setSelectedVideoName={setSelectedVideoName}
                             selectTopicHandler={selectTopicHandler}
                           />

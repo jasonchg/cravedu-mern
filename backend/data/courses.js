@@ -15,13 +15,13 @@ const courses = [
     courseContents: [
       {
         name: 'Set Up Environment',
-        chapter: 'Chapter 1',
+        chapter: '1',
         video: '/uploads/videos/javascript/javascript_01_2020_09_10.mp4',
         duration: '100',
       },
       {
         name: 'Basic Concept',
-        chapter: 'Chapter 2',
+        chapter: '2',
         video: '/uploads/videos/javascript/javascript_02_2020_09_10.mp4',
         duration: '60',
       },
@@ -43,19 +43,19 @@ const courses = [
     courseContents: [
       {
         name: 'Set Up Environment',
-        chapter: 'Chapter 1',
+        chapter: '1',
         video: '/uploads/videos/cplusplus/cplusplus_01_2020_09_10.mp4',
         duration: '15',
       },
       {
         name: 'Basic Concept',
-        chapter: 'Chapter 2',
+        chapter: '2',
         video: '/uploads/videos/cplusplus/cplusplus_02_2020_09_10.mp4',
         duration: '25',
       },
       {
         name: 'Advance Concept',
-        chapter: 'Chapter 3',
+        chapter: '3',
         video: '/uploads/videos/cplusplus/cplusplus_03_2020_09_10.mp4',
         duration: '20',
       },
@@ -77,13 +77,13 @@ const courses = [
     courseContents: [
       {
         name: 'Set Up Visual Code',
-        chapter: 'Chapter 1',
+        chapter: '1',
         video: '/uploads/videos/typescript/typescript_01_2020_09_10.mp4',
         duration: '100',
       },
       {
         name: 'Basic Concept of Typescript',
-        chapter: 'Chapter 2',
+        chapter: '2',
         video: '/uploads/videos/typescript/typescript_02_2020_09_10.mp4',
         duration: '33',
       },
@@ -105,13 +105,13 @@ const courses = [
     courseContents: [
       {
         name: 'Set Up Python Environment',
-        chapter: 'Chapter 1',
+        chapter: '1',
         video: '/uploads/videos/python/python_01_2020_09_10.mp4',
         duration: '10',
       },
       {
         name: 'Basic Concept',
-        chapter: 'Chapter 2',
+        chapter: '2',
         video: '/uploads/videos/python/python_02_2020_09_10.mp4',
         duration: '13',
       },
@@ -133,13 +133,13 @@ const courses = [
     courseContents: [
       {
         name: 'Start Build!',
-        chapter: 'Chapter 1',
+        chapter: '1',
         video: '/videos/html_css.mp4',
         duration: '63',
       },
       {
         name: 'Extra Content!',
-        chapter: 'Chapter 2',
+        chapter: '2',
         video: '/videos/html_css_2.mp4',
         duration: '60',
       },
