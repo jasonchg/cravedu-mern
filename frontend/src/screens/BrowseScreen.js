@@ -13,15 +13,17 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import Category from '../components/Category'
 import Carousels from '../components/Carousels'
+import Paginate from '../components/Paginate'
 
 const BrowseScreen = ({ match }) => {
   const dispatch = useDispatch()
   const keyword = match.params.keyword
+  const pageNumber = match.params.pageNumber
   const courseList = useSelector((state) => state.courseList)
-  const { loading, error, courses } = courseList
+  const { loading, error, courses, pages, page } = courseList
 
   useEffect(() => {
-    dispatch(listCourses(keyword))
+    dispatch(listCourses(keyword, pageNumber))
   }, [dispatch, keyword])
 
   const category = [
@@ -71,6 +73,13 @@ const BrowseScreen = ({ match }) => {
   return (
     <Container>
       <Grid container spacing={3}>
+        {matchesLG && !keyword ? (
+          <Grid item xs={12} className='homeHeaderText'>
+            <h2>Trending</h2>
+            <Carousels courses={courses} />
+          </Grid>
+        ) : null}
+
         {keyword ? (
           <div style={{ margin: '10px 0' }}>
             <h2>Search terms : {keyword}</h2>
@@ -119,12 +128,9 @@ const BrowseScreen = ({ match }) => {
             )}
           </Grid>
         </Grid>
-        {matchesLG && !keyword ? (
-          <Grid item xs={12} className='homeHeaderText'>
-            <h2>Trending</h2>
-            <Carousels courses={courses} />
-          </Grid>
-        ) : null}
+        <Grid item xs={12}>
+          <Paginate page={page} pages={pages} keyword='' />
+        </Grid>
       </Grid>
     </Container>
   )

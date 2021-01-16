@@ -20,10 +20,9 @@ import {
   ListItemAvatar,
   Modal,
   TextField,
+  makeStyles,
 } from '@material-ui/core'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled'
-import { makeStyles } from '@material-ui/core/styles'
+
 import {
   addQanda,
   createReview,
@@ -40,6 +39,7 @@ import {
   COURSE_REVIEW_RESET,
 } from '../constants/courseConstants'
 import ReactStars from 'react-rating-stars-component'
+import CourseContentList from '../components/CourseContentList'
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props
@@ -302,47 +302,11 @@ const VideoLearningScreen = ({ history }) => {
                     <List>
                       {course.courseContents ? (
                         course.courseContents.map((content) => (
-                          <ListItemText key={content._id}>
-                            <Accordion className={classes.accordion}>
-                              <AccordionSummary
-                                expandIcon={
-                                  <ExpandMoreIcon style={{ color: '#eee' }} />
-                                }
-                                aria-controls='course-content'
-                                id='course-content-panel-header'
-                              >
-                                <Typography variant='body1' component='span'>
-                                  {content.chapter}
-                                </Typography>
-                              </AccordionSummary>
-                              <AccordionDetails>
-                                <Button
-                                  onClick={() => {
-                                    selectTopicHandler(content._id)
-                                    setSelectedVideoName({
-                                      name: content.name,
-                                      chapter: content.chapter,
-                                    })
-                                  }}
-                                >
-                                  <Typography
-                                    variant='body1'
-                                    component='span'
-                                    style={{
-                                      display: 'flex',
-                                      alignItems: 'center',
-                                      color: '#eee',
-                                    }}
-                                  >
-                                    <PlayCircleFilledIcon />
-                                    <div style={{ marginLeft: 7 }}>
-                                      {content.name}
-                                    </div>
-                                  </Typography>
-                                </Button>
-                              </AccordionDetails>
-                            </Accordion>
-                          </ListItemText>
+                          <CourseContentList
+                            content={content}
+                            setSelectedVideoName={setSelectedVideoName}
+                            selectTopicHandler={selectTopicHandler}
+                          />
                         ))
                       ) : (
                         <Loader />

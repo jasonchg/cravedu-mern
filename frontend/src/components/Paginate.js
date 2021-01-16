@@ -4,6 +4,9 @@ import { Pagination, PaginationItem } from '@material-ui/lab'
 import { Link } from 'react-router-dom'
 const useStyles = makeStyles((theme) => ({
   root: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
     '& > *': {
       marginTop: theme.spacing(2),
     },
@@ -31,8 +34,8 @@ const Paginate = ({
                 ? !isInstructor
                   ? keyword
                     ? `/search/${keyword}/page/${x.page}`
-                    : `/instructor/${x.page}`
-                  : `/page/${x.page}`
+                    : `/course/page/${x.page}`
+                  : `/instructor/${x.page}`
                 : `/admin/courses/${x.page}`
             }
             {...x}

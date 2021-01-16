@@ -74,29 +74,33 @@ function App() {
           </div>
           {/* Main Screen */}
           <Container>
-            <Route path='/mycourses' component={MyCoursesScreen} />
-            <Route path='/register' component={RegisterScreen} />
+            <Route path='/mycourses' component={MyCoursesScreen} exact />
+            <Route path='/register' component={RegisterScreen} exact />
             <Route path='/login/:id' component={LoginScreen} exact />
             <Route path='/login' component={LoginScreen} exact />
-            <Route path='/profile' component={UserProfileScreen} />
-            <Route path='/order/:id' component={ViewOrderScreen} />
-            <Route path='/payment' component={PaymentScreen} />
+            <Route path='/profile' component={UserProfileScreen} exact />
+            <Route path='/order/:id' component={ViewOrderScreen} exact />
+            <Route path='/payment' component={PaymentScreen} exact />
             <Route path='/cart' component={CartScreen} exact />
             <Route path='/cart/:id' component={CartScreen} exact />
-            <Route path='/course/:course_slug' component={CourseScreen} exact />
-            <Route
-              path='/course/:course_slug/preview'
-              component={PreviewCourseScreen}
-              exact
-            />
             <Route
               path='/search/:keyword/page/:pageNumber'
               component={BrowseScreen}
               exact
             />
             <Route path='/search/:keyword' component={BrowseScreen} exact />
-            <Route path='/course/:pageNumber' component={BrowseScreen} exact />
+            <Route
+              path='/course/page/:pageNumber'
+              component={BrowseScreen}
+              exact
+            />
             <Route path='/course' component={BrowseScreen} exact />
+            <Route
+              path='/course/:course_slug/preview'
+              component={PreviewCourseScreen}
+              exact
+            />
+            <Route path='/course/:course_slug' component={CourseScreen} exact />
             <Route path='/' component={HomeScreen} exact />
           </Container>
         </Router>
