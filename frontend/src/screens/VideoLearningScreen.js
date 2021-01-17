@@ -37,6 +37,7 @@ import {
 } from '../constants/courseConstants'
 import ReactStars from 'react-rating-stars-component'
 import CourseContentList from '../components/CourseContentList'
+import { getUserCourses } from '../actions/userActions'
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props
@@ -170,11 +171,13 @@ const VideoLearningScreen = ({ history }) => {
 
   const { course_slug } = useParams()
 
+  const userCourses = useSelector((state) => state.userCourses)
+  const { userPaidCourses } = userCourses
+
   const tabHandler = (event, newValue) => {
     setValue(newValue)
   }
 
-  // func : get the actual video path
   const getVideoPath = (content, id) => {
     return (
       content &&
@@ -215,22 +218,34 @@ const VideoLearningScreen = ({ history }) => {
     } else {
       if (!course || !course.name || course.slug !== course_slug) {
         dispatch(listCourseDetails(course_slug))
+        dispatch(getUserCourses())
         setSelectedVideo('')
       } else {
-        setAlreadyReview(checkReview(course.reviews, userInfo._id))
-        history.push(
-          `/course/${course_slug}/learn?chapter=${course.courseContents[0]._id}`
-        )
-        setSelectedVideoName({
-          name: course.courseContents[0].name,
-          chapter: course.courseContents[0].chapter,
-        })
-        setSelectedVideo(
-          getVideoPath(course.courseContents, course.courseContents[0]._id)
-        )
+        if (
+          userPaidCourses ||
+          (userPaidCourses && userPaidCourses.length !== 0) ||
+          (userPaidCourses && userPaidCourses !== [])
+        ) {
+          if (userPaidCourses.find((x) => x._id === course._id)) {
+            setAlreadyReview(checkReview(course.reviews, userInfo._id))
+            history.push(
+              `/course/${course_slug}/learn?chapter=${course.courseContents[0]._id}`
+            )
+            setSelectedVideoName({
+              name: course.courseContents[0].name,
+              chapter: course.courseContents[0].chapter,
+            })
+            setSelectedVideo(
+              getVideoPath(course.courseContents, course.courseContents[0]._id)
+            )
+          } else {
+            history.push('/')
+          }
+        }
       }
     }
   }, [
+    userPaidCourses,
     userInfo,
     history,
     dispatch,
@@ -304,6 +319,7 @@ const VideoLearningScreen = ({ history }) => {
                         course.courseContents.map((content) => (
                           <CourseContentList
                             key={content._id}
+                            courseId={course._id}
                             content={content}
                             expanded={expanded}
                             handleAccordion={handleAccordion}

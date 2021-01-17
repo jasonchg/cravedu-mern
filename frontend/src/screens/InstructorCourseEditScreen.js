@@ -224,6 +224,12 @@ const InstructorCourseEditScreen = ({ match, history }) => {
     deleteCourseSuccess,
   ])
 
+  const [expanded, setExpanded] = useState(false)
+
+  const handleAccordion = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false)
+  }
+
   return loading ? (
     <Loader />
   ) : error ? (
@@ -252,7 +258,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
       {updateLoading && <Loader />}
       {updateError && <Message>{updateError}</Message>}
       <Grid container spacing={3}>
-        <Grid item md={5} xs={12}>
+        <Grid item md={4} xs={12}>
           <div style={{ margin: '7px 0' }}>
             <Button
               onClick={() =>
@@ -373,17 +379,6 @@ const InstructorCourseEditScreen = ({ match, history }) => {
             </p>
           </Paper>
 
-          <h2>Total Sales</h2>
-          <Paper>
-            {courseDetails && courseDetails.totalSold ? (
-              <Typography variant='h3' component='h3' style={{ padding: 10 }}>
-                {courseDetails.totalSold}
-              </Typography>
-            ) : (
-              <Message severity='info'>No sales</Message>
-            )}
-          </Paper>
-
           <br />
           <Button
             onClick={deleteHandler}
@@ -394,9 +389,13 @@ const InstructorCourseEditScreen = ({ match, history }) => {
             I Wish To Delete This Course
           </Button>
         </Grid>
-        <Grid item md={7} xs={12}>
+
+        <Grid item md={6} xs={12}>
           <h2>Course Contents</h2>
-          <Accordion>
+          <Accordion
+            expanded={expanded === 'addnewcontent'}
+            onChange={handleAccordion('addnewcontent')}
+          >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               Add New Content
             </AccordionSummary>
@@ -457,6 +456,8 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                     {courseContents.map((content) => (
                       <ContentListItem
                         key={content._id}
+                        expanded={expanded}
+                        handleAccordion={handleAccordion}
                         count={content.chapter}
                         courseId={courseId}
                         content={content}
@@ -481,6 +482,29 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                 You've total {courseContents.length} chapters.
               </span>
             ) : null}
+          </Paper>
+        </Grid>
+        <Grid item md={2} xs={12}>
+          <h2>Total Sales</h2>
+          <Paper>
+            {courseDetails && courseDetails.totalSold ? (
+              <Typography variant='h3' component='h3' style={{ padding: 10 }}>
+                {courseDetails.totalSold}
+              </Typography>
+            ) : (
+              <Message severity='info'>No sales</Message>
+            )}
+          </Paper>
+
+          <h2>Rating</h2>
+          <Paper>
+            {courseDetails && courseDetails.rating ? (
+              <Typography variant='h3' component='h3' style={{ padding: 10 }}>
+                {courseDetails.rating}
+              </Typography>
+            ) : (
+              <Message severity='info'>No rating</Message>
+            )}
           </Paper>
         </Grid>
       </Grid>

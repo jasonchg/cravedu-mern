@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import {
   Typography,
@@ -39,10 +39,32 @@ const CourseContentList = ({
   setSelectedVideoName,
   expanded,
   handleAccordion,
+  courseId,
 }) => {
   const classes = useStyles()
-
   const [checked, setChecked] = useState(false)
+
+  const checkWatched = (checked) => {
+    if (checked) {
+      console.table({
+        status: 'Checked',
+        courseId,
+        contentId: content._id,
+        chapter: `Chapter ` + content.chapter,
+      })
+    } else {
+      console.table({
+        status: 'Unchecked',
+        courseId,
+        contentId: content._id,
+        chapter: `Chapter ` + content.chapter,
+      })
+    }
+  }
+
+  useEffect(() => {
+    checkWatched(checked)
+  }, [checked])
 
   return (
     <ListItemText key={content._id}>

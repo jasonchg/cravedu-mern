@@ -68,13 +68,13 @@ const Course = ({ course, learning }) => {
   return (
     <Card className={learning ? classesLearning.root : classes.root}>
       {learning && (
-        <Link href={`/course/${course.slug}/learn`}>
+        <Link href={`/course/${course && course.slug}/learn`}>
           <div className={classesLearning.learningBody}>
             <div className={classesLearning.media}>
               <CardMedia
                 className={classesLearning.mediaImg}
-                image={course.image}
-                title={course.name}
+                image={course && course.image}
+                title={course && course.name}
               />
               <PlayCircleFilledIcon className={classesLearning.playIcon} />
             </div>
@@ -85,31 +85,31 @@ const Course = ({ course, learning }) => {
                 componen='span'
                 style={{ fontStyle: 'bold' }}
               >
-                {course.name}
+                {course && course.name}
               </Typography>
               <Typography
                 variant='caption'
                 color='textSecondary'
                 componen='span'
               >
-                Progress: 1/10
+                Progress: 1/ {course && course.courseContents.length}
               </Typography>
             </CardContent>
           </div>
         </Link>
       )}
       {learning ? null : (
-        <Link href={`/course/${course.slug}`}>
+        <Link href={`/course/${course && course.slug}`}>
           <CardActionArea>
             <CardMedia
               className={classes.media}
-              image={course.image}
-              title={course.name}
+              image={course && course.image}
+              title={course && course.name}
             />
 
             <CardContent>
               <Typography gutterBottom variant='h5' componen='span'>
-                {course.name}
+                {course && course.name}
               </Typography>
               {course.totalSold ? (
                 <div
@@ -121,11 +121,11 @@ const Course = ({ course, learning }) => {
                   <div>
                     <PeopleIcon />{' '}
                   </div>
-                  <div> {course.totalSold}</div>
+                  <div> {course && course.totalSold}</div>
                 </div>
               ) : null}
             </CardContent>
-            {course.rating ? (
+            {course && course.rating ? (
               <div style={{ display: 'flex' }}>
                 <span style={{ marginLeft: 10 }}></span>
                 <Rating value={course.rating} text={`(${course.numReviews})`} />

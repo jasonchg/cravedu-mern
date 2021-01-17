@@ -170,7 +170,7 @@ const LoginScreen = ({ history, location, match }) => {
                 >
                   Login
                 </Button>
-                {loading && <Loader />}
+                {loading && <Loader style={{ position: 'absolute' }} />}
               </Grid>
               <Grid item xs={12}>
                 <FormContainer>

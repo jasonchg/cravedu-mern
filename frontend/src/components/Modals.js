@@ -107,13 +107,8 @@ const Modals = ({ modalOpen, modalClose, content, courseId }) => {
       aria-describedby='simple-modal-description'
     >
       <div className={classes.paper}>
-        <Typography variant='caption'>{content.chapter}</Typography>
-        <Typography variant='h4'>
-          {content.name}{' '}
-          <Button size='small' onClick={() => modalClose()}>
-            Close
-          </Button>
-        </Typography>
+        <Typography variant='caption'>Chapter {content.chapter}</Typography>
+        <Typography variant='h4'>{content.name}</Typography>
 
         <Divider />
         <form
@@ -159,6 +154,9 @@ const Modals = ({ modalOpen, modalClose, content, courseId }) => {
                 disabled={error ? true : false}
               >
                 Done
+              </Button>
+              <Button size='small' onClick={() => modalClose()}>
+                Close
               </Button>
             </FormContainer>
           </div>

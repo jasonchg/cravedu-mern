@@ -18,7 +18,13 @@ import {
 import { deleteContent } from '../actions/instructorActions'
 import Message from './Message'
 
-const ContentListItem = ({ courseId, content, count }) => {
+const ContentListItem = ({
+  courseId,
+  content,
+  count,
+  expanded,
+  handleAccordion,
+}) => {
   const dispatch = useDispatch()
   const [modalOpen, setModalOpen] = useState(null)
 
@@ -52,12 +58,16 @@ const ContentListItem = ({ courseId, content, count }) => {
       dispatch({ type: INSTRUCTOR_UPDATE_CONTENT_RESET })
       dispatch({ type: INSTRUCTOR_COURSE_DETAILS_RESET })
     }
-  }, [contentUpdateSuccess, contentDeleteSuccess])
+  }, [contentUpdateSuccess, contentDeleteSuccess, dispatch])
 
   return (
     <div key={content._id}>
       <ListItem>
-        <Accordion style={{ width: '100%', background: '#efefef' }}>
+        <Accordion
+          style={{ width: '100%', background: '#efefef' }}
+          expanded={expanded === content.chapter}
+          onChange={handleAccordion(content.chapter)}
+        >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             {`${count}. ${content.name}`}
           </AccordionSummary>
