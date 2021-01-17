@@ -303,6 +303,7 @@ const PaymentScreen = ({ history }) => {
                   <PayPalButton
                     amount={cartItemPrice}
                     onSuccess={successPaymentHandler}
+                    currency='MYR'
                   />
                 )}
               </Paper>
