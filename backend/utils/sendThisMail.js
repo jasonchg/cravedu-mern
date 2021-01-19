@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer'
+import path from 'path'
 import { google } from 'googleapis'
 import dotenv from 'dotenv'
 dotenv.config()
@@ -26,32 +27,52 @@ const sendThisMail = async (user, content) => {
       },
     })
 
-    if (content) {
-      let orderItems = content.orderItems
-        .map(
-          (item, index) =>
-            `<tr><td>${index + 1}. ${item.name}</td><td>RM ${
-              item.price
-            }</td></tr>`
-        )
-        .join('')
+    let orderItems = content
+      ? content.orderItems.length > 1
+        ? content.orderItems
+            .map(
+              (item, index) =>
+                `<tr><td>${index + 1}. ${item.name}</td><td>RM ${
+                  item.price
+                }</td></tr>`
+            )
+            .join('')
+        : `<tr><td>${1}. ${content.orderItems[0].name}</td><td>RM ${
+            content.orderItems[0].price
+          }</td></tr>`
+      : ''
 
-      let orderDate = content.createdAt
+    let orderDate = content ? content.createdAt : ''
 
-      const html = `<div></div><h3>Invoice</h3><table><tr><td>Invoice Id:</td> <td>${content._id}</td></tr><tr><td>Paid At:</td><td>${orderDate}</td></tr></table><p>Order Items</p><table>${orderItems}</table><div > <h4>Total: RM ${content.totalPrice}</h4></div>`
+    const html = `<div style='text-align:center; background:#eee;' ><img src='cid:logo@cravedu.com' style='width:77px; padding:20px;'/></div><h3>Invoice</h3><table><tr><td>Invoice Id:</td> <td>${
+      content ? content._id : ''
+    }</td></tr><tr><td>Paid At:</td><td>${orderDate}</td></tr></table><p>Order Items</p><table>${orderItems}</table><div> <h4>Total: RM ${
+      content ? content.totalPrice : ''
+    }</h4></div><br><hr><p style='text-align:center'>This is an auto-generated email. Do not reply to this email.</p>`
 
-      const mailOptions = {
-        from: '"Cravedu 👻" <sales@cravedu.com>',
-        to: `${user.email}`,
-        subject: `Thank you ${user.name} for purchase course from Cravedu.com !`,
-        text: `This is your invoice. ID: ${content._id}`,
-        html,
-      }
-
-      await transporter.sendMail(mailOptions)
-    } else {
-      return console.log('Email not sent...')
+    const __dirname = path.resolve()
+    const imagePath = path.join(
+      __dirname,
+      '/frontend/src/assets/images/logo.png'
+    )
+    const mailOptions = {
+      from: '"Cravedu 👻" <sales@cravedu.com>',
+      to: `${user && user.email}`,
+      subject: `Thank you ${
+        user && user.name
+      } for purchase course from Cravedu.com !`,
+      text: `This is your invoice. ID: ${content && content._id}`,
+      html,
+      attachments: [
+        {
+          filename: 'logo.png',
+          path: imagePath,
+          cid: 'logo@cravedu.com',
+        },
+      ],
     }
+
+    await transporter.sendMail(mailOptions)
   } catch (error) {
     console.log(error)
   }
