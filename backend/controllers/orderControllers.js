@@ -2,6 +2,7 @@ import asyncHandler from 'express-async-handler'
 import Order from '../models/orderModel.js'
 import User from '../models/userModel.js'
 import Course from '../models/courseModel.js'
+import { sendThisMail } from '../utils/sendThisMail.js'
 
 // @desc    Add New Order
 // @route   POST /api/orders
@@ -62,6 +63,8 @@ const addOrderItems = asyncHandler(async (req, res) => {
         userExisted.myCourses = newMyCourses
 
         await userExisted.save()
+
+        await sendThisMail(userExisted, createdOrder)
 
         res.status(201).json({ createdOrder })
       }
