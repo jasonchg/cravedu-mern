@@ -9,7 +9,6 @@ const oAuth2Cient = new google.auth.OAuth2(
   process.env.REDIRECT_URI
 )
 oAuth2Cient.setCredentials({ refresh_token: process.env.REFRESH_TOKEN })
-console.log(process.env.REFRESH_TOKEN)
 
 const sendThisMail = async (user, content) => {
   try {
@@ -77,7 +76,5 @@ const sendThisMail = async (user, content) => {
     console.log(error)
   }
 }
-
-sendThisMail()
 
 export { sendThisMail }

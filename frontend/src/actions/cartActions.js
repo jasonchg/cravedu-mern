@@ -6,8 +6,14 @@ import {
   SAVE_PAYMENT_METHODS,
 } from '../constants/cartConstants'
 
+const returnNewContent = (content) => {
+  return { chapterId: content._id, watched: false }
+}
+
 const addToCart = (slug) => async (dispatch, getState) => {
   const { data } = await axios.get(`/api/courses/${slug}`)
+
+  const newCourseContents = data.courseContents.map(returnNewContent)
 
   dispatch({
     type: CART_ADD_ITEM,
@@ -17,6 +23,7 @@ const addToCart = (slug) => async (dispatch, getState) => {
       image: data.image,
       price: data.price,
       slug: data.slug,
+      contents: newCourseContents,
       instructor: data.instructor,
     },
   })

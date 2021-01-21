@@ -31,7 +31,6 @@ const addOrderItems = asyncHandler(async (req, res) => {
 
       if (userExisted) {
         var newMyCourses = userExisted.myCourses
-
         for (var key in orderItems) {
           newMyCourses = [
             ...newMyCourses,
@@ -40,6 +39,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
               image: orderItems[key].image,
               name: orderItems[key].name,
               slug: orderItems[key].slug,
+              courseContents: orderItems[key].contents,
               orderId,
               completedCertificate: '',
             },

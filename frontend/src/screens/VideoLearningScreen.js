@@ -174,6 +174,8 @@ const VideoLearningScreen = ({ history }) => {
   const userCourses = useSelector((state) => state.userCourses)
   const { userPaidCourses } = userCourses
 
+  const [currentUserPaidCourse, setCurrentUserPaidCourse] = useState(null)
+
   const tabHandler = (event, newValue) => {
     setValue(newValue)
   }
@@ -227,6 +229,9 @@ const VideoLearningScreen = ({ history }) => {
           (userPaidCourses && userPaidCourses !== [])
         ) {
           if (userPaidCourses.find((x) => x._id === course._id)) {
+            setCurrentUserPaidCourse(
+              userPaidCourses.find((x) => x._id === course._id)
+            )
             setAlreadyReview(checkReview(course.reviews, userInfo._id))
             history.push(
               `/course/${course_slug}/learn?chapter=${course.courseContents[0]._id}`
@@ -325,6 +330,13 @@ const VideoLearningScreen = ({ history }) => {
                             handleAccordion={handleAccordion}
                             setSelectedVideoName={setSelectedVideoName}
                             selectTopicHandler={selectTopicHandler}
+                            watched={
+                              currentUserPaidCourse
+                                ? currentUserPaidCourse.courseContents.find(
+                                    (x) => x.chapterId === content._id
+                                  ).watched
+                                : false
+                            }
                           />
                         ))
                       ) : (

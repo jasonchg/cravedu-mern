@@ -40,6 +40,7 @@ const CourseContentList = ({
   expanded,
   handleAccordion,
   courseId,
+  watched,
 }) => {
   const classes = useStyles()
   const [checked, setChecked] = useState(false)
@@ -84,7 +85,7 @@ const CourseContentList = ({
         </AccordionSummary>
         <AccordionDetails className={classes.accordionBody}>
           <Checkbox
-            checked={checked}
+            checked={watched}
             onChange={(e) => setChecked(e.target.checked)}
             color='primary'
           />
