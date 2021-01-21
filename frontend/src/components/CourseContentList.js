@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 
 import {
   Typography,
@@ -12,6 +13,11 @@ import {
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  USER_WATCHED_CONTENT_REQUEST,
+  USER_WATCHED_CONTENT_SUCCESS,
+} from '../constants/userConstants'
 
 const useStyles = makeStyles((theme) => ({
   accordion: {
@@ -44,28 +50,56 @@ const CourseContentList = ({
 }) => {
   const classes = useStyles()
   const [checked, setChecked] = useState(false)
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+  const dispatch = useDispatch()
 
-  const checkWatched = (checked) => {
-    if (checked) {
-      console.table({
-        status: 'Checked',
-        courseId,
-        contentId: content._id,
-        chapter: `Chapter ` + content.chapter,
-      })
+  const checkWatched = async () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+        'Content-Type': 'application/json',
+      },
+    }
+
+    dispatch({ type: USER_WATCHED_CONTENT_REQUEST })
+
+    if (checked === true) {
+      setChecked(false)
+      try {
+        await axios.put(
+          `/api/courses/${courseId}/watch`,
+          {
+            chapterId: content._id,
+            watched: false,
+          },
+          config
+        )
+        dispatch({ type: USER_WATCHED_CONTENT_SUCCESS })
+      } catch (e) {
+        console.log(e)
+      }
     } else {
-      console.table({
-        status: 'Unchecked',
-        courseId,
-        contentId: content._id,
-        chapter: `Chapter ` + content.chapter,
-      })
+      setChecked(true)
+      try {
+        await axios.put(
+          `/api/courses/${courseId}/watch`,
+          {
+            chapterId: content._id,
+            watched: true,
+          },
+          config
+        )
+        dispatch({ type: USER_WATCHED_CONTENT_SUCCESS })
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
 
   useEffect(() => {
-    checkWatched(checked)
-  }, [checked])
+    setChecked(watched)
+  }, [watched])
 
   return (
     <ListItemText key={content._id}>
@@ -84,11 +118,7 @@ const CourseContentList = ({
           </Typography>
         </AccordionSummary>
         <AccordionDetails className={classes.accordionBody}>
-          <Checkbox
-            checked={watched}
-            onChange={(e) => setChecked(e.target.checked)}
-            color='primary'
-          />
+          <Checkbox checked={checked} onChange={checkWatched} color='primary' />
           <Button
             size='small'
             onClick={() => {
