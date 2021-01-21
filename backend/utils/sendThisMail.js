@@ -43,7 +43,7 @@ const sendThisMail = async (user, content) => {
 
     let orderDate = content ? content.createdAt : ''
 
-    const html = `<div style='text-align:center; background:#eee;' ><img src='cid:logo@cravedu.com' style='width:77px; padding:20px;'/></div><h3>Invoice</h3><table><tr><td>Invoice Id:</td> <td>${
+    const html = `<div style='text-align:center; background:#eee;' ><img src='cid:logo@cravedu.com' style='width:90px; padding:20px;'/></div><h3>Invoice</h3><table><tr><td>Invoice Id:</td> <td>${
       content ? content._id : ''
     }</td></tr><tr><td>Paid At:</td><td>${orderDate}</td></tr></table><p>Order Items</p><table>${orderItems}</table><div> <h4>Total: RM ${
       content ? content.totalPrice : ''

@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler'
 import Course from '../models/courseModel.js'
+import User from '../models/userModel.js'
 
 // @desc    Fetch all courses/ Search features
 // @route   GET /api/courses
@@ -139,6 +140,34 @@ const createCourseReview = asyncHandler(async (req, res) => {
   }
 })
 
+// @desc    Set Watched
+// @route   PUT /api/courses/:id/watch
+// @access  Private
+
+const setWatched = asyncHandler(async (req, res) => {
+  const { chapterId, watched } = req.body
+  const courseId = req.params.id
+  const user = await User.findById(req.user.id)
+  if (user) {
+    const currentCourse = user.myCourses.find((x) => x._id == courseId)
+    const currentContent = currentCourse.courseContents.find(
+      (y) => y.chapterId == chapterId
+    )
+    currentContent.watched = watched
+
+    const updateContent = await user.save()
+    if (updateContent) {
+      res.send('Content Updated')
+    } else {
+      res.status(500)
+      throw new Error('Please try again')
+    }
+  } else {
+    res.status(404)
+    throw new Error('User not found')
+  }
+})
+
 // @desc    Reply QandA
 // @route   PUT /api/courses/:id/qanda
 // @access  Private
@@ -150,4 +179,5 @@ export {
   getBestCourses,
   createCourseReview,
   getCourseBySlug,
+  setWatched,
 }
