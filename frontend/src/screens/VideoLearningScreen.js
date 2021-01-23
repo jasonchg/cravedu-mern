@@ -151,6 +151,7 @@ const VideoLearningScreen = ({ history }) => {
     name: '',
     chapter: '',
   })
+  const [selectedVideoId, setSelectedVideoId] = useState('')
   const courseDetails = useSelector((state) => state.courseDetails)
   const { loading, error, course } = courseDetails
   const userLogin = useSelector((state) => state.userLogin)
@@ -240,6 +241,7 @@ const VideoLearningScreen = ({ history }) => {
               name: course.courseContents[0].name,
               chapter: course.courseContents[0].chapter,
             })
+            setSelectedVideoId(course.courseContents[0]._id)
             setSelectedVideo(
               getVideoPath(course.courseContents, course.courseContents[0]._id)
             )
@@ -262,6 +264,7 @@ const VideoLearningScreen = ({ history }) => {
 
   const selectTopicHandler = (chapterId) => {
     setSelectedVideo(getVideoPath(course.courseContents, chapterId))
+    setSelectedVideoId(chapterId)
     history.push(`/course/${course_slug}/learn?chapter=${chapterId}`)
   }
 
@@ -305,6 +308,8 @@ const VideoLearningScreen = ({ history }) => {
                   <VideoPlayer
                     className={classes.player}
                     videoPath={selectedVideo}
+                    selectedVideoId={selectedVideoId}
+                    courseId={course && course._id}
                   />
                 </Grid>
 
