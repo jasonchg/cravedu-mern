@@ -38,6 +38,7 @@ import {
 import ReactStars from 'react-rating-stars-component'
 import CourseContentList from '../components/CourseContentList'
 import { getUserCourses } from '../actions/userActions'
+import { USER_WATCHED_CONTENT_RESET } from '../constants/userConstants'
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props
@@ -175,6 +176,9 @@ const VideoLearningScreen = ({ history }) => {
   const userCourses = useSelector((state) => state.userCourses)
   const { userPaidCourses } = userCourses
 
+  const contentWatched = useSelector((state) => state.contentWatched)
+  const { success: contentWatchedSuccess } = contentWatched
+
   const [currentUserPaidCourse, setCurrentUserPaidCourse] = useState(null)
 
   const tabHandler = (event, newValue) => {
@@ -201,6 +205,11 @@ const VideoLearningScreen = ({ history }) => {
           return null
         }
       })
+    }
+
+    if (contentWatchedSuccess) {
+      dispatch({ type: USER_WATCHED_CONTENT_RESET })
+      history.go(0)
     }
 
     if (qandaSuccess) {
@@ -234,18 +243,62 @@ const VideoLearningScreen = ({ history }) => {
               userPaidCourses.find((x) => x._id === course._id)
             )
             setAlreadyReview(checkReview(course.reviews, userInfo._id))
+            if (currentUserPaidCourse && currentUserPaidCourse.courseContents) {
+              let notYetWatchContent = currentUserPaidCourse.courseContents.find(
+                (x) => x.watched !== true
+              )
 
-            history.push(
-              `/course/${course_slug}/learn?chapter=${course.courseContents[0]._id}`
-            )
-            setSelectedVideoName({
-              name: course.courseContents[0].name,
-              chapter: course.courseContents[0].chapter,
-            })
-            setSelectedVideoId(course.courseContents[0]._id)
-            setSelectedVideo(
-              getVideoPath(course.courseContents, course.courseContents[0]._id)
-            )
+              if (notYetWatchContent) {
+                history.push(
+                  `/course/${course_slug}/learn?chapter=${notYetWatchContent.chapterId}`
+                )
+
+                setSelectedVideoName({
+                  name: course.courseContents.find(
+                    (x) => x._id === notYetWatchContent.chapterId
+                  ).name,
+                  chapter: course.courseContents.find(
+                    (x) => x._id === notYetWatchContent.chapterId
+                  ).chapter,
+                })
+
+                setSelectedVideoId(notYetWatchContent.chapterId)
+                setSelectedVideo(
+                  getVideoPath(
+                    course.courseContents,
+                    notYetWatchContent.chapterId
+                  )
+                )
+              } else {
+                if (
+                  currentUserPaidCourse &&
+                  currentUserPaidCourse.completedCertificate === ''
+                ) {
+                  alert(
+                    'You have completed this course! You will be granted a certificate.'
+                  )
+                } else {
+                  alert('You can rewatch.')
+                }
+              }
+            } else {
+              history.push(
+                `/course/${course_slug}/learn?chapter=${course.courseContents[0]._id}`
+              )
+
+              setSelectedVideoName({
+                name: course.courseContents[0].name,
+                chapter: course.courseContents[0].chapter,
+              })
+
+              setSelectedVideoId(course.courseContents[0]._id)
+              setSelectedVideo(
+                getVideoPath(
+                  course.courseContents,
+                  course.courseContents[0]._id
+                )
+              )
+            }
           } else {
             history.push('/')
           }
@@ -253,6 +306,8 @@ const VideoLearningScreen = ({ history }) => {
       }
     }
   }, [
+    contentWatchedSuccess,
+    currentUserPaidCourse,
     userPaidCourses,
     userInfo,
     history,
