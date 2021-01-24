@@ -1,40 +1,19 @@
 import React from 'react'
 import ReactPlayer from 'react-player'
-import axios from 'axios'
-import {
-  USER_WATCHED_CONTENT_REQUEST,
-  USER_WATCHED_CONTENT_SUCCESS,
-} from '../constants/userConstants'
-import { useDispatch, useSelector } from 'react-redux'
+
+import { useDispatch } from 'react-redux'
+import { updateWatched } from '../actions/courseActions'
 
 const VideoPlayer = ({ videoPath, selectedVideoId, courseId }) => {
-  const userLogin = useSelector((state) => state.userLogin)
-  const { userInfo } = userLogin
   const dispatch = useDispatch()
 
-  const checkWatched = async () => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-        'Content-Type': 'application/json',
-      },
-    }
-
-    dispatch({ type: USER_WATCHED_CONTENT_REQUEST })
-
-    try {
-      await axios.put(
-        `/api/courses/${courseId}/watch`,
-        {
-          chapterId: selectedVideoId,
-          watched: true,
-        },
-        config
-      )
-      dispatch({ type: USER_WATCHED_CONTENT_SUCCESS })
-    } catch (e) {
-      console.log(e)
-    }
+  const checkWatched = () => {
+    dispatch(
+      updateWatched(courseId, {
+        id: selectedVideoId,
+        watch: true,
+      })
+    )
   }
 
   return (
@@ -46,12 +25,7 @@ const VideoPlayer = ({ videoPath, selectedVideoId, courseId }) => {
         url={videoPath}
         width='100%'
         height='100%'
-        onEnded={() =>
-          console.table({
-            courseId,
-            selectedVideoId,
-          })
-        }
+        onEnded={checkWatched}
       />
     </div>
   )

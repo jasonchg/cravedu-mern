@@ -13,11 +13,8 @@ import {
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled'
-import { useDispatch, useSelector } from 'react-redux'
-import {
-  USER_WATCHED_CONTENT_REQUEST,
-  USER_WATCHED_CONTENT_SUCCESS,
-} from '../constants/userConstants'
+import { useDispatch } from 'react-redux'
+import { updateWatched } from '../actions/courseActions'
 
 const useStyles = makeStyles((theme) => ({
   accordion: {
@@ -50,50 +47,25 @@ const CourseContentList = ({
 }) => {
   const classes = useStyles()
   const [checked, setChecked] = useState(false)
-  const userLogin = useSelector((state) => state.userLogin)
-  const { userInfo } = userLogin
   const dispatch = useDispatch()
 
-  const checkWatched = async () => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-        'Content-Type': 'application/json',
-      },
-    }
-
-    dispatch({ type: USER_WATCHED_CONTENT_REQUEST })
-
+  const checkWatched = () => {
     if (checked === true) {
       setChecked(false)
-      try {
-        await axios.put(
-          `/api/courses/${courseId}/watch`,
-          {
-            chapterId: content._id,
-            watched: false,
-          },
-          config
-        )
-        dispatch({ type: USER_WATCHED_CONTENT_SUCCESS })
-      } catch (e) {
-        console.log(e)
-      }
+      dispatch(
+        updateWatched(courseId, {
+          id: content._id,
+          watch: false,
+        })
+      )
     } else {
       setChecked(true)
-      try {
-        await axios.put(
-          `/api/courses/${courseId}/watch`,
-          {
-            chapterId: content._id,
-            watched: true,
-          },
-          config
-        )
-        dispatch({ type: USER_WATCHED_CONTENT_SUCCESS })
-      } catch (e) {
-        console.log(e)
-      }
+      dispatch(
+        updateWatched(courseId, {
+          id: content._id,
+          watch: true,
+        })
+      )
     }
   }
 

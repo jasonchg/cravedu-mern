@@ -234,6 +234,7 @@ const VideoLearningScreen = ({ history }) => {
               userPaidCourses.find((x) => x._id === course._id)
             )
             setAlreadyReview(checkReview(course.reviews, userInfo._id))
+
             history.push(
               `/course/${course_slug}/learn?chapter=${course.courseContents[0]._id}`
             )

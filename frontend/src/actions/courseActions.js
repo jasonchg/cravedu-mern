@@ -16,6 +16,10 @@ import {
   COURSE_REVIEW_SUCCESS,
   COURSE_REVIEW_FAIL,
 } from '../constants/courseConstants'
+import {
+  USER_WATCHED_CONTENT_REQUEST,
+  USER_WATCHED_CONTENT_SUCCESS,
+} from '../constants/userConstants'
 
 const listCourses = (keyword = '', pageNumber = '') => async (dispatch) => {
   try {
@@ -142,6 +146,33 @@ const createReview = (courseId, review) => async (dispatch, getState) => {
     })
   }
 }
+const updateWatched = (courseId, content) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: USER_WATCHED_CONTENT_REQUEST })
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    await axios.put(
+      `/api/courses/${courseId}/watch`,
+      {
+        chapterId: content.id,
+        watched: content.watch,
+      },
+      config
+    )
+    dispatch({ type: USER_WATCHED_CONTENT_SUCCESS })
+  } catch (e) {
+    console.log(e)
+  }
+}
 
 export {
   listCourses,
@@ -149,4 +180,5 @@ export {
   addQanda,
   bestSoldCourses,
   createReview,
+  updateWatched,
 }

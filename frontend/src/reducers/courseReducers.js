@@ -17,6 +17,12 @@ import {
   COURSE_REVIEW_FAIL,
   COURSE_REVIEW_RESET,
 } from '../constants/courseConstants'
+import {
+  USER_WATCHED_CONTENT_FAIL,
+  USER_WATCHED_CONTENT_REQUEST,
+  USER_WATCHED_CONTENT_RESET,
+  USER_WATCHED_CONTENT_SUCCESS,
+} from '../constants/userConstants'
 
 const courseListReducer = (state = { courses: [] }, action) => {
   switch (action.type) {
@@ -92,10 +98,26 @@ const courseReviewReducer = (state = {}, action) => {
   }
 }
 
+const contentWatchedReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_WATCHED_CONTENT_REQUEST:
+      return { loading: true }
+    case USER_WATCHED_CONTENT_SUCCESS:
+      return { loading: false, success: true }
+    case USER_WATCHED_CONTENT_FAIL:
+      return { loading: false, error: action.payload }
+    case USER_WATCHED_CONTENT_RESET:
+      return {}
+    default:
+      return state
+  }
+}
+
 export {
   courseListReducer,
   courseDetailsReducer,
   courseQandaReducer,
   courseBestSoldReducer,
   courseReviewReducer,
+  contentWatchedReducer,
 }

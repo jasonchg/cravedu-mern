@@ -7,6 +7,7 @@ import {
   courseQandaReducer,
   courseBestSoldReducer,
   courseReviewReducer,
+  contentWatchedReducer,
 } from './reducers/courseReducers'
 import {
   userLoginReducer,
@@ -59,6 +60,7 @@ const reducer = combineReducers({
   instructorCourseDetails: instructorCourseDetailsReducer,
   instructorCourseList: instructorCourseListReducer,
   instructorCourseCreate: instructorCourseCreateReducer,
+  contentWatched: contentWatchedReducer,
   courseReview: courseReviewReducer,
   courseBestSold: courseBestSoldReducer,
   courseList: courseListReducer,
