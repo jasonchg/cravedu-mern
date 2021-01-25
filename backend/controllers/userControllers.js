@@ -1,6 +1,8 @@
 import asyncHandler from 'express-async-handler'
 import generateToken from '../utils/generateToken.js'
 import User from '../models/userModel.js'
+import { generateCert } from '../utils/generateCert.js'
+import Course from '../models/courseModel.js'
 
 // @desc    Auth user & get json web token
 // @route   GET /api/users/login
@@ -115,4 +117,48 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   }
 })
 
-export { authUser, getUserProfile, registerUser, updateUserProfile }
+// @desc    Update Complete Status & Generate Certificate
+// @route   PUT /api/users/:courseId/course-completed
+// @access  Private
+
+const completeCourse = asyncHandler(async (req, res) => {
+  const userExisted = await User.findById(req.user.id)
+  const courseId = req.params.courseId
+  const course = await Course.findById(courseId)
+
+  if (userExisted) {
+    const getCompletedCourse = userExisted.myCourses.find(
+      (x) => x._id === courseId
+    )
+    if (getCompletedCourse || course) {
+      if (
+        getCompletedCourse &&
+        getCompletedCourse.completedCertificate &&
+        getCompletedCourse.completedCertificate !== ' '
+      ) {
+        res.status(400)
+        throw new Error('Course already has a completed certificate')
+      } else {
+        const cert = generateCert(userExisted, course)
+        if (cert) {
+          console.log('done')
+          res.status(201).send('Cert Created')
+        }
+      }
+    } else {
+      res.status(404)
+      throw new Error('Course Not Found')
+    }
+  } else {
+    res.status(404)
+    throw new Error('User Not Found')
+  }
+})
+
+export {
+  authUser,
+  getUserProfile,
+  registerUser,
+  updateUserProfile,
+  completeCourse,
+}

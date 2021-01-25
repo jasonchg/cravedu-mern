@@ -18,9 +18,6 @@ const MyCoursesScreen = ({ history }) => {
   const userCourses = useSelector((state) => state.userCourses)
   const { error, loading, userPaidCourses } = userCourses
 
-  const courseList = useSelector((state) => state.courseList)
-  const { courses } = courseList
-
   useEffect(() => {
     if (!userInfo) {
       history.push('/login')

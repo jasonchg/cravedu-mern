@@ -212,17 +212,12 @@ const VideoLearningScreen = ({ history }) => {
       history.go(0)
     }
 
-    if (qandaSuccess) {
+    if (qandaSuccess || reviewSuccess) {
       setQuestion('')
-      dispatch({ type: COURSE_QANDA_RESET })
-      alert('Question Submitted')
-    }
-
-    if (reviewSuccess) {
       setComment('')
-      dispatch({ type: COURSE_REVIEW_RESET })
       setAlreadyReview(true)
-      alert('Review Submitted')
+      dispatch({ type: COURSE_QANDA_RESET })
+      dispatch({ type: COURSE_REVIEW_RESET })
     }
 
     if (!userInfo) {
@@ -238,11 +233,12 @@ const VideoLearningScreen = ({ history }) => {
           (userPaidCourses && userPaidCourses.length !== 0) ||
           (userPaidCourses && userPaidCourses !== [])
         ) {
-          if (userPaidCourses.find((x) => x._id === course._id)) {
-            setCurrentUserPaidCourse(
-              userPaidCourses.find((x) => x._id === course._id)
-            )
+          let currentCourse = userPaidCourses.find((x) => x._id === course._id)
+
+          if (currentCourse) {
+            setCurrentUserPaidCourse(currentCourse)
             setAlreadyReview(checkReview(course.reviews, userInfo._id))
+
             if (currentUserPaidCourse && currentUserPaidCourse.courseContents) {
               let notYetWatchContent = currentUserPaidCourse.courseContents.find(
                 (x) => x.watched !== true
@@ -252,7 +248,6 @@ const VideoLearningScreen = ({ history }) => {
                 history.push(
                   `/course/${course_slug}/learn?chapter=${notYetWatchContent.chapterId}`
                 )
-
                 setSelectedVideoName({
                   name: course.courseContents.find(
                     (x) => x._id === notYetWatchContent.chapterId
@@ -261,7 +256,6 @@ const VideoLearningScreen = ({ history }) => {
                     (x) => x._id === notYetWatchContent.chapterId
                   ).chapter,
                 })
-
                 setSelectedVideoId(notYetWatchContent.chapterId)
                 setSelectedVideo(
                   getVideoPath(
