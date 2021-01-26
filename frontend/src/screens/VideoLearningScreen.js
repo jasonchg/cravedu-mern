@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import axios from 'axios'
 import {
   Container,
   Grid,
@@ -197,6 +198,22 @@ const VideoLearningScreen = ({ history }) => {
   }
 
   useEffect(() => {
+    const getCertify = async () => {
+      try {
+        const config = {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+        await axios.put(`/api/users/${course._id}/course-completed`, {}, config)
+        alert(
+          `Congratulation! You've completed this course. A certificate will be sendto your mailbox soon.`
+        )
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
     const checkReview = (reviews, userId) => {
       return reviews.some((revItem) => {
         if (revItem.user === userId) {
@@ -268,11 +285,7 @@ const VideoLearningScreen = ({ history }) => {
                   currentUserPaidCourse &&
                   currentUserPaidCourse.completedCertificate === ''
                 ) {
-                  alert(
-                    'You have completed this course! You will be granted a certificate.'
-                  )
-                } else {
-                  alert('You can rewatch.')
+                  getCertify()
                 }
               }
             } else {

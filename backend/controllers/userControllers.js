@@ -125,10 +125,11 @@ const completeCourse = asyncHandler(async (req, res) => {
   const userExisted = await User.findById(req.user.id)
   const courseId = req.params.courseId
   const course = await Course.findById(courseId)
+  const certificateId = 'cert-abc-123'
 
   if (userExisted) {
     const getCompletedCourse = userExisted.myCourses.find(
-      (x) => x._id === courseId
+      (x) => x._id == courseId
     )
     if (getCompletedCourse || course) {
       if (
@@ -139,10 +140,16 @@ const completeCourse = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error('Course already has a completed certificate')
       } else {
-        const cert = generateCert(userExisted, course)
-        if (cert) {
-          console.log('done')
-          res.status(201).send('Cert Created')
+        console.log(getCompletedCourse)
+        generateCert(userExisted, course, certificateId)
+        getCompletedCourse.completedCertificate =
+          `/certificates/${certificateId}.jpeg` || ''
+        const result = userExisted.save()
+        if (result) {
+          res.status(201).send({
+            certCreated: 'true',
+            result,
+          })
         }
       }
     } else {
