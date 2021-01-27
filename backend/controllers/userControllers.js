@@ -3,6 +3,7 @@ import generateToken from '../utils/generateToken.js'
 import User from '../models/userModel.js'
 import { generateCert } from '../utils/generateCert.js'
 import Course from '../models/courseModel.js'
+import { sendThisCertToMail } from '../utils/sendThisMail.js'
 
 // @desc    Auth user & get json web token
 // @route   GET /api/users/login
@@ -140,15 +141,23 @@ const completeCourse = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error('Course already has a completed certificate')
       } else {
-        console.log(getCompletedCourse)
         generateCert(userExisted, course, certificateId)
-        getCompletedCourse.completedCertificate =
-          `/certificates/${certificateId}.jpeg` || ''
+        let filename = `${certificateId}.jpeg`
+        let path = `/certificates/${filename}`
+
+        getCompletedCourse.completedCertificate = path || ''
         const result = userExisted.save()
+        const result = true
         if (result) {
+          await sendThisCertToMail(userExisted, course, {
+            url: `www.cravedu.com/cert/${path}`,
+            path,
+            filename,
+            name: course.name,
+            totalDuration: course.totalDuration,
+          })
           res.status(201).send({
             certCreated: 'true',
-            result,
           })
         }
       }

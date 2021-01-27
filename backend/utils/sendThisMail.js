@@ -8,7 +8,9 @@ const oAuth2Cient = new google.auth.OAuth2(
   process.env.CLIENT_SECRET,
   process.env.REDIRECT_URI
 )
-oAuth2Cient.setCredentials({ refresh_token: process.env.REFRESH_TOKEN })
+oAuth2Cient.setCredentials({
+  refresh_token: process.env.REFRESH_TOKEN,
+})
 
 const sendThisMail = async (user, content) => {
   try {
@@ -77,4 +79,59 @@ const sendThisMail = async (user, content) => {
   }
 }
 
-export { sendThisMail }
+const sendThisCertToMail = async (user, content, certDetails) => {
+  try {
+    const accessToken = await oAuth2Cient.getAccessToken()
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        type: 'OAuth2',
+        user: process.env.SENDER_EMAIL,
+        clientId: process.env.CLIENT_ID,
+        clientSecret: process.env.CLIENT_SECRET,
+        refreshToken: process.env.REFRESH_TOKEN,
+        accessToken,
+      },
+    })
+
+    const html = `<div style='text-align:center; background:#eee;' ><img src='cid:logo@cravedu.com' style='width:90px; padding:20px;'/></div><h3>Congratulation ${
+      user.name
+    }, you've completed <strong>${content.name}</strong> of total ${
+      Math.round(content.totalDuration * 10) / 10
+    } hours online course.</h3> <p>You're granted with this certificate by Cravedu. Link: ${
+      certDetails.url
+    }</p> <br> <img src='cid:cert@cravedu.com'/></div><br><hr><p style='text-align:center'>This is an auto-generated email. Do not reply to this email.</p>`
+
+    const __dirname = path.resolve()
+    const imagePath = path.join(
+      __dirname,
+      '/frontend/src/assets/images/logo.png'
+    )
+    const certImage = path.join(__dirname, `${certDetails.path}`)
+    const mailOptions = {
+      from: '"Cravedu 👻" <sales@cravedu.com>',
+      to: `${user && user.email}`,
+      subject: `Congratulation ${user.name}, you've completed ${content.name} online course.`,
+      text: '',
+      html,
+      attachments: [
+        {
+          filename: 'logo.png',
+          path: imagePath,
+          cid: 'logo@cravedu.com',
+        },
+        {
+          filename: certDetails.fileName,
+          path: certImage,
+          cid: 'cert@cravedu.com',
+        },
+      ],
+    }
+
+    await transporter.sendMail(mailOptions)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export { sendThisMail, sendThisCertToMail }

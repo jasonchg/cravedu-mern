@@ -206,8 +206,9 @@ const VideoLearningScreen = ({ history }) => {
           },
         }
         await axios.put(`/api/users/${course._id}/course-completed`, {}, config)
+
         alert(
-          `Congratulation! You've completed this course. A certificate will be sendto your mailbox soon.`
+          `Congratulation! You've completed this course. A certificate will be send to your mailbox soon.`
         )
       } catch (err) {
         console.log(err)
@@ -399,11 +400,10 @@ const VideoLearningScreen = ({ history }) => {
                             setSelectedVideoName={setSelectedVideoName}
                             selectTopicHandler={selectTopicHandler}
                             watched={
-                              currentUserPaidCourse
-                                ? currentUserPaidCourse.courseContents.find(
-                                    (x) => x.chapterId === content._id
-                                  ).watched
-                                : false
+                              currentUserPaidCourse &&
+                              currentUserPaidCourse.courseContents.find(
+                                (x) => x.chapterId === content._id
+                              ).watched
                             }
                           />
                         ))
