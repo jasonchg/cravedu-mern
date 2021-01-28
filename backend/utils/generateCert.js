@@ -69,7 +69,7 @@ const generateCert = async (user, course, certificateId) => {
           let idtextH = Jimp.measureTextHeight(font, certId)
           cert.print(
             font,
-            w / 2 - idtextW / 2 - 1567,
+            w / 2 - idtextW / 2 - 1541,
             h / 2 - idtextH / 2 + 1160,
             {
               text: `Certificate ID: ${certId}`,

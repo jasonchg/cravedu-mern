@@ -4,6 +4,7 @@ import User from '../models/userModel.js'
 import { generateCert } from '../utils/generateCert.js'
 import Course from '../models/courseModel.js'
 import { sendThisCertToMail } from '../utils/sendThisMail.js'
+import { customAlphabet } from 'nanoid'
 
 // @desc    Auth user & get json web token
 // @route   GET /api/users/login
@@ -126,7 +127,13 @@ const completeCourse = asyncHandler(async (req, res) => {
   const userExisted = await User.findById(req.user.id)
   const courseId = req.params.courseId
   const course = await Course.findById(courseId)
-  const certificateId = 'cert-abc-123'
+  const nanoid = customAlphabet(
+    course
+      ? course.name.trim().toLowerCase().replace(/\s/g, '')
+      : '1234567890abcdef',
+    10
+  )
+  const certificateId = `cert-${nanoid()}`
 
   if (userExisted) {
     const getCompletedCourse = userExisted.myCourses.find(
@@ -147,7 +154,6 @@ const completeCourse = asyncHandler(async (req, res) => {
 
         getCompletedCourse.completedCertificate = path || ''
         const result = userExisted.save()
-        const result = true
         if (result) {
           await sendThisCertToMail(userExisted, course, {
             url: `www.cravedu.com/cert/${path}`,
