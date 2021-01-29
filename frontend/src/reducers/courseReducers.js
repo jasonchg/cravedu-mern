@@ -16,6 +16,9 @@ import {
   COURSE_REVIEW_SUCCESS,
   COURSE_REVIEW_FAIL,
   COURSE_REVIEW_RESET,
+  COURSE_CATEGORIES_REQUEST,
+  COURSE_CATEGORIES_SUCCESS,
+  COURSE_CATEGORIES_FAIL,
 } from '../constants/courseConstants'
 import {
   USER_WATCHED_CONTENT_FAIL,
@@ -36,6 +39,22 @@ const courseListReducer = (state = { courses: [] }, action) => {
         page: action.payload.page,
       }
     case COURSE_LIST_FAIL:
+      return { loading: false, error: action.payload }
+    default:
+      return state
+  }
+}
+
+const categoriesReducer = (state = { categories: [] }, action) => {
+  switch (action.type) {
+    case COURSE_CATEGORIES_REQUEST:
+      return { loading: true, categories: [] }
+    case COURSE_CATEGORIES_SUCCESS:
+      return {
+        loading: false,
+        categories: action.payload,
+      }
+    case COURSE_CATEGORIES_FAIL:
       return { loading: false, error: action.payload }
     default:
       return state
@@ -120,4 +139,5 @@ export {
   courseBestSoldReducer,
   courseReviewReducer,
   contentWatchedReducer,
+  categoriesReducer,
 }

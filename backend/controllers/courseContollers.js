@@ -1,4 +1,5 @@
 import asyncHandler from 'express-async-handler'
+import Category from '../models/categoryModel.js'
 import Course from '../models/courseModel.js'
 import User from '../models/userModel.js'
 
@@ -48,6 +49,22 @@ const getCourseById = asyncHandler(async (req, res) => {
     throw new Error('Course not found')
   }
 })
+
+// @desc    Fetch All Categories
+// @route   GET /api/courses/categories
+// @access  Public
+
+const getCategories = asyncHandler(async (req, res) => {
+  const categories = await Category.find()
+
+  if (categories) {
+    res.json(categories)
+  } else {
+    res.status(404)
+    throw new Error('Category not found')
+  }
+})
+
 // @desc    Fetch single course
 // @route   GET /api/courses/:slug
 // @access  Public
@@ -180,4 +197,5 @@ export {
   createCourseReview,
   getCourseBySlug,
   setWatched,
+  getCategories,
 }

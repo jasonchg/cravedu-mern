@@ -15,6 +15,9 @@ import {
   COURSE_REVIEW_REQUEST,
   COURSE_REVIEW_SUCCESS,
   COURSE_REVIEW_FAIL,
+  COURSE_CATEGORIES_REQUEST,
+  COURSE_CATEGORIES_SUCCESS,
+  COURSE_CATEGORIES_FAIL,
 } from '../constants/courseConstants'
 import {
   USER_WATCHED_CONTENT_REQUEST,
@@ -28,7 +31,6 @@ const listCourses = (keyword = '', pageNumber = '') => async (dispatch) => {
     const { data } = await axios.get(
       `/api/courses?keyword=${keyword}&pageNumber=${pageNumber}`
     )
-
     dispatch({
       type: COURSE_LIST_SUCCESS,
       payload: data,
@@ -36,6 +38,26 @@ const listCourses = (keyword = '', pageNumber = '') => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: COURSE_LIST_FAIL,
+      payload:
+        e.response && e.response.data.message
+          ? e.response.data.message
+          : e.message,
+    })
+  }
+}
+
+const listCategories = () => async (dispatch) => {
+  try {
+    dispatch({ type: COURSE_CATEGORIES_REQUEST })
+    const { data } = await axios.get('/api/courses/categories')
+
+    dispatch({
+      type: COURSE_CATEGORIES_SUCCESS,
+      payload: data,
+    })
+  } catch (e) {
+    dispatch({
+      type: COURSE_CATEGORIES_FAIL,
       payload:
         e.response && e.response.data.message
           ? e.response.data.message
@@ -181,4 +203,5 @@ export {
   bestSoldCourses,
   createReview,
   updateWatched,
+  listCategories,
 }

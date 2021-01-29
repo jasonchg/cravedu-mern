@@ -7,7 +7,11 @@ import {
   useMediaQuery,
 } from '@material-ui/core'
 import Course from '../components/Course'
-import { listCourses, bestSoldCourses } from '../actions/courseActions'
+import {
+  listCourses,
+  bestSoldCourses,
+  listCategories,
+} from '../actions/courseActions'
 import { getUserCourses } from '../actions/userActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
@@ -30,6 +34,9 @@ const HomeScreen = ({ history, match }) => {
   const userCourses = useSelector((state) => state.userCourses)
   const { userPaidCourses } = userCourses
 
+  const categoryList = useSelector((state) => state.categoryList)
+  const { categories } = categoryList
+
   const courseBestSold = useSelector((state) => state.courseBestSold)
   const {
     loading: courseBestLoading,
@@ -40,46 +47,12 @@ const HomeScreen = ({ history, match }) => {
   useEffect(() => {
     dispatch(listCourses('', pageNumber))
     dispatch(bestSoldCourses())
+    dispatch(listCategories())
 
     if (userInfo) {
       dispatch(getUserCourses())
     }
   }, [dispatch, userInfo, pageNumber])
-
-  const category = [
-    {
-      name: 'Software',
-      link: '#',
-    },
-    {
-      name: 'Design',
-      link: '#',
-    },
-    {
-      name: 'Mathematic',
-      link: '#',
-    },
-    {
-      name: 'Science',
-      link: '#',
-    },
-    {
-      name: 'Electrical',
-      link: '#',
-    },
-    {
-      name: 'Personal Development',
-      link: '#',
-    },
-    {
-      name: 'Health',
-      link: '#',
-    },
-    {
-      name: 'Fitness',
-      link: '#',
-    },
-  ]
 
   const theme = useTheme()
   const matchesXS = useMediaQuery(theme.breakpoints.down('xs'))
@@ -151,9 +124,9 @@ const HomeScreen = ({ history, match }) => {
             ) : null}
 
             <Grid item xs={12} style={{ marginTop: 20 }}>
-              {category &&
-                category.map((item, index) => (
-                  <Category key={index} category={item} color='primary' />
+              {categories &&
+                categories.map((category, index) => (
+                  <Category key={index} category={category} color='primary' />
                 ))}
             </Grid>
 

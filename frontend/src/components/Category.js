@@ -6,8 +6,7 @@ const Category = ({ category, color }) => {
     <Chip
       color={color}
       style={{ padding: 7, margin: 5 }}
-      label={category.name}
-      href={category.link}
+      label={category.category}
       clickable
     />
   )

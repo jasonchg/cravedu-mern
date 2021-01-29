@@ -6,6 +6,8 @@ import Order from './models/orderModel.js'
 import colors from 'colors'
 import users from './data/users.js'
 import courses from './data/courses.js'
+import Category from './models/categoryModel.js'
+import categories from './data/categories.js'
 
 dotenv.config()
 connectDB()
@@ -15,6 +17,7 @@ const importData = async () => {
     await Course.deleteMany()
     await User.deleteMany()
     await Order.deleteMany()
+    await Category.deleteMany()
 
     const createdUsers = await User.insertMany(users)
 
@@ -24,7 +27,9 @@ const importData = async () => {
       return { ...course, user: adminUser }
     })
 
+    await Category.insertMany(categories)
     await Course.insertMany(sampleCourses)
+
     console.log('Data Imported!'.green.inverse)
     process.exit()
   } catch (e) {
@@ -38,6 +43,7 @@ const destroyData = async () => {
     await Course.deleteMany()
     await User.deleteMany()
     await Order.deleteMany()
+    await Category.deleteMany()
 
     console.log('Data Destroyed!'.red.inverse)
     process.exit()

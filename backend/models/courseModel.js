@@ -94,6 +94,7 @@ const courseSchema = mongoose.Schema(
     annoucement: {
       type: String,
     },
+    category: { type: String, required: true },
     totalDuration: { type: String, required: true },
     reviews: [reviewSchema],
     courseContents: [contentSchema],

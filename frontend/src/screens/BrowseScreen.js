@@ -7,7 +7,7 @@ import {
   useMediaQuery,
 } from '@material-ui/core'
 import Course from '../components/Course'
-import { listCourses } from '../actions/courseActions'
+import { listCategories, listCourses } from '../actions/courseActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -21,46 +21,13 @@ const BrowseScreen = ({ match }) => {
   const pageNumber = match.params.pageNumber
   const courseList = useSelector((state) => state.courseList)
   const { loading, error, courses, pages, page } = courseList
+  const categoryList = useSelector((state) => state.categoryList)
+  const { categories } = categoryList
 
   useEffect(() => {
     dispatch(listCourses(keyword, pageNumber))
+    dispatch(listCategories())
   }, [dispatch, keyword])
-
-  const category = [
-    { name: 'All Courses', link: '#' },
-    {
-      name: 'Software',
-      link: '#',
-    },
-    {
-      name: 'Design',
-      link: '#',
-    },
-    {
-      name: 'Mathematic',
-      link: '#',
-    },
-    {
-      name: 'Science',
-      link: '#',
-    },
-    {
-      name: 'Electrical',
-      link: '#',
-    },
-    {
-      name: 'Personal Development',
-      link: '#',
-    },
-    {
-      name: 'Health',
-      link: '#',
-    },
-    {
-      name: 'Fitness',
-      link: '#',
-    },
-  ]
 
   const [currentCategory, setCurrentCategory] = useState('All Courses')
 
@@ -93,10 +60,13 @@ const BrowseScreen = ({ match }) => {
               </div>
             </Grid>
             <Grid item xs={12}>
-              {category &&
-                category.map((item, index) => (
-                  <span key={index} onClick={() => setCatHandler(item.name)}>
-                    <Category category={item} color='primary' />
+              {categories &&
+                categories.map((category, index) => (
+                  <span
+                    key={index}
+                    onClick={() => setCatHandler(category.category)}
+                  >
+                    <Category category={category} color='primary' />
                   </span>
                 ))}
             </Grid>
