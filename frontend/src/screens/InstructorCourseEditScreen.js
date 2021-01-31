@@ -12,6 +12,10 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Select,
+  InputLabel,
+  MenuItem,
+  FormControl,
 } from '@material-ui/core'
 import FormContainer from '../components/FormContainer'
 import { makeStyles } from '@material-ui/core/styles'
@@ -35,6 +39,8 @@ import {
 import TextEditor from '../components/TextEditor'
 import { myTrim, generateSlug } from '../utils'
 import ContentListItem from '../components/ContentListItem'
+import { listCategories } from '../actions/courseActions'
+import CategorySelectList from '../components/CategorySelectList'
 const useStyles = makeStyles({
   root: {
     marginTop: 10,
@@ -65,6 +71,9 @@ const InstructorCourseEditScreen = ({ match, history }) => {
     (state) => state.instructorCourseDetails
   )
   const { courseDetails, loading, error } = instructorCourseDetails
+
+  const categoryList = useSelector((state) => state.categoryList)
+  const { categories } = categoryList
 
   const instructorCourseUpdate = useSelector(
     (state) => state.instructorCourseUpdate
@@ -97,9 +106,17 @@ const InstructorCourseEditScreen = ({ match, history }) => {
   const [uploading, setUploading] = useState(false)
   const [chapter, setChapter] = useState(1)
   const [chapterName, setChapterName] = useState('')
+  const [category, setCategory] = useState('')
   const [courseContents, setCourseContents] = useState([])
   const [errorUpdate, setErrorUpdate] = useState(false)
   const [cantDelete, setCantDelete] = useState(false)
+
+  const [letMenuClose, setLetMenuClose] = useState(false)
+
+  const selectCategoryHanlder = (cate) => {
+    setCategory(cate)
+    setLetMenuClose(false)
+  }
 
   const uploadImageHandler = async (e) => {
     const file = e.target.files[0]
@@ -148,6 +165,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
         slug,
         price,
         image,
+        category,
         description,
       })
     )
@@ -185,6 +203,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
       dispatch({ type: INSTRUCTOR_COURSE_DETAILS_RESET })
       dispatch({ type: INSTRUCTOR_COURSE_UPDATE_RESET })
       setChapterName('')
+      dispatch(listCategories())
       dispatch(getCourseById(courseId))
     } else {
       if (userInfo && userInfo.isInstructor) {
@@ -194,14 +213,17 @@ const InstructorCourseEditScreen = ({ match, history }) => {
           courseDetails._id !== courseId
         ) {
           setName('')
+          setCategory('')
           setSlug('')
           setPrice(0)
           setDescription('')
           setImage('')
+          dispatch(listCategories())
           dispatch(getCourseById(courseId))
           setCourseContents([])
         } else {
           setName(courseDetails.name)
+          setCategory(courseDetails.category)
           setSlug(courseDetails.slug)
           setPrice(courseDetails.price)
           setDescription(courseDetails.description)
@@ -310,6 +332,27 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                 <Button onClick={() => setSlug(generateSlug(name))}>
                   Generate
                 </Button>
+              </FormContainer>
+              <FormContainer>
+                <FormControl>
+                  <InputLabel>Category</InputLabel>
+                  <Select
+                    value={category}
+                    open={letMenuClose}
+                    onOpen={() => setLetMenuClose(true)}
+                  >
+                    <b style={{ paddingLeft: 7 }}>Selected Category</b>
+                    <MenuItem value={category}>{category}</MenuItem>
+                    {categories &&
+                      categories.map((category, i) => (
+                        <CategorySelectList
+                          key={i}
+                          category={category}
+                          selectCategoryHanlder={selectCategoryHanlder}
+                        />
+                      ))}
+                  </Select>
+                </FormControl>
               </FormContainer>
               <FormContainer>
                 <TextField
