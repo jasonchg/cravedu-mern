@@ -37,14 +37,14 @@ const BrowseScreen = ({ match }) => {
   } = courseBestSold
 
   useEffect(() => {
-    if (category !== '') {
+    dispatch(listCategories())
+
+    if (match.params.category) {
       dispatch(listCoursesByCategory(category))
     } else {
       dispatch(listCourses(keyword, pageNumber))
+      dispatch(bestSoldCourses())
     }
-
-    dispatch(bestSoldCourses())
-    dispatch(listCategories())
   }, [dispatch, keyword])
 
   const [currentCategory, setCurrentCategory] = useState(
