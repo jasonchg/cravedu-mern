@@ -124,6 +124,7 @@ const HomeScreen = ({ history, match }) => {
             ) : null}
 
             <Grid item xs={12} style={{ marginTop: 20 }}>
+              <h2>Categories</h2>
               {categories &&
                 categories.map((category, index) => (
                   <Category key={index} category={category} color='primary' />

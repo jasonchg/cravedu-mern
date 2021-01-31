@@ -7,7 +7,11 @@ import {
   useMediaQuery,
 } from '@material-ui/core'
 import Course from '../components/Course'
-import { listCategories, listCourses } from '../actions/courseActions'
+import {
+  bestSoldCourses,
+  listCategories,
+  listCourses,
+} from '../actions/courseActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -23,9 +27,16 @@ const BrowseScreen = ({ match }) => {
   const { loading, error, courses, pages, page } = courseList
   const categoryList = useSelector((state) => state.categoryList)
   const { categories } = categoryList
+  const courseBestSold = useSelector((state) => state.courseBestSold)
+  const {
+    loading: courseBestLoading,
+    error: courseBestError,
+    courses: courseBestList,
+  } = courseBestSold
 
   useEffect(() => {
     dispatch(listCourses(keyword, pageNumber))
+    dispatch(bestSoldCourses())
     dispatch(listCategories())
   }, [dispatch, keyword])
 
@@ -40,13 +51,6 @@ const BrowseScreen = ({ match }) => {
   return (
     <Container>
       <Grid container spacing={3}>
-        {matchesLG && !keyword ? (
-          <Grid item xs={12} className='homeHeaderText'>
-            <h2>Trending</h2>
-            <Carousels courses={courses} />
-          </Grid>
-        ) : null}
-
         {keyword ? (
           <div style={{ margin: '10px 0' }}>
             <h2>Search terms : {keyword}</h2>
@@ -59,20 +63,21 @@ const BrowseScreen = ({ match }) => {
                 <Divider />
               </div>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={2}>
               {categories &&
                 categories.map((category, index) => (
-                  <span
-                    key={index}
-                    onClick={() => setCatHandler(category.category)}
-                  >
-                    <Category category={category} color='primary' />
+                  <span key={index}>
+                    <Category
+                      category={category}
+                      color='primary'
+                      setCatHandler={setCatHandler}
+                    />
                   </span>
                 ))}
             </Grid>
           </>
         )}
-        <Grid item xs={12}>
+        <Grid item xs={10}>
           <Grid container wrap='wrap'>
             {error ? (
               <Message>{error}</Message>
@@ -98,6 +103,18 @@ const BrowseScreen = ({ match }) => {
             )}
           </Grid>
         </Grid>
+        {matchesLG && !keyword ? (
+          <Grid item xs={12} className='homeHeaderText'>
+            <h2>Trending</h2>
+            {courseBestLoading ? (
+              <Loader />
+            ) : courseBestError ? (
+              <Message>{courseBestError}</Message>
+            ) : (
+              <Carousels courses={courseBestList} />
+            )}
+          </Grid>
+        ) : null}
         <Grid item xs={12}>
           <Paginate page={page} pages={pages} keyword='' />
         </Grid>
