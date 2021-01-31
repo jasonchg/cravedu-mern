@@ -35,6 +35,38 @@ const getCourses = asyncHandler(async (req, res) => {
   }
 })
 
+// @desc    Fetch all courses by category
+// @route   GET /api/courses/category/:category
+// @access  Public
+
+const getCoursesByCategory = asyncHandler(async (req, res) => {
+  const pageSize = 10
+  const page = Number(req.query.pageNumber) || 1
+
+  const params = req.query.category
+    ? {
+        isPublished: true,
+        category: { $regex: req.query.category, $options: 'i' },
+      }
+    : { category: '' }
+
+  const count = await Course.countDocuments(params)
+  const courses = await Course.find(params)
+    .limit(pageSize)
+    .skip(pageSize * (page - 1))
+
+  if (courses) {
+    res.json({
+      courses,
+      page,
+      pages: Math.ceil(count / pageSize),
+    })
+  } else {
+    res.status(404)
+    throw new Error('Courses not found')
+  }
+})
+
 // @desc    Fetch single course
 // @route   GET /api/courses/:id
 // @access  Public
@@ -198,4 +230,5 @@ export {
   getCourseBySlug,
   setWatched,
   getCategories,
+  getCoursesByCategory,
 }
