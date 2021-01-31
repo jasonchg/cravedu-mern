@@ -110,7 +110,6 @@ const InstructorCourseEditScreen = ({ match, history }) => {
   const [courseContents, setCourseContents] = useState([])
   const [errorUpdate, setErrorUpdate] = useState(false)
   const [cantDelete, setCantDelete] = useState(false)
-
   const [letMenuClose, setLetMenuClose] = useState(false)
 
   const selectCategoryHanlder = (cate) => {

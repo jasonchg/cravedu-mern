@@ -29,7 +29,7 @@ import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled'
 import ArchiveIcon from '@material-ui/icons/Archive'
 import PeopleIcon from '@material-ui/icons/People'
 import { makeStyles } from '@material-ui/core/styles'
-import { listCourseDetails } from '../actions/courseActions'
+import { listCategories, listCourseDetails } from '../actions/courseActions'
 import { getUserCourses } from '../actions/userActions'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
@@ -40,6 +40,7 @@ import Breadcrumbs from '../components/Breadcrumbs'
 import PropTypes from 'prop-types'
 import AccessTimeIcon from '@material-ui/icons/AccessTime'
 import { addToCart } from '../actions/cartActions'
+import { getParentCategory } from '../customHooks'
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props
@@ -179,6 +180,9 @@ const CourseScreen = ({ history }) => {
     )
   }
 
+  const categoryList = useSelector((state) => state.categoryList)
+  const { categories } = categoryList
+
   useEffect(() => {
     if (userPaidCourses && course) {
       setBought(checkBought(userPaidCourses, course))
@@ -194,6 +198,7 @@ const CourseScreen = ({ history }) => {
     }
 
     dispatch(listCourseDetails(course_slug))
+    dispatch(listCategories())
 
     if (userInfo) {
       if (bought) {
@@ -215,11 +220,14 @@ const CourseScreen = ({ history }) => {
           <Breadcrumbs
             previousPage={[
               {
-                name: 'Information Technology',
+                name: `${getParentCategory(
+                  categories,
+                  course ? course.category : 'Programming Language'
+                )}`,
                 link: '/',
               },
             ]}
-            currentPage={'Javascript'}
+            currentPage={course.category}
             courseScreen
           />
           <Container className={classes.root}>
