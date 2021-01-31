@@ -36,7 +36,7 @@ const getCourses = asyncHandler(async (req, res) => {
 })
 
 // @desc    Fetch all courses by category
-// @route   GET /api/courses/category/:category
+// @route   GET /api/courses/category?category=
 // @access  Public
 
 const getCoursesByCategory = asyncHandler(async (req, res) => {

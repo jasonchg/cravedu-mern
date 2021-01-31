@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { Chip, Menu, MenuItem, Divider } from '@material-ui/core'
+import { Chip, Menu, MenuItem, Divider, Link } from '@material-ui/core'
 
-const Category = ({ category, color, setCatHandler }) => {
+const Category = ({ category, color }) => {
   const [anchorEl, setAnchorEl] = useState(null)
 
   return (
@@ -21,12 +21,10 @@ const Category = ({ category, color, setCatHandler }) => {
         onClose={() => setAnchorEl(null)}
       >
         {category.subCategories.map((item, i) => (
-          <>
-            <MenuItem key={i} onClick={() => setCatHandler(item.subCategory)}>
-              {item.subCategory}
-            </MenuItem>
+          <Link key={i} href={`/category/${item.subCategory}`}>
+            <MenuItem>{item.subCategory}</MenuItem>
             <Divider />
-          </>
+          </Link>
         ))}
       </Menu>
     </>
