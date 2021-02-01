@@ -9,7 +9,7 @@ import path from 'path'
 // @access  Private
 
 const getCourses = asyncHandler(async (req, res) => {
-  const pageSize = 10
+  const pageSize = 9
   const page = Number(req.query.pageNumber) || 1
 
   const count = await Course.countDocuments({ user: req.user._id })

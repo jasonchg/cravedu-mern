@@ -21,6 +21,7 @@ import Paginate from '../components/Paginate'
 const ManageCourseScreen = ({ history, match }) => {
   const dispatch = useDispatch()
   const pageNumber = match.params.pageNumber || 1
+  const keyword = match.params.keyword || ''
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
@@ -50,7 +51,7 @@ const ManageCourseScreen = ({ history, match }) => {
             link: '/',
           },
         ]}
-        currentPage='Courses'
+        currentPage='Manage Courses'
       />
 
       <Grid container style={{ marginTop: 10 }}>
@@ -118,7 +119,12 @@ const ManageCourseScreen = ({ history, match }) => {
           )}
         </Grid>
         <Grid item xs={12}>
-          <Paginate isAdmin page={page} pages={pages} keyword='' />
+          <Paginate
+            isAdmin
+            page={page}
+            pages={pages}
+            keyword={keyword ? keyword : ''}
+          />
         </Grid>
       </Grid>
     </>

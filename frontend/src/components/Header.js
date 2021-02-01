@@ -347,7 +347,7 @@ const Header = () => {
                       </MenuItem>
 
                       {userInfo.isAdmin && (
-                        <>
+                        <div>
                           <MenuItem onClick={openAdminMenuHandler}>
                             <ListItemIcon>
                               <BallotIcon fontSize='small' />
@@ -382,7 +382,7 @@ const Header = () => {
                               </Typography>
                             </MenuItem>
                           </Menu>
-                        </>
+                        </div>
                       )}
 
                       <MenuItem onClick={logoutUser}>

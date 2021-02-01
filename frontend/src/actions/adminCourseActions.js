@@ -11,7 +11,10 @@ import {
   ADMIN_COURSE_UPDATE_SUCCESS,
 } from '../constants/adminConstants'
 
-const listCourses = () => async (dispatch, getState) => {
+const listCourses = (keyword = '', pageNumber = '') => async (
+  dispatch,
+  getState
+) => {
   try {
     dispatch({ type: ADMIN_COURSE_LIST_REQUEST })
     const {
@@ -24,7 +27,10 @@ const listCourses = () => async (dispatch, getState) => {
       },
     }
 
-    const { data } = await axios.get('/api/admin/courses', config)
+    const { data } = await axios.get(
+      `/api/admin/courses/?pageNumber=${pageNumber}`,
+      config
+    )
 
     dispatch({ type: ADMIN_COURSE_LIST_SUCCESS, payload: data })
   } catch (e) {

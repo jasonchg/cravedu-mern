@@ -6,7 +6,7 @@ import Course from '../models/courseModel.js'
 // @access  Private Admin
 
 const getCourses = asyncHandler(async (req, res) => {
-  const pageSize = 10
+  const pageSize = 9
   const page = Number(req.query.pageNumber) || 1
   const count = await Course.countDocuments({})
   const courses = await Course.find({})

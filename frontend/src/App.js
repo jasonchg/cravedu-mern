@@ -41,7 +41,13 @@ function App() {
               component={AdminUserEditScreen}
               exact
             />
+
             <Route path='/admin/users' component={ManageUsersScreen} exact />
+            <Route
+              path='/admin/:pageNumber'
+              component={ManageCoursesScreen}
+              exact
+            />
             <Route path='/admin' component={ManageCoursesScreen} exact />
           </Container>
 

@@ -182,7 +182,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
           ? courseContents.length
           : 0
       const deleteMsg = `Are you wish to delete this course and it's contents?\n${
-        content !== 0 ? `This course consist of ${content} chapters.` : null
+        content !== 0 ? `This course consist of ${content} chapters.` : ''
       }\n(*This action is not reversable. Think twice!)`
 
       if (window.confirm(deleteMsg)) {

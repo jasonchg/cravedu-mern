@@ -34,9 +34,9 @@ const Paginate = ({
                 ? !isInstructor
                   ? keyword
                     ? `/search/${keyword}/page/${x.page}`
-                    : `/course/page/${x.page}`
-                  : `/instructor/${x.page}`
-                : `/admin/courses/${x.page}`
+                    : `/instructor/${x.page}`
+                  : `/course/page/${x.page}`
+                : `/admin/${x.page}`
             }
             {...x}
           />

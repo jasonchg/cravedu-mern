@@ -26,7 +26,7 @@ import Paginate from '../components/Paginate'
 const InstructorScreen = ({ history, match }) => {
   const dispatch = useDispatch()
   const pageNumber = match.params.pageNumber || 1
-  const [keyword, setKeyword] = useState('')
+  const keyword = match.params.keyword || ''
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
