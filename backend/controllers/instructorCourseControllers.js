@@ -44,6 +44,7 @@ const createCourse = asyncHandler(async (req, res) => {
     description: 'New Course',
     instructor: req.user.name,
     isPublished: false,
+    category: 'Web Development',
     rating: 0,
     numReviews: 0,
     totalSold: 0,
@@ -61,7 +62,7 @@ const createCourse = asyncHandler(async (req, res) => {
     res.status(201).json(createdCourse._id)
   } catch (e) {
     res.status(500)
-    throw new Error('Internal Error with this one, please try again later')
+    throw new Error(e.message)
   }
 })
 
