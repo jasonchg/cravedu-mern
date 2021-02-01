@@ -534,7 +534,9 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                 {courseDetails.totalSold}
               </Typography>
             ) : (
-              <Message severity='info'>No sales</Message>
+              <Typography variant='h3' component='h3' style={{ padding: 10 }}>
+                0
+              </Typography>
             )}
           </Paper>
 
@@ -545,7 +547,9 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                 {courseDetails.rating}
               </Typography>
             ) : (
-              <Message severity='info'>No rating</Message>
+              <Typography variant='h3' component='h3' style={{ padding: 10 }}>
+                0
+              </Typography>
             )}
           </Paper>
         </Grid>
