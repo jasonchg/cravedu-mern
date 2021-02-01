@@ -12,6 +12,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   INSTRUCTOR_COURSE_DETAILS_RESET,
+  INSTRUCTOR_COURSE_UPDATE_SUCCESS,
   INSTRUCTOR_DELETE_CONTENT_RESET,
   INSTRUCTOR_UPDATE_CONTENT_RESET,
 } from '../constants/instructorConstants'
@@ -54,6 +55,7 @@ const ContentListItem = ({
 
   useEffect(() => {
     if (contentUpdateSuccess || contentDeleteSuccess) {
+      dispatch({ type: INSTRUCTOR_COURSE_UPDATE_SUCCESS })
       dispatch({ type: INSTRUCTOR_DELETE_CONTENT_RESET })
       dispatch({ type: INSTRUCTOR_UPDATE_CONTENT_RESET })
       dispatch({ type: INSTRUCTOR_COURSE_DETAILS_RESET })

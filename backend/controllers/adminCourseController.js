@@ -52,6 +52,7 @@ const updateCourse = asyncHandler(async (req, res) => {
     course.name = req.body.name || course.name
     course.image = req.body.image || course.image
     course.price = req.body.price || course.price
+    course.category = req.body.category || course.category
     course.description = req.body.description || course.description
     course.instructor = req.body.instructor || course.instructor
     course.isPublished = req.body.isPublished
@@ -63,6 +64,7 @@ const updateCourse = asyncHandler(async (req, res) => {
         name: courseUpdated.name,
         image: courseUpdated.image,
         price: courseUpdated.price,
+        category: courseUpdated.category,
         description: courseUpdated.description,
         instructor: courseUpdated.instructor,
         isPublished: courseUpdated.isPublished,

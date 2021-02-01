@@ -12,6 +12,10 @@ import {
   Checkbox,
   FormControlLabel,
   Typography,
+  MenuItem,
+  Select,
+  InputLabel,
+  FormControl,
 } from '@material-ui/core'
 import FormContainer from '../components/FormContainer'
 import { makeStyles } from '@material-ui/core/styles'
@@ -26,6 +30,10 @@ import {
   ADMIN_COURSE_UPDATE_RESET,
 } from '../constants/adminConstants'
 import TextEditor from '../components/TextEditor'
+import { listCategories } from '../actions/courseActions'
+import CategorySelectList from '../components/CategorySelectList'
+import ContentListItem from '../components/ContentListItem'
+import { INSTRUCTOR_COURSE_UPDATE_RESET } from '../constants/instructorConstants'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,12 +64,20 @@ const AdminCourseEditScreen = ({ match, history }) => {
   const adminCourseDetails = useSelector((state) => state.adminCourseDetails)
   const { courseDetails, loading, error } = adminCourseDetails
 
+  const categoryList = useSelector((state) => state.categoryList)
+  const { categories } = categoryList
+
   const adminCourseUpdate = useSelector((state) => state.adminCourseUpdate)
   const {
     loading: updateLoading,
     success: updateSuccess,
     error: updateError,
   } = adminCourseUpdate
+
+  const instructorCourseUpdate = useSelector(
+    (state) => state.instructorCourseUpdate
+  )
+  const { success: instructorUpdateSuccess } = instructorCourseUpdate
 
   const [name, setName] = useState('')
   const [price, setPrice] = useState(0)
@@ -70,6 +86,14 @@ const AdminCourseEditScreen = ({ match, history }) => {
   const [isPublished, setIsPublished] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [slug, setSlug] = useState('')
+  const [letMenuClose, setLetMenuClose] = useState(false)
+  const [category, setCategory] = useState('')
+  const [courseContents, setCourseContents] = useState([])
+
+  const selectCategoryHanlder = (cate) => {
+    setCategory(cate)
+    setLetMenuClose(false)
+  }
 
   const uploadFileHandler = async (e) => {
     const file = e.target.files[0]
@@ -107,6 +131,7 @@ const AdminCourseEditScreen = ({ match, history }) => {
         name,
         price,
         image,
+        category,
         description,
         isPublished,
       })
@@ -117,41 +142,78 @@ const AdminCourseEditScreen = ({ match, history }) => {
     setIsPublished(isChecked)
   }
 
-  // useEffect
-  // check if user existed
-  // check if course details exisited
   useEffect(() => {
-    if (updateSuccess) {
+    if (updateSuccess || instructorUpdateSuccess) {
+      dispatch({ type: INSTRUCTOR_COURSE_UPDATE_RESET })
       dispatch({ type: ADMIN_COURSE_DETAILS_RESET })
       dispatch({ type: ADMIN_COURSE_UPDATE_RESET })
-      history.push('/admin')
-    } else {
-      if (userInfo && userInfo.isAdmin) {
-        if (
-          !courseDetails ||
-          !courseDetails.name ||
-          courseDetails._id !== courseId
-        ) {
-          setName('')
-          setPrice(0)
-          setDescription('')
-          setImage('')
-          setIsPublished(false)
-          setSlug('')
-          dispatch(getCourseById(courseId))
-        } else {
-          setName(courseDetails.name)
-          setSlug(courseDetails.slug)
-          setPrice(courseDetails.price)
-          setDescription(courseDetails.description)
-          setImage(courseDetails.image)
-          setIsPublished(courseDetails.isPublished)
-        }
+      history.go(0)
+    }
+
+    if (userInfo && userInfo.isAdmin) {
+      if (
+        !courseDetails ||
+        !courseDetails.name ||
+        courseDetails._id !== courseId
+      ) {
+        setName('')
+        setPrice(0)
+        setDescription('')
+        setImage('')
+        setIsPublished(false)
+        setSlug('')
+        dispatch(listCategories())
+        setCategory('')
+        setCourseContents([])
+        dispatch(getCourseById(courseId))
       } else {
-        history.push('/login')
+        setName(courseDetails.name)
+        setSlug(courseDetails.slug)
+        setPrice(courseDetails.price)
+        setCategory(courseDetails.category)
+        setDescription(courseDetails.description)
+        setImage(courseDetails.image)
+        setCourseContents(courseDetails.courseContents)
+        setIsPublished(courseDetails.isPublished)
+      }
+    } else {
+      history.push('/')
+    }
+  }, [
+    userInfo,
+    courseDetails,
+    dispatch,
+    courseId,
+    history,
+    updateSuccess,
+    instructorUpdateSuccess,
+  ])
+  const [cantDelete, setCantDelete] = useState(false)
+  const [expanded, setExpanded] = useState(false)
+  const handleAccordion = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false)
+  }
+
+  const deleteHandler = () => {
+    if (courseDetails.isPublished || courseDetails.totalSold !== 0) {
+      setCantDelete(true)
+      alert(
+        `You cannot delete a published course with total sold of ${courseDetails.totalSold}. You can choose to unpublished this course if have to.`
+      )
+    } else {
+      const content =
+        courseDetails && courseContents && courseContents.length
+          ? courseContents.length
+          : 0
+      const deleteMsg = `Are you wish to delete this course and it's contents?\n${
+        content !== 0 ? `This course consist of ${content} chapters.` : null
+      }\n(*This action is not reversable. Think twice!)`
+
+      if (window.confirm(deleteMsg)) {
+        // dispatch(deleteCourse(courseId))
       }
     }
-  }, [userInfo, courseDetails, dispatch, courseId, history, updateSuccess])
+  }
 
   return loading ? (
     <Loader />
@@ -166,12 +228,12 @@ const AdminCourseEditScreen = ({ match, history }) => {
         </Button>
       </Grid>
       <h1>
-        <SubdirectoryArrowRightIcon /> {courseDetails.name}
+        <SubdirectoryArrowRightIcon /> {courseDetails && courseDetails.name}
       </h1>
       {updateLoading && <Loader />}
       {updateError && <Message>{updateError}</Message>}
       <Grid container spacing={3}>
-        <Grid item md={5} xs={12}>
+        <Grid item md={4} xs={12}>
           <Button
             style={{ margin: '7px 0' }}
             onClick={() =>
@@ -181,10 +243,10 @@ const AdminCourseEditScreen = ({ match, history }) => {
             Preview This Course
           </Button>
           <Paper className={classes.leftPanel}>
+            <Typography variant='body1'>Course Details</Typography>
+            <Divider style={{ marginBottom: 10 }} />
             <img src={image} alt='' className={classes.img} />
-            <p style={{ background: '#eee', padding: 7 }}>
-              {image.substr(8, 40)}
-            </p>
+            <p style={{ background: '#eee', padding: 7 }}>{image.substr(34)}</p>
             <form
               onSubmit={submitHandler}
               method='post'
@@ -230,6 +292,27 @@ const AdminCourseEditScreen = ({ match, history }) => {
                 <Button onClick={() => setSlug(generateSlug(name))}>
                   Generate
                 </Button>
+              </FormContainer>
+              <FormContainer>
+                <FormControl>
+                  <InputLabel>Category</InputLabel>
+                  <Select
+                    value={category}
+                    open={letMenuClose}
+                    onOpen={() => setLetMenuClose(true)}
+                  >
+                    <b style={{ paddingLeft: 7 }}>Selected Category</b>
+                    <MenuItem value={category}>{category}</MenuItem>
+                    {categories &&
+                      categories.map((category, i) => (
+                        <CategorySelectList
+                          key={i}
+                          category={category}
+                          selectCategoryHanlder={selectCategoryHanlder}
+                        />
+                      ))}
+                  </Select>
+                </FormControl>
               </FormContainer>
 
               <FormContainer>
@@ -279,42 +362,38 @@ const AdminCourseEditScreen = ({ match, history }) => {
               </Button>
             </form>
           </Paper>
-
-          <Divider />
-          <h2>Total Sales</h2>
-          <Paper>
-            {courseDetails.totalSold ? (
-              <Typography variant='h3' component='h3' style={{ padding: 10 }}>
-                {courseDetails.totalSold}
-              </Typography>
-            ) : (
-              <Message severity='info'>No sales</Message>
-            )}
-          </Paper>
-
-          <Divider />
+          <br />
+          <Button
+            onClick={deleteHandler}
+            variant='outlined'
+            color='secondary'
+            disabled={cantDelete ? true : false}
+          >
+            Delete This Course
+          </Button>
         </Grid>
-        <Grid item md={7} xs={12}>
+        <Grid item md={6} xs={12}>
           <h2>Course Contents</h2>
           <Paper>
             <List>
-              {courseDetails.courseContents ? (
-                courseDetails.courseContents.length === 0 ? (
+              {courseContents ? (
+                courseContents.length === 0 ? (
                   <ListItem>
-                    <Message severity='info'>Zero content yet.</Message>
+                    <Message severity='info'>No content yet.</Message>
                   </ListItem>
                 ) : (
-                  courseDetails.courseContents.map((course, index) => (
-                    <div key={course._id}>
-                      <ListItem>
-                        <ListItemText
-                          primary={`${index + 1}.  ${course.name}`}
-                        />
-                        <Button>Edit</Button>
-                      </ListItem>
-                      <Divider />
-                    </div>
-                  ))
+                  <>
+                    {courseContents.map((content) => (
+                      <ContentListItem
+                        key={content._id}
+                        expanded={expanded}
+                        handleAccordion={handleAccordion}
+                        count={content.chapter}
+                        courseId={courseId}
+                        content={content}
+                      />
+                    ))}
+                  </>
                 )
               ) : (
                 <ListItem>
@@ -322,6 +401,40 @@ const AdminCourseEditScreen = ({ match, history }) => {
                 </ListItem>
               )}
             </List>
+            {courseContents && courseContents.length !== 0 ? (
+              <span
+                style={{
+                  textAlign: 'center',
+                  display: 'block',
+                  padding: '7px 0',
+                }}
+              >
+                You've total {courseContents.length} chapters.
+              </span>
+            ) : null}
+          </Paper>
+        </Grid>
+        <Grid item md={2} xs={12}>
+          <h2>Total Sales</h2>
+          <Paper>
+            {courseDetails && courseDetails.totalSold ? (
+              <Typography variant='h3' component='h3' style={{ padding: 10 }}>
+                {courseDetails && courseDetails.totalSold}
+              </Typography>
+            ) : (
+              <Message severity='info'>No sales</Message>
+            )}
+          </Paper>
+
+          <h2>Rating</h2>
+          <Paper>
+            {courseDetails && courseDetails.rating ? (
+              <Typography variant='h3' component='h3' style={{ padding: 10 }}>
+                {courseDetails.rating}
+              </Typography>
+            ) : (
+              <Message severity='info'>No rating</Message>
+            )}
           </Paper>
         </Grid>
       </Grid>
