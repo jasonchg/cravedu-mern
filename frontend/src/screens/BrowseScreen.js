@@ -38,12 +38,11 @@ const BrowseScreen = ({ match }) => {
 
   useEffect(() => {
     dispatch(listCategories())
-
+    dispatch(bestSoldCourses())
     if (match.params.category) {
       dispatch(listCoursesByCategory(category))
     } else {
       dispatch(listCourses(keyword, pageNumber))
-      dispatch(bestSoldCourses())
     }
   }, [dispatch, keyword])
 

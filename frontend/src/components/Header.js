@@ -314,43 +314,6 @@ const Header = () => {
                       </Button>
                     )}
 
-                    {userInfo.isAdmin && (
-                      <>
-                        <Button
-                          color='inherit'
-                          startIcon={<BallotIcon />}
-                          onClick={openAdminMenuHandler}
-                        >
-                          Admin
-                        </Button>
-                        <Menu
-                          id='admin-menu'
-                          anchorEl={openMenuAdmin}
-                          keepMounted
-                          open={Boolean(openMenuAdmin)}
-                          onClose={closeAdminMenuHandler}
-                        >
-                          <MenuItem onClick={goToManageCourses}>
-                            <ListItemIcon>
-                              <ListIcon fontSize='small' />
-                            </ListItemIcon>
-                            <Typography variant='inherit'>
-                              Manage Courses
-                            </Typography>
-                          </MenuItem>
-
-                          <MenuItem onClick={goToManageUsers}>
-                            <ListItemIcon>
-                              <AccountCircleIcon fontSize='small' />
-                            </ListItemIcon>
-                            <Typography variant='inherit'>
-                              Manage User
-                            </Typography>
-                          </MenuItem>
-                        </Menu>
-                      </>
-                    )}
-
                     <Button
                       color='inherit'
                       onClick={openUserMenuHandler}
@@ -375,13 +338,52 @@ const Header = () => {
                           {userInfo.name}
                         </Typography>
                       </MenuItem>
-                      <Divider />
+
                       <MenuItem onClick={goToMyCourses}>
                         <ListItemIcon>
                           <ListIcon fontSize='small' />
                         </ListItemIcon>
                         <Typography variant='inherit'> My Learning</Typography>
                       </MenuItem>
+
+                      {userInfo.isAdmin && (
+                        <>
+                          <MenuItem onClick={openAdminMenuHandler}>
+                            <ListItemIcon>
+                              <BallotIcon fontSize='small' />
+                            </ListItemIcon>
+                            <Typography variant='inherit'>
+                              Admin Panels
+                            </Typography>
+                          </MenuItem>
+
+                          <Menu
+                            id='admin-menu'
+                            anchorEl={openMenuAdmin}
+                            keepMounted
+                            open={Boolean(openMenuAdmin)}
+                            onClose={closeAdminMenuHandler}
+                          >
+                            <MenuItem onClick={goToManageCourses}>
+                              <ListItemIcon>
+                                <ListIcon fontSize='small' />
+                              </ListItemIcon>
+                              <Typography variant='inherit'>
+                                Manage Courses
+                              </Typography>
+                            </MenuItem>
+
+                            <MenuItem onClick={goToManageUsers}>
+                              <ListItemIcon>
+                                <AccountCircleIcon fontSize='small' />
+                              </ListItemIcon>
+                              <Typography variant='inherit'>
+                                Manage User
+                              </Typography>
+                            </MenuItem>
+                          </Menu>
+                        </>
+                      )}
 
                       <MenuItem onClick={logoutUser}>
                         <ListItemIcon>
