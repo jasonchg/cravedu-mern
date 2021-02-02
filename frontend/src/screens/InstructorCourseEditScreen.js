@@ -251,6 +251,10 @@ const InstructorCourseEditScreen = ({ match, history }) => {
     setExpanded(isExpanded ? panel : false)
   }
 
+  const publishThisCourse = () => {
+    alert('Already notify admin...')
+  }
+
   return loading ? (
     <Loader />
   ) : error ? (
@@ -261,16 +265,19 @@ const InstructorCourseEditScreen = ({ match, history }) => {
         <Button
           onClick={() => history.push('/instructor')}
           style={{ marginRight: 10 }}
+          variant='outlined'
         >
           Go Back
         </Button>
-        <Button
-          onClick={() => history.push('/instructor')}
-          variant='outlined'
-          color='inherit'
-        >
-          I Wish to Publish this course
-        </Button>
+        {courseDetails.isPublished ? null : (
+          <Button
+            onClick={publishThisCourse}
+            variant='outlined'
+            color='inherit'
+          >
+            I Wish to Publish this course
+          </Button>
+        )}
       </Grid>
       <h1>
         <SubdirectoryArrowRightIcon /> {courseDetails && courseDetails.name}{' '}
