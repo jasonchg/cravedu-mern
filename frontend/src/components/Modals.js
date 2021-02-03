@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { myTrim } from '../utils'
 import axios from 'axios'
 import { INSTRUCTOR_UPDATE_CONTENT_FAIL } from '../constants/instructorConstants'
+import AddQuizModal from './AddQuizModal'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -40,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Modals = ({ modalOpen, modalClose, content, courseId }) => {
+const Modals = ({ modalOpen = false, modalClose, content, courseId }) => {
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
@@ -50,9 +51,13 @@ const Modals = ({ modalOpen, modalClose, content, courseId }) => {
   const [videoUploading, setVideoUploading] = useState(false)
   const [progress, setProgress] = useState(0)
   const [name, setName] = useState(content.name)
-  const [chapter, setChapter] = useState(content.chapter)
-
   const [video, setVideo] = useState('')
+
+  const [openQuiz, setOpenQuiz] = useState(false)
+
+  const handleQuizModal = (quizList) => {
+    //  add quizlist to content obbject
+  }
 
   const uploadVideoHandler = async (e) => {
     e.preventDefault()
@@ -86,15 +91,18 @@ const Modals = ({ modalOpen, modalClose, content, courseId }) => {
 
   const updateContentHandler = (e) => {
     e.preventDefault()
-    dispatch(
-      updateContent(courseId, {
-        contentId: content._id,
-        name,
-        chapter,
-        video,
-      })
-    )
-    modalClose()
+    if (content.name === name && content.video === video) {
+      modalClose()
+    } else {
+      dispatch(
+        updateContent(courseId, {
+          contentId: content._id,
+          name,
+          video,
+        })
+      )
+      modalClose()
+    }
   }
 
   return (
@@ -103,8 +111,6 @@ const Modals = ({ modalOpen, modalClose, content, courseId }) => {
       open={modalOpen}
       onClose={modalClose}
       BackdropComponent={Backdrop}
-      aria-labelledby='simple-modal-title'
-      aria-describedby='simple-modal-description'
     >
       <div className={classes.paper}>
         <Typography variant='caption'>Chapter {content.chapter}</Typography>
@@ -128,6 +134,13 @@ const Modals = ({ modalOpen, modalClose, content, courseId }) => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
+            </FormContainer>
+
+            <FormContainer>
+              <Button variant='contained' onClick={() => setOpenQuiz(true)}>
+                Add Quiz
+              </Button>
+              <AddQuizModal openQuiz={openQuiz} setOpenQuiz={setOpenQuiz} />
             </FormContainer>
 
             <FormContainer>

@@ -350,7 +350,7 @@ const VideoLearningScreen = ({ history }) => {
 
   return (
     <>
-      {loading ? (
+      {loading || !course ? (
         <Loader />
       ) : error ? (
         <Message>{error}</Message>

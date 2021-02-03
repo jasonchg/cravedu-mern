@@ -63,7 +63,7 @@ const ContentListItem = ({
   }, [contentUpdateSuccess, contentDeleteSuccess, dispatch])
 
   return (
-    <div key={content._id}>
+    <div>
       <ListItem>
         <Accordion
           style={{ width: '100%', background: '#efefef' }}

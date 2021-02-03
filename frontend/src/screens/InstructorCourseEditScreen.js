@@ -157,6 +157,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
 
   const submitHandler = (e) => {
     e.preventDefault()
+
     dispatch(
       updateCourse({
         _id: courseId,
@@ -255,7 +256,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
     alert('Already notify admin...')
   }
 
-  return loading ? (
+  return loading || !courseDetails ? (
     <Loader />
   ) : error ? (
     <Message>{error}</Message>
