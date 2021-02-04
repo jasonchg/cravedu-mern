@@ -137,10 +137,21 @@ const Modals = ({ modalOpen = false, modalClose, content, courseId }) => {
             </FormContainer>
 
             <FormContainer>
-              <Button variant='contained' onClick={() => setOpenQuiz(true)}>
-                Add Quiz
-              </Button>
-              <AddQuizModal openQuiz={openQuiz} setOpenQuiz={setOpenQuiz} />
+              {content.quizzes.length > 0 ? (
+                <Button variant='contained' onClick={() => setOpenQuiz(true)}>
+                  Edit Quizzes
+                </Button>
+              ) : (
+                <Button variant='contained' onClick={() => setOpenQuiz(true)}>
+                  Add Quiz
+                </Button>
+              )}
+
+              <AddQuizModal
+                openQuiz={openQuiz}
+                setOpenQuiz={setOpenQuiz}
+                quizzes={content.quizzes ? content.quizzes : []}
+              />
             </FormContainer>
 
             <FormContainer>

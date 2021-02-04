@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button, Grid, makeStyles, Modal, TextField } from '@material-ui/core'
 import FormContainer from './FormContainer'
 
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const AddQuizModal = ({ openQuiz, setOpenQuiz }) => {
+const AddQuizModal = ({ openQuiz, setOpenQuiz, quizzes }) => {
   const classes = useStyles()
   const [modalStyle] = useState(getModalStyle)
 
@@ -34,9 +34,19 @@ const AddQuizModal = ({ openQuiz, setOpenQuiz }) => {
   const [currentIncorrectAnswer1, setCurrentIncorrectAnswer1] = useState('')
   const [currentIncorrectAnswer2, setCurrentIncorrectAnswer2] = useState('')
   const [currentIncorrectAnswer3, setCurrentIncorrectAnswer3] = useState('')
-
-  const [questionLists, setQuestionLists] = useState([])
+  const [questionLists, setQuestionLists] = useState(quizzes)
   const [currentIndex, setCurrentIndex] = useState(0)
+
+  useEffect(() => {
+    if (questionLists.length > 0) {
+      setCurrentIndex(0)
+      setCurrentQuestion(questionLists[0].question)
+      setCurrentCorrectAnswer(questionLists[0].correctAnswer)
+      setCurrentIncorrectAnswer1(questionLists[0].incorrectAnswers[0])
+      setCurrentIncorrectAnswer2(questionLists[0].incorrectAnswers[1])
+      setCurrentIncorrectAnswer3(questionLists[0].incorrectAnswers[2])
+    }
+  }, [questionLists])
 
   const showCurrentSet = (list, i) => {
     setCurrentIndex(i)
@@ -45,7 +55,6 @@ const AddQuizModal = ({ openQuiz, setOpenQuiz }) => {
     setCurrentIncorrectAnswer1(list.incorrectAnswers[0])
     setCurrentIncorrectAnswer2(list.incorrectAnswers[1])
     setCurrentIncorrectAnswer3(list.incorrectAnswers[2])
-    console.log(questionLists)
   }
 
   const reset = () => {
@@ -118,76 +127,82 @@ const AddQuizModal = ({ openQuiz, setOpenQuiz }) => {
     <Grid container style={modalStyle} className={classes.paper} spacing={3}>
       <Grid item xs={12}>
         <h2>Question : {currentIndex + 1}</h2>
-        <FormContainer>
-          <TextField
-            required
-            fullWidth
-            type='text'
-            label='Question'
-            placeholder=''
-            variant='filled'
-            value={currentQuestion}
-            onChange={(e) => setCurrentQuestion(e.target.value)}
-          />
-        </FormContainer>
-        <FormContainer>
-          <TextField
-            required
-            fullWidth
-            type='text'
-            label='Correct Answer'
-            placeholder=''
-            variant='filled'
-            value={currentCorrectAnswer}
-            onChange={(e) => setCurrentCorrectAnswer(e.target.value)}
-          />
-        </FormContainer>
-        <FormContainer>
-          <TextField
-            required
-            fullWidth
-            type='text'
-            label='Incorrect Answer 1'
-            placeholder=''
-            variant='filled'
-            value={currentIncorrectAnswer1}
-            onChange={(e) => setCurrentIncorrectAnswer1(e.target.value)}
-          />
-        </FormContainer>
-        <FormContainer>
-          <TextField
-            required
-            fullWidth
-            type='text'
-            label='Incorrect Answer 2'
-            placeholder=''
-            variant='filled'
-            value={currentIncorrectAnswer2}
-            onChange={(e) => setCurrentIncorrectAnswer2(e.target.value)}
-          />
-        </FormContainer>
-        <FormContainer>
-          <TextField
-            required
-            fullWidth
-            type='text'
-            label='Incorrect Answer 3'
-            placeholder=''
-            variant='filled'
-            value={currentIncorrectAnswer3}
-            onChange={(e) => setCurrentIncorrectAnswer3(e.target.value)}
-          />
-        </FormContainer>
-        <Button variant='contained' onClick={() => updateQuestion()}>
-          Comfirm
-        </Button>
-        <Button
-          style={{ marginLeft: 7 }}
-          variant='contained'
-          onClick={() => reset()}
-        >
-          Reset
-        </Button>
+        <form>
+          <FormContainer>
+            <TextField
+              required
+              fullWidth
+              type='text'
+              label='Question'
+              placeholder=''
+              variant='filled'
+              value={currentQuestion}
+              onChange={(e) => setCurrentQuestion(e.target.value)}
+            />
+          </FormContainer>
+          <FormContainer>
+            <TextField
+              required
+              fullWidth
+              type='text'
+              label='Correct Answer'
+              placeholder=''
+              variant='filled'
+              value={currentCorrectAnswer}
+              onChange={(e) => setCurrentCorrectAnswer(e.target.value)}
+            />
+          </FormContainer>
+          <FormContainer>
+            <TextField
+              required
+              fullWidth
+              type='text'
+              label='Incorrect Answer 1'
+              placeholder=''
+              variant='filled'
+              value={currentIncorrectAnswer1}
+              onChange={(e) => setCurrentIncorrectAnswer1(e.target.value)}
+            />
+          </FormContainer>
+          <FormContainer>
+            <TextField
+              required
+              fullWidth
+              type='text'
+              label='Incorrect Answer 2'
+              placeholder=''
+              variant='filled'
+              value={currentIncorrectAnswer2}
+              onChange={(e) => setCurrentIncorrectAnswer2(e.target.value)}
+            />
+          </FormContainer>
+          <FormContainer>
+            <TextField
+              required
+              fullWidth
+              type='text'
+              label='Incorrect Answer 3'
+              placeholder=''
+              variant='filled'
+              value={currentIncorrectAnswer3}
+              onChange={(e) => setCurrentIncorrectAnswer3(e.target.value)}
+            />
+          </FormContainer>
+          <Button
+            variant='contained'
+            onClick={() => updateQuestion()}
+            type='submit'
+          >
+            Comfirm
+          </Button>
+          <Button
+            style={{ marginLeft: 7 }}
+            variant='contained'
+            onClick={() => reset()}
+          >
+            Reset
+          </Button>
+        </form>
       </Grid>
       <Grid item xs={12}>
         <h3>Question List</h3>

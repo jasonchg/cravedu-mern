@@ -12,6 +12,7 @@ import {
   updateContent,
   deleteCourse,
   deleteContent,
+  updateContentQuizzes,
 } from '../controllers/instructorCourseControllers.js'
 
 const router = express.Router()
@@ -23,6 +24,10 @@ router
 router
   .route('/:id/updatecontent')
   .put(protectedRoute, instructorRoute, updateContent)
+
+router
+  .route('/:id/updatecontentquizzes/')
+  .put(protectedRoute, instructorRoute, updateContentQuizzes)
 
 router
   .route('/:id/addcontent')

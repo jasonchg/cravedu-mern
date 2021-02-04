@@ -179,6 +179,48 @@ const updateContent = asyncHandler(async (req, res) => {
   }
 })
 
+// @desc    Update a course content quizzes
+// @route   PUT /api/instructor/courses/:id/updatecontentquizzes/?:quizid
+// @access  Private
+
+const updateContentQuizzes = asyncHandler(async (req, res) => {
+  const course = await Course.findById(req.params.id)
+  const quizId = req.body.quizId || ''
+
+  if (course) {
+    let courseContents = course.courseContents
+    let content = courseContents.find((x) => x.id === req.body.contentId)
+
+    if (content) {
+      let quizzes = content.quizzes.length > 0 ? content.quizzes : []
+      if (quizzes.length > 0 || quizId != '') {
+        let currentQuiz = quizzes.find((y) => y._id == quizId)
+        if (currentQuiz) {
+          console.log(currentQuiz)
+          currentQuiz.question = req.body.question
+          currentQuiz.correctAnswer = req.body.correctAnswer
+          currentQuiz.incorrectAnswers = req.body.incorrectAnswers
+        } else {
+          res.status(404)
+          throw new Error('Quiz not found')
+        }
+      } else {
+        content.quizzes = req.body.quizzes || content.quizzes
+      }
+      try {
+        await course.save()
+        res.json({ message: 'Content quizzes updated.' })
+      } catch (e) {
+        res.status(500)
+        throw new Error('Something went wrong')
+      }
+    }
+  } else {
+    res.status(404)
+    throw new Error('Content not found')
+  }
+})
+
 // @desc    Delete a course
 // @route   DELETE /api/instructor/courses/:id
 // @access  Private
@@ -257,4 +299,5 @@ export {
   updateContent,
   deleteCourse,
   deleteContent,
+  updateContentQuizzes,
 }
