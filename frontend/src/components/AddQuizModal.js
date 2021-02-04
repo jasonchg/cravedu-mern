@@ -136,10 +136,12 @@ const AddQuizModal = ({
     ) {
       alert('Connot submit empty field')
     } else {
+      let qid = currentQuizId === '' ? 'new' : currentQuizId
+
       dispatch(
         updateSingleQuiz(courseId, {
           contentId,
-          quizId: currentQuizId,
+          quizId: qid,
           question: currentQuestion,
           correctAnswer: currentCorrectAnswer,
           incorrectAnswers: [
@@ -277,8 +279,13 @@ const AddQuizModal = ({
     </Grid>
   )
 
+  const closeModal = () => {
+    reset()
+    setOpenQuiz(false)
+  }
+
   return (
-    <Modal open={openQuiz} onClose={() => setOpenQuiz(false)}>
+    <Modal open={openQuiz} onClose={() => closeModal()}>
       {questionForm()}
     </Modal>
   )

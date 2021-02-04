@@ -131,6 +131,7 @@ const addCourseContent = asyncHandler(async (req, res) => {
         name: req.body.name,
         video: '',
         duration: '',
+        quizzes: [],
       }
 
       course.courseContents.push(newContent)
