@@ -20,7 +20,7 @@ const Footer = () => {
       <div className='footer'>
         <Container>
           <div className='left-footer'>
-            <img src={Logo} alt='' />
+            <img src={Logo} alt='' onDragStart={(e) => e.preventDefault()} />
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Non
               perferendis voluptates, dicta est odit accusamus?

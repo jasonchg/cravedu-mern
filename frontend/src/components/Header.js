@@ -140,6 +140,7 @@ const Header = () => {
           <Toolbar style={{ margin: 0, padding: 0 }}>
             <Link href='/'>
               <img
+                onDragStart={(e) => e.preventDefault()}
                 src={CraveduLogo}
                 alt='logo'
                 style={{ width: 90, marginLeft: 0, paddingLeft: 0 }}

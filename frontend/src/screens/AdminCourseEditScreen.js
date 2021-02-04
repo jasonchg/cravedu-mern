@@ -245,7 +245,12 @@ const AdminCourseEditScreen = ({ match, history }) => {
           <Paper className={classes.leftPanel}>
             <Typography variant='body1'>Course Details</Typography>
             <Divider style={{ marginBottom: 10 }} />
-            <img src={image} alt='' className={classes.img} />
+            <img
+              src={image}
+              alt=''
+              className={classes.img}
+              onDragStart={(e) => e.preventDefault()}
+            />
             <p style={{ background: '#eee', padding: 7 }}>{image.substr(34)}</p>
             <form
               onSubmit={submitHandler}

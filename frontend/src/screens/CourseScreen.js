@@ -239,6 +239,7 @@ const CourseScreen = ({ history }) => {
                       src={course.image}
                       alt={course.name}
                       className={classes.image}
+                      onDragStart={(e) => e.preventDefault()}
                     />
                   </div>
                 </Grid>

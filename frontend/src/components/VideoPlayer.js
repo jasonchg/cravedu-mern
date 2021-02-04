@@ -19,6 +19,8 @@ const VideoPlayer = ({ videoPath, selectedVideoId, courseId }) => {
   return (
     <div className='player-wrapper'>
       <ReactPlayer
+        config={{ file: { attributes: { controlsList: 'nodownload' } } }}
+        onContextMenu={(e) => e.preventDefault()}
         className='react-player'
         controls
         volume={1}

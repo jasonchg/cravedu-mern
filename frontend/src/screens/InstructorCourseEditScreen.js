@@ -385,7 +385,12 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                   picture.
                 </p>
                 <Grid item xs={6}>
-                  <img src={image} alt='' className={classes.img} />
+                  <img
+                    src={image}
+                    alt=''
+                    className={classes.img}
+                    onDragStart={(e) => e.preventDefault()}
+                  />
                 </Grid>
                 <Grid item xs={6}>
                   <FormContainer>

@@ -28,6 +28,8 @@ const useStyles = makeStyles((theme) => ({
   accordionBody: {
     background: '#eee',
     color: '#090b2f',
+    display: 'flex',
+    flexDirection: 'column',
   },
   materials: {
     borderTop: '1px solid #090b2f',
@@ -35,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
     color: '#090b2f',
     paddingTop: 2,
     paddingBottom: 10,
+    display: 'block',
+    width: '100%',
+    textAlign: 'center',
   },
   quiz: {
     paddingTop: 10,
@@ -107,7 +112,6 @@ const CourseContentList = ({
       ),
     }))
     setQuestions(shuffledQuestions)
-    console.log(shuffledQuestions)
   }, [])
 
   const handleAnswers = (answer) => {
@@ -204,46 +208,58 @@ const CourseContentList = ({
           </Typography>
         </AccordionSummary>
         <AccordionDetails className={classes.accordionBody}>
-          <Checkbox checked={checked} onChange={checkWatched} color='primary' />
-          <Button
-            size='small'
-            onClick={() => {
-              selectTopicHandler(content._id)
-              setSelectedVideoName({
-                name: content.name,
-                chapter: content.chapter,
-              })
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              textAlign: 'start',
             }}
           >
-            <h4
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                textAlign: 'start',
+            <Checkbox
+              checked={checked}
+              onChange={checkWatched}
+              color='primary'
+            />
+            <Button
+              size='small'
+              onClick={() => {
+                selectTopicHandler(content._id)
+                setSelectedVideoName({
+                  name: content.name,
+                  chapter: content.chapter,
+                })
               }}
             >
-              <PlayCircleFilledIcon />
-              <div style={{ marginLeft: 7 }}>{content.name}</div>
-            </h4>
-          </Button>
-        </AccordionDetails>
-        <div className={`${classes.materials} ${classes.quiz}`}>
-          <strong style={{ margin: 7 }}>Quiz</strong>
-          <Button variant='contained' onClick={() => setOpen(true)}>
-            Take Quiz
-          </Button>
+              <h4
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  textAlign: 'start',
+                }}
+              >
+                <PlayCircleFilledIcon fontSize='small' />
+                <div style={{ marginLeft: 7 }}>{content.name}</div>
+              </h4>
+            </Button>
+          </div>
+          {content.quizzes.length > 0 && (
+            <div className={`${classes.materials} ${classes.quiz}`}>
+              <Button
+                variant='contained'
+                onClick={() => setOpen(true)}
+                size='large'
+                color='primary'
+                style={{ width: '100%' }}
+              >
+                Take Quiz
+              </Button>
 
-          <Modal open={open} onClose={handleModalClose}>
-            {body}
-          </Modal>
-        </div>
-        <div className={classes.materials}>
-          <h4 style={{ margin: 7 }}>Supporting Materials</h4>
-          <ul>
-            <li>PDF File</li>
-            <li>Slides File</li>
-          </ul>
-        </div>
+              <Modal open={open} onClose={handleModalClose}>
+                {body}
+              </Modal>
+            </div>
+          )}
+        </AccordionDetails>
       </Accordion>
     </ListItemText>
   )
