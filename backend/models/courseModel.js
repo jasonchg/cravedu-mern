@@ -16,12 +16,19 @@ const reviewSchema = mongoose.Schema(
   }
 )
 
+const quizSchema = mongoose.Schema({
+  question: { type: String, required: true },
+  correctAnswer: { type: String, required: true },
+  incorrectAnswers: [{ type: String, required: true }],
+})
+
 const contentSchema = mongoose.Schema(
   {
     name: { type: String, required: true },
     chapter: { type: String, required: true },
     video: { type: String, default: '' },
     duration: { type: String, default: '' },
+    quizzes: [quizSchema],
   },
   {
     timestamps: true,

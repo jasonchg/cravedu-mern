@@ -99,36 +99,8 @@ const CourseContentList = ({
   const [currentIndex, setCurrentIndex] = useState(0)
   const [score, setScore] = useState(0)
 
-  const questionSet = [
-    {
-      question: 'questions 1',
-      correctAnswer: 'questions 1',
-      incorrectAnswers: ['qwe', 'asdasd', 'qwe'],
-    },
-    {
-      question: 'questions 2',
-      correctAnswer: 'questions 2',
-      incorrectAnswers: ['qwe', 'aaaa', 'qwe'],
-    },
-    {
-      question: 'questions 3',
-      correctAnswer: 'questions 3',
-      incorrectAnswers: ['qwe', 'asdasdasd', 'questions'],
-    },
-    {
-      question: 'questions 4',
-      correctAnswer: 'questions 4',
-      incorrectAnswers: ['zxczxczc', 'qwe', 'qwe'],
-    },
-    {
-      question: 'questions 5',
-      correctAnswer: 'questions 5',
-      incorrectAnswers: ['qwe', 'dasdasd', 'qwe'],
-    },
-  ]
-
   useEffect(() => {
-    const shuffledQuestions = questionSet.map((questions) => ({
+    const shuffledQuestions = content.quizzes.map((questions) => ({
       ...questions,
       answers: [questions.correctAnswer, ...questions.incorrectAnswers].sort(
         () => Math.random() - 0.5
