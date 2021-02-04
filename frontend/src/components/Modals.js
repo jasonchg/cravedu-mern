@@ -18,6 +18,7 @@ import { myTrim } from '../utils'
 import axios from 'axios'
 import { INSTRUCTOR_UPDATE_CONTENT_FAIL } from '../constants/instructorConstants'
 import AddQuizModal from './AddQuizModal'
+import Loader from './Loader'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -54,10 +55,6 @@ const Modals = ({ modalOpen = false, modalClose, content, courseId }) => {
   const [video, setVideo] = useState('')
 
   const [openQuiz, setOpenQuiz] = useState(false)
-
-  const handleQuizModal = (quizList) => {
-    //  add quizlist to content obbject
-  }
 
   const uploadVideoHandler = async (e) => {
     e.preventDefault()
@@ -112,80 +109,86 @@ const Modals = ({ modalOpen = false, modalClose, content, courseId }) => {
       onClose={modalClose}
       BackdropComponent={Backdrop}
     >
-      <div className={classes.paper}>
-        <Typography variant='caption'>Chapter {content.chapter}</Typography>
-        <Typography variant='h4'>{content.name}</Typography>
+      {!content ? (
+        <Loader />
+      ) : (
+        <div className={classes.paper}>
+          <Typography variant='caption'>Chapter {content.chapter}</Typography>
+          <Typography variant='h4'>{content.name}</Typography>
 
-        <Divider />
-        <form
-          onSubmit={updateContentHandler}
-          method='post'
-          encType='multipart/form-data'
-        >
-          <div className={classes.form}>
-            <FormContainer>
-              <TextField
-                required
-                fullWidth
-                type='text'
-                label='Content Name'
-                placeholder=''
-                variant='filled'
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </FormContainer>
+          <Divider />
+          <form
+            onSubmit={updateContentHandler}
+            method='post'
+            encType='multipart/form-data'
+          >
+            <div className={classes.form}>
+              <FormContainer>
+                <TextField
+                  required
+                  fullWidth
+                  type='text'
+                  label='Content Name'
+                  placeholder=''
+                  variant='filled'
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </FormContainer>
 
-            <FormContainer>
-              {content.quizzes.length > 0 ? (
-                <Button variant='contained' onClick={() => setOpenQuiz(true)}>
-                  Edit Quizzes
+              <FormContainer>
+                {content.quizzes.length > 0 ? (
+                  <Button variant='contained' onClick={() => setOpenQuiz(true)}>
+                    Edit Quizzes
+                  </Button>
+                ) : (
+                  <Button variant='contained' onClick={() => setOpenQuiz(true)}>
+                    Add Quiz
+                  </Button>
+                )}
+
+                <AddQuizModal
+                  openQuiz={openQuiz}
+                  setOpenQuiz={setOpenQuiz}
+                  quizzes={content.quizzes ? content.quizzes : []}
+                  courseId={courseId}
+                  contentId={content._id}
+                />
+              </FormContainer>
+
+              <FormContainer>
+                <Typography>Video Resource</Typography>
+                <input
+                  type='file'
+                  name={myTrim(video)}
+                  placeholder='Enter Image Url'
+                  onChange={uploadVideoHandler}
+                />
+
+                <p style={{ background: '#eee', padding: 7 }}>
+                  <small>New path name:</small>{' '}
+                  {content.video ? content.video.substr(34) : '/'}
+                </p>
+                {videoUploading && <ProgressBar progress={progress} />}
+                {error && <Message>{error}</Message>}
+              </FormContainer>
+
+              <FormContainer>
+                <Button
+                  variant='outlined'
+                  type='submit'
+                  disabled={error ? true : false}
+                >
+                  Done
                 </Button>
-              ) : (
-                <Button variant='contained' onClick={() => setOpenQuiz(true)}>
-                  Add Quiz
+                <Button size='small' onClick={() => modalClose()}>
+                  Close
                 </Button>
-              )}
-
-              <AddQuizModal
-                openQuiz={openQuiz}
-                setOpenQuiz={setOpenQuiz}
-                quizzes={content.quizzes ? content.quizzes : []}
-              />
-            </FormContainer>
-
-            <FormContainer>
-              <Typography>Video Resource</Typography>
-              <input
-                type='file'
-                name={myTrim(video)}
-                placeholder='Enter Image Url'
-                onChange={uploadVideoHandler}
-              />
-
-              <p style={{ background: '#eee', padding: 7 }}>
-                <small>New path name:</small>{' '}
-                {content.video ? content.video.substr(34) : '/'}
-              </p>
-              {videoUploading && <ProgressBar progress={progress} />}
-              {error && <Message>{error}</Message>}
-            </FormContainer>
-
-            <FormContainer>
-              <Button
-                variant='outlined'
-                type='submit'
-                disabled={error ? true : false}
-              >
-                Done
-              </Button>
-              <Button size='small' onClick={() => modalClose()}>
-                Close
-              </Button>
-            </FormContainer>
-          </div>
-        </form>
-      </div>
+              </FormContainer>
+            </div>
+          </form>
+        </div>
+      )}
     </Modal>
   )
 }

@@ -24,6 +24,9 @@ import {
   INSTRUCTOR_DELETE_COURSE_REQUEST,
   INSTRUCTOR_DELETE_COURSE_SUCCESS,
   INSTRUCTOR_DELETE_COURSE_FAIL,
+  INSTRUCTOR_UPDATE_CONTENT_QUIZ_REQUEST,
+  INSTRUCTOR_UPDATE_CONTENT_QUIZ_SUCCESS,
+  INSTRUCTOR_UPDATE_CONTENT_QUIZ_FAIL,
 } from '../constants/instructorConstants'
 
 const createCourse = () => async (dispatch, getState) => {
@@ -244,6 +247,70 @@ const updateContent = (courseId, content) => async (dispatch, getState) => {
   }
 }
 
+const updateSingleQuiz = (courseId, content) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: INSTRUCTOR_UPDATE_CONTENT_QUIZ_REQUEST })
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    const { data } = await axios.put(
+      `/api/instructor/courses/${courseId}/updatecontentquizzes`,
+      content,
+      config
+    )
+
+    dispatch({ type: INSTRUCTOR_UPDATE_CONTENT_QUIZ_SUCCESS, payload: data })
+  } catch (e) {
+    dispatch({
+      type: INSTRUCTOR_UPDATE_CONTENT_QUIZ_FAIL,
+      payload:
+        e.response && e.response.data.message
+          ? e.response.data.message
+          : e.message,
+    })
+  }
+}
+
+const updateAllQuiz = (courseId, content) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: INSTRUCTOR_UPDATE_CONTENT_QUIZ_REQUEST })
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    await axios.put(
+      `/api/instructor/courses/${courseId}/updatecontentquizzes`,
+      content,
+      config
+    )
+
+    dispatch({ type: INSTRUCTOR_UPDATE_CONTENT_QUIZ_SUCCESS })
+  } catch (e) {
+    dispatch({
+      type: INSTRUCTOR_UPDATE_CONTENT_QUIZ_FAIL,
+      payload:
+        e.response && e.response.data.message
+          ? e.response.data.message
+          : e.message,
+    })
+  }
+}
+
 const deleteContent = (courseId, contentId) => async (dispatch, getState) => {
   try {
     dispatch({ type: INSTRUCTOR_DELETE_CONTENT_REQUEST })
@@ -284,4 +351,6 @@ export {
   createContent,
   updateContent,
   deleteContent,
+  updateSingleQuiz,
+  updateAllQuiz,
 }

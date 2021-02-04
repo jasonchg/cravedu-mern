@@ -43,6 +43,7 @@ import {
   instructorCourseDetailsReducer,
   instructorCourseListReducer,
   instructorCourseUpdateReducer,
+  instructorContentUpdateQuizReducer,
 } from './reducers/instructorReducers'
 
 const reducer = combineReducers({
@@ -53,6 +54,7 @@ const reducer = combineReducers({
   adminUserGetDetails: adminUserGetDetailsReducer,
   adminUserDelete: adminUserDeleteReducer,
   adminUserList: adminUserListReducer,
+  instructorContentQuizUpdate: instructorContentUpdateQuizReducer,
   instructorContentDelete: instructorContentDeleteReducer,
   instructorCourseDelete: instructorCourseDeleteReducer,
   instructorContentUpdate: instructorContentUpdateReducer,

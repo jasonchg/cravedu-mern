@@ -196,24 +196,48 @@ const updateContentQuizzes = asyncHandler(async (req, res) => {
       if (quizzes.length > 0 || quizId != '') {
         let currentQuiz = quizzes.find((y) => y._id == quizId)
         if (currentQuiz) {
-          console.log(currentQuiz)
-          currentQuiz.question = req.body.question
-          currentQuiz.correctAnswer = req.body.correctAnswer
-          currentQuiz.incorrectAnswers = req.body.incorrectAnswers
+          currentQuiz.question = req.body.question || currentQuiz.question
+          currentQuiz.correctAnswer =
+            req.body.correctAnswer || currentQuiz.correctAnswer
+          currentQuiz.incorrectAnswers =
+            req.body.incorrectAnswers || currentQuiz.incorrectAnswers
         } else {
-          res.status(404)
-          throw new Error('Quiz not found')
+          let newQuiz = {
+            question: req.body.question,
+            correctAnswer: req.body.correctAnswer,
+            incorrectAnswers: req.body.incorrectAnswers,
+          }
+
+          content.quizzes.push(newQuiz)
         }
-      } else {
-        content.quizzes = req.body.quizzes || content.quizzes
       }
       try {
         await course.save()
-        res.json({ message: 'Content quizzes updated.' })
+        res.json(content.quizzes)
       } catch (e) {
         res.status(500)
         throw new Error('Something went wrong')
       }
+    }
+  } else {
+    res.status(404)
+    throw new Error('Content not found')
+  }
+})
+
+const getContentQuizzes = asyncHandler(async (req, res) => {
+  const course = await Course.findById(req.params.id)
+
+  if (course) {
+    let courseContents = course.courseContents
+    let content = courseContents.find((x) => x.id === req.body.contentId)
+
+    if (content) {
+      let quizzes = content.quizzes.length > 0 ? content.quizzes : []
+      res.json({ quizzes })
+    } else {
+      res.status(404)
+      throw new Error('Quiz not found')
     }
   } else {
     res.status(404)
@@ -300,4 +324,5 @@ export {
   deleteCourse,
   deleteContent,
   updateContentQuizzes,
+  getContentQuizzes,
 }
