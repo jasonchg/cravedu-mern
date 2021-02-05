@@ -57,7 +57,7 @@ const ManageCourseScreen = ({ history, match }) => {
       <Grid container style={{ marginTop: 10 }}>
         <Grid item xs={12}>
           <Button onClick={() => history.push('/')}>Home</Button> |
-          <Button onClick={() => history.push('/admin/users')}>
+          <Button onClick={() => history.push('/admin-users')}>
             Go To Manage Users
           </Button>
         </Grid>

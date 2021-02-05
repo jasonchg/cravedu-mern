@@ -117,7 +117,7 @@ const Header = () => {
   }
 
   const goToManageUsers = () => {
-    window.location.href = '/admin/users'
+    window.location.href = '/admin-users'
     closeAdminMenuHandler()
   }
 
