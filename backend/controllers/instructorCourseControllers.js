@@ -181,7 +181,7 @@ const updateContent = asyncHandler(async (req, res) => {
 })
 
 // @desc    Update a course content quizzes
-// @route   PUT /api/instructor/courses/:id/updatecontentquizzes/?:quizid
+// @route   PUT /api/instructor/courses/:id/updatecontentquizzes/
 // @access  Private
 
 const updateContentQuizzes = asyncHandler(async (req, res) => {
@@ -226,6 +226,10 @@ const updateContentQuizzes = asyncHandler(async (req, res) => {
   }
 })
 
+// @desc    Get a content quizzes
+// @route   PUT /api/instructor/courses/:id/contentquizzes/
+// @access  Private
+
 const getContentQuizzes = asyncHandler(async (req, res) => {
   const course = await Course.findById(req.params.id)
 
@@ -243,6 +247,45 @@ const getContentQuizzes = asyncHandler(async (req, res) => {
   } else {
     res.status(404)
     throw new Error('Content not found')
+  }
+})
+
+// @desc    delete a course content quizz
+// @route   Delete /api/instructor/courses/:id/:contentId/:quizId/deletequiz
+// @access  Private
+
+const deleteContentQuizzes = asyncHandler(async (req, res) => {
+  const course = await Course.findById(req.params.id)
+  const contentId = req.params.contentId || ''
+  const quizId = req.params.quizId || ''
+
+  if (course) {
+    let courseContents = course.courseContents
+    let content = courseContents.find((x) => x.id === contentId)
+    console.log(content)
+
+    if (content) {
+      let quizzes = content.quizzes.length > 0 ? content.quizzes : []
+      if (quizzes.length > 0 || quizId != '') {
+        let currentQuiz = quizzes.find((y) => y._id == quizId)
+        if (currentQuiz) {
+          currentQuiz.remove()
+        } else {
+          res.status(404)
+          throw new Error('Quiz not found')
+        }
+      }
+      try {
+        await course.save()
+        res.json({ message: 'Quiz deleted' })
+      } catch (e) {
+        res.status(500)
+        throw new Error('Something went wrong')
+      }
+    }
+  } else {
+    res.status(404)
+    throw new Error('Course not found')
   }
 })
 
@@ -326,4 +369,5 @@ export {
   deleteContent,
   updateContentQuizzes,
   getContentQuizzes,
+  deleteContentQuizzes,
 }

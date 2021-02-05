@@ -96,6 +96,7 @@ const HomeScreen = ({ history, match }) => {
                   <Course
                     key={currentCourse._id}
                     course={courses.find((x) => x._id === currentCourse._id)}
+                    currentCourse={currentCourse}
                     learning
                   />
                 ))}

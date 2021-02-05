@@ -8,35 +8,10 @@ import {
   getCourseById,
   getCourses,
   updateCourse,
-  addCourseContent,
-  updateContent,
   deleteCourse,
-  deleteContent,
-  updateContentQuizzes,
-  getContentQuizzes,
 } from '../controllers/instructorCourseControllers.js'
 
 const router = express.Router()
-
-router
-  .route('/:id/:contentId')
-  .delete(protectedRoute, instructorRoute, deleteContent)
-
-router
-  .route('/:id/updatecontent')
-  .put(protectedRoute, instructorRoute, updateContent)
-
-router
-  .route('/:id/updatecontentquizzes/')
-  .put(protectedRoute, instructorRoute, updateContentQuizzes)
-
-router
-  .route('/:id/contentquizzes/')
-  .get(protectedRoute, instructorRoute, getContentQuizzes)
-
-router
-  .route('/:id/addcontent')
-  .post(protectedRoute, instructorRoute, addCourseContent)
 
 router
   .route('/')

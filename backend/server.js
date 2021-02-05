@@ -15,6 +15,7 @@ import adminRoutes from './routes/adminRoutes.js'
 import adminCourseRoutes from './routes/adminCourseRoutes.js'
 import uploadRoutes from './routes/uploadRoutes.js'
 import instructorRoutes from './routes/instructorRoutes.js'
+import instructorContentRoutes from './routes/instructorContentRoutes.js'
 
 // Config & Initialization
 dotenv.config()
@@ -44,6 +45,7 @@ app.use('/api/admin/users', adminRoutes)
 app.use('/api/admin/courses', adminCourseRoutes)
 
 // Instructor Routes
+app.use('/api/instructor/courses', instructorContentRoutes)
 app.use('/api/instructor/courses', instructorRoutes)
 
 // Error Handling

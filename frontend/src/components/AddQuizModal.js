@@ -116,15 +116,9 @@ const AddQuizModal = ({
     }
   }
 
-  //   const deleteCurrentSet = () => {
-  //     if (currentIndex <= 0) {
-  //       if (window.confirm('Do you want to remove quiz for this chapter?')) {
-  //         alert('Quiz removed')
-  //       }
-  //     } else {
-  //       setCurrentIndex(currentIndex - 1)
-  //     }
-  //   }
+  const deleteCurrentSet = () => {
+    console.log(currentQuizId)
+  }
 
   const updateSingleQuestion = () => {
     if (
@@ -228,9 +222,9 @@ const AddQuizModal = ({
             <Button
               style={{ marginLeft: 7 }}
               variant='contained'
-              onClick={() => reset()}
+              onClick={() => deleteCurrentSet()}
             >
-              Reset
+              Remove
             </Button>
           </form>
         )}

@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import {
   Card,
@@ -13,13 +13,14 @@ import {
 import Rating from './Rating'
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled'
 import PeopleIcon from '@material-ui/icons/People'
+import Loader from './Loader'
 const useStyles = makeStyles({
   root: {
-    width: 225,
     marginRight: 10,
+    width: 300,
   },
   media: {
-    height: 140,
+    height: 175,
   },
 })
 
@@ -61,17 +62,33 @@ const learningStyles = makeStyles({
   content: {},
 })
 
-const Course = ({ course, learning }) => {
+const Course = ({ course, learning, currentCourse = '' }) => {
   const classes = useStyles()
   const classesLearning = learningStyles()
+  const [progressCount, setProgressCount] = useState(0)
 
-  return (
+  useEffect(() => {
+    const progress = currentCourse
+      ? currentCourse.courseContents.map((x) => x.watched)
+      : ''
+
+    for (let key in progress) {
+      if (progress[key] === true) {
+        setProgressCount(progressCount + 1)
+      }
+    }
+  }, [])
+
+  return !course && !learning ? (
+    <Loader />
+  ) : (
     <Card className={learning ? classesLearning.root : classes.root}>
       {learning && (
         <Link href={`/course/${course && course.slug}/learn`}>
           <div className={classesLearning.learningBody}>
             <div className={classesLearning.media}>
               <CardMedia
+                style={{ objectFit: 'contain' }}
                 className={classesLearning.mediaImg}
                 image={course && course.image}
                 title={course && course.name}
@@ -92,7 +109,8 @@ const Course = ({ course, learning }) => {
                 color='textSecondary'
                 componen='span'
               >
-                Progress: 1/ {course && course.courseContents.length}
+                Progress: {progressCount} /{' '}
+                {course ? course.courseContents.length : ''}
               </Typography>
             </CardContent>
           </div>
@@ -111,6 +129,7 @@ const Course = ({ course, learning }) => {
               <Typography gutterBottom variant='h5' componen='span'>
                 {course && course.name}
               </Typography>
+
               {course.totalSold ? (
                 <div
                   style={{
