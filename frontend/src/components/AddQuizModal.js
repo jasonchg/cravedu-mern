@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Button, Grid, makeStyles, Modal, TextField } from '@material-ui/core'
 import FormContainer from './FormContainer'
-import { updateSingleQuiz } from '../actions/instructorActions'
+import { updateSingleQuiz, deleteQuiz } from '../actions/instructorActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from './Loader'
 
@@ -66,8 +66,14 @@ const AddQuizModal = ({
       if (newQuizzes) {
         setQuestionLists(newQuizzes)
         setCurrentIndex(0)
-      } else {
-        setQuestionLists(quizzes)
+      }
+      if (questionLists.length === 0) {
+        setCurrentIndex(0)
+        setCurrentQuestion('')
+        setCurrentCorrectAnswer('')
+        setCurrentIncorrectAnswer1('')
+        setCurrentIncorrectAnswer2('')
+        setCurrentIncorrectAnswer3('')
       }
     }
 
@@ -117,7 +123,12 @@ const AddQuizModal = ({
   }
 
   const deleteCurrentSet = () => {
-    console.log(currentQuizId)
+    dispatch(
+      deleteQuiz(courseId, {
+        contentId,
+        quizId: currentQuizId,
+      })
+    )
   }
 
   const updateSingleQuestion = () => {
@@ -146,6 +157,12 @@ const AddQuizModal = ({
         })
       )
     }
+  }
+
+  const closeModal = () => {
+    reset()
+    setOpenQuiz(false)
+    setCurrentIndex(0)
   }
 
   const questionForm = () => (
@@ -265,18 +282,13 @@ const AddQuizModal = ({
         <Button
           style={{ marginLeft: 7 }}
           variant='outlined'
-          onClick={() => setOpenQuiz(false)}
+          onClick={() => closeModal()}
         >
           Done
         </Button>
       </Grid>
     </Grid>
   )
-
-  const closeModal = () => {
-    reset()
-    setOpenQuiz(false)
-  }
 
   return (
     <Modal open={openQuiz} onClose={() => closeModal()}>

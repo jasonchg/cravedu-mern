@@ -311,6 +311,37 @@ const updateAllQuiz = (courseId, content) => async (dispatch, getState) => {
   }
 }
 
+const deleteQuiz = (courseId, content) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: INSTRUCTOR_UPDATE_CONTENT_QUIZ_REQUEST })
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    const { data } = await axios.delete(
+      `/api/instructor/courses/${courseId}/${content.contentId}/${content.quizId}/deletequiz`,
+      config
+    )
+
+    dispatch({ type: INSTRUCTOR_UPDATE_CONTENT_QUIZ_SUCCESS, payload: data })
+  } catch (e) {
+    dispatch({
+      type: INSTRUCTOR_UPDATE_CONTENT_QUIZ_FAIL,
+      payload:
+        e.response && e.response.data.message
+          ? e.response.data.message
+          : e.message,
+    })
+  }
+}
+
 const deleteContent = (courseId, contentId) => async (dispatch, getState) => {
   try {
     dispatch({ type: INSTRUCTOR_DELETE_CONTENT_REQUEST })
@@ -353,4 +384,5 @@ export {
   deleteContent,
   updateSingleQuiz,
   updateAllQuiz,
+  deleteQuiz,
 }

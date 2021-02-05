@@ -262,8 +262,6 @@ const deleteContentQuizzes = asyncHandler(async (req, res) => {
   if (course) {
     let courseContents = course.courseContents
     let content = courseContents.find((x) => x.id === contentId)
-    console.log(content)
-
     if (content) {
       let quizzes = content.quizzes.length > 0 ? content.quizzes : []
       if (quizzes.length > 0 || quizId != '') {
@@ -276,8 +274,14 @@ const deleteContentQuizzes = asyncHandler(async (req, res) => {
         }
       }
       try {
-        await course.save()
-        res.json({ message: 'Quiz deleted' })
+        const newCourseContentQuizzes = await course.save()
+        if (newCourseContentQuizzes) {
+          let newContent = newCourseContentQuizzes.courseContents.find(
+            (x) => x.id === contentId
+          )
+
+          res.json(newContent.quizzes)
+        }
       } catch (e) {
         res.status(500)
         throw new Error('Something went wrong')
