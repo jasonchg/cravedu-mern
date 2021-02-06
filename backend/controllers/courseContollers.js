@@ -138,6 +138,37 @@ const createCourseQandA = asyncHandler(async (req, res) => {
   }
 })
 
+// @desc    Reply QandA
+// @route   PUT /api/courses/:id/qanda/:qandaId
+// @access  Private
+
+const replyCourseQandA = asyncHandler(async (req, res) => {
+  const qandaId = req.params.qandaId
+  const { reply } = req.body
+  const course = await Course.findById(req.params.id)
+
+  if (course) {
+    try {
+      let currentQanda = course.courseQASection.find((x) => x._id === qandaId)
+
+      if (currentQanda !== {}) {
+        currentQanda.push(reply)
+        const updateQanda = await course.save()
+        res.status(201).json({ updateQanda })
+      } else {
+        res.status(404)
+        throw new Error('Q&A not found')
+      }
+    } catch (err) {
+      res.status(404)
+      throw new Error('Course not found')
+    }
+  } else {
+    res.status(404)
+    throw new Error('Course not found')
+  }
+})
+
 // @desc    Get Best sold Courses
 // @route   GET /api/courses/bestsold
 // @access  Private
@@ -216,10 +247,6 @@ const setWatched = asyncHandler(async (req, res) => {
     throw new Error('User not found')
   }
 })
-
-// @desc    Reply QandA
-// @route   PUT /api/courses/:id/qanda
-// @access  Private
 
 export {
   getCourses,

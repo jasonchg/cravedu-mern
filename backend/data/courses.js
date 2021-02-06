@@ -137,6 +137,41 @@ const courses = [
     totalSold: 20100,
     isPublished: true,
     totalDuration: '123',
+    courseQASection: [
+      {
+        question: 'What is html?',
+        userName: 'Jane Jeniffer',
+        answers: [
+          {
+            helpful: 25,
+            notHelpful: 1,
+            answer: 'Probably Hypertext Markup Language I guess..',
+            userName: 'Christopher',
+            granted: true,
+          },
+        ],
+      },
+      {
+        question: 'When to use css? ?',
+        userName: 'Caleb Jee',
+        answers: [
+          {
+            helpful: 0,
+            notHelpful: 0,
+            answer: 'When you sleep...',
+            userName: 'Lim',
+            granted: false,
+          },
+          {
+            helpful: 1,
+            notHelpful: 10,
+            answer: 'when you think your website were too bored...',
+            userName: 'Kikie',
+            granted: true,
+          },
+        ],
+      },
+    ],
     courseContents: [
       {
         name: 'Start Build!',
