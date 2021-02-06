@@ -63,6 +63,9 @@ const useStyles = makeStyles((theme) => ({
     height: 13,
     borderRadius: '50%',
   },
+  instructorBadge: {
+    background: '#457b9d',
+  },
 }))
 
 const Header = () => {
@@ -163,7 +166,15 @@ const Header = () => {
                           onClick={() => setMenuOpenUser(!openMenuUser)}
                         >
                           <ListItemIcon>
-                            <Avatar>{userInfo.name.charAt(0)}</Avatar>
+                            <Avatar
+                              className={
+                                userInfo.isInstructor
+                                  ? classes.instructorBadge
+                                  : ''
+                              }
+                            >
+                              {userInfo.name.charAt(0)}
+                            </Avatar>
                           </ListItemIcon>
                           <ListItemText primary={userInfo.name} />
                           {openMenuUser ? <ExpandLess /> : <ExpandMore />}
@@ -320,7 +331,11 @@ const Header = () => {
                       onClick={openUserMenuHandler}
                       size='small'
                     >
-                      <Avatar style={{ background: 'rgba(255,255,255, 0.5)' }}>
+                      <Avatar
+                        className={
+                          userInfo.isInstructor ? classes.instructorBadge : ''
+                        }
+                      >
                         {userInfo.name.charAt(0)}
                       </Avatar>
                     </Button>

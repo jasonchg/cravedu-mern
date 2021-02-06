@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
+import CraveduLogo from '../assets/images/logo-black.png'
 import {
   Container,
   Grid,
@@ -79,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
   },
   paper: {
-    background: '#f0f0f0',
+    background: '#f1faee',
     margin: 'auto',
     marginTop: 10,
   },
@@ -91,17 +92,22 @@ const useStyles = makeStyles((theme) => ({
   },
   modalPaper: {
     width: 400,
-    backgroundColor: theme.palette.background.paper,
-    border: '1px solid #777',
+    height: 200,
+    backgroundColor: '#f1faee',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
     borderRadius: 10,
   },
   qandaSection: {
-    background: '#fff',
+    marginTop: 3,
+    background: '#eee',
     maxHeight: 700,
     overflow: 'scroll',
     overflowX: 'hidden',
+  },
+  questionBlock: {
+    margin: 2,
+    background: '#f1faee',
   },
   divider: {
     margin: theme.spacing(2, 0),
@@ -141,6 +147,18 @@ const useStyles = makeStyles((theme) => ({
   },
   tabPanelArea: {
     minHeight: 500,
+  },
+  aboutInstructor: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    width: '30%',
+    background: '#f1faee',
+    borderRadius: 10,
+    padding: 10,
+    paddingBottom: 20,
+    marginTop: 20,
+    boxShadow: theme.shadows[5],
   },
 }))
 
@@ -444,40 +462,44 @@ const VideoLearningScreen = ({ history }) => {
                         __html: course.description,
                       }}
                     />
+
+                    {!course || !course.instructor ? (
+                      ''
+                    ) : (
+                      <div className={classes.aboutInstructor}>
+                        <p>Instructor Card</p>
+                        <span
+                          style={{
+                            background: '#1d3557',
+                            width: '100%',
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            padding: 10,
+                          }}
+                        >
+                          <Avatar
+                            style={{
+                              marginRight: 10,
+                              width: 50,
+                              height: 50,
+                              background: '#457b9d',
+                            }}
+                          >
+                            <h3>{course.instructor.charAt(0)}</h3>
+                          </Avatar>
+                          <h2 style={{ color: '#fff' }}>{course.instructor}</h2>
+                        </span>
+                        <img
+                          src={CraveduLogo}
+                          width='80'
+                          style={{ marginTop: 20 }}
+                        />
+                      </div>
+                    )}
                   </div>
                 </TabPanel>
-
-                <Modal
-                  open={modalOpen}
-                  onClose={() => setModalOpen(false)}
-                  aria-labelledby='qanda'
-                  aria-describedby='qanda-pool'
-                  className={classes.modalContainer}
-                >
-                  <div className={classes.modalPaper}>
-                    <form onSubmit={qandaHandler}>
-                      <FormContainer>
-                        <TextField
-                          required
-                          fullWidth
-                          id='question'
-                          type='text'
-                          label='Your Question'
-                          placeholder=''
-                          variant='filled'
-                          value={question}
-                          onChange={(e) => setQuestion(e.target.value)}
-                        />
-                      </FormContainer>
-                      <Button type='submit' variant='contained' color='primary'>
-                        Post
-                      </Button>
-                      <Button onClick={() => setModalOpen(false)}>
-                        Cancel
-                      </Button>
-                    </form>
-                  </div>
-                </Modal>
 
                 <TabPanel value={value} index={1}>
                   <List>
@@ -509,7 +531,7 @@ const VideoLearningScreen = ({ history }) => {
                       course.courseQASection &&
                       course.courseQASection.length !== 0 ? (
                         course.courseQASection.map((qanda) => (
-                          <div
+                          <Paper
                             key={qanda._id}
                             className={classes.questionBlock}
                           >
@@ -550,13 +572,55 @@ const VideoLearningScreen = ({ history }) => {
                               </div>
                             </ListItem>
                             <Divider variant='inset' component='li' />
-                          </div>
+                          </Paper>
                         ))
                       ) : (
                         <ListItem>No any question just yet.</ListItem>
                       )}
                     </div>
                   </List>
+
+                  <Modal
+                    open={modalOpen}
+                    onClose={() => setModalOpen(false)}
+                    aria-labelledby='qanda'
+                    aria-describedby='qanda-pool'
+                    className={classes.modalContainer}
+                  >
+                    <div className={classes.modalPaper}>
+                      <form onSubmit={qandaHandler}>
+                        <FormContainer>
+                          <TextField
+                            required
+                            fullWidth
+                            id='question'
+                            type='text'
+                            label='Your Question'
+                            placeholder=''
+                            variant='filled'
+                            value={question}
+                            onChange={(e) => setQuestion(e.target.value)}
+                          />
+                        </FormContainer>
+                        <br />
+                        <Button
+                          type='submit'
+                          variant='contained'
+                          color='primary'
+                        >
+                          Post
+                        </Button>
+                        <Button onClick={() => setModalOpen(false)}>
+                          Cancel
+                        </Button>
+                      </form>
+
+                      <h4>
+                        Some your instructor might not answer your question but
+                        other people will.
+                      </h4>
+                    </div>
+                  </Modal>
                 </TabPanel>
 
                 <TabPanel value={value} index={2}>

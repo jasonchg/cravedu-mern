@@ -28,11 +28,13 @@ const learningStyles = makeStyles({
   root: {
     marginRight: 10,
     width: '100%',
+    height: 150,
   },
   media: {
-    width: 125,
-    height: 125,
+    width: 165,
+    height: 150,
     position: 'relative',
+    objectFit: 'contain',
   },
   mediaImg: {
     width: '100%',
@@ -100,7 +102,7 @@ const Course = ({ course, learning, currentCourse = '' }) => {
                 variant='body1'
                 color='textPrimary'
                 componen='span'
-                style={{ fontStyle: 'bold' }}
+                style={{ fontStyle: 'bold', fontSize: 22 }}
               >
                 {course && course.name}
               </Typography>
@@ -108,6 +110,7 @@ const Course = ({ course, learning, currentCourse = '' }) => {
                 variant='caption'
                 color='textSecondary'
                 componen='span'
+                style={{ fontStyle: 'bold', fontSize: 12 }}
               >
                 Progress: {progressCount} /{' '}
                 {course ? course.courseContents.length : ''}
