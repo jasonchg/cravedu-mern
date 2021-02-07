@@ -68,18 +68,22 @@ const Course = ({ course, learning, currentCourse = '' }) => {
   const classes = useStyles()
   const classesLearning = learningStyles()
   const [progressCount, setProgressCount] = useState(0)
+  const [newCourseContent, setNewCourseContent] = useState([])
 
   useEffect(() => {
+    setNewCourseContent(
+      course.courseContents.filter((content) => content.isPublished === true)
+    )
+
     const progress = currentCourse
       ? currentCourse.courseContents.map((x) => x.watched)
       : ''
-
     for (let key in progress) {
       if (progress[key] === true) {
         setProgressCount(progressCount + 1)
       }
     }
-  }, [])
+  }, [currentCourse])
 
   return !course && !learning ? (
     <Loader />
@@ -112,8 +116,7 @@ const Course = ({ course, learning, currentCourse = '' }) => {
                 componen='span'
                 style={{ fontStyle: 'bold', fontSize: 12 }}
               >
-                Progress: {progressCount} /{' '}
-                {course ? course.courseContents.length : ''}
+                Progress: {progressCount} / {newCourseContent.length}
               </Typography>
             </CardContent>
           </div>

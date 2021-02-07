@@ -213,7 +213,7 @@ const VideoLearningScreen = ({ history }) => {
   const [currentUserPaidCourse, setCurrentUserPaidCourse] = useState(null)
 
   const [like, setLike] = useState(null)
-
+  const [newCourseContent, setNewCourseContent] = useState([])
   const tabHandler = (event, newValue) => {
     setValue(newValue)
   }
@@ -278,6 +278,12 @@ const VideoLearningScreen = ({ history }) => {
         dispatch(getUserCourses())
         setSelectedVideo('')
       } else {
+        setNewCourseContent(
+          course.courseContents.filter(
+            (content) => content.isPublished === true
+          )
+        )
+
         if (
           userPaidCourses ||
           (userPaidCourses && userPaidCourses.length !== 0) ||
@@ -294,7 +300,14 @@ const VideoLearningScreen = ({ history }) => {
                 (x) => x.watched !== true
               )
 
-              if (notYetWatchContent) {
+              let courseContentsPublishCheck = course.courseContents.find(
+                (x) => x._id === notYetWatchContent.chapterId
+              )
+
+              if (
+                notYetWatchContent &&
+                courseContentsPublishCheck.isPublished !== false
+              ) {
                 history.push(
                   `/course/${course_slug}/learn?chapter=${notYetWatchContent.chapterId}`
                 )
@@ -424,29 +437,32 @@ const VideoLearningScreen = ({ history }) => {
                       component='p'
                       className={classes.contentChapter}
                     >
-                      {course.courseContents && course.courseContents.length}{' '}
-                      Chapters
+                      {newCourseContent.length} Chapters
                     </Typography>
 
                     <List>
-                      {course.courseContents ? (
-                        course.courseContents.map((content) => (
-                          <CourseContentList
-                            key={content._id}
-                            courseId={course._id}
-                            content={content}
-                            expanded={expanded}
-                            handleAccordion={handleAccordion}
-                            setSelectedVideoName={setSelectedVideoName}
-                            selectTopicHandler={selectTopicHandler}
-                            watched={
-                              currentUserPaidCourse &&
-                              currentUserPaidCourse.courseContents.find(
-                                (x) => x.chapterId === content._id
-                              ).watched
-                            }
-                          />
-                        ))
+                      {newCourseContent ? (
+                        newCourseContent.map((content) => {
+                          return content.isPublished ? (
+                            <CourseContentList
+                              key={content._id}
+                              courseId={course._id}
+                              content={content}
+                              expanded={expanded}
+                              handleAccordion={handleAccordion}
+                              setSelectedVideoName={setSelectedVideoName}
+                              selectTopicHandler={selectTopicHandler}
+                              watched={
+                                currentUserPaidCourse &&
+                                currentUserPaidCourse.courseContents.find(
+                                  (x) => x.chapterId === content._id
+                                ).watched
+                              }
+                            />
+                          ) : (
+                            ''
+                          )
+                        })
                       ) : (
                         <Loader />
                       )}

@@ -165,6 +165,7 @@ const updateContent = asyncHandler(async (req, res) => {
       content.chapter = req.body.chapter || content.chapter
       content.video = req.body.video || content.video
       content.duration = req.body.duration || content.duration
+      content.isPublished = req.body.isPublished
 
       try {
         await course.save()

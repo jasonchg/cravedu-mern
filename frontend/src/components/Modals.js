@@ -7,6 +7,8 @@ import {
   Typography,
   Divider,
   TextField,
+  FormControlLabel,
+  Checkbox,
 } from '@material-ui/core'
 import Message from '../components/Message'
 
@@ -54,6 +56,8 @@ const Modals = ({ modalOpen = false, modalClose, content, courseId }) => {
   const [name, setName] = useState(content.name)
   const [video, setVideo] = useState('')
 
+  const [isPublished, setIsPublished] = useState(content.isPublished)
+
   const [openQuiz, setOpenQuiz] = useState(false)
 
   const uploadVideoHandler = async (e) => {
@@ -95,11 +99,16 @@ const Modals = ({ modalOpen = false, modalClose, content, courseId }) => {
         updateContent(courseId, {
           contentId: content._id,
           name,
+          isPublished,
           video,
         })
       )
       modalClose()
     }
+  }
+
+  const handlePublishedCheck = (e, isChecked) => {
+    setIsPublished(isChecked)
   }
 
   return (
@@ -113,8 +122,29 @@ const Modals = ({ modalOpen = false, modalClose, content, courseId }) => {
         <Loader />
       ) : (
         <div className={classes.paper}>
-          <Typography variant='caption'>Chapter {content.chapter}</Typography>
-          <Typography variant='h4'>{content.name}</Typography>
+          <div style={{ display: 'flex' }}>
+            <div style={{ flex: 1 }}>
+              <Typography variant='caption'>
+                Chapter {content.chapter}
+              </Typography>
+              <Typography variant='h4'>{content.name}</Typography>
+            </div>
+            <div style={{ marginTop: 10 }}>
+              <FormContainer>
+                <FormControlLabel
+                  label='Published'
+                  control={
+                    <Checkbox
+                      checked={isPublished}
+                      onChange={handlePublishedCheck}
+                      name='isPublished'
+                      color='primary'
+                    />
+                  }
+                />
+              </FormContainer>
+            </div>
+          </div>
 
           <Divider />
           <form

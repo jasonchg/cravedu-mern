@@ -18,6 +18,7 @@ const courses = [
         chapter: '1',
         video: '/uploads/videos/javascript/javascript_01_2020_09_10.mp4',
         duration: '100',
+        isPublished: true,
         quizzes: [],
       },
       {
@@ -25,6 +26,7 @@ const courses = [
         chapter: '2',
         video: '/uploads/videos/javascript/javascript_02_2020_09_10.mp4',
         duration: '60',
+        isPublished: true,
         quizzes: [],
       },
     ],
@@ -48,6 +50,7 @@ const courses = [
         chapter: '1',
         video: '/uploads/videos/cplusplus/cplusplus_01_2020_09_10.mp4',
         duration: '15',
+        isPublished: true,
         quizzes: [],
       },
       {
@@ -55,6 +58,7 @@ const courses = [
         chapter: '2',
         video: '/uploads/videos/cplusplus/cplusplus_02_2020_09_10.mp4',
         duration: '25',
+        isPublished: true,
         quizzes: [],
       },
       {
@@ -62,6 +66,7 @@ const courses = [
         chapter: '3',
         video: '/uploads/videos/cplusplus/cplusplus_03_2020_09_10.mp4',
         duration: '20',
+        isPublished: true,
         quizzes: [],
       },
     ],
@@ -85,6 +90,7 @@ const courses = [
         chapter: '1',
         video: '/uploads/videos/typescript/typescript_01_2020_09_10.mp4',
         duration: '100',
+        isPublished: true,
         quizzes: [],
       },
       {
@@ -92,6 +98,7 @@ const courses = [
         chapter: '2',
         video: '/uploads/videos/typescript/typescript_02_2020_09_10.mp4',
         duration: '33',
+        isPublished: true,
         quizzes: [],
       },
     ],
@@ -115,12 +122,16 @@ const courses = [
         chapter: '1',
         video: '/uploads/videos/python/python_01_2020_09_10.mp4',
         duration: '10',
+        isPublished: true,
+        quizzes: [],
       },
       {
         name: 'Basic Concept',
         chapter: '2',
         video: '/uploads/videos/python/python_02_2020_09_10.mp4',
         duration: '13',
+        isPublished: true,
+        quizzes: [],
       },
     ],
   },
@@ -178,6 +189,7 @@ const courses = [
         chapter: '1',
         video: '/videos/html_css.mp4',
         duration: '63',
+        isPublished: true,
         quizzes: [
           {
             question: 'What is HTML?',
@@ -222,6 +234,7 @@ const courses = [
         chapter: '2',
         video: '/videos/html_css_2.mp4',
         duration: '60',
+        isPublished: true,
         quizzes: [],
       },
     ],

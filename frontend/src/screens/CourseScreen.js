@@ -159,6 +159,8 @@ const CourseScreen = ({ history }) => {
 
   const [bought, setBought] = useState(false)
 
+  const [newCourseContent, setNewCourseContent] = useState([])
+
   const addToCartHandler = () => {
     dispatch(addToCart(course.slug))
     if (window.confirm('Course added to cart. View your cart?')) {
@@ -185,6 +187,9 @@ const CourseScreen = ({ history }) => {
 
   useEffect(() => {
     if (userPaidCourses && course) {
+      setNewCourseContent(
+        course.courseContents.filter((content) => content.isPublished === true)
+      )
       setBought(checkBought(userPaidCourses, course))
     }
   }, [userPaidCourses, course])
@@ -268,11 +273,7 @@ const CourseScreen = ({ history }) => {
                         <ArchiveIcon />
                       </ListItemIcon>
                       <ListItemText
-                        primary={`${
-                          course && course.courseContents
-                            ? course.courseContents.length
-                            : 0
-                        } Chapters`}
+                        primary={`${newCourseContent.length} Chapters`}
                       />
                     </ListItem>
 
@@ -410,21 +411,25 @@ const CourseScreen = ({ history }) => {
           <Grid item xs={12}>
             <h2>Course Content</h2>
             {course.courseContents ? (
-              course.courseContents.map((content, index) => (
-                <Accordion key={index} className={classes.accordion}>
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls='course-content'
-                    id='course-content-panel-header'
-                  >
-                    <Typography>Chapter {content.chapter}</Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <Typography>{content.name}</Typography>{' '}
-                    <PlayCircleFilledIcon />
-                  </AccordionDetails>
-                </Accordion>
-              ))
+              course.courseContents.map((content, index) => {
+                return content.isPublished ? (
+                  <Accordion key={index} className={classes.accordion}>
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls='course-content'
+                      id='course-content-panel-header'
+                    >
+                      <Typography>Chapter {content.chapter}</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography>{content.name}</Typography>{' '}
+                      <PlayCircleFilledIcon />
+                    </AccordionDetails>
+                  </Accordion>
+                ) : (
+                  ''
+                )
+              })
             ) : (
               <Loader />
             )}

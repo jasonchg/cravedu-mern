@@ -28,6 +28,7 @@ const contentSchema = mongoose.Schema(
     chapter: { type: String, required: true },
     video: { type: String, default: '' },
     duration: { type: String, default: '' },
+    isPublished: { type: Boolean, default: false },
     quizzes: [quizSchema],
   },
   {
