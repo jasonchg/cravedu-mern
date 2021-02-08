@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core'
 import Rating from './Rating'
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled'
+import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import PeopleIcon from '@material-ui/icons/People'
 import Loader from './Loader'
 const useStyles = makeStyles({
@@ -58,6 +59,10 @@ const learningStyles = makeStyles({
       opacity: '0.7',
     },
   },
+  checkedIcon: {
+    opacity: '0.7',
+    color: 'green',
+  },
   learningBody: {
     display: 'flex',
   },
@@ -102,7 +107,13 @@ const Course = ({ course, learning, currentCourse = '' }) => {
                 image={course && course.image}
                 title={course && course.name}
               />
-              <PlayCircleFilledIcon className={classesLearning.playIcon} />
+              {currentCourse.completedCertificate !== '' ? (
+                <CheckCircleIcon
+                  className={`${classesLearning.playIcon} ${classesLearning.checkedIcon}`}
+                />
+              ) : (
+                <PlayCircleFilledIcon className={classesLearning.playIcon} />
+              )}
             </div>
             <CardContent className={classesLearning.content}>
               <Typography
@@ -119,7 +130,9 @@ const Course = ({ course, learning, currentCourse = '' }) => {
                 componen='span'
                 style={{ fontStyle: 'bold', fontSize: 12 }}
               >
-                Progress: {progressCount.length} / {newCourseContent.length}
+                {progressCount.length === newCourseContent.length
+                  ? 'Completed'
+                  : `Progress: ${progressCount.length} / ${newCourseContent.length}`}
               </Typography>
             </CardContent>
           </div>
