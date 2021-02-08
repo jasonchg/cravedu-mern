@@ -85,7 +85,6 @@ const Course = ({ course, learning, currentCourse = '' }) => {
       if (progressCount.length < course.courseContents.length) {
         setProgressCount(progress.filter((x) => x !== false))
       }
-      console.log(progressCount)
     }
   }, [currentCourse, course])
 
