@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Grid,
   Button,
@@ -9,6 +9,10 @@ import {
   TableBody,
   Table,
   Typography,
+  Card,
+  CardContent,
+  makeStyles,
+  Divider,
 } from '@material-ui/core'
 import { createCourse, listCourses } from '../actions/instructorActions'
 import { useDispatch, useSelector } from 'react-redux'
@@ -23,7 +27,31 @@ import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder'
 import CreateCourseGuide from '../components/CreateCourseGuide'
 import Paginate from '../components/Paginate'
 
+const useStyle = makeStyles((theme) => ({
+  cardContainer: { marginTop: 10, marginBottom: 15 },
+  bestCard: {
+    background: '#cfdbff',
+    margin: 10,
+    padding: 10,
+    color: '#222',
+    boxShadow: theme.shadows[6],
+    height: 300,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
+  cardTitle: {
+    color: '#444',
+    fontSize: 24,
+  },
+  cardQuantity: {
+    fontSize: 32,
+  },
+}))
+
 const InstructorScreen = ({ history, match }) => {
+  const classes = useStyle()
   const dispatch = useDispatch()
   const pageNumber = match.params.pageNumber || 1
   const keyword = match.params.keyword || ''
@@ -50,18 +78,43 @@ const InstructorScreen = ({ history, match }) => {
     history.push(`/instructor/${id}/edit`)
   }
 
-  useEffect(() => {
-    dispatch({ type: INSTRUCTOR_COURSE_CREATE_RESET })
-
-    if (createCourseSuccess) {
-      history.push(`/instructor/${newCourseId}/edit`)
+  const getTotalSold = (courses) => {
+    const reducer = (acc, cur) => acc + cur
+    if (courses.length !== 0) {
+      const allCourse = courses.map((x) => {
+        return x.totalSold
+      })
+      return allCourse.reduce(reducer)
     } else {
-      if (userInfo && userInfo.isInstructor) {
-        dispatch({ type: INSTRUCTOR_COURSE_LIST_RESET })
-        dispatch(listCourses('', pageNumber))
-      } else {
-        history.push('/login')
-      }
+      return 0
+    }
+  }
+
+  const getHighest = (courses) => {
+    if (courses.length !== 0) {
+      const lists = courses.map((x) => {
+        return x.totalSold
+      })
+
+      const highest = Math.max(...lists)
+
+      const getHighest = courses.find((x) => x.totalSold === highest)
+      return `${getHighest.name} ( ${getHighest.totalSold} sold )`
+    } else {
+      return ''
+    }
+  }
+
+  useEffect(() => {
+    if (createCourseSuccess) {
+      dispatch({ type: INSTRUCTOR_COURSE_CREATE_RESET })
+      history.push(`/instructor/${newCourseId}/edit`)
+    }
+
+    if (userInfo && userInfo.isInstructor) {
+      dispatch(listCourses('', pageNumber))
+    } else {
+      history.push('/login')
     }
   }, [
     userInfo,
@@ -91,6 +144,53 @@ const InstructorScreen = ({ history, match }) => {
           <Message>{error}</Message>
         ) : courses && courses.length !== 0 ? (
           <>
+            <Grid container spacing={2} className={classes.cardContainer}>
+              <Grid item md={4} xs={12}>
+                <Card className={classes.bestCard}>
+                  <CardContent>
+                    <h5 className={classes.cardTitle}>
+                      <b>Total Course Sold</b>
+                    </h5>
+                    <h2 className={classes.cardQuantity}>
+                      {getTotalSold(courses)}
+                    </h2>
+                    <Divider />
+                    <br />
+                    <p className={classes.cardTitle}>
+                      <b>Best Selling Course</b>
+                    </p>
+                    <p style={{ marginTop: 10 }}>
+                      <b>{getHighest(courses)}</b>
+                    </p>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item md={4} xs={12}>
+                <Card className={classes.bestCard}>
+                  <CardContent>
+                    <h5 className={classes.cardTitle}>
+                      <b>Total Overall Students</b>
+                    </h5>
+                    <h2 className={classes.cardQuantity}>
+                      {' '}
+                      {getTotalSold(courses)}
+                    </h2>
+                  </CardContent>
+                </Card>
+              </Grid>
+
+              <Grid item md={4} xs={12}>
+                <Card className={classes.bestCard}>
+                  <CardContent>
+                    <h5 className={classes.cardTitle}>
+                      <b>Total Courses</b>
+                    </h5>
+                    <h2 className={classes.cardQuantity}>{courses.length}</h2>
+                  </CardContent>
+                </Card>
+              </Grid>
+            </Grid>
+
             <Grid item xs={12}>
               <Button
                 style={{ marginRight: 10 }}
