@@ -1,18 +1,19 @@
 import { useState } from 'react'
-import { Chip, Menu, MenuItem, Divider, Link } from '@material-ui/core'
+import { Menu, MenuItem, Divider, Link, Button } from '@material-ui/core'
 
-const Category = ({ category, color }) => {
+const Category = ({ category }) => {
   const [anchorEl, setAnchorEl] = useState(null)
 
   return (
     <>
-      <Chip
-        color={color}
-        style={{ padding: 7, margin: 5 }}
-        label={category.category}
-        clickable
+      <Button
+        style={{ padding: 7, margin: 5, textAlign: 'start' }}
         onClick={(e) => setAnchorEl(e.currentTarget)}
-      />
+        variant='outlined'
+        size='large'
+      >
+        {category.category}
+      </Button>
 
       <Menu
         anchorEl={anchorEl}

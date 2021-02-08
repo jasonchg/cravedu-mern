@@ -65,12 +65,12 @@ const HomeScreen = ({ history, match }) => {
     : matchesSM
     ? 2
     : matchesMD
-    ? 4
+    ? 3
     : matchesLG
     ? 5
     : 4
 
-  let itemToShowLeaning = matchesSM ? 1 : matchesMD ? 2 : matchesLG ? 3 : 2
+  let itemToShowLeaning = matchesSM ? 1 : matchesMD ? 2 : matchesLG ? 2 : 2
 
   return (
     <>
@@ -128,7 +128,7 @@ const HomeScreen = ({ history, match }) => {
               <h2>Categories</h2>
               {categories &&
                 categories.map((category, index) => (
-                  <Category key={index} category={category} color='primary' />
+                  <Category key={index} category={category} />
                 ))}
             </Grid>
 
