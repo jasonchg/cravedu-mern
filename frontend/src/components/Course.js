@@ -67,23 +67,27 @@ const learningStyles = makeStyles({
 const Course = ({ course, learning, currentCourse = '' }) => {
   const classes = useStyles()
   const classesLearning = learningStyles()
-  const [progressCount, setProgressCount] = useState(0)
+  const [progressCount, setProgressCount] = useState([])
   const [newCourseContent, setNewCourseContent] = useState([])
 
   useEffect(() => {
-    setNewCourseContent(
-      course.courseContents.filter((content) => content.isPublished === true)
-    )
-
-    const progress = currentCourse
-      ? currentCourse.courseContents.map((x) => x.watched)
-      : ''
-    for (let key in progress) {
-      if (progress[key] === true) {
-        setProgressCount(progressCount + 1)
-      }
+    if (course) {
+      setNewCourseContent(
+        course.courseContents.filter((content) => content.isPublished === true)
+      )
     }
-  }, [currentCourse])
+
+    if (currentCourse !== '') {
+      const progress = currentCourse
+        ? currentCourse.courseContents.map((x) => x.watched)
+        : ''
+
+      if (progressCount.length < course.courseContents.length) {
+        setProgressCount(progress.filter((x) => x !== false))
+      }
+      console.log(progressCount)
+    }
+  }, [currentCourse, course])
 
   return !course && !learning ? (
     <Loader />
@@ -116,7 +120,7 @@ const Course = ({ course, learning, currentCourse = '' }) => {
                 componen='span'
                 style={{ fontStyle: 'bold', fontSize: 12 }}
               >
-                Progress: {progressCount} / {newCourseContent.length}
+                Progress: {progressCount.length} / {newCourseContent.length}
               </Typography>
             </CardContent>
           </div>
