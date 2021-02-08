@@ -296,42 +296,61 @@ const VideoLearningScreen = ({ history }) => {
             setAlreadyReview(checkReview(course.reviews, userInfo._id))
 
             if (currentUserPaidCourse && currentUserPaidCourse.courseContents) {
+              // problem here
+
               let notYetWatchContent = currentUserPaidCourse.courseContents.find(
                 (x) => x.watched !== true
               )
 
-              let courseContentsPublishCheck = course.courseContents.find(
-                (x) => x._id === notYetWatchContent.chapterId
-              )
-
               if (
-                notYetWatchContent &&
-                courseContentsPublishCheck.isPublished !== false
+                !notYetWatchContent ||
+                notYetWatchContent.length === 0 ||
+                notYetWatchContent === []
               ) {
-                history.push(
-                  `/course/${course_slug}/learn?chapter=${notYetWatchContent.chapterId}`
-                )
-                setSelectedVideoName({
-                  name: course.courseContents.find(
-                    (x) => x._id === notYetWatchContent.chapterId
-                  ).name,
-                  chapter: course.courseContents.find(
-                    (x) => x._id === notYetWatchContent.chapterId
-                  ).chapter,
-                })
-                setSelectedVideoId(notYetWatchContent.chapterId)
-                setSelectedVideo(
-                  getVideoPath(
-                    course.courseContents,
-                    notYetWatchContent.chapterId
-                  )
-                )
-              } else {
                 if (
                   currentUserPaidCourse &&
                   currentUserPaidCourse.completedCertificate === ''
                 ) {
                   getCertify()
+                } else {
+                  console.log('Has Cert')
+                }
+              } else {
+                let courseContentsPublishCheck = course.courseContents.find(
+                  (x) => x._id === notYetWatchContent.chapterId
+                )
+
+                if (
+                  notYetWatchContent &&
+                  courseContentsPublishCheck.isPublished !== false
+                ) {
+                  history.push(
+                    `/course/${course_slug}/learn?chapter=${notYetWatchContent.chapterId}`
+                  )
+                  setSelectedVideoName({
+                    name: course.courseContents.find(
+                      (x) => x._id === notYetWatchContent.chapterId
+                    ).name,
+                    chapter: course.courseContents.find(
+                      (x) => x._id === notYetWatchContent.chapterId
+                    ).chapter,
+                  })
+                  setSelectedVideoId(notYetWatchContent.chapterId)
+                  setSelectedVideo(
+                    getVideoPath(
+                      course.courseContents,
+                      notYetWatchContent.chapterId
+                    )
+                  )
+                } else {
+                  if (
+                    currentUserPaidCourse &&
+                    currentUserPaidCourse.completedCertificate === ''
+                  ) {
+                    getCertify()
+                  } else {
+                    console.log('Has Cert')
+                  }
                 }
               }
             } else {
@@ -612,7 +631,7 @@ const VideoLearningScreen = ({ history }) => {
                               </ListItem>
                             </Paper>
 
-                            {qanda.answers ? (
+                            {qanda.answers && qanda.answers.length !== 0 ? (
                               <List
                                 style={{
                                   marginLeft: 25,
@@ -627,6 +646,8 @@ const VideoLearningScreen = ({ history }) => {
                                 >
                                   <AccordionSummary
                                     expandIcon={<ExpandMoreIcon />}
+                                    aria-controls='answers-content'
+                                    id='answers-content-header'
                                   >
                                     {
                                       qanda.answers.filter(

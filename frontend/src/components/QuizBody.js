@@ -1,5 +1,4 @@
-import { Button, Divider, Typography } from '@material-ui/core'
-import React from 'react'
+import { Button, Divider } from '@material-ui/core'
 
 const QuizBody = ({
   classes,
@@ -8,11 +7,18 @@ const QuizBody = ({
   handleQuestions,
   showAnswer,
   handleAnswers,
+  setClickIndex,
+  clickIndex,
 }) => {
+  const handleClickAnswer = (answer, i) => {
+    handleAnswers(answer)
+    setClickIndex(i)
+  }
+
   return (
     <div>
       <div style={modalStyle} className={classes.paper}>
-        <h4 style={{ marginBottom: 15 }}>{question}</h4>
+        <h2 style={{ marginBottom: 15 }}>{question}</h2>
         <div className={classes.questionAnswer}>
           {answers.map((answer, i) => (
             <button
@@ -26,8 +32,9 @@ const QuizBody = ({
                     : classes.bgWrong
                   : ''
               }
+              ${clickIndex === i && classes.selectedAnswerClick}
               `}
-              onClick={() => handleAnswers(answer)}
+              onClick={() => handleClickAnswer(answer, i)}
             >
               {answer}
             </button>

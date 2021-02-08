@@ -63,6 +63,7 @@ const useStyles = makeStyles((theme) => ({
     background: '#eee',
     border: 'none',
     outline: 0,
+    fontSize: 18,
   },
   bgWrong: {
     background: 'red',
@@ -71,6 +72,9 @@ const useStyles = makeStyles((theme) => ({
   bgCorrect: {
     background: 'green',
     color: '#fff',
+  },
+  selectedAnswerClick: {
+    border: '4px dotted #111',
   },
 }))
 
@@ -103,6 +107,7 @@ const CourseContentList = ({
   const [questions, setQuestions] = useState([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [score, setScore] = useState(0)
+  const [clickIndex, setClickIndex] = useState('')
 
   useEffect(() => {
     const shuffledQuestions = content.quizzes.map((questions) => ({
@@ -126,6 +131,7 @@ const CourseContentList = ({
   const handleQuestions = () => {
     setShowAnswer(false)
     setCurrentIndex(currentIndex + 1)
+    setClickIndex('')
   }
 
   const handleModalClose = () => {
@@ -146,7 +152,59 @@ const CourseContentList = ({
       questions.length <= currentIndex ? (
         <div style={modalStyle} className={classes.paper}>
           <div style={{ textAlign: 'center' }}>
-            <h3>Your Score: {score}</h3>
+            <h2>
+              /// Congratulation ///
+              <small
+                style={{
+                  display: 'block',
+                  marginTop: 10,
+                }}
+              >
+                You've Completed The Quizzes
+              </small>
+            </h2>
+
+            <span
+              style={{
+                background: '#fbf07b',
+                padding: 20,
+                borderTopLeftRadius: 15,
+                borderBottomRightRadius: 15,
+                display: 'block',
+                marginBottom: 25,
+              }}
+            >
+              <span
+                style={{
+                  display: 'block',
+                  textAlign: 'start',
+                  fontSize: 20,
+                }}
+              >
+                You got
+              </span>
+              <b
+                style={{
+                  display: 'block',
+                  textAlign: 'center',
+                  fontSize: 100,
+                  background: '#fff',
+                  margin: 20,
+                }}
+              >
+                {score === questions.length ? 'All' : score}
+              </b>
+              <span
+                style={{
+                  display: 'block',
+                  textAlign: 'end',
+                  fontSize: 20,
+                }}
+              >
+                correct
+              </span>
+            </span>
+
             <Button onClick={handleRetry}>Retry</Button>
             <Button onClick={handleModalClose}>Exit</Button>
           </div>
@@ -159,6 +217,8 @@ const CourseContentList = ({
           handleQuestions={handleQuestions}
           handleAnswers={handleAnswers}
           showAnswer={showAnswer}
+          clickIndex={clickIndex}
+          setClickIndex={setClickIndex}
         />
       )
     ) : (
