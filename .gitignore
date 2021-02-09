@@ -8,7 +8,7 @@ node_modules/
 /coverage
 
 # production
-/build
+/frontend/build
 
 # misc
 .DS_Store
@@ -27,11 +27,5 @@ yarn-error.log*\
 debug.log
 frontend/debug.log
 
-E:\React Js\cravedu-mern\frontend\public\videos
-/frontend/public/videos
-E:\React Js\cravedu-mern\certificates
-/certificates
-/uploads
-/uploads/*
 .vscode
 E:\React Js\cravedu-mern\.vscode

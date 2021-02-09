@@ -5,11 +5,11 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "node backend/server.js",
+    "start": "node backend/server",
     "frontend": "npm start --prefix frontend",
     "backend": "nodemon backend/server",
     "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
-    "heroku-postbuild": "cd frontend && npm install && npm run build",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend",
     "data:import": "node backend/seeder",
     "data:destroy": "node backend/seeder -d"
   },
