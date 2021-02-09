@@ -52,6 +52,14 @@ app.use('/api/instructor/courses', instructorRoutes)
 app.use(notFound)
 app.use(errorHandler)
 
+// ONLY RUN ON PRODUCTION BUILD //
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('frontend/build'))
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'))
+  })
+}
+
 // Listener
 const PORT = process.env.PORT || 5000
 app.listen(PORT, console.log(`Server running on port ${PORT}`))
