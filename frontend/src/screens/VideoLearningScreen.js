@@ -657,10 +657,11 @@ const VideoLearningScreen = ({ history }) => {
                                     had answered to this question.
                                   </AccordionSummary>
                                   <Divider />
-                                  <AccordionDetails>
-                                    {qanda.answers.map((thread, i) => {
-                                      return thread.granted === true ? (
-                                        <ListItem key={i}>
+
+                                  {qanda.answers.map((thread, i) => {
+                                    return thread.granted === true ? (
+                                      <AccordionDetails key={i}>
+                                        <ListItem>
                                           <ListItemAvatar>
                                             <Avatar
                                               style={{
@@ -740,11 +741,11 @@ const VideoLearningScreen = ({ history }) => {
                                             className={classes.divider}
                                           />
                                         </ListItem>
-                                      ) : (
-                                        ''
-                                      )
-                                    })}
-                                  </AccordionDetails>
+                                      </AccordionDetails>
+                                    ) : (
+                                      ''
+                                    )
+                                  })}
                                 </Accordion>
                               </List>
                             ) : (

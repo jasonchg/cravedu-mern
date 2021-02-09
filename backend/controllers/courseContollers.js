@@ -144,15 +144,24 @@ const createCourseQandA = asyncHandler(async (req, res) => {
 
 const replyCourseQandA = asyncHandler(async (req, res) => {
   const qandaId = req.params.qandaId
-  const { reply } = req.body
+
   const course = await Course.findById(req.params.id)
 
   if (course) {
     try {
-      let currentQanda = course.courseQASection.find((x) => x._id === qandaId)
+      let currentQanda = course.courseQASection.find((x) => x._id == qandaId)
 
-      if (currentQanda !== {}) {
-        currentQanda.push(reply)
+      if (currentQanda !== {} && currentQanda.answers.length !== 0) {
+        const answer = {
+          helpful: 0,
+          notHelpful: 0,
+          granted: false,
+          answer: req.body.answer,
+          userName: req.body.userName,
+        }
+
+        currentQanda.answers.push(answer)
+
         const updateQanda = await course.save()
         res.status(201).json({ updateQanda })
       } else {
@@ -161,7 +170,7 @@ const replyCourseQandA = asyncHandler(async (req, res) => {
       }
     } catch (err) {
       res.status(404)
-      throw new Error('Course not found')
+      throw new Error('Course not found', err.message)
     }
   } else {
     res.status(404)
@@ -258,4 +267,5 @@ export {
   setWatched,
   getCategories,
   getCoursesByCategory,
+  replyCourseQandA,
 }

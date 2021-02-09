@@ -68,7 +68,7 @@ const AdminUserEditScreen = ({ history, match }) => {
       if (updateSuccess) {
         dispatch({ type: ADMIN_USER_UPDATE_RESET })
         dispatch({ type: ADMIN_USER_DETAILS_RESET })
-        history.push('/admin/users')
+        history.push('/admin-users')
       } else {
         if (
           !userDetails ||
@@ -117,7 +117,7 @@ const AdminUserEditScreen = ({ history, match }) => {
     <>
       <Grid container className={classes.root}>
         <Grid item xs={12}>
-          <Button onClick={() => history.push('/admin/users')}>Go Back</Button>|
+          <Button onClick={() => history.push('/admin-users')}>Go Back</Button>|
           <Button onClick={() => history.push('/admin/courses')}>
             Go To Manage Courses
           </Button>

@@ -38,11 +38,11 @@ const contentSchema = mongoose.Schema(
 
 const answerThread = mongoose.Schema(
   {
-    helpful: { type: Number },
-    notHelpful: { type: Number },
-    answer: { type: String },
-    userName: { type: String },
-    granted: { type: Boolean },
+    helpful: { type: Number, default: 0 },
+    notHelpful: { type: Number, default: 0 },
+    answer: { type: String, required: true },
+    userName: { type: String, required: true },
+    granted: { type: Boolean, default: false },
   },
   {
     timestamps: true,
