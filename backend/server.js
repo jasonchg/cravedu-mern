@@ -34,9 +34,6 @@ app.use('/api/config/paypal', (req, res) => {
 })
 app.use('/api/upload/', uploadRoutes)
 
-const __dirname = path.resolve()
-app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
-
 // Admin Routes
 app.use('/api/admin/users', adminRoutes)
 app.use('/api/admin/courses', adminCourseRoutes)
@@ -45,13 +42,16 @@ app.use('/api/admin/courses', adminCourseRoutes)
 app.use('/api/instructor/courses', instructorContentRoutes)
 app.use('/api/instructor/courses', instructorRoutes)
 
-// Error Handling
-app.use(notFound)
-app.use(errorHandler)
+// Listener
+const PORT = process.env.PORT || 5000
+app.listen(PORT, console.log(`Server running on port ${PORT}`))
+
+const __dirname = path.resolve()
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 
 // ONLY RUN ON PRODUCTION BUILD //
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '/frontend/build')))
+  app.use(express.static(path.resolve(__dirname, 'frontend/build')))
   app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
   })
@@ -61,6 +61,6 @@ if (process.env.NODE_ENV === 'production') {
   })
 }
 
-// Listener
-const PORT = process.env.PORT || 5000
-app.listen(PORT, console.log(`Server running on port ${PORT}`))
+// Error Handling
+app.use(notFound)
+app.use(errorHandler)
