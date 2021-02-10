@@ -116,13 +116,13 @@ const RegisterScreen = ({ history, location }) => {
           {error && <Message>{error}</Message>}
           {loading && <Loader />}
 
-          <Typography variant='h5'>Social Sign up</Typography>
+          {/* <Typography variant='h5'>Social Sign up</Typography>
           <div className={classes.socialButtons}>
             <FacebookLoginButton onClick={() => alert('Facebook')} />
             <GoogleLoginButton onClick={() => alert('Google')} />
             <TwitterLoginButton onClick={() => alert('Twitter')} />
             <MicrosoftLoginButton onClick={() => alert('Microsoft')} />
-          </div>
+          </div> */}
           <Typography variant='h5'>Email Sign up</Typography>
           <form className={classes.form} onSubmit={submitHandler}>
             <div className={classes.radioGroup}>
