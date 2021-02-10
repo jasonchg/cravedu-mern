@@ -95,6 +95,12 @@ const Modals = ({ modalOpen = false, modalClose, content, courseId }) => {
     if (content.name === name && content.video === video) {
       modalClose()
     } else {
+      if (isPublished !== true) {
+        if (window.confirm('Are you want to publish this content?')) {
+          setIsPublished(true)
+        }
+      }
+
       dispatch(
         updateContent(courseId, {
           contentId: content._id,
