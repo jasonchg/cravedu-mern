@@ -185,6 +185,16 @@ const CourseScreen = ({ history }) => {
   const categoryList = useSelector((state) => state.categoryList)
   const { categories } = categoryList
 
+  const getTotalDuration = (courseContents) => {
+    if (courseContents && courseContents.length !== 0) {
+      const contentsDuration = courseContents.map((x) => x.duration)
+      const reducer = (acc, cur) => acc + cur
+      return (contentsDuration.reduce(reducer) / 60).toFixed(2)
+    } else {
+      return 0
+    }
+  }
+
   useEffect(() => {
     if (userPaidCourses && course) {
       setNewCourseContent(
@@ -265,8 +275,8 @@ const CourseScreen = ({ history }) => {
                         <AccessTimeIcon />
                       </ListItemIcon>
                       <ListItemText
-                        primary={`${Math.round(
-                          course.totalDuration / 60
+                        primary={`${getTotalDuration(
+                          course.courseContents
                         )} hours`}
                       />
                       <ListItemIcon>

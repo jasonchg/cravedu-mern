@@ -18,7 +18,7 @@ import {
 } from '../constants/instructorConstants'
 import { deleteContent } from '../actions/instructorActions'
 import Message from './Message'
-
+import QueryBuilderIcon from '@material-ui/icons/QueryBuilder'
 const ContentListItem = ({
   courseId,
   content,
@@ -71,7 +71,13 @@ const ContentListItem = ({
           onChange={handleAccordion(content.chapter)}
         >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            {`${count}. ${content.name}`}
+            <span style={{ width: '80%' }}>{`${count}. ${content.name}`}</span>
+            <span
+              style={{ width: '40%', display: 'flex', alignItems: 'center' }}
+            >
+              <QueryBuilderIcon fontSize='small' style={{ marginRight: 10 }} />
+              {`${content.duration} minutes`}
+            </span>
           </AccordionSummary>
 
           <AccordionDetails>

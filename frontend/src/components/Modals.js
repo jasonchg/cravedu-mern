@@ -55,6 +55,7 @@ const Modals = ({ modalOpen = false, modalClose, content, courseId }) => {
   const [progress, setProgress] = useState(0)
   const [name, setName] = useState(content.name)
   const [video, setVideo] = useState('')
+  const [videoDuration, setVideoDuration] = useState(content.duration)
 
   const [isPublished, setIsPublished] = useState(content.isPublished)
 
@@ -64,6 +65,12 @@ const Modals = ({ modalOpen = false, modalClose, content, courseId }) => {
     e.preventDefault()
     const file = e.target.files[0]
     const formData = new FormData()
+    var vid = document.createElement('video')
+    var fileURL = URL.createObjectURL(file)
+    vid.src = fileURL
+    vid.ondurationchange = () => {
+      setVideoDuration(Number(Math.round(vid.duration / 60)))
+    }
     formData.append(myTrim(name), file)
     setVideoUploading(true)
     try {
@@ -92,25 +99,23 @@ const Modals = ({ modalOpen = false, modalClose, content, courseId }) => {
 
   const updateContentHandler = (e) => {
     e.preventDefault()
-    if (content.name === name && content.video === video) {
-      modalClose()
-    } else {
-      if (isPublished !== true) {
-        if (window.confirm('Are you want to publish this content?')) {
-          setIsPublished(true)
-        }
-      }
 
-      dispatch(
-        updateContent(courseId, {
-          contentId: content._id,
-          name,
-          isPublished,
-          video,
-        })
+    if (isPublished !== true) {
+      window.confirm(
+        'Are you want to publish this content? Click the checkbox.'
       )
-      modalClose()
     }
+
+    dispatch(
+      updateContent(courseId, {
+        contentId: content._id,
+        name,
+        isPublished,
+        duration: videoDuration,
+        video,
+      })
+    )
+    modalClose()
   }
 
   const handlePublishedCheck = (e, isChecked) => {
@@ -160,19 +165,6 @@ const Modals = ({ modalOpen = false, modalClose, content, courseId }) => {
           >
             <div className={classes.form}>
               <FormContainer>
-                <TextField
-                  required
-                  fullWidth
-                  type='text'
-                  label='Content Name'
-                  placeholder=''
-                  variant='filled'
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </FormContainer>
-
-              <FormContainer>
                 {content.quizzes.length > 0 ? (
                   <Button variant='contained' onClick={() => setOpenQuiz(true)}>
                     Edit Quizzes
@@ -191,22 +183,39 @@ const Modals = ({ modalOpen = false, modalClose, content, courseId }) => {
                   contentId={content._id}
                 />
               </FormContainer>
+              <FormContainer>
+                <TextField
+                  required
+                  fullWidth
+                  type='text'
+                  label='Content Name'
+                  placeholder=''
+                  variant='filled'
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </FormContainer>
 
               <FormContainer>
-                <Typography>Video Resource</Typography>
-                <input
-                  type='file'
-                  name={myTrim(video)}
-                  placeholder='Enter Image Url'
-                  onChange={uploadVideoHandler}
-                />
+                <div>
+                  <Typography>
+                    <b>Video Resource</b>
+                  </Typography>
+                  <br />
+                  <input
+                    type='file'
+                    name={myTrim(video)}
+                    placeholder='Enter Image Url'
+                    onChange={uploadVideoHandler}
+                  />
 
-                <p style={{ background: '#eee', padding: 7 }}>
-                  <small>New path name:</small>{' '}
-                  {content.video ? content.video.substr(34) : '/'}
-                </p>
-                {videoUploading && <ProgressBar progress={progress} />}
-                {error && <Message>{error}</Message>}
+                  <p style={{ background: '#eee', padding: 7 }}>
+                    <small>New path name:</small>{' '}
+                    {content.video ? content.video.substr(34) : '/'}
+                  </p>
+                  {videoUploading && <ProgressBar progress={progress} />}
+                  {error && <Message>{error}</Message>}
+                </div>
               </FormContainer>
 
               <FormContainer>
