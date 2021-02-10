@@ -13,19 +13,18 @@ import {
   CardContent,
   makeStyles,
   Divider,
+  IconButton,
 } from '@material-ui/core'
 import { createCourse, listCourses } from '../actions/instructorActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import {
-  INSTRUCTOR_COURSE_CREATE_RESET,
-  INSTRUCTOR_COURSE_LIST_RESET,
-} from '../constants/instructorConstants'
+import { INSTRUCTOR_COURSE_CREATE_RESET } from '../constants/instructorConstants'
 import Breadcrumbs from '../components/Breadcrumbs'
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder'
 import CreateCourseGuide from '../components/CreateCourseGuide'
 import Paginate from '../components/Paginate'
+import MessageIcon from '@material-ui/icons/Message'
 
 const useStyle = makeStyles((theme) => ({
   cardContainer: { marginTop: 10, marginBottom: 15 },
@@ -47,6 +46,12 @@ const useStyle = makeStyles((theme) => ({
   },
   cardQuantity: {
     fontSize: 32,
+  },
+  instructorButtonHeader: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 }))
 
@@ -192,23 +197,32 @@ const InstructorScreen = ({ history, match }) => {
             </Grid>
 
             <Grid item xs={12}>
-              <Button
-                style={{ marginRight: 10 }}
-                onClick={() => history.push('/')}
-              >
-                Go Back
-              </Button>
-              <Button
-                variant='contained'
-                color='primary'
-                onClick={() => dispatch(createCourse())}
-              >
-                Create New Course{' '}
-                <CreateNewFolderIcon style={{ marginLeft: 10 }} />
-              </Button>
+              <div className={classes.instructorButtonHeader}>
+                <div>
+                  <Button
+                    style={{ marginRight: 10 }}
+                    onClick={() => history.push('/')}
+                  >
+                    Go Back
+                  </Button>
+                  <Button
+                    variant='contained'
+                    color='primary'
+                    onClick={() => dispatch(createCourse())}
+                  >
+                    Create New Course{' '}
+                    <CreateNewFolderIcon style={{ marginLeft: 10 }} />
+                  </Button>
 
-              {createCourseError && <Message>{createCourseError}</Message>}
-              {createCourseLoading && <Loader left />}
+                  {createCourseError && <Message>{createCourseError}</Message>}
+                  {createCourseLoading && <Loader left />}
+                </div>
+                <div>
+                  <IconButton>
+                    <MessageIcon fontSize='large' />
+                  </IconButton>
+                </div>
+              </div>
             </Grid>
 
             <Grid item xs={12}>
