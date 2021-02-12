@@ -24,6 +24,8 @@ import {
 } from '@material-ui/core'
 import FormContainer from './FormContainer'
 import Message from './Message'
+import { replyQanda } from '../actions/courseActions'
+import { useDispatch } from 'react-redux'
 
 const useStyle = makeStyles((theme) => ({
   paper: {
@@ -57,11 +59,12 @@ const useStyle = makeStyles((theme) => ({
   },
 }))
 
-const QuestionThread = ({ qanda }) => {
+const QuestionThread = ({ qanda, courseId }) => {
   const classes = useStyle()
   const [answer, setAnswer] = useState('')
   const [like, setLike] = useState(null)
   const [modalOpen, setModalOpen] = useState(false)
+  const dispatch = useDispatch()
 
   const likeReply = (thought) => {
     if (thought) {
@@ -72,7 +75,7 @@ const QuestionThread = ({ qanda }) => {
   }
 
   const answerHandler = () => {
-    alert('send')
+    dispatch(replyQanda(courseId, qanda._id, answer))
   }
 
   const modal = (
@@ -84,7 +87,7 @@ const QuestionThread = ({ qanda }) => {
       className={classes.modalContainer}
     >
       <div className={classes.modalPaper}>
-        <form onSubmit={answerHandler}>
+        <div>
           <FormContainer>
             <TextField
               required
@@ -99,11 +102,16 @@ const QuestionThread = ({ qanda }) => {
             />
           </FormContainer>
           <br />
-          <Button type='submit' variant='contained' color='primary'>
+          <Button
+            type='submit'
+            variant='contained'
+            color='primary'
+            onClick={() => answerHandler()}
+          >
             Post
           </Button>
           <Button onClick={() => setModalOpen(false)}>Cancel</Button>
-        </form>
+        </div>
         <br />
         <Message severity='info'>
           Please kindly wait for instructor to grant your answer.
@@ -113,7 +121,7 @@ const QuestionThread = ({ qanda }) => {
   )
 
   return (
-    <div key={qanda._id}>
+    <div>
       <Paper className={classes.questionBlock}>
         <ListItem alignItems='flex-start'>
           <ListItemAvatar>
@@ -252,7 +260,6 @@ const QuestionThread = ({ qanda }) => {
       ) : (
         ''
       )}
-
       <br />
     </div>
   )

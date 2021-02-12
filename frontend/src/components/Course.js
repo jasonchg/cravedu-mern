@@ -173,6 +173,7 @@ const Course = ({ course, learning, currentCourse = '', myLearning }) => {
                   : `Progress: ${progressCount.length} / ${newCourseContent.length}`
                 : ''}
             </CardContent>
+
             {course && course.rating ? (
               <div style={{ display: 'flex' }}>
                 <span style={{ marginLeft: 10 }}></span>

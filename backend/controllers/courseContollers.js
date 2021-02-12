@@ -139,7 +139,7 @@ const createCourseQandA = asyncHandler(async (req, res) => {
 })
 
 // @desc    Reply QandA
-// @route   PUT /api/courses/:id/qanda/:qandaId
+// @route   POST /api/courses/:id/qanda/:qandaId
 // @access  Private
 
 const replyCourseQandA = asyncHandler(async (req, res) => {
@@ -163,14 +163,14 @@ const replyCourseQandA = asyncHandler(async (req, res) => {
         currentQanda.answers.push(answer)
 
         const updateQanda = await course.save()
-        res.status(201).json({ updateQanda })
+        res.status(201).json(updateQanda.courseQASection)
       } else {
         res.status(404)
         throw new Error('Q&A not found')
       }
     } catch (err) {
-      res.status(404)
-      throw new Error('Course not found', err.message)
+      res.status(500)
+      throw new Error('Q&A Failed', err.message)
     }
   } else {
     res.status(404)

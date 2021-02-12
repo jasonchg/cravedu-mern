@@ -22,6 +22,7 @@ import {
   addQanda,
   createReview,
   listCourseDetails,
+  replyQanda,
 } from '../actions/courseActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
@@ -358,7 +359,6 @@ const VideoLearningScreen = ({ history }) => {
   }
 
   const qandaHandler = (e) => {
-    e.preventDefault()
     dispatch(addQanda(course._id, { question }))
     setModalOpen(false)
   }
@@ -511,7 +511,11 @@ const VideoLearningScreen = ({ history }) => {
                       course.courseQASection &&
                       course.courseQASection.length !== 0 ? (
                         course.courseQASection.map((qanda) => (
-                          <QuestionThread qanda={qanda} />
+                          <QuestionThread
+                            key={qanda._id}
+                            qanda={qanda}
+                            courseId={course._id}
+                          />
                         ))
                       ) : (
                         <ListItem>No any question just yet.</ListItem>
@@ -527,7 +531,7 @@ const VideoLearningScreen = ({ history }) => {
                     className={classes.modalContainer}
                   >
                     <div className={classes.modalPaper}>
-                      <form onSubmit={qandaHandler}>
+                      <div>
                         <FormContainer>
                           <TextField
                             required
@@ -546,13 +550,14 @@ const VideoLearningScreen = ({ history }) => {
                           type='submit'
                           variant='contained'
                           color='primary'
+                          onClick={() => qandaHandler()}
                         >
                           Post
                         </Button>
                         <Button onClick={() => setModalOpen(false)}>
                           Cancel
                         </Button>
-                      </form>
+                      </div>
                       <br />
                       <Message severity='info'>
                         Some your instructor might not answer your question but

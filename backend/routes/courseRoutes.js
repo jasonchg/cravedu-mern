@@ -19,7 +19,7 @@ router.route('/categories').get(getCategories)
 router.route('/category').get(getCoursesByCategory)
 router.route('/:slug').get(getCourseBySlug)
 router.route('/:id/reviews').post(protectedRoute, createCourseReview)
-router.route('/:id/qanda/:qandaId').put(protectedRoute, replyCourseQandA)
+router.route('/:id/qanda/:qandaId').post(protectedRoute, replyCourseQandA)
 router.route('/:id/qanda').post(protectedRoute, createCourseQandA)
 router.route('/:id/watch').put(protectedRoute, setWatched)
 

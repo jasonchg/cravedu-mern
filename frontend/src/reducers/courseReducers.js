@@ -19,6 +19,10 @@ import {
   COURSE_CATEGORIES_REQUEST,
   COURSE_CATEGORIES_SUCCESS,
   COURSE_CATEGORIES_FAIL,
+  COURSE_ANSWER_QANDA_REQUEST,
+  COURSE_ANSWER_QANDA_SUCCESS,
+  COURSE_ANSWER_QANDA_FAIL,
+  COURSE_ANSWER_QANDA_RESET,
 } from '../constants/courseConstants'
 import {
   USER_WATCHED_CONTENT_FAIL,
@@ -76,13 +80,13 @@ const courseDetailsReducer = (state = { course: {} }, action) => {
 
 const courseQandaReducer = (state = {}, action) => {
   switch (action.type) {
-    case COURSE_QANDA_REQUEST:
+    case COURSE_QANDA_REQUEST || COURSE_ANSWER_QANDA_REQUEST:
       return { loading: true }
-    case COURSE_QANDA_SUCCESS:
+    case COURSE_QANDA_SUCCESS || COURSE_ANSWER_QANDA_SUCCESS:
       return { loading: false, success: true }
-    case COURSE_QANDA_FAIL:
+    case COURSE_QANDA_FAIL || COURSE_ANSWER_QANDA_FAIL:
       return { loading: false, error: action.payload }
-    case COURSE_QANDA_RESET:
+    case COURSE_QANDA_RESET || COURSE_ANSWER_QANDA_RESET:
       return { loading: false, error: action.payload }
     default:
       return state
