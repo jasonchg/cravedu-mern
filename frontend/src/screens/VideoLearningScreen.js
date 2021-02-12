@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
-import CraveduLogo from '../assets/images/logo-black.png'
 import {
   Container,
   Grid,
@@ -15,18 +14,10 @@ import {
   Box,
   Paper,
   Button,
-  Avatar,
-  ListItemAvatar,
   Modal,
   TextField,
   makeStyles,
-  ButtonGroup,
-  IconButton,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
 } from '@material-ui/core'
-import ReplyIcon from '@material-ui/icons/Reply'
 import {
   addQanda,
   createReview,
@@ -43,12 +34,11 @@ import {
   COURSE_REVIEW_RESET,
 } from '../constants/courseConstants'
 import ReactStars from 'react-rating-stars-component'
-import ThumbUpIcon from '@material-ui/icons/ThumbUp'
-import ThumbDownIcon from '@material-ui/icons/ThumbDown'
 import CourseContentList from '../components/CourseContentList'
 import { getUserCourses } from '../actions/userActions'
 import { USER_WATCHED_CONTENT_RESET } from '../constants/userConstants'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import QuestionThread from '../components/QuestionThread'
+import InsturctorCard from '../components/InsturctorCard'
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props
 
@@ -99,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
   },
   modalPaper: {
     width: 400,
-    height: 200,
+    height: 240,
     backgroundColor: '#f1faee',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
@@ -110,10 +100,6 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: 700,
     overflow: 'scroll',
     overflowX: 'hidden',
-  },
-  questionBlock: {
-    margin: 2,
-    background: '#f1faee',
   },
   divider: {
     margin: theme.spacing(2, 0),
@@ -154,26 +140,7 @@ const useStyles = makeStyles((theme) => ({
   tabPanelArea: {
     minHeight: 500,
   },
-  aboutInstructor: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    width: '30%',
-    background: '#f1faee',
-    borderRadius: 10,
-    padding: 10,
-    paddingBottom: 20,
-    marginTop: 20,
-    boxShadow: theme.shadows[5],
-  },
-  buttonLike: {
-    color: 'green',
-  },
-  buttonDislike: {
-    color: 'red',
-  },
 }))
-
 const VideoLearningScreen = ({ history }) => {
   const dispatch = useDispatch()
   const classes = useStyles()
@@ -201,18 +168,12 @@ const VideoLearningScreen = ({ history }) => {
   const [ratingStars, setRatingStars] = useState(5)
   const [comment, setComment] = useState('')
   const [alreadyReview, setAlreadyReview] = useState(false)
-
   const { course_slug } = useParams()
-
   const userCourses = useSelector((state) => state.userCourses)
   const { userPaidCourses } = userCourses
-
   const contentWatched = useSelector((state) => state.contentWatched)
   const { success: contentWatchedSuccess } = contentWatched
-
   const [currentUserPaidCourse, setCurrentUserPaidCourse] = useState(null)
-
-  const [like, setLike] = useState(null)
   const [newCourseContent, setNewCourseContent] = useState([])
   const tabHandler = (event, newValue) => {
     setValue(newValue)
@@ -296,7 +257,7 @@ const VideoLearningScreen = ({ history }) => {
             setAlreadyReview(checkReview(course.reviews, userInfo._id))
 
             if (currentUserPaidCourse && currentUserPaidCourse.courseContents) {
-              // problem here
+              // problem here : update course if thare is any more new contents
 
               let notYetWatchContent = currentUserPaidCourse.courseContents.find(
                 (x) => x.watched !== true
@@ -412,14 +373,6 @@ const VideoLearningScreen = ({ history }) => {
     setExpanded(isExpanded ? panel : false)
   }
 
-  const likeReply = (thought) => {
-    if (thought) {
-      setLike(true)
-    } else {
-      setLike(false)
-    }
-  }
-
   return (
     <>
       {loading || !course ? (
@@ -523,37 +476,7 @@ const VideoLearningScreen = ({ history }) => {
                     {!course || !course.instructor ? (
                       ''
                     ) : (
-                      <div className={classes.aboutInstructor}>
-                        <p>Instructor Card</p>
-                        <span
-                          style={{
-                            background: '#1d3557',
-                            width: '100%',
-                            display: 'flex',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            padding: 10,
-                          }}
-                        >
-                          <Avatar
-                            style={{
-                              marginRight: 10,
-                              width: 50,
-                              height: 50,
-                              background: '#457b9d',
-                            }}
-                          >
-                            <h3>{course.instructor.charAt(0)}</h3>
-                          </Avatar>
-                          <h2 style={{ color: '#fff' }}>{course.instructor}</h2>
-                        </span>
-                        <img
-                          src={CraveduLogo}
-                          width='80'
-                          style={{ marginTop: 20 }}
-                        />
-                      </div>
+                      <InsturctorCard instructor={course.instructor} />
                     )}
                   </div>
                 </TabPanel>
@@ -588,172 +511,7 @@ const VideoLearningScreen = ({ history }) => {
                       course.courseQASection &&
                       course.courseQASection.length !== 0 ? (
                         course.courseQASection.map((qanda) => (
-                          <div key={qanda._id}>
-                            <Paper className={classes.questionBlock}>
-                              <ListItem alignItems='flex-start'>
-                                <ListItemAvatar>
-                                  <Avatar style={{ marginRight: 10 }}>
-                                    {qanda.userName.charAt(0)}
-                                  </Avatar>
-                                </ListItemAvatar>
-                                <div
-                                  style={{
-                                    display: 'grid',
-                                    gridTemplateColumns: '10fr .7fr',
-                                  }}
-                                >
-                                  <div>
-                                    <ListItemText
-                                      primary={
-                                        <strong>{qanda.question}</strong>
-                                      }
-                                      secondary={
-                                        <span>
-                                          <Typography
-                                            component='span'
-                                            variant='body2'
-                                            color='textPrimary'
-                                          >
-                                            {qanda.userName}
-                                          </Typography>{' '}
-                                          {qanda.createdAt &&
-                                            qanda.createdAt.substring(10, 0)}
-                                        </span>
-                                      }
-                                    />
-                                  </div>
-                                  <div>
-                                    <Button size='large'>
-                                      <ReplyIcon /> Reply
-                                    </Button>
-                                  </div>
-                                </div>
-                              </ListItem>
-                            </Paper>
-
-                            {qanda.answers && qanda.answers.length !== 0 ? (
-                              <List
-                                style={{
-                                  marginLeft: 25,
-                                  background: '#f1faee',
-                                }}
-                              >
-                                <Accordion
-                                  style={{
-                                    background: '#f1faee',
-                                    boxShadow: 'none',
-                                  }}
-                                >
-                                  <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon />}
-                                    aria-controls='answers-content'
-                                    id='answers-content-header'
-                                  >
-                                    {
-                                      qanda.answers.filter(
-                                        (x) => x.granted === true
-                                      ).length
-                                    }{' '}
-                                    had answered to this question.
-                                  </AccordionSummary>
-                                  <Divider />
-
-                                  {qanda.answers.map((thread, i) => {
-                                    return thread.granted === true ? (
-                                      <AccordionDetails key={i}>
-                                        <ListItem>
-                                          <ListItemAvatar>
-                                            <Avatar
-                                              style={{
-                                                marginRight: 10,
-                                              }}
-                                            >
-                                              {thread.userName.charAt(0)}
-                                            </Avatar>
-                                          </ListItemAvatar>
-                                          <div
-                                            style={{
-                                              display: 'grid',
-                                              gridTemplateColumns: '10fr  .7fr',
-                                            }}
-                                          >
-                                            <div>
-                                              <ListItemText
-                                                primary={
-                                                  <span>{thread.answer}</span>
-                                                }
-                                                secondary={
-                                                  <span>
-                                                    <Typography
-                                                      component='span'
-                                                      variant='body2'
-                                                      color='textPrimary'
-                                                    >
-                                                      {thread.userName}
-                                                    </Typography>{' '}
-                                                    {thread.createdAt &&
-                                                      thread.createdAt.substring(
-                                                        10,
-                                                        0
-                                                      )}
-                                                  </span>
-                                                }
-                                              />
-                                            </div>
-
-                                            <div>
-                                              <ButtonGroup
-                                                disableElevation
-                                                variant='contained'
-                                              >
-                                                <IconButton
-                                                  className={
-                                                    like && like !== null
-                                                      ? classes.buttonLike
-                                                      : ''
-                                                  }
-                                                  onClick={() =>
-                                                    likeReply(true)
-                                                  }
-                                                >
-                                                  <ThumbUpIcon />
-                                                  {thread.helpful &&
-                                                    thread.helpful}
-                                                </IconButton>
-                                                <IconButton
-                                                  className={
-                                                    !like && like !== null
-                                                      ? classes.buttonDislike
-                                                      : ''
-                                                  }
-                                                  onClick={() =>
-                                                    likeReply(false)
-                                                  }
-                                                >
-                                                  {thread.notHelpful &&
-                                                    thread.notHelpful}
-                                                  <ThumbDownIcon />
-                                                </IconButton>
-                                              </ButtonGroup>
-                                            </div>
-                                          </div>
-                                          <Divider
-                                            className={classes.divider}
-                                          />
-                                        </ListItem>
-                                      </AccordionDetails>
-                                    ) : (
-                                      ''
-                                    )
-                                  })}
-                                </Accordion>
-                              </List>
-                            ) : (
-                              ''
-                            )}
-
-                            <br />
-                          </div>
+                          <QuestionThread qanda={qanda} />
                         ))
                       ) : (
                         <ListItem>No any question just yet.</ListItem>
@@ -780,6 +538,7 @@ const VideoLearningScreen = ({ history }) => {
                             variant='filled'
                             value={question}
                             onChange={(e) => setQuestion(e.target.value)}
+                            fullWidth
                           />
                         </FormContainer>
                         <br />
@@ -794,11 +553,11 @@ const VideoLearningScreen = ({ history }) => {
                           Cancel
                         </Button>
                       </form>
-
-                      <h4>
+                      <br />
+                      <Message severity='info'>
                         Some your instructor might not answer your question but
                         other people will.
-                      </h4>
+                      </Message>
                     </div>
                   </Modal>
                 </TabPanel>

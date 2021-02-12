@@ -65,7 +65,7 @@ const MyCoursesScreen = ({ history }) => {
                 <Grid item key={index}>
                   <Link href={`/course/${item.slug}/learn`}>
                     <div style={{ pointerEvents: 'none' }}>
-                      <Course course={item} />
+                      <Course course={item} myLearning />
                     </div>
                   </Link>
                 </Grid>

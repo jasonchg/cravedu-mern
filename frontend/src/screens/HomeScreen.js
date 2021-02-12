@@ -83,8 +83,21 @@ const HomeScreen = ({ history, match }) => {
 
           {userInfo && userPaidCourses && userPaidCourses.length !== 0 ? (
             <>
-              <Grid item xs={12} className='homeHeaderText'>
-                <h2> Let's start learning, {userInfo.name}</h2>
+              <Grid item xs={12}>
+                <div style={{ display: 'flex' }} className='homeHeaderText'>
+                  <div style={{ flex: 1 }}>
+                    <h2> Let's start learning, {userInfo.name}</h2>
+                  </div>
+                  <div>
+                    <Button
+                      style={{ margin: 10, maxHeight: 35 }}
+                      size='small'
+                      onClick={() => history.push('/mycourses')}
+                    >
+                      My Learning
+                    </Button>
+                  </div>
+                </div>
               </Grid>
 
               <CourseScroll

@@ -70,7 +70,7 @@ const learningStyles = makeStyles({
   content: {},
 })
 
-const Course = ({ course, learning, currentCourse = '' }) => {
+const Course = ({ course, learning, currentCourse = '', myLearning }) => {
   const classes = useStyles()
   const classesLearning = learningStyles()
   const [progressCount, setProgressCount] = useState([])
@@ -132,7 +132,7 @@ const Course = ({ course, learning, currentCourse = '' }) => {
                 style={{ fontStyle: 'bold', fontSize: 12 }}
               >
                 {progressCount.length === newCourseContent.length
-                  ? 'Completed'
+                  ? '100% Completed'
                   : `Progress: ${progressCount.length} / ${newCourseContent.length}`}
               </Typography>
             </CardContent>
@@ -166,6 +166,12 @@ const Course = ({ course, learning, currentCourse = '' }) => {
                   <div> {course && course.totalSold}</div>
                 </div>
               ) : null}
+
+              {myLearning
+                ? progressCount.length === newCourseContent.length
+                  ? '100% Completed'
+                  : `Progress: ${progressCount.length} / ${newCourseContent.length}`
+                : ''}
             </CardContent>
             {course && course.rating ? (
               <div style={{ display: 'flex' }}>
