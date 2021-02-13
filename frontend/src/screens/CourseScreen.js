@@ -160,8 +160,6 @@ const CourseScreen = ({ history }) => {
 
   const [bought, setBought] = useState(false)
 
-  const [newCourseContent, setNewCourseContent] = useState([])
-
   const addToCartHandler = () => {
     dispatch(addToCart(course.slug))
     if (window.confirm('Course added to cart. View your cart?')) {
@@ -186,11 +184,19 @@ const CourseScreen = ({ history }) => {
   const categoryList = useSelector((state) => state.categoryList)
   const { categories } = categoryList
 
+  const newContentLists = (courseContent) => {
+    if (courseContent) {
+      const result = courseContent.filter(
+        (content) => content.isPublished === true
+      )
+      return result.length
+    } else {
+      return 0
+    }
+  }
+
   useEffect(() => {
     if (userPaidCourses && course) {
-      setNewCourseContent(
-        course.courseContents.filter((content) => content.isPublished === true)
-      )
       setBought(checkBought(userPaidCourses, course))
     }
   }, [userPaidCourses, course])
@@ -274,7 +280,9 @@ const CourseScreen = ({ history }) => {
                         <ArchiveIcon />
                       </ListItemIcon>
                       <ListItemText
-                        primary={`${newCourseContent.length} Chapters`}
+                        primary={`${newContentLists(
+                          course.courseContents
+                        )} Chapters`}
                       />
                     </ListItem>
 

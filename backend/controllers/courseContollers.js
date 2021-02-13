@@ -3,6 +3,11 @@ import Category from '../models/categoryModel.js'
 import Course from '../models/courseModel.js'
 import User from '../models/userModel.js'
 import Notification from '../models/notificationModel.js'
+import {
+  NEW_QANDA_ANSWER,
+  NEW_QANDA_QUESTION,
+  NEW_REVIEW,
+} from './notificationConstants.js'
 
 // @desc    Fetch all courses/ Search features
 // @route   GET /api/courses
@@ -129,6 +134,18 @@ const createCourseQandA = asyncHandler(async (req, res) => {
       user: req.user._id,
     }
 
+    const newNotification = new Notification({
+      user: course.user,
+      notification: {
+        title: NEW_QANDA_QUESTION,
+        from: `${course.name} - Question: ${question}`,
+        message: `From ${req.user.name}`,
+        read: false,
+      },
+    })
+
+    await newNotification.save()
+
     course.courseQASection.push(qanda)
 
     const posted = await course.save()
@@ -166,9 +183,9 @@ const replyCourseQandA = asyncHandler(async (req, res) => {
         const newNotification = new Notification({
           user: course.user,
           notification: {
-            title: 'New Qanda Asnwer.',
+            title: NEW_QANDA_ANSWER,
             from: `${course.name} - Question: ${currentQanda.question}`,
-            message: answer.answer,
+            message: `${answer.answer} - ${req.body.userName}`,
             read: false,
           },
         })
@@ -225,6 +242,18 @@ const createCourseReview = asyncHandler(async (req, res) => {
       comment,
       user: req.user._id,
     }
+
+    const newNotification = new Notification({
+      user: course.user,
+      notification: {
+        title: NEW_REVIEW,
+        from: `${course.name} - Review: ${comment}`,
+        message: `From ${req.user.name}`,
+        read: false,
+      },
+    })
+
+    await newNotification.save()
 
     await course.reviews.push(review)
 

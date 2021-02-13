@@ -7,12 +7,20 @@ import {
   Tab,
   Box,
   Paper,
+  ListItemText,
+  Typography,
+  List,
+  ListItem,
+  Divider,
+  Button,
 } from '@material-ui/core'
 import Breadcrumbs from '../components/Breadcrumbs'
+import Loader from '../components/Loader'
 import PropTypes from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
 
 import Message from '../components/Message'
+import { getUserNotification } from '../actions/userActions'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,6 +74,9 @@ const NotificationScreen = ({ history }) => {
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
+  const userNotifications = useSelector((state) => state.userNotifications)
+  const { notifications, loading, error } = userNotifications
+
   const tabHandler = (event, newValue) => {
     setValue(newValue)
   }
@@ -75,10 +86,84 @@ const NotificationScreen = ({ history }) => {
   useEffect(() => {
     if (!userInfo) {
       history.push('/login')
+    } else {
+      dispatch(getUserNotification())
     }
   }, [history])
 
-  return (
+  const notificationBlock = ({ notification }) => {
+    const checkingNotification = (noti) => {
+      switch (noti.title) {
+        case 'NEW_QANDA_ANSWER':
+          return {
+            title: <h3>New Qanda Anwser</h3>,
+            message: noti.message,
+            from: noti.from,
+            grant: true,
+          }
+        case 'NEW_QANDA_QUESTION':
+          return {
+            title: <h3>New Qanda Question</h3>,
+            message: noti.message,
+            from: noti.from,
+            grant: false,
+          }
+
+        case 'NEW_REVIEW':
+          return {
+            title: <h3>New Review</h3>,
+            message: noti.message,
+            from: noti.from,
+            grant: false,
+          }
+        case 'NEW_ANNOUNCEMENT':
+          return {
+            title: <h3>New Announcement</h3>,
+            message: noti.message,
+            from: noti.from,
+            grant: false,
+          }
+
+        default:
+          return ''
+      }
+    }
+
+    const { title, message, from, grant } = checkingNotification(notification)
+
+    return (
+      <div key={notification._id}>
+        <ListItem>
+          <ListItemText
+            primary={title}
+            secondary={
+              <>
+                <h3>{from}</h3>
+                <p>{message}</p>
+                <p>{notification.createdAt.substring(0, 10)}</p>
+                {grant ? (
+                  <>
+                    <button>Grant This Answer</button> |{' '}
+                  </>
+                ) : (
+                  ''
+                )}{' '}
+                {notification.read ? '' : <button>Mark as read</button>}{' '}
+                <button>Delete</button>
+              </>
+            }
+          />
+        </ListItem>
+        <Divider />
+      </div>
+    )
+  }
+
+  return loading ? (
+    <Loader />
+  ) : error ? (
+    <Message>{error}</Message>
+  ) : (
     <div className={classes.root}>
       <Breadcrumbs
         previousPage={[
@@ -101,34 +186,39 @@ const NotificationScreen = ({ history }) => {
                 value={value}
                 className={classes.tabs}
               >
-                <Tab label='Student' {...a11yProps(0)} />
-                {userInfo.isInstructor && (
-                  <Tab label='Instructor' {...a11yProps(1)} />
-                )}
-
-                {userInfo.isAdmin && <Tab label='Admin' {...a11yProps(3)} />}
+                <Tab label='All Notifications' {...a11yProps(0)} />
+                <Tab label='Read' {...a11yProps(1)} />
               </Tabs>
             </Paper>
           </Grid>
           <Grid item md={9}>
             <Paper className={classes.paper}>
               <TabPanel value={value} index={0}>
-                <div>Students - new contents, new reply</div>
+                <List>
+                  {notifications ? (
+                    notifications.map((noti) => {
+                      return noti.notification.read
+                        ? ''
+                        : notificationBlock(noti)
+                    })
+                  ) : (
+                    <Message severity='info'>No notification</Message>
+                  )}
+                </List>
               </TabPanel>
-
-              {userInfo.isInstructor && (
-                <TabPanel value={value} index={1}>
-                  <div>
-                    Instructor - get new answers and admin approve course
-                  </div>
-                </TabPanel>
-              )}
-
-              {userInfo.isAdmin && (
-                <TabPanel value={value} index={2}>
-                  <div>Admin - new courses publish request </div>
-                </TabPanel>
-              )}
+              <TabPanel value={value} index={1}>
+                <List>
+                  {notifications ? (
+                    notifications.map((noti) => {
+                      return noti.notification.read
+                        ? notificationBlock(noti)
+                        : ''
+                    })
+                  ) : (
+                    <Message severity='info'>No notification</Message>
+                  )}
+                </List>
+              </TabPanel>
             </Paper>
           </Grid>
         </Grid>

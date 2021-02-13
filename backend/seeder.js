@@ -8,6 +8,7 @@ import users from './data/users.js'
 import courses from './data/courses.js'
 import Category from './models/categoryModel.js'
 import categories from './data/categories.js'
+import Notification from './models/notificationModel.js'
 
 dotenv.config()
 connectDB()
@@ -18,6 +19,7 @@ const importData = async () => {
     await User.deleteMany()
     await Order.deleteMany()
     await Category.deleteMany()
+    await Notification.deleteMany()
 
     const createdUsers = await User.insertMany(users)
 
@@ -44,6 +46,7 @@ const destroyData = async () => {
     await User.deleteMany()
     await Order.deleteMany()
     await Category.deleteMany()
+    await Notification.deleteMany()
 
     console.log('Data Destroyed!'.red.inverse)
     process.exit()
