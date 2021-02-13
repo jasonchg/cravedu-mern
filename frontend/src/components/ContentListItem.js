@@ -76,7 +76,9 @@ const ContentListItem = ({
               style={{ width: '40%', display: 'flex', alignItems: 'center' }}
             >
               <QueryBuilderIcon fontSize='small' style={{ marginRight: 10 }} />
-              {`${content.duration} minutes`}
+              {`${
+                Number(content.duration) !== 0 ? content.duration : 0
+              } minutes`}
             </span>
           </AccordionSummary>
 

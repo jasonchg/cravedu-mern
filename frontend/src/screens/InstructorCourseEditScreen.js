@@ -37,7 +37,7 @@ import {
   INSTRUCTOR_DELETE_COURSE_RESET,
 } from '../constants/instructorConstants'
 import TextEditor from '../components/TextEditor'
-import { myTrim, generateSlug } from '../utils'
+import { myTrim, generateSlug, getTotalDuration } from '../utils'
 import ContentListItem from '../components/ContentListItem'
 import { listCategories } from '../actions/courseActions'
 import CategorySelectList from '../components/CategorySelectList'
@@ -447,57 +447,61 @@ const InstructorCourseEditScreen = ({ match, history }) => {
 
         <Grid item md={6} xs={12}>
           <h2>Course Contents</h2>
-          <Accordion
-            expanded={expanded === 'addnewcontent'}
-            onChange={handleAccordion('addnewcontent')}
-          >
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              Add New Content
-            </AccordionSummary>
-            <AccordionDetails>
-              <Grid container spacing={3}>
-                <Grid item md={6}>
-                  <form onSubmit={submitContentHandler}>
-                    <FormContainer>
-                      <TextField
-                        required
-                        fullWidth
-                        id='content-chapter'
-                        type='number'
-                        label='Chapter'
-                        placeholder='1'
-                        variant='filled'
-                        value={chapter}
-                        onChange={(e) => setChapter(e.target.value)}
-                      />
-                    </FormContainer>
-                    <FormContainer>
-                      <TextField
-                        required
-                        fullWidth
-                        id='content-name'
-                        type='text'
-                        label='Chapter Name'
-                        placeholder='Get Started'
-                        variant='filled'
-                        value={chapterName}
-                        onChange={(e) => setChapterName(e.target.value)}
-                      />
-                    </FormContainer>
-                    <Button variant='contained' color='primary' type='submit'>
-                      Push
-                    </Button>
-                  </form>
+          {courseDetails.isPublished ? (
+            ''
+          ) : (
+            <Accordion
+              expanded={expanded === 'addnewcontent'}
+              onChange={handleAccordion('addnewcontent')}
+            >
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                Add New Content
+              </AccordionSummary>
+              <AccordionDetails>
+                <Grid container spacing={3}>
+                  <Grid item md={6}>
+                    <form onSubmit={submitContentHandler}>
+                      <FormContainer>
+                        <TextField
+                          required
+                          fullWidth
+                          id='content-chapter'
+                          type='number'
+                          label='Chapter'
+                          placeholder='1'
+                          variant='filled'
+                          value={chapter}
+                          onChange={(e) => setChapter(e.target.value)}
+                        />
+                      </FormContainer>
+                      <FormContainer>
+                        <TextField
+                          required
+                          fullWidth
+                          id='content-name'
+                          type='text'
+                          label='Chapter Name'
+                          placeholder='Get Started'
+                          variant='filled'
+                          value={chapterName}
+                          onChange={(e) => setChapterName(e.target.value)}
+                        />
+                      </FormContainer>
+                      <Button variant='contained' color='primary' type='submit'>
+                        Push
+                      </Button>
+                    </form>
+                  </Grid>
+                  <Grid item md={6}>
+                    {createContentLoading && <Loader left />}
+                    {createContentError && (
+                      <Message>{createContentError}</Message>
+                    )}
+                  </Grid>
                 </Grid>
-                <Grid item md={6}>
-                  {createContentLoading && <Loader left />}
-                  {createContentError && (
-                    <Message>{createContentError}</Message>
-                  )}
-                </Grid>
-              </Grid>
-            </AccordionDetails>
-          </Accordion>
+              </AccordionDetails>
+            </Accordion>
+          )}
 
           <Paper>
             <List>
@@ -534,7 +538,8 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                   padding: '7px 0',
                 }}
               >
-                You've total {courseContents.length} chapters.
+                You've {courseContents.length} chapters with total duration of{' '}
+                {getTotalDuration(courseContents)} hours.
               </span>
             ) : null}
           </Paper>

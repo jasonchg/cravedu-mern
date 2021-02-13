@@ -19,6 +19,9 @@ import {
   USER_COURSE_FAIL,
   USER_DETAILS_RESET,
   USER_COURSE_SAVE_CURRENT_STATE,
+  USER_UPDATE_CONTENT_REQUEST,
+  USER_UPDATE_CONTENT_SUCCESS,
+  USER_UPDATE_CONTENT_FAIL,
 } from '../constants/userConstants'
 
 const login = (email, password) => async (dispatch) => {
@@ -186,6 +189,33 @@ const saveVideoCurrent = (id) => (dispatch) => {
   localStorage.setItem('userLearn', JSON.stringify(id))
 }
 
+const updateUserCourses = (courseId) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: USER_UPDATE_CONTENT_REQUEST })
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    await axios.get(`/api/mycourses/${courseId}`, config)
+
+    dispatch({ type: USER_UPDATE_CONTENT_SUCCESS })
+  } catch (e) {
+    dispatch({
+      type: USER_UPDATE_CONTENT_FAIL,
+      payload:
+        e.response && e.response.data.message
+          ? e.response.data.message
+          : e.message,
+    })
+  }
+}
+
 export {
   login,
   logout,
@@ -194,4 +224,5 @@ export {
   updateUserDetails,
   getUserCourses,
   saveVideoCurrent,
+  updateUserCourses,
 }

@@ -21,6 +21,7 @@ import BrowseScreen from './screens/BrowseScreen'
 import InstructorScreen from './screens/InstructorScreen'
 import InstructorCourseEditScreen from './screens/InstructorCourseEditScreen'
 import PreviewCourseScreen from './screens/PreviewCourseScreen'
+import NotificationScreen from './screens/NotificationScreen'
 
 function App() {
   return (
@@ -81,6 +82,7 @@ function App() {
           </div>
           {/* Main Screen */}
           <Container>
+            <Route path='/notifications' component={NotificationScreen} exact />
             <Route path='/mycourses' component={MyCoursesScreen} exact />
             <Route path='/register' component={RegisterScreen} exact />
             <Route path='/login/:id' component={LoginScreen} exact />

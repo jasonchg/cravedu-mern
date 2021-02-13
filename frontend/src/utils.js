@@ -19,4 +19,15 @@ const generateSlug = (name) => {
   return String(name.replace(/ /g, '-').toLowerCase() + '-' + ranText)
 }
 
-export { truncate, myTrim, generateSlug }
+const getTotalDuration = (courseContents) => {
+  if (courseContents && courseContents.length !== 0) {
+    const contentsDuration = courseContents.map((x) => x.duration)
+    const reducer = (acc, cur) => Number(acc) + Number(cur)
+    const total = contentsDuration.reduce(reducer)
+    return Number(total / 60).toFixed(2)
+  } else {
+    return 0
+  }
+}
+
+export { truncate, myTrim, generateSlug, getTotalDuration }

@@ -59,7 +59,7 @@ const useStyle = makeStyles((theme) => ({
   },
 }))
 
-const QuestionThread = ({ qanda, courseId }) => {
+const QuestionThread = ({ qanda, courseId, currentUser }) => {
   const classes = useStyle()
   const [answer, setAnswer] = useState('')
   const [like, setLike] = useState(null)
@@ -75,7 +75,13 @@ const QuestionThread = ({ qanda, courseId }) => {
   }
 
   const answerHandler = () => {
-    dispatch(replyQanda(courseId, qanda._id, answer))
+    if (currentUser === qanda.userName) {
+      alert('You cannt answer to your own question!')
+      setAnswer('')
+      setModalOpen(false)
+    } else {
+      dispatch(replyQanda(courseId, qanda._id, answer))
+    }
   }
 
   const modal = (

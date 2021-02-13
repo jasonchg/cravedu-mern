@@ -78,7 +78,6 @@ const LoginScreen = ({ history, location, match }) => {
   const redirect = location.search ? location.search.split('=')[1] : '/'
 
   const id = match.params.id
-  console.log(id)
 
   useEffect(() => {
     if (userInfo) {

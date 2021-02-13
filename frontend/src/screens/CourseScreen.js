@@ -41,6 +41,7 @@ import PropTypes from 'prop-types'
 import AccessTimeIcon from '@material-ui/icons/AccessTime'
 import { addToCart } from '../actions/cartActions'
 import { getParentCategory } from '../customHooks'
+import { getTotalDuration } from '../utils'
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props
@@ -184,16 +185,6 @@ const CourseScreen = ({ history }) => {
 
   const categoryList = useSelector((state) => state.categoryList)
   const { categories } = categoryList
-
-  const getTotalDuration = (courseContents) => {
-    if (courseContents && courseContents.length !== 0) {
-      const contentsDuration = courseContents.map((x) => x.duration)
-      const reducer = (acc, cur) => acc + cur
-      return (contentsDuration.reduce(reducer) / 60).toFixed(2)
-    } else {
-      return 0
-    }
-  }
 
   useEffect(() => {
     if (userPaidCourses && course) {

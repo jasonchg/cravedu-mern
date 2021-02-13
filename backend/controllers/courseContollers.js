@@ -2,6 +2,7 @@ import asyncHandler from 'express-async-handler'
 import Category from '../models/categoryModel.js'
 import Course from '../models/courseModel.js'
 import User from '../models/userModel.js'
+import Notification from '../models/notificationModel.js'
 
 // @desc    Fetch all courses/ Search features
 // @route   GET /api/courses
@@ -162,7 +163,19 @@ const replyCourseQandA = asyncHandler(async (req, res) => {
 
         currentQanda.answers.push(answer)
 
+        const newNotification = new Notification({
+          user: course.user,
+          notification: {
+            title: 'New Qanda Asnwer.',
+            from: `${course.name} - Question: ${currentQanda.question}`,
+            message: answer.answer,
+            read: false,
+          },
+        })
+
+        await newNotification.save()
         const updateQanda = await course.save()
+
         res.status(201).json(updateQanda.courseQASection)
       } else {
         res.status(404)

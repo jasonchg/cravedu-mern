@@ -12,7 +12,6 @@ import {
   Card,
   CardContent,
   makeStyles,
-  Divider,
   IconButton,
 } from '@material-ui/core'
 import { createCourse, listCourses } from '../actions/instructorActions'
@@ -34,7 +33,7 @@ const useStyle = makeStyles((theme) => ({
     padding: 10,
     color: '#222',
     boxShadow: theme.shadows[6],
-    height: 300,
+    height: 225,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -150,6 +149,19 @@ const InstructorScreen = ({ history, match }) => {
         ) : courses && courses.length !== 0 ? (
           <>
             <Grid container spacing={2} className={classes.cardContainer}>
+              <Grid xs={12}>
+                <Card className={classes.bestCard} style={{ maxHeight: 150 }}>
+                  <CardContent>
+                    <h5 className={classes.cardTitle}>
+                      <b>Best Selling Course</b>
+                    </h5>
+                    <h1>
+                      <b>{getHighest(courses)}</b>
+                    </h1>
+                  </CardContent>
+                </Card>
+              </Grid>
+
               <Grid item md={4} xs={12}>
                 <Card className={classes.bestCard}>
                   <CardContent>
@@ -159,14 +171,6 @@ const InstructorScreen = ({ history, match }) => {
                     <h2 className={classes.cardQuantity}>
                       {getTotalSold(courses)}
                     </h2>
-                    <Divider />
-                    <br />
-                    <p className={classes.cardTitle}>
-                      <b>Best Selling Course</b>
-                    </p>
-                    <p style={{ marginTop: 10 }}>
-                      <b>{getHighest(courses)}</b>
-                    </p>
                   </CardContent>
                 </Card>
               </Grid>

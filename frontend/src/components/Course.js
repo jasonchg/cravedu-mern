@@ -83,7 +83,7 @@ const Course = ({ course, learning, currentCourse = '', myLearning }) => {
       )
     }
 
-    if (currentCourse !== '') {
+    if (currentCourse && currentCourse !== '') {
       const progress = currentCourse
         ? currentCourse.courseContents.map((x) => x.watched)
         : ''
@@ -168,9 +168,9 @@ const Course = ({ course, learning, currentCourse = '', myLearning }) => {
               ) : null}
 
               {myLearning
-                ? progressCount.length === newCourseContent.length
-                  ? '100% Completed'
-                  : `Progress: ${progressCount.length} / ${newCourseContent.length}`
+                ? course.completedCertificate !== ''
+                  ? `100% Completed`
+                  : ''
                 : ''}
             </CardContent>
 
@@ -184,13 +184,7 @@ const Course = ({ course, learning, currentCourse = '', myLearning }) => {
         </Link>
       )}
 
-      {learning ? null : (
-        <CardActions>
-          <Button size='small' color='primary'>
-            Share
-          </Button>
-        </CardActions>
-      )}
+      {learning ? null : <CardActions></CardActions>}
     </Card>
   )
 }

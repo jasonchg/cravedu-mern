@@ -17,6 +17,10 @@ import {
   USER_COURSE_SUCCESS,
   USER_COURSE_FAIL,
   USER_COURSE_SAVE_CURRENT_STATE,
+  USER_UPDATE_CONTENT_REQUEST,
+  USER_UPDATE_CONTENT_SUCCESS,
+  USER_UPDATE_CONTENT_FAIL,
+  USER_UPDATE_CONTENT_RESET,
 } from '../constants/userConstants'
 
 const userLoginReducer = (state = {}, action) => {
@@ -97,10 +101,26 @@ const userCourseReducer = (state = { userPaidCourses: [] }, action) => {
   }
 }
 
+const userUpdateContentReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_UPDATE_CONTENT_REQUEST:
+      return { loading: true }
+    case USER_UPDATE_CONTENT_SUCCESS:
+      return { loading: false, success: true }
+    case USER_UPDATE_CONTENT_FAIL:
+      return { loading: false, error: action.payload }
+    case USER_UPDATE_CONTENT_RESET:
+      return {}
+    default:
+      return state
+  }
+}
+
 export {
   userLoginReducer,
   userRegisterReducer,
   userDetailsReducer,
   userUpdateReducer,
   userCourseReducer,
+  userUpdateContentReducer,
 }

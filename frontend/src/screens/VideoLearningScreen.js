@@ -22,7 +22,6 @@ import {
   addQanda,
   createReview,
   listCourseDetails,
-  replyQanda,
 } from '../actions/courseActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
@@ -36,7 +35,7 @@ import {
 } from '../constants/courseConstants'
 import ReactStars from 'react-rating-stars-component'
 import CourseContentList from '../components/CourseContentList'
-import { getUserCourses } from '../actions/userActions'
+import { getUserCourses, updateUserCourses } from '../actions/userActions'
 import { USER_WATCHED_CONTENT_RESET } from '../constants/userConstants'
 import QuestionThread from '../components/QuestionThread'
 import InsturctorCard from '../components/InsturctorCard'
@@ -176,6 +175,13 @@ const VideoLearningScreen = ({ history }) => {
   const { success: contentWatchedSuccess } = contentWatched
   const [currentUserPaidCourse, setCurrentUserPaidCourse] = useState(null)
   const [newCourseContent, setNewCourseContent] = useState([])
+  const userUpdateContent = useSelector((state) => state.userUpdateContent)
+  const {
+    error: userUpdateContentError,
+    success: userUpdateContentSuccess,
+    loading: userUpdateContentLoading,
+  } = userUpdateContent
+
   const tabHandler = (event, newValue) => {
     setValue(newValue)
   }
@@ -219,7 +225,7 @@ const VideoLearningScreen = ({ history }) => {
       })
     }
 
-    if (contentWatchedSuccess) {
+    if (contentWatchedSuccess || userUpdateContentSuccess) {
       dispatch({ type: USER_WATCHED_CONTENT_RESET })
       history.go(0)
     }
@@ -258,8 +264,6 @@ const VideoLearningScreen = ({ history }) => {
             setAlreadyReview(checkReview(course.reviews, userInfo._id))
 
             if (currentUserPaidCourse && currentUserPaidCourse.courseContents) {
-              // problem here : update course if thare is any more new contents
-
               let notYetWatchContent = currentUserPaidCourse.courseContents.find(
                 (x) => x.watched !== true
               )
@@ -515,6 +519,7 @@ const VideoLearningScreen = ({ history }) => {
                             key={qanda._id}
                             qanda={qanda}
                             courseId={course._id}
+                            currentUser={userInfo.name}
                           />
                         ))
                       ) : (
