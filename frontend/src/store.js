@@ -17,7 +17,6 @@ import {
   userUpdateReducer,
   userCourseReducer,
   userUpdateContentReducer,
-  userNotificationReducer,
 } from './reducers/userReducers'
 import { cartReducers } from './reducers/cartReducers'
 import {
@@ -47,6 +46,11 @@ import {
   instructorCourseUpdateReducer,
   instructorContentUpdateQuizReducer,
 } from './reducers/instructorReducers'
+import {
+  notificationDeleteReducer,
+  notificationReadReducer,
+  userNotificationReducer,
+} from './reducers/notificationReducers'
 
 const reducer = combineReducers({
   adminCourseUpdate: adminCourseUpdateReducer,
@@ -73,6 +77,8 @@ const reducer = combineReducers({
   courseDetails: courseDetailsReducer,
   courseQanda: courseQandaReducer,
   cart: cartReducers,
+  userNotificationDelete: notificationDeleteReducer,
+  userNotificationRead: notificationReadReducer,
   userNotifications: userNotificationReducer,
   userLogin: userLoginReducer,
   userUpdateContent: userUpdateContentReducer,

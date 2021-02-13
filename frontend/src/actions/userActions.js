@@ -22,9 +22,6 @@ import {
   USER_UPDATE_CONTENT_REQUEST,
   USER_UPDATE_CONTENT_SUCCESS,
   USER_UPDATE_CONTENT_FAIL,
-  USER_NOTIFICATION_REQUEST,
-  USER_NOTIFICATION_SUCCESS,
-  USER_NOTIFICATION_FAIL,
 } from '../constants/userConstants'
 
 const login = (email, password) => async (dispatch) => {
@@ -219,36 +216,6 @@ const updateUserCourses = (courseId) => async (dispatch, getState) => {
   }
 }
 
-const getUserNotification = () => async (dispatch, getState) => {
-  try {
-    dispatch({ type: USER_NOTIFICATION_REQUEST })
-    const {
-      userLogin: { userInfo },
-    } = getState()
-
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    }
-
-    const { data } = await axios.get(
-      `/api/notifications/${userInfo._id}`,
-      config
-    )
-
-    dispatch({ type: USER_NOTIFICATION_SUCCESS, payload: data })
-  } catch (e) {
-    dispatch({
-      type: USER_NOTIFICATION_FAIL,
-      payload:
-        e.response && e.response.data.message
-          ? e.response.data.message
-          : e.message,
-    })
-  }
-}
-
 export {
   login,
   logout,
@@ -258,5 +225,4 @@ export {
   getUserCourses,
   saveVideoCurrent,
   updateUserCourses,
-  getUserNotification,
 }

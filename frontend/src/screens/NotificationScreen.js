@@ -8,11 +8,9 @@ import {
   Box,
   Paper,
   ListItemText,
-  Typography,
   List,
   ListItem,
   Divider,
-  Button,
 } from '@material-ui/core'
 import Breadcrumbs from '../components/Breadcrumbs'
 import Loader from '../components/Loader'
@@ -20,7 +18,11 @@ import PropTypes from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
 
 import Message from '../components/Message'
-import { getUserNotification } from '../actions/userActions'
+import {
+  deleteUserNotification,
+  getUserNotification,
+  readUserNotification,
+} from '../actions/notificationActions'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -70,12 +72,18 @@ TabPanel.propTypes = {
 
 const NotificationScreen = ({ history }) => {
   const dispatch = useDispatch()
-
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
-
   const userNotifications = useSelector((state) => state.userNotifications)
   const { notifications, loading, error } = userNotifications
+  const userNotificationRead = useSelector(
+    (state) => state.userNotificationRead
+  )
+  const { success: successRead } = userNotificationRead
+  const userNotificationDelete = useSelector(
+    (state) => state.userNotificationDelete
+  )
+  const { success: successDelete } = userNotificationDelete
 
   const tabHandler = (event, newValue) => {
     setValue(newValue)
@@ -83,15 +91,27 @@ const NotificationScreen = ({ history }) => {
   const [value, setValue] = useState(0)
   const classes = useStyles()
 
+  const handleDelete = (id) => {
+    dispatch(deleteUserNotification(id))
+  }
+  const handleRead = (id) => {
+    dispatch(readUserNotification(id))
+  }
+
   useEffect(() => {
+    if (successRead || successDelete) {
+      dispatch({ type: 'USER_NOTIFICATION_RESET' })
+      dispatch(getUserNotification())
+    }
+
     if (!userInfo) {
       history.push('/login')
     } else {
       dispatch(getUserNotification())
     }
-  }, [history])
+  }, [history, successRead, successDelete, userInfo])
 
-  const notificationBlock = ({ notification }) => {
+  const notificationBlock = (notiId, { notification }) => {
     const checkingNotification = (noti) => {
       switch (noti.title) {
         case 'NEW_QANDA_ANSWER':
@@ -148,8 +168,13 @@ const NotificationScreen = ({ history }) => {
                 ) : (
                   ''
                 )}{' '}
-                {notification.read ? '' : <button>Mark as read</button>}{' '}
-                <button>Delete</button>
+                {notification.read ? (
+                  <button onClick={() => handleDelete(notiId)}>Delete</button>
+                ) : (
+                  <button onClick={() => handleRead(notiId)}>
+                    Mark as read
+                  </button>
+                )}
               </>
             }
           />
@@ -195,28 +220,22 @@ const NotificationScreen = ({ history }) => {
             <Paper className={classes.paper}>
               <TabPanel value={value} index={0}>
                 <List>
-                  {notifications ? (
+                  {notifications &&
                     notifications.map((noti) => {
                       return noti.notification.read
                         ? ''
-                        : notificationBlock(noti)
-                    })
-                  ) : (
-                    <Message severity='info'>No notification</Message>
-                  )}
+                        : notificationBlock(noti._id, noti)
+                    })}
                 </List>
               </TabPanel>
               <TabPanel value={value} index={1}>
                 <List>
-                  {notifications ? (
+                  {notifications &&
                     notifications.map((noti) => {
                       return noti.notification.read
-                        ? notificationBlock(noti)
+                        ? notificationBlock(noti._id, noti)
                         : ''
-                    })
-                  ) : (
-                    <Message severity='info'>No notification</Message>
-                  )}
+                    })}
                 </List>
               </TabPanel>
             </Paper>

@@ -21,10 +21,6 @@ import {
   USER_UPDATE_CONTENT_SUCCESS,
   USER_UPDATE_CONTENT_FAIL,
   USER_UPDATE_CONTENT_RESET,
-  USER_NOTIFICATION_REQUEST,
-  USER_NOTIFICATION_SUCCESS,
-  USER_NOTIFICATION_FAIL,
-  USER_NOTIFICATION_RESET,
 } from '../constants/userConstants'
 
 const userLoginReducer = (state = {}, action) => {
@@ -120,21 +116,6 @@ const userUpdateContentReducer = (state = {}, action) => {
   }
 }
 
-const userNotificationReducer = (state = { notifications: [] }, action) => {
-  switch (action.type) {
-    case USER_NOTIFICATION_REQUEST:
-      return { loading: true }
-    case USER_NOTIFICATION_SUCCESS:
-      return { loading: false, notifications: action.payload }
-    case USER_NOTIFICATION_FAIL:
-      return { loading: false, error: action.payload }
-    case USER_NOTIFICATION_RESET:
-      return {}
-    default:
-      return state
-  }
-}
-
 export {
   userLoginReducer,
   userRegisterReducer,
@@ -142,5 +123,4 @@ export {
   userUpdateReducer,
   userCourseReducer,
   userUpdateContentReducer,
-  userNotificationReducer,
 }

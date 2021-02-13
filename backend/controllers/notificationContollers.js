@@ -16,38 +16,50 @@ const getNotificationById = asyncHandler(async (req, res) => {
 })
 
 // @desc    read a notification
-// @route   PUT /api/notifications/:id/?:read
+// @route   PUT /api/notifications/:read
 // @access  Private
 
 const readNotificationById = asyncHandler(async (req, res) => {
-  let notifications = await Notification.find({ user: req.params.id })
+  try {
+    const notifications = await Notification.findById(req.params.read)
 
-  if (notifications) {
-    const noti = notifications.find(
-      (x) => x.notification._id == req.params.read
-    )
-
-    if (noti.notification) {
-      try {
-        noti.notification.read = true
-
-        console.log(noti.notification.read)
-
-        await notifications.save()
-      } catch (err) {
-        res.status(500)
-        throw new Error(err.message)
+    if (notifications) {
+      notifications.notification.read = true
+      const result = notifications.save()
+      if (result) {
+        res.send('Read')
       }
     } else {
       res.status(404)
       throw new Error('Notification not found')
     }
-  } else {
-    res.status(404)
-    throw new Error('Notification not found')
+  } catch (err) {
+    res.status(500)
+    throw new Error(err)
   }
 })
 
-// mark delete // clear all
+// @desc    delete a notification
+// @route   DELETE /api/notifications/:read
+// @access  Private
 
-export { getNotificationById, readNotificationById }
+const removeNotificationById = asyncHandler(async (req, res) => {
+  try {
+    const notifications = await Notification.findById(req.params.read)
+
+    if (notifications) {
+      const result = notifications.remove()
+      if (result) {
+        res.send('Removed')
+      }
+    } else {
+      res.status(404)
+      throw new Error('Notification not found')
+    }
+  } catch (err) {
+    res.status(500)
+    throw new Error(err)
+  }
+})
+
+export { getNotificationById, readNotificationById, removeNotificationById }
