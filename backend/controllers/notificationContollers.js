@@ -1,5 +1,7 @@
 import Notification from '../models/notificationModel.js'
 import asyncHandler from 'express-async-handler'
+import Course from '../models/courseModel.js'
+import mongoose from 'mongoose'
 
 // @desc    Get notifications
 // @route   PUT /api/notifications/:id
@@ -62,4 +64,42 @@ const removeNotificationById = asyncHandler(async (req, res) => {
   }
 })
 
-export { getNotificationById, readNotificationById, removeNotificationById }
+// @desc    grant a qanda answer
+// @route   PUT /api/notifications/grant/
+// @access  Private
+
+const grantCourseQandA = asyncHandler(async (req, res) => {
+  try {
+    const courseId = mongoose.Types.ObjectId(req.body.courseId)
+
+    const course = await Course.findById(courseId)
+    const qandaId = req.body.qandaId
+    const answerId = req.body.answerId
+
+    if (course) {
+      let currentQanda = course.courseQASection.find((x) => x._id == qandaId)
+      if (currentQanda !== {} && currentQanda.answers.length !== 0) {
+        const answer = currentQanda.answers.find((x) => x._id == answerId)
+        answer.granted = true
+        await course.save()
+        res.status(201).json('Granted')
+      } else {
+        res.status(404)
+        throw new Error('Q&A not found')
+      }
+    } else {
+      res.status(404)
+      throw new Error('Course not found')
+    }
+  } catch (err) {
+    res.status(500)
+    throw new Error(err.message)
+  }
+})
+
+export {
+  getNotificationById,
+  readNotificationById,
+  removeNotificationById,
+  grantCourseQandA,
+}

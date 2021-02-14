@@ -229,7 +229,7 @@ const QuestionThread = ({ qanda, courseId, currentUser }) => {
                         />
                       </div>
 
-                      <div>
+                      <div style={{ display: 'none' }}>
                         <ButtonGroup disableElevation variant='contained'>
                           <IconButton
                             className={

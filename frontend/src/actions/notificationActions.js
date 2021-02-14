@@ -3,6 +3,9 @@ import {
   NOTIFICATION_DELETE_FAIL,
   NOTIFICATION_DELETE_REQUEST,
   NOTIFICATION_DELETE_SUCCESS,
+  NOTIFICATION_GRANT_ANSWER_FAIL,
+  NOTIFICATION_GRANT_ANSWER_REQUEST,
+  NOTIFICATION_GRANT_ANSWER_SUCCESS,
   NOTIFICATION_READ_FAIL,
   NOTIFICATION_READ_REQUEST,
   NOTIFICATION_READ_SUCCESS,
@@ -101,4 +104,46 @@ const deleteUserNotification = (id) => async (dispatch, getState) => {
   }
 }
 
-export { getUserNotification, deleteUserNotification, readUserNotification }
+const grantQanda = (courseId, qandaId, answerId) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    dispatch({ type: NOTIFICATION_GRANT_ANSWER_REQUEST })
+    const {
+      userLogin: { userInfo },
+    } = getState()
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    const grantAnswer = {
+      courseId,
+      qandaId,
+      answerId,
+    }
+
+    console.log(grantAnswer)
+
+    // await axios.put(`/api/notification/grant`, grantAnswer, config)
+    dispatch({ type: NOTIFICATION_GRANT_ANSWER_SUCCESS })
+  } catch (e) {
+    dispatch({
+      type: NOTIFICATION_GRANT_ANSWER_FAIL,
+      payload:
+        e.response && e.response.data.message
+          ? e.response.data.message
+          : e.message,
+    })
+  }
+}
+
+export {
+  getUserNotification,
+  deleteUserNotification,
+  readUserNotification,
+  grantQanda,
+}

@@ -3,6 +3,10 @@ import {
   NOTIFICATION_DELETE_REQUEST,
   NOTIFICATION_DELETE_RESET,
   NOTIFICATION_DELETE_SUCCESS,
+  NOTIFICATION_GRANT_ANSWER_FAIL,
+  NOTIFICATION_GRANT_ANSWER_REQUEST,
+  NOTIFICATION_GRANT_ANSWER_RESET,
+  NOTIFICATION_GRANT_ANSWER_SUCCESS,
   NOTIFICATION_READ_FAIL,
   NOTIFICATION_READ_REQUEST,
   NOTIFICATION_READ_RESET,
@@ -58,8 +62,24 @@ const notificationDeleteReducer = (state = {}, action) => {
   }
 }
 
+const notificationGrantAsnwerReducer = (state = {}, action) => {
+  switch (action.type) {
+    case NOTIFICATION_GRANT_ANSWER_REQUEST:
+      return { loading: true }
+    case NOTIFICATION_GRANT_ANSWER_SUCCESS:
+      return { loading: false, success: true }
+    case NOTIFICATION_GRANT_ANSWER_FAIL:
+      return { loading: false, error: action.payload }
+    case NOTIFICATION_GRANT_ANSWER_RESET:
+      return {}
+    default:
+      return state
+  }
+}
+
 export {
   userNotificationReducer,
   notificationReadReducer,
   notificationDeleteReducer,
+  notificationGrantAsnwerReducer,
 }

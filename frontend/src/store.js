@@ -48,6 +48,7 @@ import {
 } from './reducers/instructorReducers'
 import {
   notificationDeleteReducer,
+  notificationGrantAsnwerReducer,
   notificationReadReducer,
   userNotificationReducer,
 } from './reducers/notificationReducers'
@@ -77,6 +78,7 @@ const reducer = combineReducers({
   courseDetails: courseDetailsReducer,
   courseQanda: courseQandaReducer,
   cart: cartReducers,
+  instructorGrantAsnwer: notificationGrantAsnwerReducer,
   userNotificationDelete: notificationDeleteReducer,
   userNotificationRead: notificationReadReducer,
   userNotifications: userNotificationReducer,

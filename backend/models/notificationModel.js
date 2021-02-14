@@ -12,6 +12,12 @@ const form = mongoose.Schema(
     qandaId: {
       type: String,
     },
+    courseId: {
+      type: String,
+    },
+    answerId: {
+      type: String,
+    },
   },
   { timestamps: true }
 )

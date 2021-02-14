@@ -3,6 +3,7 @@ import Category from '../models/categoryModel.js'
 import Course from '../models/courseModel.js'
 import User from '../models/userModel.js'
 import Notification from '../models/notificationModel.js'
+import mongoose from 'mongoose'
 import {
   NEW_QANDA_ANSWER,
   NEW_QANDA_QUESTION,
@@ -171,6 +172,7 @@ const replyCourseQandA = asyncHandler(async (req, res) => {
 
       if (currentQanda !== {} && currentQanda.answers.length !== 0) {
         const answer = {
+          _id: mongoose.Types.ObjectId(),
           helpful: 0,
           notHelpful: 0,
           granted: false,
@@ -179,22 +181,26 @@ const replyCourseQandA = asyncHandler(async (req, res) => {
         }
 
         currentQanda.answers.push(answer)
-
-        const newNotification = new Notification({
-          user: course.user,
-          notification: {
-            title: NEW_QANDA_ANSWER,
-            from: `${course.name} - Question: ${currentQanda.question}`,
-            message: `${answer.answer} - ${req.body.userName}`,
-            read: false,
-            qandaId,
-          },
-        })
-
-        await newNotification.save()
         const updateQanda = await course.save()
 
-        res.status(201).json(updateQanda.courseQASection)
+        if (updateQanda) {
+          const newNotification = new Notification({
+            user: course.user,
+            notification: {
+              title: NEW_QANDA_ANSWER,
+              from: `${course.name} - Question: ${currentQanda.question}`,
+              message: `${answer.answer} - ${req.body.userName}`,
+              read: false,
+              qandaId,
+              courseId: req.params.id,
+              answerId: answer._id,
+            },
+          })
+
+          await newNotification.save()
+        }
+
+        res.status(201).json('Added')
       } else {
         res.status(404)
         throw new Error('Q&A not found')

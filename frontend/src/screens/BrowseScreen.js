@@ -64,14 +64,14 @@ const BrowseScreen = ({ match }) => {
                 <Divider />
               </div>
             </Grid>
-            <Grid item md={2} xs={12}>
+            <div>
               {categories &&
                 categories.map((category, index) => (
                   <span key={index}>
                     <Category category={category} color='primary' />
                   </span>
                 ))}
-            </Grid>
+            </div>
           </>
         )}
         <Grid item xs={10}>
@@ -92,11 +92,13 @@ const BrowseScreen = ({ match }) => {
                 </div>
               </div>
             ) : (
-              courses.map((course, i) => (
-                <Grid item xs={6} md={4} key={i} style={{ marginTop: 7 }}>
-                  <Course course={course} />
-                </Grid>
-              ))
+              <>
+                {courses.map((course, i) => (
+                  <div key={i} style={{ marginTop: 7 }}>
+                    <Course course={course} />
+                  </div>
+                ))}
+              </>
             )}
           </Grid>
         </Grid>

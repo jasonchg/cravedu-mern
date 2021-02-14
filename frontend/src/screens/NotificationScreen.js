@@ -21,6 +21,7 @@ import Message from '../components/Message'
 import {
   deleteUserNotification,
   getUserNotification,
+  grantQanda,
   readUserNotification,
 } from '../actions/notificationActions'
 
@@ -85,6 +86,11 @@ const NotificationScreen = ({ history }) => {
   )
   const { success: successDelete } = userNotificationDelete
 
+  const instructorGrantAsnwer = useSelector(
+    (state) => state.instructorGrantAsnwer
+  )
+  const { success: successGrant } = instructorGrantAsnwer
+
   const tabHandler = (event, newValue) => {
     setValue(newValue)
   }
@@ -98,8 +104,13 @@ const NotificationScreen = ({ history }) => {
     dispatch(readUserNotification(id))
   }
 
+  const handleGrantAsnwer = (id, courseId, qandaId, answerId) => {
+    dispatch(grantQanda(courseId, qandaId, answerId))
+    dispatch(readUserNotification(id))
+  }
+
   useEffect(() => {
-    if (successRead || successDelete) {
+    if (successRead || successDelete || successGrant) {
       dispatch({ type: 'USER_NOTIFICATION_RESET' })
       dispatch(getUserNotification())
     }
@@ -159,11 +170,23 @@ const NotificationScreen = ({ history }) => {
             secondary={
               <>
                 <h3>{from}</h3>
-                <p>{message}</p>
-                <p>{notification.createdAt.substring(0, 10)}</p>
-                {grant ? (
+                <div>{message}</div>
+                <div>{notification.createdAt.substring(0, 10)}</div>
+                {grant && notification.read !== true ? (
                   <>
-                    <button>Grant This Answer</button> |{' '}
+                    <button
+                      onClick={() =>
+                        handleGrantAsnwer(
+                          notiId,
+                          notification.courseId,
+                          notification.qandaId,
+                          notification.answerId
+                        )
+                      }
+                    >
+                      Grant This Answer
+                    </button>{' '}
+                    |{' '}
                   </>
                 ) : (
                   ''
