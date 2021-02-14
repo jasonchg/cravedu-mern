@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Route } from 'react-router-dom'
 import CraveduLogo from '../assets/images/logo.png'
 import {
@@ -35,7 +35,7 @@ import MenuOpenIcon from '@material-ui/icons/MenuOpen'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import SearchBox from './SearchBox'
-
+import { getUserNotification } from '../actions/notificationActions'
 import NotificationIcon from './NotificationIcon'
 const useStyles = makeStyles({
   root: {
@@ -72,12 +72,15 @@ const useStyles = makeStyles({
 
 const Header = () => {
   const classes = useStyles()
-
+  const dispatch = useDispatch()
   const [openMenuUser, setMenuOpenUser] = useState(null)
   const [openMenuAdmin, setMenuOpenAdmin] = useState(null)
   const [openDrawer, setOpenDrawer] = useState(false)
 
-  const dispatch = useDispatch()
+  const [unRead, setUnRead] = useState([])
+
+  const userNotifications = useSelector((state) => state.userNotifications)
+  const { notifications } = userNotifications
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
@@ -137,6 +140,20 @@ const Header = () => {
 
   const theme = useTheme()
   const matchesSM = useMediaQuery(theme.breakpoints.down('sm'))
+
+  useEffect(() => {
+    if (userInfo) {
+      if (notifications && notifications.length > 0) {
+        const temp = notifications.map((x) => {
+          return x.notification
+        })
+
+        setUnRead(temp.filter((x) => x.read === false))
+      } else {
+        dispatch(getUserNotification())
+      }
+    }
+  }, [notifications, dispatch, userInfo])
 
   return (
     <div className={`${classes.root} ${classes.excludeFromPrint}`}>
@@ -262,7 +279,7 @@ const Header = () => {
                           }
                         >
                           <ListItemIcon>
-                            <NotificationIcon />
+                            <NotificationIcon unRead={unRead} />
                           </ListItemIcon>
                           <ListItemText primary='Notifications' />
                         </ListItem>
@@ -328,7 +345,7 @@ const Header = () => {
                   {userInfo ? (
                     <>
                       <Button
-                        startIcon={<NotificationIcon />}
+                        startIcon={<NotificationIcon unRead={unRead} />}
                         color='inherit'
                         onClick={() =>
                           (window.location.href = '/notifications')

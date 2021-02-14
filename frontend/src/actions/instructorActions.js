@@ -27,6 +27,9 @@ import {
   INSTRUCTOR_UPDATE_CONTENT_QUIZ_REQUEST,
   INSTRUCTOR_UPDATE_CONTENT_QUIZ_SUCCESS,
   INSTRUCTOR_UPDATE_CONTENT_QUIZ_FAIL,
+  INSTRUCTOR_PUBLISH_COURSE_REQUEST,
+  INSTRUCTOR_PUBLISH_COURSE_SUCCESS,
+  INSTRUCTOR_PUBLISH_COURSE_FAIL,
 } from '../constants/instructorConstants'
 
 const createCourse = () => async (dispatch, getState) => {
@@ -373,6 +376,38 @@ const deleteContent = (courseId, contentId) => async (dispatch, getState) => {
   }
 }
 
+const publishCourseRequest = (courseId) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: INSTRUCTOR_PUBLISH_COURSE_REQUEST })
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    await axios.post(
+      `/api/instructor/courses/${courseId}/request-publish`,
+      {},
+      config
+    )
+
+    dispatch({ type: INSTRUCTOR_PUBLISH_COURSE_SUCCESS })
+  } catch (e) {
+    dispatch({
+      type: INSTRUCTOR_PUBLISH_COURSE_FAIL,
+      payload:
+        e.response && e.response.data.message
+          ? e.response.data.message
+          : e.message,
+    })
+  }
+}
+
 export {
   listCourses,
   getCourseById,
@@ -385,4 +420,5 @@ export {
   updateSingleQuiz,
   updateAllQuiz,
   deleteQuiz,
+  publishCourseRequest,
 }

@@ -12,7 +12,6 @@ import {
   Card,
   CardContent,
   makeStyles,
-  IconButton,
 } from '@material-ui/core'
 import { createCourse, listCourses } from '../actions/instructorActions'
 import { useDispatch, useSelector } from 'react-redux'
@@ -23,7 +22,6 @@ import Breadcrumbs from '../components/Breadcrumbs'
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder'
 import CreateCourseGuide from '../components/CreateCourseGuide'
 import Paginate from '../components/Paginate'
-import MessageIcon from '@material-ui/icons/Message'
 
 const useStyle = makeStyles((theme) => ({
   cardContainer: { marginTop: 10, marginBottom: 15 },
@@ -220,11 +218,6 @@ const InstructorScreen = ({ history, match }) => {
 
                   {createCourseError && <Message>{createCourseError}</Message>}
                   {createCourseLoading && <Loader left />}
-                </div>
-                <div>
-                  <IconButton onClick={() => history.push('/notifications')}>
-                    <MessageIcon fontSize='large' />
-                  </IconButton>
                 </div>
               </div>
             </Grid>

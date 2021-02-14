@@ -24,6 +24,7 @@ import {
   updateCourse,
   createContent,
   deleteCourse,
+  publishCourseRequest,
 } from '../actions/instructorActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
@@ -97,6 +98,11 @@ const InstructorCourseEditScreen = ({ match, history }) => {
     (state) => state.instructorCourseDelete
   )
   const { success: deleteCourseSuccess } = instructorCourseDelete
+
+  const instructorCoursePublishRequest = useSelector(
+    (state) => state.instructorCoursePublishRequest
+  )
+  const { success: publishSuccess } = instructorCoursePublishRequest
 
   const [name, setName] = useState('')
   const [slug, setSlug] = useState('')
@@ -192,7 +198,27 @@ const InstructorCourseEditScreen = ({ match, history }) => {
     }
   }
 
+  const [expanded, setExpanded] = useState(false)
+
+  const handleAccordion = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false)
+  }
+
+  const publishThisCourse = () => {
+    const msg = 'Are you sure you want to publish this course?'
+
+    if (window.confirm(msg)) {
+      dispatch(publishCourseRequest(courseId))
+    }
+  }
+
   useEffect(() => {
+    if (publishSuccess) {
+      alert(
+        "You've sent a request to the admin. Please kindly wait for the process. \nYou'll received a notification when your course is published."
+      )
+    }
+
     if (deleteCourseSuccess) {
       dispatch({ type: INSTRUCTOR_DELETE_COURSE_RESET })
       history.push('/instructor')
@@ -244,17 +270,8 @@ const InstructorCourseEditScreen = ({ match, history }) => {
     updateSuccess,
     createContentSuccess,
     deleteCourseSuccess,
+    publishSuccess,
   ])
-
-  const [expanded, setExpanded] = useState(false)
-
-  const handleAccordion = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false)
-  }
-
-  const publishThisCourse = () => {
-    alert('Already notify admin...')
-  }
 
   return loading || !courseDetails ? (
     <Loader />

@@ -113,6 +113,7 @@ const grantQanda = (courseId, qandaId, answerId) => async (
     const {
       userLogin: { userInfo },
     } = getState()
+
     const config = {
       headers: {
         'Content-Type': 'application/json',
@@ -128,7 +129,7 @@ const grantQanda = (courseId, qandaId, answerId) => async (
 
     console.log(grantAnswer)
 
-    // await axios.put(`/api/notification/grant`, grantAnswer, config)
+    await axios.put(`/api/notifications/grant`, grantAnswer, config)
     dispatch({ type: NOTIFICATION_GRANT_ANSWER_SUCCESS })
   } catch (e) {
     dispatch({
