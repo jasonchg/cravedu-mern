@@ -1,5 +1,7 @@
 # DESCLAIMERS
 
+> ## https://forms.gle/82eFRScjhNQKKWZSA Feedback Form
+
 > ## This project is strictly for education purposes
 >
 > ## This is the final year project for my degree program
@@ -96,3 +98,6 @@ Online learning or courseware is a new trend for education, online education sup
 ## Conclusions
 
 In summary, this system is going to compensate for the limitation of Icats Elearn and the problems that might occur in college, university and institutes, by putting all the teaching resources online. This application is not only an application but more than a solution to the college, and helps all the lecturer to reduce their burden and earn extra income in a very simple way which is recording their teaching and uploading it into the cloud. In the year 2020, education has changed, most countries like the USA, Korea and China have started video conferencing, web meeting and cloud classes. They swapped their education method online, students are satisfied, happy and willing to attend the class out of their interest not by force. Therefore, Cravedu have a huge potential in terms of revenue to benefits the college as well as students and for local people specially in Kuching Sarawak in the education level.
+
+## Other 
+- test paypal account, email: sb-j9ple5058873@personal.example.com, password: 12345678
