@@ -32,7 +32,7 @@ const useStyles = makeStyles({
     height: '70vh',
     marginTop: '40px',
     position: 'relative',
-    marginBottom: '10px',
+    marginBottom: '40px',
     '& img': {
       position: 'absolute',
       width: '175px',
@@ -142,11 +142,11 @@ const LoginScreen = ({ history, location, match }) => {
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </FormContainer>
-                <FormContainer>
+                {/* <FormContainer>
                   <Typography variant='body2'>
                     <Link href={'/'}> Forget Password </Link>
                   </Typography>
-                </FormContainer>
+                </FormContainer> */}
               </Grid>
               <Grid item xs={12} style={{ display: 'flex' }}>
                 <Button
@@ -157,7 +157,6 @@ const LoginScreen = ({ history, location, match }) => {
                 >
                   Login
                 </Button>
-                {loading && <Loader style={{ position: 'absolute' }} />}
               </Grid>
               <Grid item xs={12}>
                 <FormContainer>
@@ -175,6 +174,7 @@ const LoginScreen = ({ history, location, match }) => {
                   </Typography>
                 </FormContainer>
               </Grid>
+              {loading && <Loader style={{ position: 'absolute' }} />}
             </form>
           </Grid>
         </Grid>

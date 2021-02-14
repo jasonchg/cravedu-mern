@@ -36,6 +36,9 @@ const useStyles = makeStyles((theme) => ({
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`,
   },
+  button: {
+    padding: 7,
+  },
 }))
 
 const TabPanel = (props) => {
@@ -154,6 +157,13 @@ const NotificationScreen = ({ history }) => {
             from: noti.from,
             grant: false,
           }
+        case 'NEW_COURSE_PUBLISH':
+          return {
+            title: <h3>New Course Publish Request</h3>,
+            message: noti.message,
+            from: noti.from,
+            grant: false,
+          }
 
         default:
           return ''
@@ -172,32 +182,50 @@ const NotificationScreen = ({ history }) => {
                 <h3>{from}</h3>
                 <div>{message}</div>
                 <div>{notification.createdAt.substring(0, 10)}</div>
-                {grant && notification.read !== true ? (
-                  <>
+                <div
+                  style={{
+                    marginTop: 10,
+                    background: '#457b9d',
+                    padding: 5,
+                    width: 'fit-content',
+                  }}
+                >
+                  {grant && notification.read !== true ? (
+                    <>
+                      <button
+                        className={classes.button}
+                        onClick={() =>
+                          handleGrantAsnwer(
+                            notiId,
+                            notification.courseId,
+                            notification.qandaId,
+                            notification.answerId
+                          )
+                        }
+                      >
+                        Grant This Answer
+                      </button>{' '}
+                      |{' '}
+                    </>
+                  ) : (
+                    ''
+                  )}{' '}
+                  {notification.read ? (
                     <button
-                      onClick={() =>
-                        handleGrantAsnwer(
-                          notiId,
-                          notification.courseId,
-                          notification.qandaId,
-                          notification.answerId
-                        )
-                      }
+                      className={classes.button}
+                      onClick={() => handleDelete(notiId)}
                     >
-                      Grant This Answer
-                    </button>{' '}
-                    |{' '}
-                  </>
-                ) : (
-                  ''
-                )}{' '}
-                {notification.read ? (
-                  <button onClick={() => handleDelete(notiId)}>Delete</button>
-                ) : (
-                  <button onClick={() => handleRead(notiId)}>
-                    Mark as read
-                  </button>
-                )}
+                      Delete
+                    </button>
+                  ) : (
+                    <button
+                      className={classes.button}
+                      onClick={() => handleRead(notiId)}
+                    >
+                      Mark as read
+                    </button>
+                  )}
+                </div>
               </>
             }
           />
@@ -239,7 +267,11 @@ const NotificationScreen = ({ history }) => {
               </Tabs>
             </Paper>
           </Grid>
-          <Grid item md={9}>
+          <Grid
+            item
+            md={9}
+            style={{ maxHeight: 800, overflow: 'scroll', overflowX: 'hidden' }}
+          >
             <Paper className={classes.paper}>
               <TabPanel value={value} index={0}>
                 <List>

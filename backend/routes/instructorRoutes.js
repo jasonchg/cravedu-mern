@@ -9,9 +9,14 @@ import {
   getCourses,
   updateCourse,
   deleteCourse,
+  requestPublishCourse,
 } from '../controllers/instructorCourseControllers.js'
 
 const router = express.Router()
+
+router
+  .route('/:id/request-publish')
+  .post(protectedRoute, instructorRoute, requestPublishCourse)
 
 router
   .route('/')

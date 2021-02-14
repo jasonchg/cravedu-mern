@@ -3,6 +3,9 @@ import Course from '../models/courseModel.js'
 import fs from 'fs'
 import { removeDir, removeFile } from '../utils/deleteFolder.js'
 import path from 'path'
+import Notification from '../models/notificationModel.js'
+import User from '../models/userModel.js'
+import { NEW_COURSE_PUBLISH } from './notificationConstants.js'
 
 // @desc    Get All Course That Created by this intructor
 // @route   GET /api/instructor/courses
@@ -363,6 +366,34 @@ const deleteContent = asyncHandler(async (req, res) => {
   }
 })
 
+// @desc    Request Publish
+// @route   PUT /api/instructor/courses/:id
+// @access  Private
+
+const requestPublishCourse = asyncHandler(async (req, res) => {
+  try {
+    const course = await Course.findById(req.params.id)
+    const adminUser = await User.find({ isAdmin: true })
+
+    if (course && adminUser) {
+      const newNotification = new Notification({
+        user: adminUser[0]._id,
+        notification: {
+          title: NEW_COURSE_PUBLISH,
+          from: `I wish to publish this course named, ${course.name}.`,
+          message: `From ${req.user.name}`,
+          read: false,
+        },
+      })
+      await newNotification.save()
+      res.send('Sent')
+    }
+  } catch (error) {
+    res.status(500)
+    throw new Error('Internal Server Error')
+  }
+})
+
 export {
   createCourse,
   getCourses,
@@ -375,4 +406,5 @@ export {
   updateContentQuizzes,
   getContentQuizzes,
   deleteContentQuizzes,
+  requestPublishCourse,
 }

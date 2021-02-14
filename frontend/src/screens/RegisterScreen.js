@@ -9,6 +9,7 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+  Paper,
 } from '@material-ui/core'
 import FormContainer from '../components/FormContainer'
 import { makeStyles } from '@material-ui/core/styles'
@@ -33,7 +34,7 @@ const useStyles = makeStyles({
     marginBottom: 50,
   },
   radioGroup: {
-    marginTop: 20,
+    marginTop: 10,
   },
   rightRegisterContainer: {
     backgroundColor: '#457b9d',
@@ -113,31 +114,34 @@ const RegisterScreen = ({ history, location }) => {
 
           <Typography variant='h5'>Email Sign up</Typography>
           <form className={classes.form} onSubmit={submitHandler}>
-            <div className={classes.radioGroup}>
-              <Typography variant='h6' component='span'>
-                You're an?{' '}
-              </Typography>
-              <p>(*still can be changed after register.)</p>
-              <RadioGroup
-                defaultValue='student'
-                aria-label='type'
-                name='type'
-                value={instructor}
-                onChange={handleRadio}
-              >
-                <FormControlLabel
-                  value='student'
-                  control={<Radio />}
-                  label='Student'
-                />
-                <FormControlLabel
-                  value='instructor'
-                  control={<Radio />}
-                  label='Instructor'
-                />
-              </RadioGroup>
-            </div>
-
+            <Paper
+              style={{ padding: '20px', marginTop: 10, background: '#fafaee' }}
+            >
+              <div className={classes.radioGroup}>
+                <Typography variant='h6' component='span'>
+                  You're an?{' '}
+                </Typography>
+                <p>(*Cant be changed after register.)</p>
+                <RadioGroup
+                  defaultValue='student'
+                  aria-label='type'
+                  name='type'
+                  value={instructor}
+                  onChange={handleRadio}
+                >
+                  <FormControlLabel
+                    value='student'
+                    control={<Radio />}
+                    label='Student'
+                  />
+                  <FormControlLabel
+                    value='instructor'
+                    control={<Radio />}
+                    label='Instructor'
+                  />
+                </RadioGroup>
+              </div>
+            </Paper>
             <FormContainer>
               <TextField
                 required
