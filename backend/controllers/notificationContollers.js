@@ -84,6 +84,7 @@ const grantCourseQandA = asyncHandler(async (req, res) => {
         const answer = currentQanda.answers.find((x) => x._id == answerId)
         answer.granted = true
         await course.save()
+
         res.status(201).json('Granted')
       } else {
         res.status(404)

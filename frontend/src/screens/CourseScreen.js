@@ -84,7 +84,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
   },
   image: {
-    // width: 325,
     width: 375,
     margin: 10,
     padding: 10,

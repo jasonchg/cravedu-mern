@@ -123,7 +123,7 @@ const NotificationScreen = ({ history }) => {
     } else {
       dispatch(getUserNotification())
     }
-  }, [history, successRead, successDelete, userInfo, dispatch])
+  }, [history, successRead, successDelete, userInfo, dispatch, successGrant])
 
   const notificationBlock = (notiId, { notification }) => {
     const checkingNotification = (noti) => {
@@ -235,11 +235,7 @@ const NotificationScreen = ({ history }) => {
     )
   }
 
-  return loading ? (
-    <Loader />
-  ) : error ? (
-    <Message>{error}</Message>
-  ) : (
+  return (
     <div className={classes.root}>
       <Breadcrumbs
         previousPage={[
@@ -270,32 +266,44 @@ const NotificationScreen = ({ history }) => {
           <Grid
             item
             md={9}
-            style={{ maxHeight: 800, overflow: 'scroll', overflowX: 'hidden' }}
+            style={{
+              maxHeight: 800,
+              overflow: 'scroll',
+              overflowX: 'hidden',
+            }}
           >
             <Paper className={classes.paper}>
-              <TabPanel value={value} index={0}>
-                <List>
-                  {notifications.length > 0 ? (
-                    notifications.map((noti) => {
-                      return noti.notification.read
-                        ? ''
-                        : notificationBlock(noti._id, noti)
-                    })
-                  ) : (
-                    <Message severity='info'>Nothing here</Message>
-                  )}
-                </List>
-              </TabPanel>
-              <TabPanel value={value} index={1}>
-                <List>
-                  {notifications &&
-                    notifications.map((noti) => {
-                      return noti.notification.read
-                        ? notificationBlock(noti._id, noti)
-                        : ''
-                    })}
-                </List>
-              </TabPanel>
+              {loading ? (
+                <Loader />
+              ) : error ? (
+                <Message>{error}</Message>
+              ) : (
+                <div>
+                  <TabPanel value={value} index={0}>
+                    <List>
+                      {notifications.length > 0 ? (
+                        notifications.map((noti) => {
+                          return noti.notification.read
+                            ? ''
+                            : notificationBlock(noti._id, noti)
+                        })
+                      ) : (
+                        <Message severity='info'>Nothing here</Message>
+                      )}
+                    </List>
+                  </TabPanel>
+                  <TabPanel value={value} index={1}>
+                    <List>
+                      {notifications &&
+                        notifications.map((noti) => {
+                          return noti.notification.read
+                            ? notificationBlock(noti._id, noti)
+                            : ''
+                        })}
+                    </List>
+                  </TabPanel>
+                </div>
+              )}
             </Paper>
           </Grid>
         </Grid>
