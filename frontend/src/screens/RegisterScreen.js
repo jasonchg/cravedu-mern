@@ -16,12 +16,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { register } from '../actions/userActions'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import {
-  FacebookLoginButton,
-  GoogleLoginButton,
-  TwitterLoginButton,
-  MicrosoftLoginButton,
-} from 'react-social-login-buttons'
+
 import LogoIcon from '../assets/images/logo-icon.png'
 
 const useStyles = makeStyles({
@@ -116,13 +111,6 @@ const RegisterScreen = ({ history, location }) => {
           {error && <Message>{error}</Message>}
           {loading && <Loader />}
 
-          {/* <Typography variant='h5'>Social Sign up</Typography>
-          <div className={classes.socialButtons}>
-            <FacebookLoginButton onClick={() => alert('Facebook')} />
-            <GoogleLoginButton onClick={() => alert('Google')} />
-            <TwitterLoginButton onClick={() => alert('Twitter')} />
-            <MicrosoftLoginButton onClick={() => alert('Microsoft')} />
-          </div> */}
           <Typography variant='h5'>Email Sign up</Typography>
           <form className={classes.form} onSubmit={submitHandler}>
             <div className={classes.radioGroup}>

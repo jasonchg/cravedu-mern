@@ -13,12 +13,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../actions/userActions'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import {
-  FacebookLoginButton,
-  GoogleLoginButton,
-  TwitterLoginButton,
-  MicrosoftLoginButton,
-} from 'react-social-login-buttons'
+
 import LogoIcon from '../assets/images/logo-icon.png'
 
 const useStyles = makeStyles({
@@ -116,13 +111,6 @@ const LoginScreen = ({ history, location, match }) => {
           <Grid item md={6} xs={12} className={classes.rightLoginContainer}>
             {error && <Message>{error}</Message>}
 
-            {/* <Typography variant='h5'>Social Logins</Typography>
-            <div className={classes.socialButtons}>
-              <FacebookLoginButton onClick={() => alert('Facebook')} />
-              <GoogleLoginButton onClick={() => alert('Google')} />
-              <TwitterLoginButton onClick={() => alert('Twitter')} />
-              <MicrosoftLoginButton onClick={() => alert('Microsoft')} />
-            </div> */}
             <Typography variant='h5'>Email Logins</Typography>
             <form className={classes.form} onSubmit={submitHandler}>
               <Grid item xs={12}>

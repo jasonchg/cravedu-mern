@@ -35,7 +35,7 @@ import {
 } from '../constants/courseConstants'
 import ReactStars from 'react-rating-stars-component'
 import CourseContentList from '../components/CourseContentList'
-import { getUserCourses, updateUserCourses } from '../actions/userActions'
+import { getUserCourses } from '../actions/userActions'
 import { USER_WATCHED_CONTENT_RESET } from '../constants/userConstants'
 import QuestionThread from '../components/QuestionThread'
 import InsturctorCard from '../components/InsturctorCard'
@@ -175,12 +175,6 @@ const VideoLearningScreen = ({ history }) => {
   const { success: contentWatchedSuccess } = contentWatched
   const [currentUserPaidCourse, setCurrentUserPaidCourse] = useState(null)
   const [newCourseContent, setNewCourseContent] = useState([])
-  const userUpdateContent = useSelector((state) => state.userUpdateContent)
-  const {
-    error: userUpdateContentError,
-    success: userUpdateContentSuccess,
-    loading: userUpdateContentLoading,
-  } = userUpdateContent
 
   const tabHandler = (event, newValue) => {
     setValue(newValue)
@@ -225,7 +219,7 @@ const VideoLearningScreen = ({ history }) => {
       })
     }
 
-    if (contentWatchedSuccess || userUpdateContentSuccess) {
+    if (contentWatchedSuccess) {
       dispatch({ type: USER_WATCHED_CONTENT_RESET })
       history.go(0)
     }

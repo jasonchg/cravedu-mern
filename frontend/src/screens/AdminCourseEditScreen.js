@@ -6,7 +6,6 @@ import {
   Button,
   List,
   ListItem,
-  ListItemText,
   Divider,
   Paper,
   Checkbox,

@@ -187,6 +187,7 @@ const replyCourseQandA = asyncHandler(async (req, res) => {
             from: `${course.name} - Question: ${currentQanda.question}`,
             message: `${answer.answer} - ${req.body.userName}`,
             read: false,
+            qandaId,
           },
         })
 

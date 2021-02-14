@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import {
   Grid,
   Button,
@@ -222,7 +222,7 @@ const InstructorScreen = ({ history, match }) => {
                   {createCourseLoading && <Loader left />}
                 </div>
                 <div>
-                  <IconButton>
+                  <IconButton onClick={() => history.push('/notifications')}>
                     <MessageIcon fontSize='large' />
                   </IconButton>
                 </div>

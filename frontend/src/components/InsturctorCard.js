@@ -43,7 +43,12 @@ const InsturctorCard = ({ instructor }) => {
         </Avatar>
         <h2 style={{ color: '#fff' }}>{instructor}</h2>
       </span>
-      <img src={CraveduLogo} width='80' style={{ marginTop: 20 }} />
+      <img
+        src={CraveduLogo}
+        width='80'
+        style={{ marginTop: 20 }}
+        alt='Cravedu Logo'
+      />
     </div>
   )
 }

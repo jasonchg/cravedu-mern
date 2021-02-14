@@ -35,7 +35,8 @@ import MenuOpenIcon from '@material-ui/icons/MenuOpen'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import SearchBox from './SearchBox'
-import MessageIcon from '@material-ui/icons/Message'
+
+import NotificationIcon from './NotificationIcon'
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
@@ -261,7 +262,7 @@ const Header = () => {
                           }
                         >
                           <ListItemIcon>
-                            <MessageIcon />
+                            <NotificationIcon />
                           </ListItemIcon>
                           <ListItemText primary='Notifications' />
                         </ListItem>
@@ -327,7 +328,7 @@ const Header = () => {
                   {userInfo ? (
                     <>
                       <Button
-                        startIcon={<MessageIcon />}
+                        startIcon={<NotificationIcon />}
                         color='inherit'
                         onClick={() =>
                           (window.location.href = '/notifications')

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import {
   Grid,
   Container,
@@ -44,15 +44,8 @@ const BrowseScreen = ({ match }) => {
     } else {
       dispatch(listCourses(keyword, pageNumber))
     }
-  }, [dispatch, keyword])
+  }, [dispatch, keyword, match, category, pageNumber])
 
-  const [currentCategory, setCurrentCategory] = useState(
-    category ? category : 'All Courses'
-  )
-
-  const setCatHandler = (selectCategory) => {
-    setCurrentCategory(selectCategory)
-  }
   const theme = useTheme()
   const matchesLG = useMediaQuery(theme.breakpoints.up('lg'))
 
@@ -67,7 +60,7 @@ const BrowseScreen = ({ match }) => {
           <>
             <Grid item xs={12}>
               <div style={{ fontSize: '20px' }}>
-                <h1>{currentCategory}</h1>
+                <h1>{category ? category : 'All Courses'}</h1>
                 <Divider />
               </div>
             </Grid>

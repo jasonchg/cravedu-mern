@@ -6,7 +6,6 @@ import {
   CardActions,
   CardContent,
   CardMedia,
-  Button,
   Typography,
   Link,
 } from '@material-ui/core'
@@ -81,18 +80,18 @@ const Course = ({ course, learning, currentCourse = '', myLearning }) => {
       setNewCourseContent(
         course.courseContents.filter((content) => content.isPublished === true)
       )
-    }
 
-    if (currentCourse && currentCourse !== '') {
-      const progress = currentCourse
-        ? currentCourse.courseContents.map((x) => x.watched)
-        : ''
+      if (currentCourse && currentCourse !== '') {
+        const progress = currentCourse
+          ? currentCourse.courseContents.map((x) => x.watched)
+          : ''
 
-      if (progressCount.length < course.courseContents.length) {
-        setProgressCount(progress.filter((x) => x !== false))
+        if (progressCount.length < course.courseContents.length) {
+          setProgressCount(progress.filter((x) => x !== false))
+        }
       }
     }
-  }, [currentCourse, course])
+  }, [currentCourse, course, progressCount.length])
 
   return !course && !learning ? (
     <Loader />

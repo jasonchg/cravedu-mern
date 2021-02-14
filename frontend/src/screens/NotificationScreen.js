@@ -109,7 +109,7 @@ const NotificationScreen = ({ history }) => {
     } else {
       dispatch(getUserNotification())
     }
-  }, [history, successRead, successDelete, userInfo])
+  }, [history, successRead, successDelete, userInfo, dispatch])
 
   const notificationBlock = (notiId, { notification }) => {
     const checkingNotification = (noti) => {
@@ -220,12 +220,15 @@ const NotificationScreen = ({ history }) => {
             <Paper className={classes.paper}>
               <TabPanel value={value} index={0}>
                 <List>
-                  {notifications &&
+                  {notifications.length > 0 ? (
                     notifications.map((noti) => {
                       return noti.notification.read
                         ? ''
                         : notificationBlock(noti._id, noti)
-                    })}
+                    })
+                  ) : (
+                    <Message severity='info'>Nothing here</Message>
+                  )}
                 </List>
               </TabPanel>
               <TabPanel value={value} index={1}>

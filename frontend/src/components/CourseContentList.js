@@ -9,7 +9,6 @@ import {
   makeStyles,
   Checkbox,
   Modal,
-  Divider,
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled'
@@ -117,7 +116,7 @@ const CourseContentList = ({
       ),
     }))
     setQuestions(shuffledQuestions)
-  }, [])
+  }, [content.quizzes])
 
   const handleAnswers = (answer) => {
     if (!showAnswer) {
@@ -153,7 +152,8 @@ const CourseContentList = ({
         <div style={modalStyle} className={classes.paper}>
           <div style={{ textAlign: 'center' }}>
             <h2>
-              /// Congratulation ///
+              <span> Congratulation </span>
+
               <small
                 style={{
                   display: 'block',
