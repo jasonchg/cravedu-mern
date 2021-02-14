@@ -1,5 +1,10 @@
 import asyncHandler from 'express-async-handler'
 import Course from '../models/courseModel.js'
+import {
+  COURSE_PUBLISHED,
+  COURSE_UNPUBLISHED,
+} from './notificationConstants.js'
+import Notification from '../models/notificationModel.js'
 
 // @desc    Get all courses
 // @route   GET /api/admin/course
@@ -46,18 +51,43 @@ const getCourseById = asyncHandler(async (req, res) => {
 // @access  Private Admin
 
 const updateCourse = asyncHandler(async (req, res) => {
-  const course = await Course.findById(req.params.id)
+  try {
+    const course = await Course.findById(req.params.id)
+    if (course) {
+      course.name = req.body.name || course.name
+      course.image = req.body.image || course.image
+      course.price = req.body.price || course.price
+      course.category = req.body.category || course.category
+      course.description = req.body.description || course.description
+      course.instructor = req.body.instructor || course.instructor
+      course.isPublished = req.body.isPublished
 
-  if (course) {
-    course.name = req.body.name || course.name
-    course.image = req.body.image || course.image
-    course.price = req.body.price || course.price
-    course.category = req.body.category || course.category
-    course.description = req.body.description || course.description
-    course.instructor = req.body.instructor || course.instructor
-    course.isPublished = req.body.isPublished
+      if (req.body.isPublished && req.body.isPublished === true) {
+        const newNotification = new Notification({
+          user: course.user,
+          notification: {
+            title: COURSE_PUBLISHED,
+            from: `Congratulation, your course named, ${course.name} has been published to the marketplace.`,
+            message: `From ${req.user.name}`,
+            read: false,
+          },
+        })
+        await newNotification.save()
+      }
 
-    try {
+      // if (req.body.isPublished && req.body.isPublished === false) {
+      //   const newNotification = new Notification({
+      //     user: course.user,
+      //     notification: {
+      //       title: COURSE_UNPUBLISHED,
+      //       from: `Unfortunately, your course named, ${course.name} has been taken down from the marketplace.`,
+      //       message: `From ${req.user.name}`,
+      //       read: false,
+      //     },
+      //   })
+      //   await newNotification.save()
+      // }
+
       const courseUpdated = await course.save()
       res.json({
         _id: courseUpdated._id,
@@ -69,13 +99,13 @@ const updateCourse = asyncHandler(async (req, res) => {
         instructor: courseUpdated.instructor,
         isPublished: courseUpdated.isPublished,
       })
-    } catch (e) {
-      res.status(401)
-      throw new Error('Something went wrong.')
+    } else {
+      res.status(404)
+      throw new Error('Course not found')
     }
-  } else {
-    res.status(404)
-    throw new Error('Course not found')
+  } catch (e) {
+    res.status(401)
+    throw new Error('Something went wrong.')
   }
 })
 

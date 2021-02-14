@@ -164,6 +164,20 @@ const NotificationScreen = ({ history }) => {
             from: noti.from,
             grant: false,
           }
+        case 'COURSE_PUBLISHED':
+          return {
+            title: <h3>Your Course has published</h3>,
+            message: noti.message,
+            from: noti.from,
+            grant: false,
+          }
+        case 'COURSE_UNPUBLISHED':
+          return {
+            title: <h3>Your Course has been taken down</h3>,
+            message: noti.message,
+            from: noti.from,
+            grant: false,
+          }
 
         default:
           return ''
