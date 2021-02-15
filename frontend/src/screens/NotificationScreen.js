@@ -187,6 +187,13 @@ const NotificationScreen = ({ history }) => {
             certUrl: noti.certUrl,
           }
 
+        case 'COURSE_ANNOUNCEMENT':
+          return {
+            title: <h3>Course announcement</h3>,
+            message: noti.message,
+            from: noti.from,
+            grant: false,
+          }
         default:
           return ''
       }
