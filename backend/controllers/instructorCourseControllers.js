@@ -420,16 +420,17 @@ const sendCourseAnnouncement = asyncHandler(async (req, res) => {
       )
 
       if (getAllUsers && getAllUsers.length > 0) {
-        for (let key = 0; key > getAllUsers.length; key++) {
+        for (let key in getAllUsers) {
           const newNotification = new Notification({
             user: mongoose.Types.ObjectId(getAllUsers[key]._id),
             notification: {
               title: COURSE_ANNOUNCEMENT,
-              from: `${req.body.announcementMessage}.`,
+              from: `${req.body.announcementMessage}`,
               message: `From ${course.instructor} ( ${course.name} )`,
               read: false,
             },
           })
+
           await newNotification.save()
         }
       }
