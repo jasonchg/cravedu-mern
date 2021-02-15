@@ -1,9 +1,6 @@
 import asyncHandler from 'express-async-handler'
 import Course from '../models/courseModel.js'
-import {
-  COURSE_PUBLISHED,
-  COURSE_UNPUBLISHED,
-} from './notificationConstants.js'
+import { COURSE_PUBLISHED } from './notificationConstants.js'
 import Notification from '../models/notificationModel.js'
 
 // @desc    Get all courses

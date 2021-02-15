@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Grid,
   Button,
@@ -12,8 +12,18 @@ import {
   Card,
   CardContent,
   makeStyles,
+  Modal,
+  TextField,
+  FormControl,
+  MenuItem,
+  Select,
+  InputLabel,
 } from '@material-ui/core'
-import { createCourse, listCourses } from '../actions/instructorActions'
+import {
+  createCourse,
+  listCourses,
+  makeAnnouncement,
+} from '../actions/instructorActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -22,6 +32,8 @@ import Breadcrumbs from '../components/Breadcrumbs'
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder'
 import CreateCourseGuide from '../components/CreateCourseGuide'
 import Paginate from '../components/Paginate'
+import AnnouncementIcon from '@material-ui/icons/Announcement'
+import FormContainer from '../components/FormContainer'
 
 const useStyle = makeStyles((theme) => ({
   cardContainer: { marginTop: 10, marginBottom: 15 },
@@ -50,11 +62,33 @@ const useStyle = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  paper: {
+    position: 'absolute',
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
 }))
+
+function getModalStyle() {
+  const top = 50
+  const left = 50
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  }
+}
 
 const InstructorScreen = ({ history, match }) => {
   const classes = useStyle()
   const dispatch = useDispatch()
+
+  const [open, setOpen] = useState(false)
+
   const pageNumber = match.params.pageNumber || 1
   const keyword = match.params.keyword || ''
 
@@ -107,25 +141,67 @@ const InstructorScreen = ({ history, match }) => {
     }
   }
 
+  const makeNewAnnouncement = () => {
+    setOpen(true)
+  }
+
+  const [modalStyle] = React.useState(getModalStyle)
+
+  const [announcementMessage, setAnnouncementMessage] = useState('')
+  const [selectedCourse, setSelectedCourse] = useState('')
+  const [filteredCourses, setFilteredCourses] = useState([])
+
+  const instructorAnnouncement = useSelector(
+    (state) => state.instructorAnnouncement
+  )
+  const { success: announcementSuccess } = instructorAnnouncement
+
+  const handleAnnouncement = () => {
+    dispatch(makeAnnouncement(selectedCourse, { announcementMessage }))
+    setAnnouncementMessage('')
+    setOpen(false)
+  }
+
   useEffect(() => {
+    if (announcementSuccess) {
+      const msg = 'Announcement has posted and sent to all students.'
+      alert(msg)
+    }
+
     if (createCourseSuccess) {
       dispatch({ type: INSTRUCTOR_COURSE_CREATE_RESET })
       history.push(`/instructor/${newCourseId}/edit`)
     }
 
-    if (userInfo && userInfo.isInstructor) {
-      dispatch(listCourses('', pageNumber))
-    } else {
+    if (!userInfo && !userInfo.isInstructor) {
       history.push('/login')
+    } else {
+      dispatch(listCourses('', pageNumber))
     }
   }, [
     userInfo,
     dispatch,
     history,
     createCourseSuccess,
+    announcementSuccess,
     newCourseId,
     pageNumber,
   ])
+
+  useEffect(() => {
+    if (courses && courses.length > 0) {
+      const publishedCourses = courses.filter((x) => {
+        return x.isPublished === true
+      })
+      const filtered = publishedCourses.map((y) => {
+        return {
+          _id: y._id,
+          name: y.name,
+        }
+      })
+      setFilteredCourses(filtered)
+    }
+  }, [courses])
 
   return (
     <>
@@ -147,7 +223,7 @@ const InstructorScreen = ({ history, match }) => {
         ) : courses && courses.length !== 0 ? (
           <>
             <Grid container spacing={2} className={classes.cardContainer}>
-              <Grid xs={12}>
+              <Grid item xs={12}>
                 <Card className={classes.bestCard} style={{ maxHeight: 150 }}>
                   <CardContent>
                     <h5 className={classes.cardTitle}>
@@ -197,7 +273,6 @@ const InstructorScreen = ({ history, match }) => {
                 </Card>
               </Grid>
             </Grid>
-
             <Grid item xs={12}>
               <div className={classes.instructorButtonHeader}>
                 <div>
@@ -208,16 +283,62 @@ const InstructorScreen = ({ history, match }) => {
                     Go Back
                   </Button>
                   <Button
+                    startIcon={<CreateNewFolderIcon />}
                     variant='contained'
                     color='primary'
                     onClick={() => dispatch(createCourse())}
                   >
-                    Create New Course{' '}
-                    <CreateNewFolderIcon style={{ marginLeft: 10 }} />
+                    Create New Course
                   </Button>
 
                   {createCourseError && <Message>{createCourseError}</Message>}
                   {createCourseLoading && <Loader left />}
+                </div>
+                <div>
+                  <Button
+                    variant='outlined'
+                    startIcon={<AnnouncementIcon />}
+                    onClick={makeNewAnnouncement}
+                  >
+                    Make New Annoucement
+                  </Button>
+                  <Modal open={open} onClose={() => setOpen(false)}>
+                    <div style={modalStyle} className={classes.paper}>
+                      <FormControl>
+                        <h4>Choorse a course to announce</h4>
+                        <Select
+                          value={selectedCourse}
+                          onChange={(e) => setSelectedCourse(e.target.value)}
+                        >
+                          {filteredCourses.map((course) => (
+                            <MenuItem value={course._id}>
+                              {course.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                      <FormContainer>
+                        <TextField
+                          required
+                          fullWidth
+                          label='New Announcement'
+                          type='text'
+                          variant='filled'
+                          value={announcementMessage}
+                          onChange={(e) =>
+                            setAnnouncementMessage(e.target.value)
+                          }
+                        />
+                      </FormContainer>
+                      <Button
+                        variant='contained'
+                        color='primary'
+                        onClick={handleAnnouncement}
+                      >
+                        Announce Now
+                      </Button>
+                    </div>
+                  </Modal>
                 </div>
               </div>
             </Grid>
@@ -274,7 +395,6 @@ const InstructorScreen = ({ history, match }) => {
                 </Table>
               </TableContainer>
             </Grid>
-
             <Grid item xs={12}>
               <Paginate
                 page={page}

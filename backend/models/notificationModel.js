@@ -18,6 +18,9 @@ const form = mongoose.Schema(
     answerId: {
       type: String,
     },
+    certUrl: {
+      type: String,
+    },
   },
   { timestamps: true }
 )

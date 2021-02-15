@@ -567,16 +567,35 @@ const VideoLearningScreen = ({ history }) => {
                 </TabPanel>
 
                 <TabPanel value={value} index={2}>
-                  <List>
-                    <Paper>
-                      <ListItem className={classes.description}>
-                        <ListItemText
-                          primary={`There is no any annoucement.`}
-                        />
-                      </ListItem>
-                    </Paper>
-                    <Divider />
-                  </List>
+                  <Paper>
+                    <List>
+                      {!course ? (
+                        <Loader />
+                      ) : !course.announcements ? (
+                        <ListItemText className={classes.description}>
+                          <ListItemText primary={'No announcement'} />
+                        </ListItemText>
+                      ) : (
+                        course.announcements
+                          .map((announcement) => (
+                            <ListItem
+                              className={classes.description}
+                              key={announcement._id}
+                            >
+                              <ListItemText
+                                primary={announcement.announcementMessage}
+                                secondary={announcement.createdAt.substring(
+                                  0,
+                                  10
+                                )}
+                              />
+                              <Divider />
+                            </ListItem>
+                          ))
+                          .reverse()
+                      )}
+                    </List>
+                  </Paper>
                 </TabPanel>
 
                 <TabPanel value={value} index={3}>

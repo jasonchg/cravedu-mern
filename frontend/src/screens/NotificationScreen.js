@@ -178,13 +178,23 @@ const NotificationScreen = ({ history }) => {
             from: noti.from,
             grant: false,
           }
+        case 'COURSE_COMPLETED':
+          return {
+            title: <h3>Course completed</h3>,
+            message: noti.message,
+            from: noti.from,
+            grant: false,
+            certUrl: noti.certUrl,
+          }
 
         default:
           return ''
       }
     }
 
-    const { title, message, from, grant } = checkingNotification(notification)
+    const { title, message, from, grant, certUrl } = checkingNotification(
+      notification
+    )
 
     return (
       <div key={notification._id}>
@@ -194,8 +204,18 @@ const NotificationScreen = ({ history }) => {
             secondary={
               <>
                 <h3>{from}</h3>
+                {certUrl && (
+                  <div
+                    style={{ marginTop: 10, marginBottom: 15, color: 'blue' }}
+                  >
+                    <button onClick={() => window.open(certUrl, '_blank')}>
+                      View your cert
+                    </button>
+                  </div>
+                )}
                 <div>{message}</div>
                 <div>{notification.createdAt.substring(0, 10)}</div>
+
                 <div
                   style={{
                     marginTop: 10,

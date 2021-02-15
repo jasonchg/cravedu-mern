@@ -30,6 +30,9 @@ import {
   INSTRUCTOR_PUBLISH_COURSE_REQUEST,
   INSTRUCTOR_PUBLISH_COURSE_SUCCESS,
   INSTRUCTOR_PUBLISH_COURSE_FAIL,
+  INSTRUCTOR_ANNOUNCEMENT_REQUEST,
+  INSTRUCTOR_ANNOUNCEMENT_SUCCESS,
+  INSTRUCTOR_ANNOUNCEMENT_FAIL,
 } from '../constants/instructorConstants'
 
 const createCourse = () => async (dispatch, getState) => {
@@ -408,6 +411,43 @@ const publishCourseRequest = (courseId) => async (dispatch, getState) => {
   }
 }
 
+const makeAnnouncement = (id, announceMessage) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    dispatch({ type: INSTRUCTOR_ANNOUNCEMENT_REQUEST })
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    await axios.post(
+      `/api/instructor/courses/${id}/announcement`,
+      announceMessage,
+      config
+    )
+
+    dispatch({
+      type: INSTRUCTOR_ANNOUNCEMENT_SUCCESS,
+    })
+  } catch (e) {
+    dispatch({
+      type: INSTRUCTOR_ANNOUNCEMENT_FAIL,
+      payload:
+        e.response && e.response.data.message
+          ? e.response.data.message
+          : e.message,
+    })
+  }
+}
+
 export {
   listCourses,
   getCourseById,
@@ -421,4 +461,5 @@ export {
   updateAllQuiz,
   deleteQuiz,
   publishCourseRequest,
+  makeAnnouncement,
 }
