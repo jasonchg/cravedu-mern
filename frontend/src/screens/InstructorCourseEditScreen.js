@@ -214,9 +214,10 @@ const InstructorCourseEditScreen = ({ match, history }) => {
 
   useEffect(() => {
     if (publishSuccess) {
-      alert(
+      const msg =
         "You've sent a request to the admin. Please kindly wait for the process. \nYou'll received a notification when your course is published."
-      )
+
+      alert(msg)
     }
 
     if (deleteCourseSuccess) {

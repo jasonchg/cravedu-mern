@@ -46,6 +46,7 @@ import {
   instructorCourseUpdateReducer,
   instructorContentUpdateQuizReducer,
   instructorCoursePublishRequestReducer,
+  instructorAnnouncementReducer,
 } from './reducers/instructorReducers'
 import {
   notificationDeleteReducer,
@@ -62,6 +63,7 @@ const reducer = combineReducers({
   adminUserGetDetails: adminUserGetDetailsReducer,
   adminUserDelete: adminUserDeleteReducer,
   adminUserList: adminUserListReducer,
+  instructorAnnouncement: instructorAnnouncementReducer,
   instructorCoursePublishRequest: instructorCoursePublishRequestReducer,
   instructorContentQuizUpdate: instructorContentUpdateQuizReducer,
   instructorContentDelete: instructorContentDeleteReducer,
@@ -73,6 +75,7 @@ const reducer = combineReducers({
   instructorCourseList: instructorCourseListReducer,
   instructorCourseCreate: instructorCourseCreateReducer,
   contentWatched: contentWatchedReducer,
+  instructorGrantAsnwer: notificationGrantAsnwerReducer,
   courseReview: courseReviewReducer,
   courseBestSold: courseBestSoldReducer,
   categoryList: categoriesReducer,
@@ -80,7 +83,6 @@ const reducer = combineReducers({
   courseDetails: courseDetailsReducer,
   courseQanda: courseQandaReducer,
   cart: cartReducers,
-  instructorGrantAsnwer: notificationGrantAsnwerReducer,
   userNotificationDelete: notificationDeleteReducer,
   userNotificationRead: notificationReadReducer,
   userNotifications: userNotificationReducer,

@@ -5,6 +5,9 @@ import { generateCert } from '../utils/generateCert.js'
 import Course from '../models/courseModel.js'
 import { sendThisCertToMail } from '../utils/sendThisMail.js'
 import { customAlphabet } from 'nanoid'
+import path from 'path'
+import { COURSE_COMPLETED } from './notificationConstants.js'
+import Notification from '../models/notificationModel.js'
 
 // @desc    Auth user & get json web token
 // @route   GET /api/users/login
@@ -124,56 +127,75 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 // @access  Private
 
 const completeCourse = asyncHandler(async (req, res) => {
-  const userExisted = await User.findById(req.user.id)
-  const courseId = req.params.courseId
-  const course = await Course.findById(courseId)
-  const nanoid = customAlphabet(
-    course
-      ? course.name.trim().toLowerCase().replace(/\s/g, '')
-      : '1234567890abcdef',
-    10
-  )
-  const certificateId = `cert-${nanoid()}`
-
-  if (userExisted) {
-    const getCompletedCourse = userExisted.myCourses.find(
-      (x) => x._id == courseId
+  try {
+    const userExisted = await User.findById(req.user.id)
+    const courseId = req.params.courseId
+    const course = await Course.findById(courseId)
+    const nanoid = customAlphabet(
+      course
+        ? course.name.trim().toLowerCase().replace(/\s/g, '')
+        : '1234567890abcdef',
+      10
     )
-    if (getCompletedCourse || course) {
-      if (
-        getCompletedCourse &&
-        getCompletedCourse.completedCertificate &&
-        getCompletedCourse.completedCertificate !== ' '
-      ) {
-        res.status(400)
-        throw new Error('Course already has a completed certificate')
-      } else {
-        generateCert(userExisted, course, certificateId)
-        let filename = `${certificateId}.jpeg`
-        let path = `/certificates/${filename}`
+    const certificateId = `cert-${nanoid()}`
 
-        getCompletedCourse.completedCertificate = path || ''
-        const result = userExisted.save()
-        if (result) {
-          await sendThisCertToMail(userExisted, course, {
-            url: `www.cravedu.com/cert/${path}`,
-            path,
-            filename,
-            name: course.name,
-            totalDuration: course.totalDuration,
-          })
-          res.status(201).send({
-            certCreated: 'true',
-          })
+    if (userExisted) {
+      const getCompletedCourse = userExisted.myCourses.find(
+        (x) => x._id == courseId
+      )
+      if (getCompletedCourse || course) {
+        if (
+          getCompletedCourse &&
+          getCompletedCourse.completedCertificate &&
+          getCompletedCourse.completedCertificate !== ' '
+        ) {
+          res.status(400)
+          throw new Error('Course already has a completed certificate')
+        } else {
+          generateCert(userExisted, course, certificateId)
+
+          const __dirname = path.resolve()
+
+          let filename = `${certificateId}.jpeg`
+          let uri = path.resolve(__dirname, 'certificates', filename)
+
+          getCompletedCourse.completedCertificate = uri || ''
+          const result = userExisted.save()
+          if (result) {
+            await sendThisCertToMail(userExisted, course, {
+              url: `${uri}`,
+              path: uri,
+              filename,
+              name: course.name,
+              totalDuration: course.totalDuration,
+            })
+            const newNotification = new Notification({
+              user: req.user.id,
+              notification: {
+                title: COURSE_COMPLETED,
+                from: `Congratulation, You have completed an online course named, ${course.name}.`,
+                message: `From ${req.user.name}`,
+                read: false,
+                certUrl: uri,
+              },
+            })
+            await newNotification.save()
+            res.status(201).send({
+              certCreated: 'true',
+            })
+          }
         }
+      } else {
+        res.status(404)
+        throw new Error('Course Not Found')
       }
     } else {
       res.status(404)
-      throw new Error('Course Not Found')
+      throw new Error('User Not Found')
     }
-  } else {
-    res.status(404)
-    throw new Error('User Not Found')
+  } catch (error) {
+    res.status(500)
+    throw new Error('Internal Server Error')
   }
 })
 

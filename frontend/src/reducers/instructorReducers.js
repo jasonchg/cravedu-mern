@@ -39,6 +39,10 @@ import {
   INSTRUCTOR_PUBLISH_COURSE_SUCCESS,
   INSTRUCTOR_PUBLISH_COURSE_FAIL,
   INSTRUCTOR_PUBLISH_COURSE_RESET,
+  INSTRUCTOR_ANNOUNCEMENT_REQUEST,
+  INSTRUCTOR_ANNOUNCEMENT_SUCCESS,
+  INSTRUCTOR_ANNOUNCEMENT_FAIL,
+  INSTRUCTOR_ANNOUNCEMENT_RESET,
 } from '../constants/instructorConstants'
 
 const instructorCourseListReducer = (state = { courses: [] }, action) => {
@@ -208,6 +212,21 @@ const instructorCoursePublishRequestReducer = (state = {}, action) => {
   }
 }
 
+const instructorAnnouncementReducer = (state = {}, action) => {
+  switch (action.type) {
+    case INSTRUCTOR_ANNOUNCEMENT_REQUEST:
+      return { loading: true }
+    case INSTRUCTOR_ANNOUNCEMENT_SUCCESS:
+      return { loading: false, success: true }
+    case INSTRUCTOR_ANNOUNCEMENT_FAIL:
+      return { loading: false, error: action.payload }
+    case INSTRUCTOR_ANNOUNCEMENT_RESET:
+      return {}
+    default:
+      return state
+  }
+}
+
 export {
   instructorContentDeleteReducer,
   instructorCourseListReducer,
@@ -219,4 +238,5 @@ export {
   instructorCourseDeleteReducer,
   instructorContentUpdateQuizReducer,
   instructorCoursePublishRequestReducer,
+  instructorAnnouncementReducer,
 }

@@ -60,6 +60,15 @@ const questionAskedSchema = mongoose.Schema(
   }
 )
 
+const announcement = mongoose.Schema(
+  {
+    announcementMessage: { type: String },
+  },
+  {
+    timestamps: true,
+  }
+)
+
 const courseSchema = mongoose.Schema(
   {
     user: {
@@ -112,9 +121,7 @@ const courseSchema = mongoose.Schema(
       required: true,
       default: 0,
     },
-    annoucement: {
-      type: String,
-    },
+    announcements: [announcement],
     category: { type: String, required: true },
     totalDuration: { type: String, required: true },
     reviews: [reviewSchema],

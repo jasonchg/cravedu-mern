@@ -5,7 +5,11 @@ import { removeDir, removeFile } from '../utils/deleteFolder.js'
 import path from 'path'
 import Notification from '../models/notificationModel.js'
 import User from '../models/userModel.js'
-import { NEW_COURSE_PUBLISH } from './notificationConstants.js'
+import {
+  NEW_COURSE_PUBLISH,
+  COURSE_ANNOUNCEMENT,
+} from './notificationConstants.js'
+import mongoose from 'mongoose'
 
 // @desc    Get All Course That Created by this intructor
 // @route   GET /api/instructor/courses
@@ -53,7 +57,7 @@ const createCourse = asyncHandler(async (req, res) => {
     totalSold: 0,
     price: 0,
     totalDuration: '0',
-    annoucement: 'There is no annoucement for this course',
+    annoucements: [],
   })
 
   try {
@@ -394,6 +398,49 @@ const requestPublishCourse = asyncHandler(async (req, res) => {
   }
 })
 
+// @desc    Send Announcement
+// @route   POST /api/instructor/courses/:id/announcement
+// @access  Private
+
+const sendCourseAnnouncement = asyncHandler(async (req, res) => {
+  try {
+    const course = await Course.findById(mongoose.Types.ObjectId(req.params.id))
+    const users = await User.find()
+
+    if (course) {
+      const newMsg = {
+        announcementMessage: req.body.announcementMessage,
+      }
+
+      course.announcements.push(newMsg)
+      await course.save()
+
+      const getAllUsers = users.filter((x) =>
+        x.myCourses.some((y) => y._id == req.params.id)
+      )
+
+      if (getAllUsers && getAllUsers.length > 0) {
+        for (let key = 0; key > getAllUsers.length; key++) {
+          const newNotification = new Notification({
+            user: mongoose.Types.ObjectId(getAllUsers[key]._id),
+            notification: {
+              title: COURSE_ANNOUNCEMENT,
+              from: `${req.body.announcementMessage}.`,
+              message: `From ${course.instructor} ( ${course.name} )`,
+              read: false,
+            },
+          })
+          await newNotification.save()
+        }
+      }
+      res.send('Sent to all users')
+    }
+  } catch (err) {
+    res.status(500)
+    throw new Error(err)
+  }
+})
+
 export {
   createCourse,
   getCourses,
@@ -407,4 +454,5 @@ export {
   getContentQuizzes,
   deleteContentQuizzes,
   requestPublishCourse,
+  sendCourseAnnouncement,
 }
