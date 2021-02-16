@@ -229,7 +229,7 @@ const NotificationScreen = ({ history }) => {
             primary={title}
             secondary={
               <>
-                <h3>
+                <div>
                   {survey ? (
                     <button
                       href={from}
@@ -238,11 +238,9 @@ const NotificationScreen = ({ history }) => {
                       Go to survey
                     </button>
                   ) : (
-                    {
-                      from,
-                    }
+                    <h3>{from} </h3>
                   )}
-                </h3>
+                </div>
 
                 {certUrl && (
                   <div
