@@ -164,7 +164,19 @@ const Course = ({ course, learning, currentCourse = '', myLearning }) => {
                   </div>
                   <div> {course && course.totalSold}</div>
                 </div>
-              ) : null}
+              ) : (
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
+                >
+                  <div>
+                    <PeopleIcon />{' '}
+                  </div>
+                  <div>0</div>
+                </div>
+              )}
 
               {myLearning
                 ? course.completedCertificate !== ''

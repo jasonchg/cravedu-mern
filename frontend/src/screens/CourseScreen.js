@@ -42,6 +42,7 @@ import AccessTimeIcon from '@material-ui/icons/AccessTime'
 import { addToCart } from '../actions/cartActions'
 import { getParentCategory } from '../customHooks'
 import { getTotalDuration } from '../utils'
+import InsturctorCard from '../components/InsturctorCard'
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props
@@ -83,11 +84,19 @@ const useStyles = makeStyles((theme) => ({
     margin: 'auto',
     marginTop: 10,
   },
+  courseLeftContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    flexWrap: 'nowrap',
+  },
+  imageContainer: {},
   image: {
-    width: 375,
+    width: 395,
     margin: 10,
     padding: 10,
     paddingRight: 10,
+    objectFit: 'cover',
     [theme.breakpoints.down('sm')]: {
       width: 265,
       objectFit: 'cover',
@@ -237,25 +246,23 @@ const CourseScreen = ({ history }) => {
           },
         ]}
         currentPage={course.category}
+        categoryUrl={`/category/${course.category}`}
         courseScreen
       />
       <Container className={classes.root}>
         <Grid container spacing={2}>
           <Grid item md={9} xs={12}>
             <Paper className={classes.paper}>
-              <Grid container>
-                <Grid item md={6} xs={12}>
-                  <div className='image'>
-                    <img
-                      src={course.image}
-                      alt={course.name}
-                      className={classes.image}
-                      onDragStart={(e) => e.preventDefault()}
-                    />
-                  </div>
-                </Grid>
-
-                <Grid item md={6} xs={12} className={classes.titleBox}>
+              <div className={classes.courseLeftContainer}>
+                <div className={classes.imageContainer}>
+                  <img
+                    src={course.image}
+                    alt={course.name}
+                    className={classes.image}
+                    onDragStart={(e) => e.preventDefault()}
+                  />
+                </div>
+                <div className={classes.titleBox}>
                   <List>
                     <ListItem>
                       <ListItemText
@@ -304,8 +311,8 @@ const CourseScreen = ({ history }) => {
                       <ListItemText primary={`${course.totalSold} students`} />
                     </ListItem>
                   </List>
-                </Grid>
-              </Grid>
+                </div>
+              </div>
             </Paper>
           </Grid>
 
@@ -341,8 +348,8 @@ const CourseScreen = ({ history }) => {
             )}
           </Grid>
         </Grid>
-        <Grid container>
-          <Grid item xs={12} className={classes.tabPanelArea}>
+        <Grid container style={{ marginTop: 10 }}>
+          <Grid item md={8} xs={12} className={classes.tabPanelArea}>
             <div>
               <Tabs
                 onChange={tabHandler}
@@ -365,7 +372,7 @@ const CourseScreen = ({ history }) => {
               </div>
             </TabPanel>
             <TabPanel value={value} index={1}>
-              {course.instructor}
+              <InsturctorCard instructor={course.instructor} />
             </TabPanel>
             <TabPanel value={value} index={2}>
               <p>
@@ -416,7 +423,7 @@ const CourseScreen = ({ history }) => {
             </TabPanel>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid item md={4} xs={12}>
             <h2>Course Content</h2>
             {course.courseContents ? (
               course.courseContents.map((content, index) => {

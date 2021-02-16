@@ -232,7 +232,12 @@ const VideoLearningScreen = ({ history }) => {
       dispatch({ type: COURSE_REVIEW_RESET })
     }
 
-    if (!userInfo) {
+    if (
+      !userInfo ||
+      userInfo.name === null ||
+      userInfo === null ||
+      userInfo === undefined
+    ) {
       history.push('/login')
     } else {
       if (!course || !course.name || course.slug !== course_slug) {
