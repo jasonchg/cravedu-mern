@@ -17,7 +17,6 @@ import {
   FormControl,
   MenuItem,
   Select,
-  InputLabel,
 } from '@material-ui/core'
 import {
   createCourse,
@@ -86,20 +85,15 @@ function getModalStyle() {
 const InstructorScreen = ({ history, match }) => {
   const classes = useStyle()
   const dispatch = useDispatch()
-
   const [open, setOpen] = useState(false)
-
   const pageNumber = match.params.pageNumber || 1
   const keyword = match.params.keyword || ''
-
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
-
   const instructorCourseList = useSelector(
     (state) => state.instructorCourseList
   )
   const { courses, loading, error, page, pages } = instructorCourseList
-
   const instructorCourseCreate = useSelector(
     (state) => state.instructorCourseCreate
   )
