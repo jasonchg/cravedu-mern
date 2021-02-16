@@ -200,7 +200,6 @@ const VideoLearningScreen = ({ history }) => {
           },
         }
         await axios.put(`/api/users/${course._id}/course-completed`, {}, config)
-
         alert(
           `Congratulation! You've completed this course. A certificate will be send to your mailbox soon.`
         )
@@ -277,8 +276,6 @@ const VideoLearningScreen = ({ history }) => {
                   currentUserPaidCourse.completedCertificate === ''
                 ) {
                   getCertify()
-                } else {
-                  console.log('Has Cert')
                 }
               } else {
                 let courseContentsPublishCheck = course.courseContents.find(
@@ -292,6 +289,7 @@ const VideoLearningScreen = ({ history }) => {
                   history.push(
                     `/course/${course_slug}/learn?chapter=${notYetWatchContent.chapterId}`
                   )
+
                   setSelectedVideoName({
                     name: course.courseContents.find(
                       (x) => x._id === notYetWatchContent.chapterId
@@ -308,14 +306,9 @@ const VideoLearningScreen = ({ history }) => {
                     )
                   )
                 } else {
-                  if (
-                    currentUserPaidCourse &&
-                    currentUserPaidCourse.completedCertificate === ''
-                  ) {
-                    getCertify()
-                  } else {
-                    console.log('Has Cert')
-                  }
+                  history.push(
+                    `/course/${course_slug}/learn?chapter=${course.courseContents[0]._id}`
+                  )
                 }
               }
             } else {

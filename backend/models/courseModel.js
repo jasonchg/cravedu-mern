@@ -46,6 +46,10 @@ const answerThread = mongoose.Schema(
   },
   {
     timestamps: true,
+    expireAfterSeconds: 1037000,
+    partialFilterExpression: {
+      granted: false,
+    },
   }
 )
 
