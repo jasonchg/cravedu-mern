@@ -170,7 +170,7 @@ const replyCourseQandA = asyncHandler(async (req, res) => {
     try {
       let currentQanda = course.courseQASection.find((x) => x._id == qandaId)
 
-      if (currentQanda !== {} && currentQanda.answers.length !== 0) {
+      if (currentQanda !== {}) {
         const answer = {
           _id: mongoose.Types.ObjectId(),
           helpful: 0,

@@ -152,7 +152,9 @@ const Course = ({ course, learning, currentCourse = '', myLearning }) => {
                 {course && course.name}
               </Typography>
 
-              {course.totalSold ? (
+              {myLearning ? (
+                ''
+              ) : course.totalSold ? (
                 <div
                   style={{
                     display: 'flex',

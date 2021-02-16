@@ -37,6 +37,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore'
 import SearchBox from './SearchBox'
 import { getUserNotification } from '../actions/notificationActions'
 import NotificationIcon from './NotificationIcon'
+import { USER_NOTIFICATION_RESET } from '../constants/notificationConstants'
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
@@ -147,12 +148,9 @@ const Header = () => {
         const temp = notifications.map((x) => {
           return x.notification
         })
-
         setUnRead(temp.filter((x) => x.read === false))
       } else {
-        if (!notifications || notifications.length < 0) {
-          dispatch(getUserNotification())
-        }
+        dispatch(getUserNotification())
       }
     }
   }, [notifications, dispatch, userInfo])

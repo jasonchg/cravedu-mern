@@ -23,6 +23,7 @@ import {
   COURSE_ANSWER_QANDA_SUCCESS,
   COURSE_ANSWER_QANDA_FAIL,
   COURSE_ANSWER_QANDA_RESET,
+  COURSE_DETAILS_RESET,
 } from '../constants/courseConstants'
 import {
   USER_WATCHED_CONTENT_FAIL,
@@ -73,6 +74,8 @@ const courseDetailsReducer = (state = { course: {} }, action) => {
       return { loading: false, course: action.payload }
     case COURSE_DETAILS_FAIL:
       return { loading: false, error: action.payload }
+    case COURSE_DETAILS_RESET:
+      return { course: {} }
     default:
       return state
   }

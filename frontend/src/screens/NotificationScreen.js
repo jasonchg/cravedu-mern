@@ -24,6 +24,7 @@ import {
   grantQanda,
   readUserNotification,
 } from '../actions/notificationActions'
+import { USER_NOTIFICATION_RESET } from '../constants/notificationConstants'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -115,17 +116,10 @@ const NotificationScreen = ({ history }) => {
   useEffect(() => {
     if (successRead || successDelete || successGrant) {
       dispatch({ type: 'USER_NOTIFICATION_RESET' })
-      if (!notifications || notifications.length < 0) {
-        dispatch(getUserNotification())
-      }
+      history.push(0)
     }
-
     if (!userInfo) {
       history.push('/login')
-    } else {
-      if (!notifications || notifications.length < 0) {
-        dispatch(getUserNotification())
-      }
     }
   }, [
     history,
@@ -206,14 +200,27 @@ const NotificationScreen = ({ history }) => {
             from: noti.from,
             grant: false,
           }
+        case 'NEW_REGISTER_SURVEY':
+          return {
+            title: <h3>Welcome to Cravedu, Please fill the survey form!</h3>,
+            message: noti.message,
+            from: noti.from,
+            grant: false,
+            survey: true,
+          }
         default:
           return ''
       }
     }
 
-    const { title, message, from, grant, certUrl } = checkingNotification(
-      notification
-    )
+    const {
+      title,
+      message,
+      from,
+      grant,
+      certUrl,
+      survey,
+    } = checkingNotification(notification)
 
     return (
       <div key={notification._id}>
@@ -222,14 +229,33 @@ const NotificationScreen = ({ history }) => {
             primary={title}
             secondary={
               <>
-                <h3>{from}</h3>
+                <h3>
+                  {survey ? (
+                    <button
+                      href={from}
+                      onClick={() => window.open(from, '_blank')}
+                    >
+                      Go to survey
+                    </button>
+                  ) : (
+                    {
+                      from,
+                    }
+                  )}
+                </h3>
+
                 {certUrl && (
                   <div
                     style={{ marginTop: 10, marginBottom: 15, color: 'blue' }}
                   >
-                    <button onClick={() => window.open(certUrl, '_blank')}>
+                    <button
+                      onClick={() => window.open(certUrl, '_blank')}
+                      disabled
+                    >
                       View your cert
                     </button>
+                    (*Sorry, due to contraint, this feature currently
+                    unavailable.)
                   </div>
                 )}
                 <div>{message}</div>
