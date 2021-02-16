@@ -513,14 +513,16 @@ const VideoLearningScreen = ({ history }) => {
                       {course &&
                       course.courseQASection &&
                       course.courseQASection.length !== 0 ? (
-                        course.courseQASection.map((qanda) => (
-                          <QuestionThread
-                            key={qanda._id}
-                            qanda={qanda}
-                            courseId={course._id}
-                            currentUser={userInfo.name}
-                          />
-                        ))
+                        course.courseQASection
+                          .map((qanda) => (
+                            <QuestionThread
+                              key={qanda._id}
+                              qanda={qanda}
+                              courseId={course._id}
+                              currentUser={userInfo.name}
+                            />
+                          ))
+                          .reverse()
                       ) : (
                         <ListItem>No any question just yet.</ListItem>
                       )}
@@ -583,19 +585,21 @@ const VideoLearningScreen = ({ history }) => {
                       ) : (
                         course.announcements
                           .map((announcement) => (
-                            <ListItem
-                              className={classes.description}
-                              key={announcement._id}
-                            >
-                              <ListItemText
-                                primary={announcement.announcementMessage}
-                                secondary={announcement.createdAt.substring(
-                                  0,
-                                  10
-                                )}
-                              />
+                            <div>
+                              <ListItem
+                                className={classes.description}
+                                key={announcement._id}
+                              >
+                                <ListItemText
+                                  primary={announcement.announcementMessage}
+                                  secondary={announcement.createdAt.substring(
+                                    0,
+                                    10
+                                  )}
+                                />
+                              </ListItem>
                               <Divider />
-                            </ListItem>
+                            </div>
                           ))
                           .reverse()
                       )}

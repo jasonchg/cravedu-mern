@@ -80,9 +80,11 @@ const grantCourseQandA = asyncHandler(async (req, res) => {
 
     if (course) {
       let currentQanda = course.courseQASection.find((x) => x._id == qandaId)
-      if (currentQanda !== {} && currentQanda.answers.length !== 0) {
+
+      if (currentQanda !== {}) {
         const answer = currentQanda.answers.find((x) => x._id == answerId)
         answer.granted = true
+
         await course.save()
 
         res.status(201).json('Granted')

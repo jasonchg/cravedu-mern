@@ -6,7 +6,10 @@ import Course from '../models/courseModel.js'
 import { sendThisCertToMail } from '../utils/sendThisMail.js'
 import { customAlphabet } from 'nanoid'
 import path from 'path'
-import { COURSE_COMPLETED } from './notificationConstants.js'
+import {
+  COURSE_COMPLETED,
+  NEW_REGISTER_SURVEY,
+} from './notificationConstants.js'
 import Notification from '../models/notificationModel.js'
 
 // @desc    Auth user & get json web token
@@ -58,35 +61,52 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @access  Public
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password, instructor } = req.body
-  const userExisted = await User.findOne({ email })
+  try {
+    const { name, email, password, instructor } = req.body
+    const userExisted = await User.findOne({ email })
 
-  if (userExisted) {
-    res.status(400)
-    throw new Error('User already exists')
-  }
+    if (userExisted) {
+      res.status(400)
+      throw new Error('User already exists')
+    }
 
-  let type = instructor.toLowerCase() === 'student' ? false : true
+    let type = instructor.toLowerCase() === 'student' ? false : true
 
-  const createdUser = await User.create({
-    name,
-    email,
-    password,
-    isInstructor: type,
-  })
-
-  if (createdUser) {
-    res.json({
-      _id: createdUser._id,
-      name: createdUser.name,
-      email: createdUser.email,
-      isAdmin: createdUser.isAdmin,
-      isInstructor: createdUser.isInstructor,
-      token: generateToken(createdUser._id),
+    const createdUser = await User.create({
+      name,
+      email,
+      password,
+      isInstructor: type,
     })
-  } else {
-    res.status(400)
-    throw new Error('Invalid User Data')
+
+    if (createdUser) {
+      const newNotification = new Notification({
+        user: createdUser._id,
+        notification: {
+          title: NEW_REGISTER_SURVEY,
+          from: `https://docs.google.com/forms/d/e/1FAIpQLSfUprTbIQDFkYALUD6Q_hNylZEwHsFSGC3c1oasDR9N6-lrTQ/viewform`,
+          message: `From Cravedu`,
+          read: false,
+        },
+      })
+
+      await newNotification.save()
+
+      res.json({
+        _id: createdUser._id,
+        name: createdUser.name,
+        email: createdUser.email,
+        isAdmin: createdUser.isAdmin,
+        isInstructor: createdUser.isInstructor,
+        token: generateToken(createdUser._id),
+      })
+    } else {
+      res.status(400)
+      throw new Error('Invalid User Data')
+    }
+  } catch (err) {
+    res.status(500)
+    throw new Error('Internal Server Error')
   }
 })
 

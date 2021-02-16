@@ -179,8 +179,15 @@ const PaymentScreen = ({ history }) => {
                   {error && <Message>{error}</Message>}
                   {loading && <Loader />}
 
-                  <div className={classes.billingDetails}>
-                    <div>
+                  <div
+                    className={classes.billingDetails}
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'flex-start',
+                      alignContent: 'flex-start',
+                    }}
+                  >
+                    <div style={{ padding: 20 }}>
                       <FormControl component='fieldset'>
                         <FormLabel component='legend'>
                           Billing Address
@@ -199,43 +206,48 @@ const PaymentScreen = ({ history }) => {
                           </Select>
                         </FormContainer>
                       </FormControl>
+                      <div style={{ marginTop: 20 }}>
+                        <FormControl component='fieldset'>
+                          <FormLabel component='legend'>
+                            Payment Method
+                          </FormLabel>
+                          <FormContainer>
+                            <RadioGroup
+                              defaultValue='PayPal'
+                              value={paymentMethod}
+                              onChange={(e) => setPaymentMethod(e.target.value)}
+                            >
+                              <span>
+                                <FormControlLabel
+                                  value='PayPal'
+                                  control={<Radio color='primary' />}
+                                  label={<i className='fa fa-paypal'></i>}
+                                />
+                                PayPal
+                              </span>
+                              <span>
+                                <FormControlLabel
+                                  value='Other'
+                                  control={<Radio color='primary' />}
+                                  label={<PaymentIcon />}
+                                  disabled
+                                />
+                                Other
+                              </span>
+                            </RadioGroup>
+                          </FormContainer>
+                        </FormControl>
+                      </div>
                     </div>
 
-                    <div className={classes.payment}>
+                    <div style={{ padding: 20 }}>
                       <FormControl component='fieldset'>
-                        <FormLabel component='legend'>Payment Method</FormLabel>
-                        <FormContainer>
-                          <RadioGroup
-                            defaultValue='PayPal'
-                            value={paymentMethod}
-                            onChange={(e) => setPaymentMethod(e.target.value)}
-                          >
-                            <span>
-                              <FormControlLabel
-                                value='PayPal'
-                                control={<Radio color='primary' />}
-                                label={<i className='fa fa-paypal'></i>}
-                              />
-                              PayPal
-                            </span>
-                            <span>
-                              <FormControlLabel
-                                value='Other'
-                                control={<Radio color='primary' />}
-                                label={<PaymentIcon />}
-                                disabled
-                              />
-                              Other
-                            </span>
-                          </RadioGroup>
-                        </FormContainer>
-                      </FormControl>
-                    </div>
-
-                    <div className={classes.payment}>
-                      <FormControl component='fieldset'>
-                        <FormLabel component='legend'>Billing Name</FormLabel>
-                        <h5>{userInfo.name}</h5>
+                        <FormLabel component='legend'>Billing</FormLabel>
+                        <div style={{ marginTop: 20 }}>
+                          {userInfo.name} <br />
+                          <br />
+                          <span>{userInfo.email}</span>
+                        </div>
                       </FormControl>
                     </div>
                   </div>

@@ -80,7 +80,11 @@ const QuestionThread = ({ qanda, courseId, currentUser }) => {
       setAnswer('')
       setModalOpen(false)
     } else {
-      dispatch(replyQanda(courseId, qanda._id, answer))
+      if (answer === '') {
+        alert('Field cannot be empty!')
+      } else {
+        dispatch(replyQanda(courseId, qanda._id, answer))
+      }
     }
   }
 

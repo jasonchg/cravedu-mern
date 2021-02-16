@@ -9,7 +9,6 @@ import {
   ListItemText,
   ListItemIcon,
   Table,
-  Paper,
   TableRow,
   TableBody,
   TableCell,
@@ -81,23 +80,43 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     background: '#f0f0f0',
-    margin: 'auto',
-    marginTop: 10,
+  },
+  leftBox: {
+    background: '#f0f0f0',
+    borderRadius: '10px',
+    boxShadow: theme.shadows[1],
   },
   courseLeftContainer: {
     padding: 10,
     alignItems: 'center',
     margin: 20,
-  },
-  imageContainer: {},
-  image: {
-    width: 395,
-    objectFit: 'cover',
     width: '100%',
+    [theme.breakpoints.down('sm')]: {},
+  },
+  imageContainer: {
+    width: '80%',
+    height: '30%',
+  },
+  image: {
+    objectFit: 'cover',
+    maxWidth: '100%',
+    maxHeight: '100%',
     marginLeft: 10,
     marginRight: 10,
+    [theme.breakpoints.down('sm')]: {
+      width: '30%',
+    },
   },
-  titleBox: {},
+  rightBox: {
+    width: '80%',
+  },
+  titleBox: {
+    maxWidth: '100%',
+    maxHeight: '100%',
+    [theme.breakpoints.down('sm')]: {
+      width: '30%',
+    },
+  },
   divider: {},
   description: {
     textAlign: 'justify',
@@ -218,6 +237,10 @@ const CourseScreen = ({ history }) => {
       <Breadcrumbs
         previousPage={[
           {
+            name: `home`,
+            link: '/',
+          },
+          {
             name: `${getParentCategory(
               categories,
               course ? course.category : 'Programming Language'
@@ -232,11 +255,12 @@ const CourseScreen = ({ history }) => {
       <Container className={classes.root}>
         <Grid container spacing={2}>
           <Grid item md={9} xs={12}>
-            <Paper className={classes.paper}>
+            <div className={classes.leftBox}>
               <Grid
                 container
                 spacing={3}
                 className={classes.courseLeftContainer}
+                style={{ width: '900px' }}
               >
                 <Grid item md={4} xs={12} className={classes.imageContainer}>
                   <img
@@ -247,8 +271,8 @@ const CourseScreen = ({ history }) => {
                   />
                 </Grid>
 
-                <Grid item md={8} xs={12} className={classes.titleBox}>
-                  <List>
+                <Grid item md={8} xs={12} className={classes.rightBox}>
+                  <List className={classes.titleBox}>
                     <ListItem>
                       <ListItemText
                         primary={
@@ -297,7 +321,7 @@ const CourseScreen = ({ history }) => {
                   </List>
                 </Grid>
               </Grid>
-            </Paper>
+            </div>
           </Grid>
 
           <Grid item md={3} xs={12} className={classes.priceTable}>
