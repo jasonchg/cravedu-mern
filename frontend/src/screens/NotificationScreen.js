@@ -115,15 +115,27 @@ const NotificationScreen = ({ history }) => {
   useEffect(() => {
     if (successRead || successDelete || successGrant) {
       dispatch({ type: 'USER_NOTIFICATION_RESET' })
-      dispatch(getUserNotification())
+      if (!notifications || notifications.length < 0) {
+        dispatch(getUserNotification())
+      }
     }
 
     if (!userInfo) {
       history.push('/login')
     } else {
-      dispatch(getUserNotification())
+      if (!notifications || notifications.length < 0) {
+        dispatch(getUserNotification())
+      }
     }
-  }, [history, successRead, successDelete, userInfo, dispatch, successGrant])
+  }, [
+    history,
+    successRead,
+    successDelete,
+    userInfo,
+    dispatch,
+    successGrant,
+    notifications,
+  ])
 
   const notificationBlock = (notiId, { notification }) => {
     const checkingNotification = (noti) => {

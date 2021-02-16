@@ -150,7 +150,9 @@ const Header = () => {
 
         setUnRead(temp.filter((x) => x.read === false))
       } else {
-        dispatch(getUserNotification())
+        if (!notifications || notifications.length < 0) {
+          dispatch(getUserNotification())
+        }
       }
     }
   }, [notifications, dispatch, userInfo])
