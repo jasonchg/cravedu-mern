@@ -85,40 +85,20 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
   },
   courseLeftContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    flexWrap: 'nowrap',
+    padding: 10,
+    alignItems: 'center',
+    margin: 20,
   },
   imageContainer: {},
   image: {
     width: 395,
-    margin: 10,
-    padding: 10,
-    paddingRight: 10,
     objectFit: 'cover',
-    [theme.breakpoints.down('sm')]: {
-      width: 265,
-      objectFit: 'cover',
-    },
+    width: '100%',
+    marginLeft: 10,
+    marginRight: 10,
   },
-  img: {
-    margin: 'auto',
-    display: 'block',
-    maxWidth: '100%',
-    maxHeight: '100%',
-  },
-  titleBox: {
-    paddingLeft: 40,
-    paddingRight: 40,
-    [theme.breakpoints.down('sm')]: {
-      paddingLeft: 20,
-      paddingRight: 20,
-    },
-  },
-  divider: {
-    margin: theme.spacing(2, 0),
-  },
+  titleBox: {},
+  divider: {},
   description: {
     textAlign: 'justify',
   },
@@ -253,16 +233,21 @@ const CourseScreen = ({ history }) => {
         <Grid container spacing={2}>
           <Grid item md={9} xs={12}>
             <Paper className={classes.paper}>
-              <div className={classes.courseLeftContainer}>
-                <div className={classes.imageContainer}>
+              <Grid
+                container
+                spacing={3}
+                className={classes.courseLeftContainer}
+              >
+                <Grid item md={4} xs={12} className={classes.imageContainer}>
                   <img
                     src={course.image}
                     alt={course.name}
                     className={classes.image}
                     onDragStart={(e) => e.preventDefault()}
                   />
-                </div>
-                <div className={classes.titleBox}>
+                </Grid>
+
+                <Grid item md={8} xs={12} className={classes.titleBox}>
                   <List>
                     <ListItem>
                       <ListItemText
@@ -272,7 +257,7 @@ const CourseScreen = ({ history }) => {
                         secondary={`Created by ${course.instructor}`}
                       />
                     </ListItem>
-                    <Divider />
+
                     <ListItem>
                       <ListItemIcon>
                         <AccessTimeIcon />
@@ -292,7 +277,13 @@ const CourseScreen = ({ history }) => {
                       />
                     </ListItem>
 
-                    <Divider />
+                    <ListItem>
+                      <ListItemIcon>
+                        <PeopleIcon />
+                      </ListItemIcon>
+                      <ListItemText primary={`${course.totalSold} students`} />
+                    </ListItem>
+
                     <ListItem>
                       <ListItemText
                         primary={
@@ -303,16 +294,9 @@ const CourseScreen = ({ history }) => {
                         }
                       />
                     </ListItem>
-                    <Divider />
-                    <ListItem>
-                      <ListItemIcon>
-                        <PeopleIcon />
-                      </ListItemIcon>
-                      <ListItemText primary={`${course.totalSold} students`} />
-                    </ListItem>
                   </List>
-                </div>
-              </div>
+                </Grid>
+              </Grid>
             </Paper>
           </Grid>
 
@@ -327,6 +311,12 @@ const CourseScreen = ({ history }) => {
                   <TableCell>Last Update</TableCell>
                   <TableCell>
                     {course.updatedAt && course.updatedAt.substring(0, 10)}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>Created At</TableCell>
+                  <TableCell>
+                    {course.createdAt && course.createdAt.substring(0, 10)}
                   </TableCell>
                 </TableRow>
               </TableBody>
