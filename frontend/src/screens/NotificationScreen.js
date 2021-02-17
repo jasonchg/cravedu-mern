@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import {
   deleteUserNotification,
+  getUserNotification,
   grantQanda,
   readUserNotification,
 } from '../actions/notificationActions'
@@ -114,7 +115,7 @@ const NotificationScreen = ({ history }) => {
   useEffect(() => {
     if (successRead || successDelete || successGrant) {
       dispatch({ type: 'USER_NOTIFICATION_RESET' })
-      history.push(0)
+      dispatch(getUserNotification())
     }
     if (!userInfo) {
       history.push('/login')

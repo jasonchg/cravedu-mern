@@ -37,6 +37,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore'
 import SearchBox from './SearchBox'
 import NotificationIcon from './NotificationIcon'
 import { getUserNotification } from '../actions/notificationActions'
+import { USER_NOTIFICATION_RESET } from '../constants/notificationConstants'
 
 const useStyles = makeStyles({
   root: {
@@ -77,8 +78,6 @@ const Header = () => {
   const [openMenuUser, setMenuOpenUser] = useState(null)
   const [openMenuAdmin, setMenuOpenAdmin] = useState(null)
   const [openDrawer, setOpenDrawer] = useState(false)
-
-  const [unRead, setUnRead] = useState([])
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
@@ -142,29 +141,24 @@ const Header = () => {
   const userNotifications = useSelector((state) => state.userNotifications)
   const { notifications: notis } = userNotifications
 
-  const [notifications, setNotifications] = useState(notis)
+  const [notifications, setNotifications] = useState(notis ? notis : [])
+
+  const getNotiUnread = (notis) => {
+    const temp = notis.map((x) => {
+      return x.notification
+    })
+    const unread = temp.filter((x) => x.read === false)
+    return unread
+  }
+  const [unRead, setUnRead] = useState(
+    notifications ? getNotiUnread(notifications) : []
+  )
 
   useEffect(() => {
-    const getNotiUnread = (notis) => {
-      const temp = notis.map((x) => {
-        return x.notification
-      })
-      const unread = temp.filter((x) => x.read === false)
-      return unread
-    }
-
     if (userInfo) {
-      if (notifications.length > 0) {
-        if (notifications.length > 0) {
-          setUnRead(getNotiUnread(notifications))
-        } else {
-          setUnRead([])
-        }
-      } else {
-        dispatch(getUserNotification())
-      }
+      dispatch(getUserNotification())
     }
-  }, [dispatch, userInfo, notifications])
+  }, [dispatch, userInfo])
 
   return (
     <div className={`${classes.root} ${classes.excludeFromPrint}`}>
