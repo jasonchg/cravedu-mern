@@ -138,20 +138,7 @@ const Header = () => {
   const matchesSM = useMediaQuery(theme.breakpoints.down('sm'))
 
   const userNotifications = useSelector((state) => state.userNotifications)
-  const { notifications: notis } = userNotifications
-
-  const [notifications, setNotifications] = useState(notis ? notis : [])
-
-  const getNotiUnread = (notis) => {
-    const temp = notis.map((x) => {
-      return x.notification
-    })
-    const unread = temp.filter((x) => x.read === false)
-    return unread
-  }
-  const [unRead, setUnRead] = useState(
-    notifications ? getNotiUnread(notifications) : []
-  )
+  const { unReadNotifications } = userNotifications
 
   useEffect(() => {
     if (userInfo) {
@@ -283,7 +270,7 @@ const Header = () => {
                           }
                         >
                           <ListItemIcon>
-                            <NotificationIcon unRead={unRead} />
+                            <NotificationIcon unRead={unReadNotifications} />
                           </ListItemIcon>
                           <ListItemText primary='Notifications' />
                         </ListItem>
@@ -349,7 +336,9 @@ const Header = () => {
                   {userInfo ? (
                     <>
                       <Button
-                        startIcon={<NotificationIcon unRead={unRead} />}
+                        startIcon={
+                          <NotificationIcon unRead={unReadNotifications} />
+                        }
                         color='inherit'
                         onClick={() =>
                           (window.location.href = '/notifications')
