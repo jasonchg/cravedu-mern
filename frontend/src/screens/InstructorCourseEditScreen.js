@@ -563,29 +563,38 @@ const InstructorCourseEditScreen = ({ match, history }) => {
           </Paper>
         </Grid>
         <Grid item md={2} xs={12}>
-          <h2>Total Sales</h2>
+          <h3>Total Sales (MYR)</h3>
           <Paper>
             {courseDetails && courseDetails.totalSold ? (
-              <Typography variant='h3' component='h3' style={{ padding: 10 }}>
-                {courseDetails.totalSold}
-              </Typography>
+              <div style={{ padding: 10, fontSize: '35px' }}>
+                {courseDetails.totalSold * courseDetails.price}
+              </div>
             ) : (
-              <Typography variant='h3' component='h3' style={{ padding: 10 }}>
+              <div style={{ padding: 10, fontSize: '35px' }}>0</div>
+            )}
+          </Paper>
+          <h3>Completed / Total Students</h3>
+          <Paper>
+            {(courseDetails && courseDetails.totalSold) ||
+            (courseDetails && courseDetails.studentCompleted) ? (
+              <div style={{ padding: 10, fontSize: '35px' }}>
+                {courseDetails.studentCompleted} / {courseDetails.totalSold}
+              </div>
+            ) : (
+              <div variant='h3' component='h3' style={{ padding: 10 }}>
                 0
-              </Typography>
+              </div>
             )}
           </Paper>
 
-          <h2>Rating</h2>
+          <h3>Rating</h3>
           <Paper>
             {courseDetails && courseDetails.rating ? (
-              <Typography variant='h3' component='h3' style={{ padding: 10 }}>
+              <div style={{ padding: 10, fontSize: '35px' }}>
                 {courseDetails.rating}
-              </Typography>
+              </div>
             ) : (
-              <Typography variant='h3' component='h3' style={{ padding: 10 }}>
-                0
-              </Typography>
+              <div style={{ padding: 10, fontSize: '35px' }}>0</div>
             )}
           </Paper>
         </Grid>

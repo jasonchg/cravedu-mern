@@ -125,6 +125,10 @@ const courseSchema = mongoose.Schema(
       required: true,
       default: 0,
     },
+    studentCompleted: {
+      type: Number,
+      default: 0,
+    },
     announcements: [announcement],
     category: { type: String, required: true },
     totalDuration: { type: String, required: true },

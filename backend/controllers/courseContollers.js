@@ -21,7 +21,7 @@ const getCourses = asyncHandler(async (req, res) => {
   const params = req.query.keyword
     ? {
         isPublished: true,
-        name: { $regex: req.query.keyword, $options: 'i' },
+        name: { $regex: `${req.query.keyword}`, $options: 'i' },
       }
     : { isPublished: true }
 

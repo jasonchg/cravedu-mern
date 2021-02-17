@@ -37,7 +37,6 @@ import ExpandMore from '@material-ui/icons/ExpandMore'
 import SearchBox from './SearchBox'
 import NotificationIcon from './NotificationIcon'
 import { getUserNotification } from '../actions/notificationActions'
-import { USER_NOTIFICATION_RESET } from '../constants/notificationConstants'
 
 const useStyles = makeStyles({
   root: {
