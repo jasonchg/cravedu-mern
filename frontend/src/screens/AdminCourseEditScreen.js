@@ -49,6 +49,11 @@ const useStyles = makeStyles((theme) => ({
     minHeight: 200,
     minWidth: '100%',
   },
+  counter: {
+    padding: 15,
+    fontSize: '32px',
+    textAlign: 'center',
+  },
 }))
 
 const AdminCourseEditScreen = ({ match, history }) => {
@@ -232,15 +237,15 @@ const AdminCourseEditScreen = ({ match, history }) => {
       {updateLoading && <Loader />}
       {updateError && <Message>{updateError}</Message>}
       <Grid container spacing={3}>
-        <Grid item md={4} xs={12}>
-          <Button
+        <Grid item md={6} xs={12}>
+          {/* <Button
             style={{ margin: '7px 0' }}
             onClick={() =>
               window.open(`/course/${courseId}/preview`, '_blank').focus()
             }
           >
             Preview This Course
-          </Button>
+          </Button> */}
           <Paper className={classes.leftPanel}>
             <Typography variant='body1'>Course Details</Typography>
             <Divider style={{ marginBottom: 10 }} />
@@ -342,20 +347,6 @@ const AdminCourseEditScreen = ({ match, history }) => {
                 </FormContainer>
               </FormContainer>
 
-              <FormContainer>
-                <FormControlLabel
-                  label='Published'
-                  control={
-                    <Checkbox
-                      checked={isPublished}
-                      onChange={handlePublishedCheck}
-                      name='isPublished'
-                      color='primary'
-                    />
-                  }
-                />
-              </FormContainer>
-
               <Button
                 type='submit'
                 variant='contained'
@@ -366,17 +357,60 @@ const AdminCourseEditScreen = ({ match, history }) => {
               </Button>
             </form>
           </Paper>
-          <br />
-          <Button
-            onClick={deleteHandler}
-            variant='outlined'
-            color='secondary'
-            disabled={cantDelete ? true : false}
-          >
-            Delete This Course
-          </Button>
         </Grid>
         <Grid item md={6} xs={12}>
+          <div>
+            <h3>Course Popularities</h3>
+            <Divider style={{ marginBottom: 10 }} />
+
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+              }}
+            >
+              <div style={{ textAlign: 'start' }}>
+                <h3>Total Sales (MYR)</h3>
+                <Paper>
+                  {courseDetails && courseDetails.totalSold ? (
+                    <div className={classes.counter}>
+                      {courseDetails.totalSold * courseDetails.price}
+                    </div>
+                  ) : (
+                    <div className={classes.counter}>0</div>
+                  )}
+                </Paper>
+              </div>
+              <div style={{ textAlign: 'start' }}>
+                <h3>Completed / Total Students</h3>
+                <Paper>
+                  {(courseDetails && courseDetails.totalSold) ||
+                  (courseDetails && courseDetails.studentCompleted) ? (
+                    <div className={classes.counter}>
+                      {courseDetails.studentCompleted} /{' '}
+                      {courseDetails.totalSold}
+                    </div>
+                  ) : (
+                    <div className={classes.counter}>0</div>
+                  )}
+                </Paper>
+              </div>
+              <div style={{ textAlign: 'start' }}>
+                <h3>Rating</h3>
+                <Paper>
+                  {courseDetails && courseDetails.rating ? (
+                    <div className={classes.counter}>
+                      {courseDetails.rating} / 5
+                    </div>
+                  ) : (
+                    <div className={classes.counter}>0</div>
+                  )}
+                </Paper>
+              </div>
+            </div>
+          </div>
           <h2>Course Contents</h2>
           <Paper>
             <List>
@@ -395,6 +429,7 @@ const AdminCourseEditScreen = ({ match, history }) => {
                         count={content.chapter}
                         courseId={courseId}
                         content={content}
+                        admin
                       />
                     ))}
                   </>
@@ -417,32 +452,71 @@ const AdminCourseEditScreen = ({ match, history }) => {
               </span>
             ) : null}
           </Paper>
-        </Grid>
-        <Grid item md={2} xs={12}>
-          <h2>Total Sales</h2>
-          <Paper>
-            {courseDetails && courseDetails.totalSold ? (
-              <Typography variant='h3' component='h3' style={{ padding: 10 }}>
-                {courseDetails && courseDetails.totalSold}
-              </Typography>
-            ) : (
-              <Typography variant='h3' component='h3' style={{ padding: 10 }}>
-                0
-              </Typography>
-            )}
+
+          <Paper
+            style={{
+              marginTop: 30,
+              border: '#457b9d solid 1px',
+              padding: 20,
+            }}
+          >
+            <h3>Admin Publication Zone</h3>
+            <div>
+              <div style={{ flex: 3, marginRight: 30 }}>
+                <p style={{ textAlign: 'justify' }}>
+                  All course are well prepared, quality and ready to be sell in
+                  the marketplace.
+                </p>
+                <FormContainer>
+                  <FormControlLabel
+                    label='Published'
+                    control={
+                      <Checkbox
+                        checked={isPublished}
+                        onChange={handlePublishedCheck}
+                        name='isPublished'
+                        color='primary'
+                      />
+                    }
+                  />
+                </FormContainer>
+              </div>
+            </div>
           </Paper>
 
-          <h2>Rating</h2>
-          <Paper>
-            {courseDetails && courseDetails.rating ? (
-              <Typography variant='h3' component='h3' style={{ padding: 10 }}>
-                {courseDetails.rating}
-              </Typography>
-            ) : (
-              <Typography variant='h3' component='h3' style={{ padding: 10 }}>
-                0
-              </Typography>
-            )}
+          <Paper
+            style={{
+              marginTop: 30,
+              border: 'red solid 1px',
+              padding: 20,
+              background: 'rgba(150,0,0,0.1)',
+            }}
+          >
+            <h3>Danger Zone</h3>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+            >
+              <div style={{ flex: 3, marginRight: 30 }}>
+                <p style={{ textAlign: 'justify' }}>
+                  Once you delete a course, there is no going back. Please be
+                  certain.
+                </p>
+              </div>
+              <div style={{ flex: 1 }}>
+                <Button
+                  onClick={deleteHandler}
+                  variant='outlined'
+                  color='secondary'
+                  disabled={cantDelete ? true : false}
+                >
+                  Delete This Course
+                </Button>
+              </div>
+            </div>
           </Paper>
         </Grid>
       </Grid>

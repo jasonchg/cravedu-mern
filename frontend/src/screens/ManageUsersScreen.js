@@ -74,7 +74,7 @@ const ManageUsersScreen = ({ history }) => {
             link: '/',
           },
         ]}
-        currentPage='Users'
+        currentPage='Manage Users'
       />
       <Grid container style={{ marginTop: 10 }}>
         <Grid item xs={12}>

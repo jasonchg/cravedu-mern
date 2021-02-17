@@ -133,28 +133,9 @@ const Modals = ({ modalOpen = false, modalClose, content, courseId }) => {
         <Loader />
       ) : (
         <div className={classes.paper}>
-          <div style={{ display: 'flex' }}>
-            <div style={{ flex: 1 }}>
-              <Typography variant='caption'>
-                Chapter {content.chapter}
-              </Typography>
-              <Typography variant='h4'>{content.name}</Typography>
-            </div>
-            <div style={{ marginTop: 10 }}>
-              <FormContainer>
-                <FormControlLabel
-                  label='Published'
-                  control={
-                    <Checkbox
-                      checked={isPublished}
-                      onChange={handlePublishedCheck}
-                      name='isPublished'
-                      color='primary'
-                    />
-                  }
-                />
-              </FormContainer>
-            </div>
+          <div style={{ flex: 1 }}>
+            <Typography variant='caption'>Chapter {content.chapter}</Typography>
+            <Typography variant='h4'>{content.name}</Typography>
           </div>
 
           <Divider />
@@ -218,6 +199,20 @@ const Modals = ({ modalOpen = false, modalClose, content, courseId }) => {
                 </div>
               </FormContainer>
 
+              <div>
+                <FormControlLabel
+                  label='Published'
+                  control={
+                    <Checkbox
+                      checked={isPublished}
+                      onChange={handlePublishedCheck}
+                      name='isPublished'
+                      color='primary'
+                    />
+                  }
+                />
+              </div>
+              <br />
               <FormContainer>
                 <Button
                   variant='outlined'
