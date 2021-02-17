@@ -35,8 +35,8 @@ import MenuOpenIcon from '@material-ui/icons/MenuOpen'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import SearchBox from './SearchBox'
-import { getUserNotification } from '../actions/notificationActions'
 import NotificationIcon from './NotificationIcon'
+import { getUserNotification } from '../actions/notificationActions'
 
 const useStyles = makeStyles({
   root: {
@@ -142,19 +142,11 @@ const Header = () => {
   const userNotifications = useSelector((state) => state.userNotifications)
   const { notifications: notis } = userNotifications
 
-  const [notifications, setNotifications] = useState([])
+  const [notifications, setNotifications] = useState(notis)
 
   useEffect(() => {
-    if (!notis) {
-      dispatch(getUserNotification())
-    } else {
-      setNotifications(notis)
-    }
-  }, [notis])
-
-  useEffect(() => {
-    const getNotiUnread = (notifications) => {
-      const temp = notifications.map((x) => {
+    const getNotiUnread = (notis) => {
+      const temp = notis.map((x) => {
         return x.notification
       })
       const unread = temp.filter((x) => x.read === false)
@@ -162,10 +154,14 @@ const Header = () => {
     }
 
     if (userInfo) {
-      if (notifications && notifications.length > 0) {
-        setUnRead(getNotiUnread(notifications))
+      if (notifications.length > 0) {
+        if (notifications.length > 0) {
+          setUnRead(getNotiUnread(notifications))
+        } else {
+          setUnRead([])
+        }
       } else {
-        setUnRead([])
+        dispatch(getUserNotification())
       }
     }
   }, [dispatch, userInfo, notifications])
