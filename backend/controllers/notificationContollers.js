@@ -8,12 +8,16 @@ import mongoose from 'mongoose'
 // @access  Private
 
 const getNotificationById = asyncHandler(async (req, res) => {
-  const notifications = await Notification.find({ user: req.params.id }).sort({
-    _id: -1,
-  })
-  if (notifications) {
-    res.json(notifications)
-  } else {
+  try {
+    const notifications = await Notification.find({ user: req.params.id }).sort(
+      {
+        _id: -1,
+      }
+    )
+    if (notifications) {
+      res.json(notifications)
+    }
+  } catch (error) {
     res.status(404)
     throw new Error('Notification not found')
   }

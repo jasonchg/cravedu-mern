@@ -22,7 +22,26 @@ const userNotificationReducer = (state = { notifications: [] }, action) => {
     case USER_NOTIFICATION_REQUEST:
       return { loading: true }
     case USER_NOTIFICATION_SUCCESS:
-      return { loading: false, notifications: action.payload }
+      const getReadNoti = (notis) => {
+        const temp = notis.map((x) => {
+          return x.notification
+        })
+        const read = temp.filter((x) => x.read === true)
+        return read
+      }
+      const getNotiUnread = (notis) => {
+        const temp = notis.map((x) => {
+          return x.notification
+        })
+        const unread = temp.filter((x) => x.read === false)
+        return unread
+      }
+
+      return {
+        loading: false,
+        readNotifications: getReadNoti(action.payload),
+        unReadNotifications: getNotiUnread(action.payload),
+      }
     case USER_NOTIFICATION_FAIL:
       return { loading: false, error: action.payload }
     case USER_NOTIFICATION_RESET:

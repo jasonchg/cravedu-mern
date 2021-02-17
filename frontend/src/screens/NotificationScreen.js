@@ -79,7 +79,12 @@ const NotificationScreen = ({ history }) => {
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
   const userNotifications = useSelector((state) => state.userNotifications)
-  const { notifications, loading, error } = userNotifications
+  const {
+    readNotifications,
+    error,
+    unReadNotifications,
+    loading,
+  } = userNotifications
   const userNotificationRead = useSelector(
     (state) => state.userNotificationRead
   )
@@ -122,7 +127,7 @@ const NotificationScreen = ({ history }) => {
     }
   }, [history, successRead, successDelete, userInfo, dispatch, successGrant])
 
-  const notificationBlock = (notiId, { notification }) => {
+  const notificationBlock = (notiId, notification) => {
     const checkingNotification = (noti) => {
       switch (noti.title) {
         case 'NEW_QANDA_ANSWER':
@@ -341,7 +346,9 @@ const NotificationScreen = ({ history }) => {
             }}
           >
             <Paper className={classes.paper}>
-              {loading ? (
+              {!unReadNotifications && !readNotifications ? (
+                <Loader />
+              ) : loading ? (
                 <Loader />
               ) : error ? (
                 <Message>{error}</Message>
@@ -349,11 +356,9 @@ const NotificationScreen = ({ history }) => {
                 <div>
                   <TabPanel value={value} index={0}>
                     <List>
-                      {notifications.length > 0 ? (
-                        notifications.map((noti) => {
-                          return noti.notification.read
-                            ? ''
-                            : notificationBlock(noti._id, noti)
+                      {unReadNotifications && unReadNotifications.length > 0 ? (
+                        unReadNotifications.map((noti) => {
+                          return notificationBlock(noti._id, noti)
                         })
                       ) : (
                         <Message severity='info'>Nothing here</Message>
@@ -362,12 +367,13 @@ const NotificationScreen = ({ history }) => {
                   </TabPanel>
                   <TabPanel value={value} index={1}>
                     <List>
-                      {notifications &&
-                        notifications.map((noti) => {
-                          return noti.notification.read
-                            ? notificationBlock(noti._id, noti)
-                            : ''
-                        })}
+                      {readNotifications && readNotifications.length > 0 ? (
+                        readNotifications.map((noti) => {
+                          return notificationBlock(noti._id, noti)
+                        })
+                      ) : (
+                        <Message severity='info'>Nothing here</Message>
+                      )}
                     </List>
                   </TabPanel>
                 </div>
