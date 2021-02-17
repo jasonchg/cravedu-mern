@@ -18,6 +18,7 @@ import {
 } from '../constants/instructorConstants'
 import { deleteContent } from '../actions/instructorActions'
 import Message from './Message'
+import AdminCourseContentModal from './AdminCourseContentModal'
 import QueryBuilderIcon from '@material-ui/icons/QueryBuilder'
 const ContentListItem = ({
   courseId,
@@ -25,6 +26,7 @@ const ContentListItem = ({
   count,
   expanded,
   handleAccordion,
+  admin = false,
 }) => {
   const dispatch = useDispatch()
   const [modalOpen, setModalOpen] = useState(null)
@@ -83,23 +85,43 @@ const ContentListItem = ({
           </AccordionSummary>
 
           <AccordionDetails>
-            <Button
-              variant='outlined'
-              type='button'
-              onClick={() => setModalOpen(true)}
-            >
-              Edit
-            </Button>
+            {admin ? (
+              <Button
+                variant='outlined'
+                type='button'
+                onClick={() => setModalOpen(true)}
+              >
+                Watch
+              </Button>
+            ) : (
+              <Button
+                variant='outlined'
+                type='button'
+                onClick={() => setModalOpen(true)}
+              >
+                Edit
+              </Button>
+            )}
+
             <Button onClick={deletChapter} type='button'>
               Delete This Chapter
             </Button>
 
-            <Modals
-              modalOpen={modalOpen}
-              modalClose={() => setModalOpen(false)}
-              courseId={courseId}
-              content={content}
-            />
+            {admin ? (
+              <AdminCourseContentModal
+                modalOpen={modalOpen}
+                modalClose={() => setModalOpen(false)}
+                courseId={courseId}
+                content={content}
+              />
+            ) : (
+              <Modals
+                modalOpen={modalOpen}
+                modalClose={() => setModalOpen(false)}
+                courseId={courseId}
+                content={content}
+              />
+            )}
           </AccordionDetails>
           {contentDeleteLoading && (
             <Message variant='info'>Deleting...</Message>

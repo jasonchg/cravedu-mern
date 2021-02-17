@@ -464,6 +464,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
+                flexWrap: 'wrap',
               }}
             >
               <div style={{ textAlign: 'start' }}>
@@ -611,7 +612,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                 padding: 20,
               }}
             >
-              <h3>Publication zone</h3>
+              <h3>Publication Zone</h3>
               <div
                 style={{
                   display: 'flex',
