@@ -29,7 +29,9 @@ const getNotificationById = asyncHandler(async (req, res) => {
 
 const readNotificationById = asyncHandler(async (req, res) => {
   try {
-    const notifications = await Notification.findById(req.params.read)
+    const notifications = await Notification.find({
+      'notification._id': req.params.read,
+    })
 
     if (notifications) {
       notifications.notification.read = true
@@ -53,7 +55,9 @@ const readNotificationById = asyncHandler(async (req, res) => {
 
 const removeNotificationById = asyncHandler(async (req, res) => {
   try {
-    const notifications = await Notification.findById(req.params.read)
+    const notifications = await Notification.find({
+      'notification._id': req.params.read,
+    })
 
     if (notifications) {
       const result = notifications.remove()
