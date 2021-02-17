@@ -25,7 +25,7 @@ const TextEditor = ({ description, setter }) => {
       required
       editor={ClassicEditor}
       config={editorConfiguration}
-      data={description !== '' ? description : ''}
+      data={description}
       onChange={(event, editor) => {
         const data = editor.getData()
         setter(data)

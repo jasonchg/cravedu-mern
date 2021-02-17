@@ -330,8 +330,18 @@ const NotificationScreen = ({ history }) => {
                 value={value}
                 className={classes.tabs}
               >
-                <Tab label='All Notifications' {...a11yProps(0)} />
-                <Tab label='Read' {...a11yProps(1)} />
+                <Tab
+                  label={`All Notifications (${
+                    unReadNotifications ? unReadNotifications.length : '0'
+                  })`}
+                  {...a11yProps(0)}
+                />
+                <Tab
+                  label={`Read (${
+                    readNotifications ? readNotifications.length : '0'
+                  })`}
+                  {...a11yProps(1)}
+                />
               </Tabs>
             </Paper>
           </Grid>

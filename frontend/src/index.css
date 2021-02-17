@@ -91,6 +91,11 @@ main {
   height: auto;
 }
 
+/* Text editor */
+.ck-editor__editable {
+  min-height: 150px !important;
+}
+
 /* Footer */
 footer {
   background-color: var(--dark);
