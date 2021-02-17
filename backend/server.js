@@ -52,6 +52,7 @@ app.listen(PORT, console.log(`Server running on port ${PORT}`))
 
 const __dirname = path.resolve()
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
+app.use('/certificates', express.static(path.join(__dirname, '/certificates')))
 
 // ONLY RUN ON PRODUCTION BUILD //
 if (process.env.NODE_ENV === 'production') {

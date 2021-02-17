@@ -151,6 +151,7 @@ const completeCourse = asyncHandler(async (req, res) => {
     const userExisted = await User.findById(req.user.id)
     const courseId = req.params.courseId
     const course = await Course.findById(courseId)
+
     const nanoid = customAlphabet(
       course
         ? course.name.trim().toLowerCase().replace(/\s/g, '')
@@ -174,21 +175,15 @@ const completeCourse = asyncHandler(async (req, res) => {
         } else {
           generateCert(userExisted, course, certificateId)
 
-          const __dirname = path.resolve()
-
           let filename = `${certificateId}.jpeg`
-          let uri = path.resolve(__dirname, 'certificates', filename)
+          let uri = path.join('certificates', filename)
 
           getCompletedCourse.completedCertificate = uri || ''
           const result = userExisted.save()
+
           if (result) {
-            await sendThisCertToMail(userExisted, course, {
-              url: `${uri}`,
-              path: uri,
-              filename,
-              name: course.name,
-              totalDuration: course.totalDuration,
-            })
+            course.studentCompleted = Number(course.studentCompleted) + 1
+
             const newNotification = new Notification({
               user: req.user.id,
               notification: {
@@ -199,10 +194,21 @@ const completeCourse = asyncHandler(async (req, res) => {
                 certUrl: uri,
               },
             })
-            await newNotification.save()
-            res.status(201).send({
-              certCreated: 'true',
+
+            const notification = await newNotification.save()
+            const courseResult = await course.save()
+            const email = await sendThisCertToMail(userExisted, course, {
+              url: `${uri}`,
+              path: uri,
+              filename,
+              name: course.name,
+              totalDuration: course.totalDuration,
             })
+            if (notification && courseResult && email) {
+              res.status(201).send({
+                certCreated: 'true',
+              })
+            }
           }
         }
       } else {
@@ -213,9 +219,9 @@ const completeCourse = asyncHandler(async (req, res) => {
       res.status(404)
       throw new Error('User Not Found')
     }
-  } catch (error) {
+  } catch (err) {
     res.status(500)
-    throw new Error('Internal Server Error')
+    console.log(err.message)
   }
 })
 

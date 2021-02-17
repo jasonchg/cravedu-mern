@@ -53,9 +53,9 @@ const BrowseScreen = ({ match }) => {
     <Container>
       <Grid container spacing={3}>
         {keyword ? (
-          <div style={{ margin: '10px 0' }}>
+          <Grid item xs={12}>
             <h2>Search terms : {keyword}</h2> <br />
-          </div>
+          </Grid>
         ) : (
           <>
             <Grid item xs={12}>

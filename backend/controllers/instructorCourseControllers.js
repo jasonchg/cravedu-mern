@@ -56,6 +56,7 @@ const createCourse = asyncHandler(async (req, res) => {
     numReviews: 0,
     totalSold: 0,
     price: 0,
+    studentCompleted: 0,
     totalDuration: '0',
     annoucements: [],
   })

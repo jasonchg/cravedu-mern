@@ -238,13 +238,12 @@ const NotificationScreen = ({ history }) => {
                     style={{ marginTop: 10, marginBottom: 15, color: 'blue' }}
                   >
                     <button
-                      onClick={() => window.open(certUrl, '_blank')}
-                      disabled
+                      onClick={() =>
+                        window.open(`viewcert/${certUrl}`, '_blank')
+                      }
                     >
                       View your cert
                     </button>
-                    (*Sorry, due to contraint, this feature currently
-                    unavailable.)
                   </div>
                 )}
                 <div>{message}</div>
