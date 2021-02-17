@@ -20,11 +20,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import {
   deleteUserNotification,
-  getUserNotification,
   grantQanda,
   readUserNotification,
 } from '../actions/notificationActions'
-import { USER_NOTIFICATION_RESET } from '../constants/notificationConstants'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -80,7 +78,7 @@ const NotificationScreen = ({ history }) => {
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
   const userNotifications = useSelector((state) => state.userNotifications)
-  const { notifications, loading, error } = userNotifications
+  const { notifications: notis, loading, error } = userNotifications
   const userNotificationRead = useSelector(
     (state) => state.userNotificationRead
   )
@@ -113,7 +111,12 @@ const NotificationScreen = ({ history }) => {
     dispatch(readUserNotification(id))
   }
 
+  const [notifications, setNotifications] = useState([])
+
   useEffect(() => {
+    if (!notifications && notis > 0) {
+      setNotifications(notis)
+    }
     if (successRead || successDelete || successGrant) {
       dispatch({ type: 'USER_NOTIFICATION_RESET' })
       history.push(0)
@@ -129,6 +132,7 @@ const NotificationScreen = ({ history }) => {
     dispatch,
     successGrant,
     notifications,
+    notis,
   ])
 
   const notificationBlock = (notiId, { notification }) => {
@@ -343,6 +347,7 @@ const NotificationScreen = ({ history }) => {
           <Grid
             item
             md={9}
+            xs={12}
             style={{
               maxHeight: 800,
               overflow: 'scroll',

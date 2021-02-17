@@ -37,7 +37,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore'
 import SearchBox from './SearchBox'
 import { getUserNotification } from '../actions/notificationActions'
 import NotificationIcon from './NotificationIcon'
-import { USER_NOTIFICATION_RESET } from '../constants/notificationConstants'
+
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
@@ -79,9 +79,6 @@ const Header = () => {
   const [openDrawer, setOpenDrawer] = useState(false)
 
   const [unRead, setUnRead] = useState([])
-
-  const userNotifications = useSelector((state) => state.userNotifications)
-  const { notifications } = userNotifications
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
@@ -142,18 +139,36 @@ const Header = () => {
   const theme = useTheme()
   const matchesSM = useMediaQuery(theme.breakpoints.down('sm'))
 
+  const userNotifications = useSelector((state) => state.userNotifications)
+  const { notifications: notis } = userNotifications
+
+  const [notifications, setNotifications] = useState([])
+
   useEffect(() => {
+    if (!notis) {
+      dispatch(getUserNotification())
+    } else {
+      setNotifications(notis)
+    }
+  }, [notis])
+
+  useEffect(() => {
+    const getNotiUnread = (notifications) => {
+      const temp = notifications.map((x) => {
+        return x.notification
+      })
+      const unread = temp.filter((x) => x.read === false)
+      return unread
+    }
+
     if (userInfo) {
       if (notifications && notifications.length > 0) {
-        const temp = notifications.map((x) => {
-          return x.notification
-        })
-        setUnRead(temp.filter((x) => x.read === false))
+        setUnRead(getNotiUnread(notifications))
       } else {
-        dispatch(getUserNotification())
+        setUnRead([])
       }
     }
-  }, [notifications, dispatch, userInfo])
+  }, [dispatch, userInfo, notifications])
 
   return (
     <div className={`${classes.root} ${classes.excludeFromPrint}`}>
