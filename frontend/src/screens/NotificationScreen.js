@@ -78,7 +78,7 @@ const NotificationScreen = ({ history }) => {
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
   const userNotifications = useSelector((state) => state.userNotifications)
-  const { notifications: notis, loading, error } = userNotifications
+  const { notifications, loading, error } = userNotifications
   const userNotificationRead = useSelector(
     (state) => state.userNotificationRead
   )
@@ -111,12 +111,7 @@ const NotificationScreen = ({ history }) => {
     dispatch(readUserNotification(id))
   }
 
-  const [notifications, setNotifications] = useState([])
-
   useEffect(() => {
-    if (!notifications && notis > 0) {
-      setNotifications(notis)
-    }
     if (successRead || successDelete || successGrant) {
       dispatch({ type: 'USER_NOTIFICATION_RESET' })
       history.push(0)
@@ -124,16 +119,7 @@ const NotificationScreen = ({ history }) => {
     if (!userInfo) {
       history.push('/login')
     }
-  }, [
-    history,
-    successRead,
-    successDelete,
-    userInfo,
-    dispatch,
-    successGrant,
-    notifications,
-    notis,
-  ])
+  }, [history, successRead, successDelete, userInfo, dispatch, successGrant])
 
   const notificationBlock = (notiId, { notification }) => {
     const checkingNotification = (noti) => {
