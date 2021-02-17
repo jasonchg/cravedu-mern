@@ -32,10 +32,12 @@ const readNotificationById = asyncHandler(async (req, res) => {
     const notifications = await Notification.find({
       'notification._id': req.params.read,
     })
+    console.log(notifications[0])
 
     if (notifications) {
-      notifications.notification.read = true
-      const result = notifications.save()
+      notifications[0].notification.read = true
+      const result = notifications[0].save()
+
       if (result) {
         res.send('Read')
       }
@@ -60,7 +62,7 @@ const removeNotificationById = asyncHandler(async (req, res) => {
     })
 
     if (notifications) {
-      const result = notifications.remove()
+      const result = notifications[0].remove()
       if (result) {
         res.send('Removed')
       }
