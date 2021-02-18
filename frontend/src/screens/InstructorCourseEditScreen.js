@@ -8,7 +8,6 @@ import {
   ListItem,
   Divider,
   Paper,
-  Typography,
   Accordion,
   AccordionSummary,
   AccordionDetails,
