@@ -10,6 +10,9 @@ import {
   ADMIN_USER_UPDATE_REQUEST,
   ADMIN_USER_UPDATE_SUCCESS,
   ADMIN_USER_UPDATE_FAIL,
+  ADMIN_USER_DELETE_SUCCESS,
+  ADMIN_USER_DELETE_REQUEST,
+  ADMIN_USER_DELETE_FAIL,
 } from '../constants/adminConstants'
 
 const listUsers = () => async (dispatch, getState) => {
@@ -99,4 +102,32 @@ const updateUser = (user) => async (dispatch, getState) => {
   }
 }
 
-export { listUsers, getUserById, updateUser }
+const deleteUser = (user) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: ADMIN_USER_DELETE_REQUEST })
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    await axios.delete(`/api/admin/users/${user._id}`, config)
+
+    dispatch({ type: ADMIN_USER_DELETE_SUCCESS })
+  } catch (e) {
+    dispatch({
+      type: ADMIN_USER_DELETE_FAIL,
+      payload:
+        e.response && e.response.data.message
+          ? e.response.data.message
+          : e.message,
+    })
+  }
+}
+
+export { listUsers, getUserById, updateUser, deleteUser }
