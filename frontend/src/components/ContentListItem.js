@@ -18,15 +18,22 @@ import {
 } from '../constants/instructorConstants'
 import { deleteContent } from '../actions/instructorActions'
 import Message from './Message'
+<<<<<<< HEAD
 import AdminCourseContentModal from './AdminCourseContentModal'
 import QueryBuilderIcon from '@material-ui/icons/QueryBuilder'
+=======
+
+>>>>>>> f4a828b (initial)
 const ContentListItem = ({
   courseId,
   content,
   count,
   expanded,
   handleAccordion,
+<<<<<<< HEAD
   admin = false,
+=======
+>>>>>>> f4a828b (initial)
 }) => {
   const dispatch = useDispatch()
   const [modalOpen, setModalOpen] = useState(null)
@@ -73,6 +80,7 @@ const ContentListItem = ({
           onChange={handleAccordion(content.chapter)}
         >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+<<<<<<< HEAD
             <span style={{ width: '80%' }}>{`${count}. ${content.name}`}</span>
             <span
               style={{ width: '40%', display: 'flex', alignItems: 'center' }}
@@ -103,10 +111,24 @@ const ContentListItem = ({
               </Button>
             )}
 
+=======
+            {`${count}. ${content.name}`}
+          </AccordionSummary>
+
+          <AccordionDetails>
+            <Button
+              variant='outlined'
+              type='button'
+              onClick={() => setModalOpen(true)}
+            >
+              Edit
+            </Button>
+>>>>>>> f4a828b (initial)
             <Button onClick={deletChapter} type='button'>
               Delete This Chapter
             </Button>
 
+<<<<<<< HEAD
             {admin ? (
               <AdminCourseContentModal
                 modalOpen={modalOpen}
@@ -122,6 +144,14 @@ const ContentListItem = ({
                 content={content}
               />
             )}
+=======
+            <Modals
+              modalOpen={modalOpen}
+              modalClose={() => setModalOpen(false)}
+              courseId={courseId}
+              content={content}
+            />
+>>>>>>> f4a828b (initial)
           </AccordionDetails>
           {contentDeleteLoading && (
             <Message variant='info'>Deleting...</Message>

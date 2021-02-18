@@ -22,8 +22,13 @@ const Footer = () => {
           <div className='left-footer'>
             <img src={Logo} alt='' onDragStart={(e) => e.preventDefault()} />
             <p>
+<<<<<<< HEAD
               Craving for education. Cravedu allows you to study online,
               interact with other people, receive knowledge and more.
+=======
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Non
+              perferendis voluptates, dicta est odit accusamus?
+>>>>>>> f4a828b (initial)
             </p>
           </div>
 
@@ -46,7 +51,11 @@ const Footer = () => {
               </li>
             </ul>
           </div>
+<<<<<<< HEAD
           {/* 
+=======
+
+>>>>>>> f4a828b (initial)
           <div className='middle2-footer'>
             <Typography variant='h5' component='span'>
               Coorporate
@@ -65,7 +74,11 @@ const Footer = () => {
                 <a href='/'>About</a>
               </li>
             </ul>
+<<<<<<< HEAD
           </div> */}
+=======
+          </div>
+>>>>>>> f4a828b (initial)
 
           <div className='right-footer'>
             <Typography variant='h5' component='span'>

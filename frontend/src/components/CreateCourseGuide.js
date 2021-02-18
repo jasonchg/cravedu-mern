@@ -11,7 +11,10 @@ const useStyles = makeStyles({
     textAlign: 'center',
     padding: '40px',
     margin: '10px',
+<<<<<<< HEAD
     color: '#1d3557',
+=======
+>>>>>>> f4a828b (initial)
   },
   content: {
     textAlign: 'justify',

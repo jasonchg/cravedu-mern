@@ -8,7 +8,11 @@ node_modules/
 /coverage
 
 # production
+<<<<<<< HEAD
 /frontend/build
+=======
+/build
+>>>>>>> f4a828b (initial)
 
 # misc
 .DS_Store
@@ -27,8 +31,19 @@ yarn-error.log*\
 debug.log
 frontend/debug.log
 
+<<<<<<< HEAD
 .vscode
 E:\React Js\cravedu-mern\.vscode
 
 C:\Users\Jason\Desktop\cravedu-mern-master\frontend\public\videos
 frontend\public\videos
+=======
+E:\React Js\cravedu-mern\frontend\public\videos
+/frontend/public/videos
+E:\React Js\cravedu-mern\certificates
+/certificates
+/uploads
+/uploads/*
+.vscode
+E:\React Js\cravedu-mern\.vscode
+>>>>>>> f4a828b (initial)

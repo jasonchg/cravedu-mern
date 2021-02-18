@@ -55,7 +55,10 @@ const Modals = ({ modalOpen = false, modalClose, content, courseId }) => {
   const [progress, setProgress] = useState(0)
   const [name, setName] = useState(content.name)
   const [video, setVideo] = useState('')
+<<<<<<< HEAD
   const [videoDuration, setVideoDuration] = useState(content.duration)
+=======
+>>>>>>> f4a828b (initial)
 
   const [isPublished, setIsPublished] = useState(content.isPublished)
 
@@ -65,12 +68,15 @@ const Modals = ({ modalOpen = false, modalClose, content, courseId }) => {
     e.preventDefault()
     const file = e.target.files[0]
     const formData = new FormData()
+<<<<<<< HEAD
     var vid = document.createElement('video')
     var fileURL = URL.createObjectURL(file)
     vid.src = fileURL
     vid.ondurationchange = () => {
       setVideoDuration(Number(Math.round(vid.duration / 60)))
     }
+=======
+>>>>>>> f4a828b (initial)
     formData.append(myTrim(name), file)
     setVideoUploading(true)
     try {
@@ -99,6 +105,7 @@ const Modals = ({ modalOpen = false, modalClose, content, courseId }) => {
 
   const updateContentHandler = (e) => {
     e.preventDefault()
+<<<<<<< HEAD
 
     if (isPublished !== true) {
       window.confirm(
@@ -116,6 +123,21 @@ const Modals = ({ modalOpen = false, modalClose, content, courseId }) => {
       })
     )
     modalClose()
+=======
+    if (content.name === name && content.video === video) {
+      modalClose()
+    } else {
+      dispatch(
+        updateContent(courseId, {
+          contentId: content._id,
+          name,
+          isPublished,
+          video,
+        })
+      )
+      modalClose()
+    }
+>>>>>>> f4a828b (initial)
   }
 
   const handlePublishedCheck = (e, isChecked) => {
@@ -133,9 +155,34 @@ const Modals = ({ modalOpen = false, modalClose, content, courseId }) => {
         <Loader />
       ) : (
         <div className={classes.paper}>
+<<<<<<< HEAD
           <div style={{ flex: 1 }}>
             <Typography variant='caption'>Chapter {content.chapter}</Typography>
             <Typography variant='h4'>{content.name}</Typography>
+=======
+          <div style={{ display: 'flex' }}>
+            <div style={{ flex: 1 }}>
+              <Typography variant='caption'>
+                Chapter {content.chapter}
+              </Typography>
+              <Typography variant='h4'>{content.name}</Typography>
+            </div>
+            <div style={{ marginTop: 10 }}>
+              <FormContainer>
+                <FormControlLabel
+                  label='Published'
+                  control={
+                    <Checkbox
+                      checked={isPublished}
+                      onChange={handlePublishedCheck}
+                      name='isPublished'
+                      color='primary'
+                    />
+                  }
+                />
+              </FormContainer>
+            </div>
+>>>>>>> f4a828b (initial)
           </div>
 
           <Divider />
@@ -146,6 +193,22 @@ const Modals = ({ modalOpen = false, modalClose, content, courseId }) => {
           >
             <div className={classes.form}>
               <FormContainer>
+<<<<<<< HEAD
+=======
+                <TextField
+                  required
+                  fullWidth
+                  type='text'
+                  label='Content Name'
+                  placeholder=''
+                  variant='filled'
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </FormContainer>
+
+              <FormContainer>
+>>>>>>> f4a828b (initial)
                 {content.quizzes.length > 0 ? (
                   <Button variant='contained' onClick={() => setOpenQuiz(true)}>
                     Edit Quizzes
@@ -164,6 +227,7 @@ const Modals = ({ modalOpen = false, modalClose, content, courseId }) => {
                   contentId={content._id}
                 />
               </FormContainer>
+<<<<<<< HEAD
               <FormContainer>
                 <TextField
                   required
@@ -213,6 +277,26 @@ const Modals = ({ modalOpen = false, modalClose, content, courseId }) => {
                 />
               </div>
               <br />
+=======
+
+              <FormContainer>
+                <Typography>Video Resource</Typography>
+                <input
+                  type='file'
+                  name={myTrim(video)}
+                  placeholder='Enter Image Url'
+                  onChange={uploadVideoHandler}
+                />
+
+                <p style={{ background: '#eee', padding: 7 }}>
+                  <small>New path name:</small>{' '}
+                  {content.video ? content.video.substr(34) : '/'}
+                </p>
+                {videoUploading && <ProgressBar progress={progress} />}
+                {error && <Message>{error}</Message>}
+              </FormContainer>
+
+>>>>>>> f4a828b (initial)
               <FormContainer>
                 <Button
                   variant='outlined'

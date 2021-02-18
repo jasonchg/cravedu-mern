@@ -30,12 +30,16 @@ const useStyles = makeStyles({
   },
 })
 
+<<<<<<< HEAD
 const Breadcrumbs = ({
   previousPage,
   currentPage,
   courseScreen = false,
   categoryUrl,
 }) => {
+=======
+const Breadcrumbs = ({ previousPage, currentPage, courseScreen = false }) => {
+>>>>>>> f4a828b (initial)
   const classes = useStyles()
   return (
     <div
@@ -56,11 +60,19 @@ const Breadcrumbs = ({
                   )}
                 </Link>
               ))}
+<<<<<<< HEAD
             <Link href={categoryUrl}>{currentPage}</Link>
           </Bread>
           {courseScreen ? null : (
             <div className={classes.currentPageName}>
               <Link>{currentPage}</Link>
+=======
+            <Link>{currentPage}</Link>
+          </Bread>
+          {courseScreen ? null : (
+            <div className={classes.currentPageName}>
+              <span>{currentPage}</span>
+>>>>>>> f4a828b (initial)
             </div>
           )}
         </Container>

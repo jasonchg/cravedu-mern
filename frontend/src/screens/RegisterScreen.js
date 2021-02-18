@@ -9,7 +9,10 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+<<<<<<< HEAD
   Paper,
+=======
+>>>>>>> f4a828b (initial)
 } from '@material-ui/core'
 import FormContainer from '../components/FormContainer'
 import { makeStyles } from '@material-ui/core/styles'
@@ -17,7 +20,16 @@ import { useDispatch, useSelector } from 'react-redux'
 import { register } from '../actions/userActions'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
+<<<<<<< HEAD
 
+=======
+import {
+  FacebookLoginButton,
+  GoogleLoginButton,
+  TwitterLoginButton,
+  MicrosoftLoginButton,
+} from 'react-social-login-buttons'
+>>>>>>> f4a828b (initial)
 import LogoIcon from '../assets/images/logo-icon.png'
 
 const useStyles = makeStyles({
@@ -34,7 +46,11 @@ const useStyles = makeStyles({
     marginBottom: 50,
   },
   radioGroup: {
+<<<<<<< HEAD
     marginTop: 10,
+=======
+    marginTop: 20,
+>>>>>>> f4a828b (initial)
   },
   rightRegisterContainer: {
     backgroundColor: '#457b9d',
@@ -112,6 +128,7 @@ const RegisterScreen = ({ history, location }) => {
           {error && <Message>{error}</Message>}
           {loading && <Loader />}
 
+<<<<<<< HEAD
           <Typography variant='h5'>Email Sign up</Typography>
           <form className={classes.form} onSubmit={submitHandler}>
             <Paper
@@ -142,6 +159,42 @@ const RegisterScreen = ({ history, location }) => {
                 </RadioGroup>
               </div>
             </Paper>
+=======
+          <Typography variant='h5'>Social Sign up</Typography>
+          <div className={classes.socialButtons}>
+            <FacebookLoginButton onClick={() => alert('Facebook')} />
+            <GoogleLoginButton onClick={() => alert('Google')} />
+            <TwitterLoginButton onClick={() => alert('Twitter')} />
+            <MicrosoftLoginButton onClick={() => alert('Microsoft')} />
+          </div>
+          <Typography variant='h5'>Email Sign up</Typography>
+          <form className={classes.form} onSubmit={submitHandler}>
+            <div className={classes.radioGroup}>
+              <Typography variant='h6' component='span'>
+                You're an?{' '}
+              </Typography>
+              <p>(*still can be changed after register.)</p>
+              <RadioGroup
+                defaultValue='student'
+                aria-label='type'
+                name='type'
+                value={instructor}
+                onChange={handleRadio}
+              >
+                <FormControlLabel
+                  value='student'
+                  control={<Radio />}
+                  label='Student'
+                />
+                <FormControlLabel
+                  value='instructor'
+                  control={<Radio />}
+                  label='Instructor'
+                />
+              </RadioGroup>
+            </div>
+
+>>>>>>> f4a828b (initial)
             <FormContainer>
               <TextField
                 required

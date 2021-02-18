@@ -19,6 +19,7 @@ const generateSlug = (name) => {
   return String(name.replace(/ /g, '-').toLowerCase() + '-' + ranText)
 }
 
+<<<<<<< HEAD
 const getTotalDuration = (courseContents) => {
   if (courseContents && courseContents.length !== 0) {
     const contentsDuration = courseContents.map((x) => x.duration)
@@ -31,3 +32,6 @@ const getTotalDuration = (courseContents) => {
 }
 
 export { truncate, myTrim, generateSlug, getTotalDuration }
+=======
+export { truncate, myTrim, generateSlug }
+>>>>>>> f4a828b (initial)

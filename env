@@ -1,0 +1,11 @@
+NODE_ENV = development
+PORT = 5000
+MONGO_URI = mongodb+srv://admin:admin@cluster0.hdeox.mongodb.net/cravedu?retryWrites=true&w=majority
+JWT_SECRET = "CRAVEDUISTHEBEST"
+PAYPAL_CLIENT_ID = AWK_C1S-hWn2Uq4_LuELftQQRnqFdiO_8C-HLdXpbam7aKSeG1Zfs36zazl2IUNIL9jxX7E4Tm46rC-2
+SENDER_EMAIL = jcproductions.my@gmail.com
+SENDER_EMAIL_PASSWORD = Jcpro2020!!@
+CLIENT_ID = 621502555903-iioo8v0aqt16q4opmm4jen5s1k9hh0p8.apps.googleusercontent.com
+CLIENT_SECRET = faBTiZ3aUeQ1bkJvjNk79wi7
+REFRESH_TOKEN = 1//04H3v2EaEIfbWCgYIARAAGAQSNwF-L9IrO85bvYiz9c5r4DdT4CvG7cYtDgBRAWqB_lBzPjjFGSU93dCceNFG9sUIhbTePNgtoKY
+REDIRECT_URI = https://developers.google.com/oauthplayground/

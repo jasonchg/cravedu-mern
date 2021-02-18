@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from 'react'
+=======
+import React, { useState } from 'react'
+>>>>>>> f4a828b (initial)
 import { Route } from 'react-router-dom'
 import CraveduLogo from '../assets/images/logo.png'
 import {
@@ -35,10 +39,14 @@ import MenuOpenIcon from '@material-ui/icons/MenuOpen'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import SearchBox from './SearchBox'
+<<<<<<< HEAD
 import NotificationIcon from './NotificationIcon'
 import { getUserNotification } from '../actions/notificationActions'
 
 const useStyles = makeStyles({
+=======
+const useStyles = makeStyles((theme) => ({
+>>>>>>> f4a828b (initial)
   root: {
     flexGrow: 1,
   },
@@ -69,15 +77,28 @@ const useStyles = makeStyles({
   instructorBadge: {
     background: '#457b9d',
   },
+<<<<<<< HEAD
 })
 
 const Header = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
+=======
+}))
+
+const Header = () => {
+  const classes = useStyles()
+
+>>>>>>> f4a828b (initial)
   const [openMenuUser, setMenuOpenUser] = useState(null)
   const [openMenuAdmin, setMenuOpenAdmin] = useState(null)
   const [openDrawer, setOpenDrawer] = useState(false)
 
+<<<<<<< HEAD
+=======
+  const dispatch = useDispatch()
+
+>>>>>>> f4a828b (initial)
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
@@ -137,6 +158,7 @@ const Header = () => {
   const theme = useTheme()
   const matchesSM = useMediaQuery(theme.breakpoints.down('sm'))
 
+<<<<<<< HEAD
   const userNotifications = useSelector((state) => state.userNotifications)
   const { unReadNotifications } = userNotifications
 
@@ -146,6 +168,8 @@ const Header = () => {
     }
   }, [dispatch, userInfo])
 
+=======
+>>>>>>> f4a828b (initial)
   return (
     <div className={`${classes.root} ${classes.excludeFromPrint}`}>
       <AppBar position='static' className='header'>
@@ -263,6 +287,7 @@ const Header = () => {
                             </Collapse>
                           </>
                         )}
+<<<<<<< HEAD
                         <ListItem
                           button
                           onClick={() =>
@@ -274,6 +299,8 @@ const Header = () => {
                           </ListItemIcon>
                           <ListItemText primary='Notifications' />
                         </ListItem>
+=======
+>>>>>>> f4a828b (initial)
                       </>
                     ) : (
                       <ListItem
@@ -318,6 +345,7 @@ const Header = () => {
                   />
                 </div>
 
+<<<<<<< HEAD
                 <div
                   style={{
                     display: 'flex',
@@ -452,6 +480,129 @@ const Header = () => {
                     </Button>
                   )}
                 </div>
+=======
+                <Button
+                  style={{ marginRight: 7 }}
+                  color='inherit'
+                  startIcon={
+                    <div className={classes.cartHeading}>
+                      <ShoppingCartIcon />
+                      <span className={classes.cartCount}>
+                        {cartItems ? cartItems.length : null}
+                      </span>
+                    </div>
+                  }
+                  onClick={() => (window.location.href = '/cart')}
+                >
+                  Cart
+                </Button>
+
+                {userInfo ? (
+                  <>
+                    {userInfo.isInstructor && (
+                      <Button
+                        style={{ marginRight: 7 }}
+                        color='inherit'
+                        startIcon={<BallotIcon />}
+                        onClick={goInstructor}
+                      >
+                        Instructor
+                      </Button>
+                    )}
+
+                    <Button
+                      color='inherit'
+                      onClick={openUserMenuHandler}
+                      size='small'
+                    >
+                      <Avatar
+                        className={
+                          userInfo.isInstructor ? classes.instructorBadge : ''
+                        }
+                      >
+                        {userInfo.name.charAt(0)}
+                      </Avatar>
+                    </Button>
+                    <Menu
+                      id='menu'
+                      anchorEl={openMenuUser}
+                      keepMounted
+                      open={Boolean(openMenuUser)}
+                      onClose={closeUserMenuHandler}
+                    >
+                      <MenuItem onClick={goToMyAccount}>
+                        <ListItemIcon>
+                          <AccountBoxIcon fontSize='small' />
+                        </ListItemIcon>
+                        <Typography variant='inherit'>
+                          {userInfo.name}
+                        </Typography>
+                      </MenuItem>
+
+                      <MenuItem onClick={goToMyCourses}>
+                        <ListItemIcon>
+                          <ListIcon fontSize='small' />
+                        </ListItemIcon>
+                        <Typography variant='inherit'> My Learning</Typography>
+                      </MenuItem>
+
+                      {userInfo.isAdmin && (
+                        <div>
+                          <MenuItem onClick={openAdminMenuHandler}>
+                            <ListItemIcon>
+                              <BallotIcon fontSize='small' />
+                            </ListItemIcon>
+                            <Typography variant='inherit'>
+                              Admin Panels
+                            </Typography>
+                          </MenuItem>
+
+                          <Menu
+                            id='admin-menu'
+                            anchorEl={openMenuAdmin}
+                            keepMounted
+                            open={Boolean(openMenuAdmin)}
+                            onClose={closeAdminMenuHandler}
+                          >
+                            <MenuItem onClick={goToManageCourses}>
+                              <ListItemIcon>
+                                <ListIcon fontSize='small' />
+                              </ListItemIcon>
+                              <Typography variant='inherit'>
+                                Manage Courses
+                              </Typography>
+                            </MenuItem>
+
+                            <MenuItem onClick={goToManageUsers}>
+                              <ListItemIcon>
+                                <AccountCircleIcon fontSize='small' />
+                              </ListItemIcon>
+                              <Typography variant='inherit'>
+                                Manage User
+                              </Typography>
+                            </MenuItem>
+                          </Menu>
+                        </div>
+                      )}
+
+                      <MenuItem onClick={logoutUser}>
+                        <ListItemIcon>
+                          <ExitToAppIcon fontSize='small' />
+                        </ListItemIcon>
+                        <Typography variant='inherit'>Logout</Typography>
+                      </MenuItem>
+                    </Menu>
+                  </>
+                ) : (
+                  <Button
+                    color='inherit'
+                    startIcon={<AccountCircleIcon />}
+                    onClick={() => (window.location.href = '/login')}
+                  >
+                    Login
+                  </Button>
+                )}
+>>>>>>> f4a828b (initial)
               </>
             )}
           </Toolbar>

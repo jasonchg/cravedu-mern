@@ -9,6 +9,10 @@ import {
   ListItemText,
   ListItemIcon,
   Table,
+<<<<<<< HEAD
+=======
+  Paper,
+>>>>>>> f4a828b (initial)
   TableRow,
   TableBody,
   TableCell,
@@ -40,8 +44,11 @@ import PropTypes from 'prop-types'
 import AccessTimeIcon from '@material-ui/icons/AccessTime'
 import { addToCart } from '../actions/cartActions'
 import { getParentCategory } from '../customHooks'
+<<<<<<< HEAD
 import { getTotalDuration } from '../utils'
 import InsturctorCard from '../components/InsturctorCard'
+=======
+>>>>>>> f4a828b (initial)
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props
@@ -80,6 +87,7 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     background: '#f0f0f0',
+<<<<<<< HEAD
   },
   leftBox: {
     background: '#f0f0f0',
@@ -118,6 +126,39 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   divider: {},
+=======
+    margin: 'auto',
+    marginTop: 10,
+  },
+  image: {
+    // width: 325,
+    width: 375,
+    margin: 10,
+    padding: 10,
+    paddingRight: 10,
+    [theme.breakpoints.down('sm')]: {
+      width: 265,
+      objectFit: 'cover',
+    },
+  },
+  img: {
+    margin: 'auto',
+    display: 'block',
+    maxWidth: '100%',
+    maxHeight: '100%',
+  },
+  titleBox: {
+    paddingLeft: 40,
+    paddingRight: 40,
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: 20,
+      paddingRight: 20,
+    },
+  },
+  divider: {
+    margin: theme.spacing(2, 0),
+  },
+>>>>>>> f4a828b (initial)
   description: {
     textAlign: 'justify',
   },
@@ -167,6 +208,11 @@ const CourseScreen = ({ history }) => {
 
   const [bought, setBought] = useState(false)
 
+<<<<<<< HEAD
+=======
+  const [newCourseContent, setNewCourseContent] = useState([])
+
+>>>>>>> f4a828b (initial)
   const addToCartHandler = () => {
     dispatch(addToCart(course.slug))
     if (window.confirm('Course added to cart. View your cart?')) {
@@ -191,6 +237,7 @@ const CourseScreen = ({ history }) => {
   const categoryList = useSelector((state) => state.categoryList)
   const { categories } = categoryList
 
+<<<<<<< HEAD
   const newContentLists = (courseContent) => {
     if (courseContent) {
       const result = courseContent.filter(
@@ -204,6 +251,13 @@ const CourseScreen = ({ history }) => {
 
   useEffect(() => {
     if (userPaidCourses && course) {
+=======
+  useEffect(() => {
+    if (userPaidCourses && course) {
+      setNewCourseContent(
+        course.courseContents.filter((content) => content.isPublished === true)
+      )
+>>>>>>> f4a828b (initial)
       setBought(checkBought(userPaidCourses, course))
     }
   }, [userPaidCourses, course])
@@ -237,10 +291,13 @@ const CourseScreen = ({ history }) => {
       <Breadcrumbs
         previousPage={[
           {
+<<<<<<< HEAD
             name: `home`,
             link: '/',
           },
           {
+=======
+>>>>>>> f4a828b (initial)
             name: `${getParentCategory(
               categories,
               course ? course.category : 'Programming Language'
@@ -249,12 +306,16 @@ const CourseScreen = ({ history }) => {
           },
         ]}
         currentPage={course.category}
+<<<<<<< HEAD
         categoryUrl={`/category/${course.category}`}
+=======
+>>>>>>> f4a828b (initial)
         courseScreen
       />
       <Container className={classes.root}>
         <Grid container spacing={2}>
           <Grid item md={9} xs={12}>
+<<<<<<< HEAD
             <div className={classes.leftBox}>
               <Grid
                 container
@@ -273,6 +334,23 @@ const CourseScreen = ({ history }) => {
 
                 <Grid item md={8} xs={12} className={classes.rightBox}>
                   <List className={classes.titleBox}>
+=======
+            <Paper className={classes.paper}>
+              <Grid container>
+                <Grid item md={6} xs={12}>
+                  <div className='image'>
+                    <img
+                      src={course.image}
+                      alt={course.name}
+                      className={classes.image}
+                      onDragStart={(e) => e.preventDefault()}
+                    />
+                  </div>
+                </Grid>
+
+                <Grid item md={6} xs={12} className={classes.titleBox}>
+                  <List>
+>>>>>>> f4a828b (initial)
                     <ListItem>
                       <ListItemText
                         primary={
@@ -281,20 +359,30 @@ const CourseScreen = ({ history }) => {
                         secondary={`Created by ${course.instructor}`}
                       />
                     </ListItem>
+<<<<<<< HEAD
 
+=======
+                    <Divider />
+>>>>>>> f4a828b (initial)
                     <ListItem>
                       <ListItemIcon>
                         <AccessTimeIcon />
                       </ListItemIcon>
                       <ListItemText
+<<<<<<< HEAD
                         primary={`${getTotalDuration(
                           course.courseContents
+=======
+                        primary={`${Math.round(
+                          course.totalDuration / 60
+>>>>>>> f4a828b (initial)
                         )} hours`}
                       />
                       <ListItemIcon>
                         <ArchiveIcon />
                       </ListItemIcon>
                       <ListItemText
+<<<<<<< HEAD
                         primary={`${newContentLists(
                           course.courseContents
                         )} Chapters`}
@@ -308,6 +396,13 @@ const CourseScreen = ({ history }) => {
                       <ListItemText primary={`${course.totalSold} students`} />
                     </ListItem>
 
+=======
+                        primary={`${newCourseContent.length} Chapters`}
+                      />
+                    </ListItem>
+
+                    <Divider />
+>>>>>>> f4a828b (initial)
                     <ListItem>
                       <ListItemText
                         primary={
@@ -318,10 +413,24 @@ const CourseScreen = ({ history }) => {
                         }
                       />
                     </ListItem>
+<<<<<<< HEAD
                   </List>
                 </Grid>
               </Grid>
             </div>
+=======
+                    <Divider />
+                    <ListItem>
+                      <ListItemIcon>
+                        <PeopleIcon />
+                      </ListItemIcon>
+                      <ListItemText primary={`${course.totalSold} students`} />
+                    </ListItem>
+                  </List>
+                </Grid>
+              </Grid>
+            </Paper>
+>>>>>>> f4a828b (initial)
           </Grid>
 
           <Grid item md={3} xs={12} className={classes.priceTable}>
@@ -337,12 +446,15 @@ const CourseScreen = ({ history }) => {
                     {course.updatedAt && course.updatedAt.substring(0, 10)}
                   </TableCell>
                 </TableRow>
+<<<<<<< HEAD
                 <TableRow>
                   <TableCell>Created At</TableCell>
                   <TableCell>
                     {course.createdAt && course.createdAt.substring(0, 10)}
                   </TableCell>
                 </TableRow>
+=======
+>>>>>>> f4a828b (initial)
               </TableBody>
             </Table>
             {bought || course.isPublished === false ? null : (
@@ -362,8 +474,13 @@ const CourseScreen = ({ history }) => {
             )}
           </Grid>
         </Grid>
+<<<<<<< HEAD
         <Grid container style={{ marginTop: 10 }}>
           <Grid item md={8} xs={12} className={classes.tabPanelArea}>
+=======
+        <Grid container>
+          <Grid item xs={12} className={classes.tabPanelArea}>
+>>>>>>> f4a828b (initial)
             <div>
               <Tabs
                 onChange={tabHandler}
@@ -386,7 +503,11 @@ const CourseScreen = ({ history }) => {
               </div>
             </TabPanel>
             <TabPanel value={value} index={1}>
+<<<<<<< HEAD
               <InsturctorCard instructor={course.instructor} />
+=======
+              {course.instructor}
+>>>>>>> f4a828b (initial)
             </TabPanel>
             <TabPanel value={value} index={2}>
               <p>
@@ -437,7 +558,11 @@ const CourseScreen = ({ history }) => {
             </TabPanel>
           </Grid>
 
+<<<<<<< HEAD
           <Grid item md={4} xs={12}>
+=======
+          <Grid item xs={12}>
+>>>>>>> f4a828b (initial)
             <h2>Course Content</h2>
             {course.courseContents ? (
               course.courseContents.map((content, index) => {

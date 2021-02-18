@@ -6,6 +6,10 @@ import {
   Button,
   List,
   ListItem,
+<<<<<<< HEAD
+=======
+  ListItemText,
+>>>>>>> f4a828b (initial)
   Divider,
   Paper,
   Checkbox,
@@ -49,11 +53,14 @@ const useStyles = makeStyles((theme) => ({
     minHeight: 200,
     minWidth: '100%',
   },
+<<<<<<< HEAD
   counter: {
     padding: 15,
     fontSize: '32px',
     textAlign: 'center',
   },
+=======
+>>>>>>> f4a828b (initial)
 }))
 
 const AdminCourseEditScreen = ({ match, history }) => {
@@ -237,15 +244,24 @@ const AdminCourseEditScreen = ({ match, history }) => {
       {updateLoading && <Loader />}
       {updateError && <Message>{updateError}</Message>}
       <Grid container spacing={3}>
+<<<<<<< HEAD
         <Grid item md={6} xs={12}>
           {/* <Button
+=======
+        <Grid item md={4} xs={12}>
+          <Button
+>>>>>>> f4a828b (initial)
             style={{ margin: '7px 0' }}
             onClick={() =>
               window.open(`/course/${courseId}/preview`, '_blank').focus()
             }
           >
             Preview This Course
+<<<<<<< HEAD
           </Button> */}
+=======
+          </Button>
+>>>>>>> f4a828b (initial)
           <Paper className={classes.leftPanel}>
             <Typography variant='body1'>Course Details</Typography>
             <Divider style={{ marginBottom: 10 }} />
@@ -347,6 +363,23 @@ const AdminCourseEditScreen = ({ match, history }) => {
                 </FormContainer>
               </FormContainer>
 
+<<<<<<< HEAD
+=======
+              <FormContainer>
+                <FormControlLabel
+                  label='Published'
+                  control={
+                    <Checkbox
+                      checked={isPublished}
+                      onChange={handlePublishedCheck}
+                      name='isPublished'
+                      color='primary'
+                    />
+                  }
+                />
+              </FormContainer>
+
+>>>>>>> f4a828b (initial)
               <Button
                 type='submit'
                 variant='contained'
@@ -357,6 +390,7 @@ const AdminCourseEditScreen = ({ match, history }) => {
               </Button>
             </form>
           </Paper>
+<<<<<<< HEAD
         </Grid>
         <Grid item md={6} xs={12}>
           <div>
@@ -411,6 +445,19 @@ const AdminCourseEditScreen = ({ match, history }) => {
               </div>
             </div>
           </div>
+=======
+          <br />
+          <Button
+            onClick={deleteHandler}
+            variant='outlined'
+            color='secondary'
+            disabled={cantDelete ? true : false}
+          >
+            Delete This Course
+          </Button>
+        </Grid>
+        <Grid item md={6} xs={12}>
+>>>>>>> f4a828b (initial)
           <h2>Course Contents</h2>
           <Paper>
             <List>
@@ -429,7 +476,10 @@ const AdminCourseEditScreen = ({ match, history }) => {
                         count={content.chapter}
                         courseId={courseId}
                         content={content}
+<<<<<<< HEAD
                         admin
+=======
+>>>>>>> f4a828b (initial)
                       />
                     ))}
                   </>
@@ -452,6 +502,7 @@ const AdminCourseEditScreen = ({ match, history }) => {
               </span>
             ) : null}
           </Paper>
+<<<<<<< HEAD
 
           <Paper
             style={{
@@ -517,6 +568,34 @@ const AdminCourseEditScreen = ({ match, history }) => {
                 </Button>
               </div>
             </div>
+=======
+        </Grid>
+        <Grid item md={2} xs={12}>
+          <h2>Total Sales</h2>
+          <Paper>
+            {courseDetails && courseDetails.totalSold ? (
+              <Typography variant='h3' component='h3' style={{ padding: 10 }}>
+                {courseDetails && courseDetails.totalSold}
+              </Typography>
+            ) : (
+              <Typography variant='h3' component='h3' style={{ padding: 10 }}>
+                0
+              </Typography>
+            )}
+          </Paper>
+
+          <h2>Rating</h2>
+          <Paper>
+            {courseDetails && courseDetails.rating ? (
+              <Typography variant='h3' component='h3' style={{ padding: 10 }}>
+                {courseDetails.rating}
+              </Typography>
+            ) : (
+              <Typography variant='h3' component='h3' style={{ padding: 10 }}>
+                0
+              </Typography>
+            )}
+>>>>>>> f4a828b (initial)
           </Paper>
         </Grid>
       </Grid>

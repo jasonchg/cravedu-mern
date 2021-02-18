@@ -8,6 +8,10 @@ import {
   ListItem,
   Divider,
   Paper,
+<<<<<<< HEAD
+=======
+  Typography,
+>>>>>>> f4a828b (initial)
   Accordion,
   AccordionSummary,
   AccordionDetails,
@@ -23,7 +27,10 @@ import {
   updateCourse,
   createContent,
   deleteCourse,
+<<<<<<< HEAD
   publishCourseRequest,
+=======
+>>>>>>> f4a828b (initial)
 } from '../actions/instructorActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
@@ -37,7 +44,11 @@ import {
   INSTRUCTOR_DELETE_COURSE_RESET,
 } from '../constants/instructorConstants'
 import TextEditor from '../components/TextEditor'
+<<<<<<< HEAD
 import { myTrim, generateSlug, getTotalDuration } from '../utils'
+=======
+import { myTrim, generateSlug } from '../utils'
+>>>>>>> f4a828b (initial)
 import ContentListItem from '../components/ContentListItem'
 import { listCategories } from '../actions/courseActions'
 import CategorySelectList from '../components/CategorySelectList'
@@ -56,11 +67,14 @@ const useStyles = makeStyles({
     minHeight: 200,
     minWidth: '100%',
   },
+<<<<<<< HEAD
   counter: {
     padding: 15,
     fontSize: '32px',
     textAlign: 'center',
   },
+=======
+>>>>>>> f4a828b (initial)
 })
 
 const InstructorCourseEditScreen = ({ match, history }) => {
@@ -103,11 +117,14 @@ const InstructorCourseEditScreen = ({ match, history }) => {
   )
   const { success: deleteCourseSuccess } = instructorCourseDelete
 
+<<<<<<< HEAD
   const instructorCoursePublishRequest = useSelector(
     (state) => state.instructorCoursePublishRequest
   )
   const { success: publishSuccess } = instructorCoursePublishRequest
 
+=======
+>>>>>>> f4a828b (initial)
   const [name, setName] = useState('')
   const [slug, setSlug] = useState('')
   const [price, setPrice] = useState(0)
@@ -202,6 +219,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
     }
   }
 
+<<<<<<< HEAD
   const [expanded, setExpanded] = useState(false)
 
   const handleAccordion = (panel) => (event, isExpanded) => {
@@ -224,6 +242,9 @@ const InstructorCourseEditScreen = ({ match, history }) => {
       alert(msg)
     }
 
+=======
+  useEffect(() => {
+>>>>>>> f4a828b (initial)
     if (deleteCourseSuccess) {
       dispatch({ type: INSTRUCTOR_DELETE_COURSE_RESET })
       history.push('/instructor')
@@ -275,9 +296,24 @@ const InstructorCourseEditScreen = ({ match, history }) => {
     updateSuccess,
     createContentSuccess,
     deleteCourseSuccess,
+<<<<<<< HEAD
     publishSuccess,
   ])
 
+=======
+  ])
+
+  const [expanded, setExpanded] = useState(false)
+
+  const handleAccordion = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false)
+  }
+
+  const publishThisCourse = () => {
+    alert('Already notify admin...')
+  }
+
+>>>>>>> f4a828b (initial)
   return loading || !courseDetails ? (
     <Loader />
   ) : error ? (
@@ -292,6 +328,18 @@ const InstructorCourseEditScreen = ({ match, history }) => {
         >
           Go Back
         </Button>
+<<<<<<< HEAD
+=======
+        {courseDetails.isPublished ? null : (
+          <Button
+            onClick={publishThisCourse}
+            variant='outlined'
+            color='inherit'
+          >
+            I Wish to Publish this course
+          </Button>
+        )}
+>>>>>>> f4a828b (initial)
       </Grid>
       <h1>
         <SubdirectoryArrowRightIcon /> {courseDetails && courseDetails.name}{' '}
@@ -300,8 +348,13 @@ const InstructorCourseEditScreen = ({ match, history }) => {
       {updateLoading && <Loader />}
       {updateError && <Message>{updateError}</Message>}
       <Grid container spacing={3}>
+<<<<<<< HEAD
         <Grid item md={6} xs={12}>
           {/* <div style={{ margin: '7px 0' }}>
+=======
+        <Grid item md={4} xs={12}>
+          <div style={{ margin: '7px 0' }}>
+>>>>>>> f4a828b (initial)
             <Button
               onClick={() =>
                 window
@@ -311,10 +364,17 @@ const InstructorCourseEditScreen = ({ match, history }) => {
             >
               Preview This Course
             </Button>
+<<<<<<< HEAD
           </div> */}
 
           <Paper className={classes.leftPanel}>
             <h3>Course Details</h3>
+=======
+          </div>
+
+          <Paper className={classes.leftPanel}>
+            <Typography variant='body1'>Course Details</Typography>
+>>>>>>> f4a828b (initial)
             <Divider style={{ marginBottom: 10 }} />
 
             <form
@@ -389,12 +449,16 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                 />
               </FormContainer>
               <FormContainer>
+<<<<<<< HEAD
                 <TextEditor
                   description={
                     description !== '' ? description : '<h5>Loading</h5>'
                   }
                   setter={setDescription}
                 />
+=======
+                <TextEditor description={description} setter={setDescription} />
+>>>>>>> f4a828b (initial)
               </FormContainer>
 
               <Grid container alignItems='center'>
@@ -451,6 +515,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
               update.
             </p>
           </Paper>
+<<<<<<< HEAD
         </Grid>
 
         <Grid item md={6} xs={12}>
@@ -562,6 +627,73 @@ const InstructorCourseEditScreen = ({ match, history }) => {
               </AccordionDetails>
             </Accordion>
           )}
+=======
+
+          <br />
+          <Button
+            onClick={deleteHandler}
+            variant='outlined'
+            color='secondary'
+            disabled={cantDelete ? true : false}
+          >
+            I Wish To Delete This Course
+          </Button>
+        </Grid>
+
+        <Grid item md={6} xs={12}>
+          <h2>Course Contents</h2>
+          <Accordion
+            expanded={expanded === 'addnewcontent'}
+            onChange={handleAccordion('addnewcontent')}
+          >
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              Add New Content
+            </AccordionSummary>
+            <AccordionDetails>
+              <Grid container spacing={3}>
+                <Grid item md={6}>
+                  <form onSubmit={submitContentHandler}>
+                    <FormContainer>
+                      <TextField
+                        required
+                        fullWidth
+                        id='content-chapter'
+                        type='number'
+                        label='Chapter'
+                        placeholder='1'
+                        variant='filled'
+                        value={chapter}
+                        onChange={(e) => setChapter(e.target.value)}
+                      />
+                    </FormContainer>
+                    <FormContainer>
+                      <TextField
+                        required
+                        fullWidth
+                        id='content-name'
+                        type='text'
+                        label='Chapter Name'
+                        placeholder='Get Started'
+                        variant='filled'
+                        value={chapterName}
+                        onChange={(e) => setChapterName(e.target.value)}
+                      />
+                    </FormContainer>
+                    <Button variant='contained' color='primary' type='submit'>
+                      Push
+                    </Button>
+                  </form>
+                </Grid>
+                <Grid item md={6}>
+                  {createContentLoading && <Loader left />}
+                  {createContentError && (
+                    <Message>{createContentError}</Message>
+                  )}
+                </Grid>
+              </Grid>
+            </AccordionDetails>
+          </Accordion>
+>>>>>>> f4a828b (initial)
 
           <Paper>
             <List>
@@ -598,6 +730,7 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                   padding: '7px 0',
                 }}
               >
+<<<<<<< HEAD
                 You've {courseContents.length} chapters with total duration of{' '}
                 {getTotalDuration(courseContents)} hours.
               </span>
@@ -671,6 +804,38 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                 </Button>
               </div>
             </div>
+=======
+                You've total {courseContents.length} chapters.
+              </span>
+            ) : null}
+          </Paper>
+        </Grid>
+        <Grid item md={2} xs={12}>
+          <h2>Total Sales</h2>
+          <Paper>
+            {courseDetails && courseDetails.totalSold ? (
+              <Typography variant='h3' component='h3' style={{ padding: 10 }}>
+                {courseDetails.totalSold}
+              </Typography>
+            ) : (
+              <Typography variant='h3' component='h3' style={{ padding: 10 }}>
+                0
+              </Typography>
+            )}
+          </Paper>
+
+          <h2>Rating</h2>
+          <Paper>
+            {courseDetails && courseDetails.rating ? (
+              <Typography variant='h3' component='h3' style={{ padding: 10 }}>
+                {courseDetails.rating}
+              </Typography>
+            ) : (
+              <Typography variant='h3' component='h3' style={{ padding: 10 }}>
+                0
+              </Typography>
+            )}
+>>>>>>> f4a828b (initial)
           </Paper>
         </Grid>
       </Grid>

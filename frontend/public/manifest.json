@@ -1,6 +1,11 @@
 {
+<<<<<<< HEAD
   "short_name": "Cravedu",
   "name": "Craving For Education",
+=======
+  "short_name": "React App",
+  "name": "Create React App Sample",
+>>>>>>> f4a828b (initial)
   "icons": [
     {
       "src": "favicon.ico",

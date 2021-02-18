@@ -9,13 +9,17 @@ import {
   getCourses,
   updateCourse,
   deleteCourse,
+<<<<<<< HEAD
   requestPublishCourse,
   sendCourseAnnouncement,
+=======
+>>>>>>> f4a828b (initial)
 } from '../controllers/instructorCourseControllers.js'
 
 const router = express.Router()
 
 router
+<<<<<<< HEAD
   .route('/:id/announcement')
   .post(protectedRoute, instructorRoute, sendCourseAnnouncement)
 
@@ -24,6 +28,8 @@ router
   .post(protectedRoute, instructorRoute, requestPublishCourse)
 
 router
+=======
+>>>>>>> f4a828b (initial)
   .route('/')
   .get(protectedRoute, instructorRoute, getCourses)
   .post(protectedRoute, instructorRoute, createCourse)

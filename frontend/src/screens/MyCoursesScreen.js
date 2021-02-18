@@ -65,7 +65,11 @@ const MyCoursesScreen = ({ history }) => {
                 <Grid item key={index}>
                   <Link href={`/course/${item.slug}/learn`}>
                     <div style={{ pointerEvents: 'none' }}>
+<<<<<<< HEAD
                       <Course course={item} myLearning />
+=======
+                      <Course course={item} />
+>>>>>>> f4a828b (initial)
                     </div>
                   </Link>
                 </Grid>

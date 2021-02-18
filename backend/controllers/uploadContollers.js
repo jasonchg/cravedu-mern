@@ -1,8 +1,13 @@
 import path from 'path'
 import multer from 'multer'
 
+<<<<<<< HEAD
 const maxSizeUpload = 300 * 1024 * 1024 //300MB MAX
 const maxImageSize = 10 * 1024 * 1024 //5MB MAX
+=======
+const maxSizeUpload = 500 * 1024 * 1024 //300MB MAX
+const maxImageSize = 7 * 1024 * 1024 //5MB MAX
+>>>>>>> f4a828b (initial)
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {

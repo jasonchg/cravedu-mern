@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from 'react'
+=======
+import React, { useEffect } from 'react'
+>>>>>>> f4a828b (initial)
 import {
   Grid,
   Button,
@@ -9,6 +13,7 @@ import {
   TableBody,
   Table,
   Typography,
+<<<<<<< HEAD
   Card,
   CardContent,
   makeStyles,
@@ -27,10 +32,22 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { INSTRUCTOR_COURSE_CREATE_RESET } from '../constants/instructorConstants'
+=======
+} from '@material-ui/core'
+import { createCourse, listCourses } from '../actions/instructorActions'
+import { useDispatch, useSelector } from 'react-redux'
+import Message from '../components/Message'
+import Loader from '../components/Loader'
+import {
+  INSTRUCTOR_COURSE_CREATE_RESET,
+  INSTRUCTOR_COURSE_LIST_RESET,
+} from '../constants/instructorConstants'
+>>>>>>> f4a828b (initial)
 import Breadcrumbs from '../components/Breadcrumbs'
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder'
 import CreateCourseGuide from '../components/CreateCourseGuide'
 import Paginate from '../components/Paginate'
+<<<<<<< HEAD
 import AnnouncementIcon from '@material-ui/icons/Announcement'
 import FormContainer from '../components/FormContainer'
 
@@ -90,10 +107,25 @@ const InstructorScreen = ({ history, match }) => {
   const keyword = match.params.keyword || ''
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
+=======
+
+const InstructorScreen = ({ history, match }) => {
+  const dispatch = useDispatch()
+  const pageNumber = match.params.pageNumber || 1
+  const keyword = match.params.keyword || ''
+
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
+>>>>>>> f4a828b (initial)
   const instructorCourseList = useSelector(
     (state) => state.instructorCourseList
   )
   const { courses, loading, error, page, pages } = instructorCourseList
+<<<<<<< HEAD
+=======
+
+>>>>>>> f4a828b (initial)
   const instructorCourseCreate = useSelector(
     (state) => state.instructorCourseCreate
   )
@@ -108,6 +140,7 @@ const InstructorScreen = ({ history, match }) => {
     history.push(`/instructor/${id}/edit`)
   }
 
+<<<<<<< HEAD
   const getTotalSold = (courses) => {
     const reducer = (acc, cur) => acc + cur
     if (courses.length !== 0) {
@@ -171,17 +204,35 @@ const InstructorScreen = ({ history, match }) => {
       history.push('/login')
     } else {
       dispatch(listCourses('', pageNumber))
+=======
+  useEffect(() => {
+    dispatch({ type: INSTRUCTOR_COURSE_CREATE_RESET })
+
+    if (createCourseSuccess) {
+      history.push(`/instructor/${newCourseId}/edit`)
+    } else {
+      if (userInfo && userInfo.isInstructor) {
+        dispatch({ type: INSTRUCTOR_COURSE_LIST_RESET })
+        dispatch(listCourses('', pageNumber))
+      } else {
+        history.push('/login')
+      }
+>>>>>>> f4a828b (initial)
     }
   }, [
     userInfo,
     dispatch,
     history,
     createCourseSuccess,
+<<<<<<< HEAD
     announcementSuccess,
+=======
+>>>>>>> f4a828b (initial)
     newCourseId,
     pageNumber,
   ])
 
+<<<<<<< HEAD
   useEffect(() => {
     if (courses && courses.length > 0) {
       const publishedCourses = courses.filter((x) => {
@@ -197,6 +248,8 @@ const InstructorScreen = ({ history, match }) => {
     }
   }, [courses])
 
+=======
+>>>>>>> f4a828b (initial)
   return (
     <>
       <Breadcrumbs
@@ -216,6 +269,7 @@ const InstructorScreen = ({ history, match }) => {
           <Message>{error}</Message>
         ) : courses && courses.length !== 0 ? (
           <>
+<<<<<<< HEAD
             <Grid container spacing={2} className={classes.cardContainer}>
               <Grid item xs={12}>
                 <Card className={classes.bestCard} style={{ maxHeight: 150 }}>
@@ -335,6 +389,26 @@ const InstructorScreen = ({ history, match }) => {
                   </Modal>
                 </div>
               </div>
+=======
+            <Grid item xs={12}>
+              <Button
+                style={{ marginRight: 10 }}
+                onClick={() => history.push('/')}
+              >
+                Go Back
+              </Button>
+              <Button
+                variant='contained'
+                color='primary'
+                onClick={() => dispatch(createCourse())}
+              >
+                Create New Course{' '}
+                <CreateNewFolderIcon style={{ marginLeft: 10 }} />
+              </Button>
+
+              {createCourseError && <Message>{createCourseError}</Message>}
+              {createCourseLoading && <Loader left />}
+>>>>>>> f4a828b (initial)
             </Grid>
 
             <Grid item xs={12}>
@@ -389,6 +463,10 @@ const InstructorScreen = ({ history, match }) => {
                 </Table>
               </TableContainer>
             </Grid>
+<<<<<<< HEAD
+=======
+
+>>>>>>> f4a828b (initial)
             <Grid item xs={12}>
               <Paginate
                 page={page}

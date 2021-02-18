@@ -38,6 +38,7 @@ const contentSchema = mongoose.Schema(
 
 const answerThread = mongoose.Schema(
   {
+<<<<<<< HEAD
     helpful: { type: Number, default: 0 },
     notHelpful: { type: Number, default: 0 },
     answer: { type: String, required: true },
@@ -50,6 +51,16 @@ const answerThread = mongoose.Schema(
     partialFilterExpression: {
       granted: false,
     },
+=======
+    helpful: { type: Number },
+    notHelpful: { type: Number },
+    answer: { type: String },
+    userName: { type: String },
+    granted: { type: Boolean },
+  },
+  {
+    timestamps: true,
+>>>>>>> f4a828b (initial)
   }
 )
 
@@ -64,6 +75,7 @@ const questionAskedSchema = mongoose.Schema(
   }
 )
 
+<<<<<<< HEAD
 const announcement = mongoose.Schema(
   {
     announcementMessage: { type: String },
@@ -73,6 +85,8 @@ const announcement = mongoose.Schema(
   }
 )
 
+=======
+>>>>>>> f4a828b (initial)
 const courseSchema = mongoose.Schema(
   {
     user: {
@@ -125,11 +139,17 @@ const courseSchema = mongoose.Schema(
       required: true,
       default: 0,
     },
+<<<<<<< HEAD
     studentCompleted: {
       type: Number,
       default: 0,
     },
     announcements: [announcement],
+=======
+    annoucement: {
+      type: String,
+    },
+>>>>>>> f4a828b (initial)
     category: { type: String, required: true },
     totalDuration: { type: String, required: true },
     reviews: [reviewSchema],

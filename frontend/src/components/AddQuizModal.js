@@ -43,7 +43,16 @@ const AddQuizModal = ({
   const instructorContentQuizUpdate = useSelector(
     (state) => state.instructorContentQuizUpdate
   )
+<<<<<<< HEAD
   const { success, loading, quizzes: newQuizzes } = instructorContentQuizUpdate
+=======
+  const {
+    success,
+    error,
+    loading,
+    quizzes: newQuizzes,
+  } = instructorContentQuizUpdate
+>>>>>>> f4a828b (initial)
 
   const classes = useStyles()
   const [modalStyle] = useState(getModalStyle)

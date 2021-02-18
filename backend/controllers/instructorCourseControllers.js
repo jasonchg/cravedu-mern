@@ -3,6 +3,7 @@ import Course from '../models/courseModel.js'
 import fs from 'fs'
 import { removeDir, removeFile } from '../utils/deleteFolder.js'
 import path from 'path'
+<<<<<<< HEAD
 import Notification from '../models/notificationModel.js'
 import User from '../models/userModel.js'
 import {
@@ -10,6 +11,8 @@ import {
   COURSE_ANNOUNCEMENT,
 } from './notificationConstants.js'
 import mongoose from 'mongoose'
+=======
+>>>>>>> f4a828b (initial)
 
 // @desc    Get All Course That Created by this intructor
 // @route   GET /api/instructor/courses
@@ -56,9 +59,14 @@ const createCourse = asyncHandler(async (req, res) => {
     numReviews: 0,
     totalSold: 0,
     price: 0,
+<<<<<<< HEAD
     studentCompleted: 0,
     totalDuration: '0',
     annoucements: [],
+=======
+    totalDuration: '0',
+    annoucement: 'There is no annoucement for this course',
+>>>>>>> f4a828b (initial)
   })
 
   try {
@@ -371,6 +379,7 @@ const deleteContent = asyncHandler(async (req, res) => {
   }
 })
 
+<<<<<<< HEAD
 // @desc    Request Publish
 // @route   PUT /api/instructor/courses/:id
 // @access  Private
@@ -443,6 +452,8 @@ const sendCourseAnnouncement = asyncHandler(async (req, res) => {
   }
 })
 
+=======
+>>>>>>> f4a828b (initial)
 export {
   createCourse,
   getCourses,
@@ -455,6 +466,9 @@ export {
   updateContentQuizzes,
   getContentQuizzes,
   deleteContentQuizzes,
+<<<<<<< HEAD
   requestPublishCourse,
   sendCourseAnnouncement,
+=======
+>>>>>>> f4a828b (initial)
 }

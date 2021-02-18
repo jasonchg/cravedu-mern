@@ -9,6 +9,10 @@ import {
   makeStyles,
   Checkbox,
   Modal,
+<<<<<<< HEAD
+=======
+  Divider,
+>>>>>>> f4a828b (initial)
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled'
@@ -116,7 +120,11 @@ const CourseContentList = ({
       ),
     }))
     setQuestions(shuffledQuestions)
+<<<<<<< HEAD
   }, [content.quizzes])
+=======
+  }, [])
+>>>>>>> f4a828b (initial)
 
   const handleAnswers = (answer) => {
     if (!showAnswer) {
@@ -152,8 +160,12 @@ const CourseContentList = ({
         <div style={modalStyle} className={classes.paper}>
           <div style={{ textAlign: 'center' }}>
             <h2>
+<<<<<<< HEAD
               <span> Congratulation </span>
 
+=======
+              /// Congratulation ///
+>>>>>>> f4a828b (initial)
               <small
                 style={{
                   display: 'block',

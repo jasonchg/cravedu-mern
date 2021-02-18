@@ -1,5 +1,8 @@
 import axios from 'axios'
+<<<<<<< HEAD
 import { COURSE_DETAILS_RESET } from '../constants/courseConstants'
+=======
+>>>>>>> f4a828b (initial)
 import { ORDER_ALL_MY_RESET } from '../constants/orderConstants'
 import {
   USER_LOGIN_REQUEST,
@@ -20,9 +23,12 @@ import {
   USER_COURSE_FAIL,
   USER_DETAILS_RESET,
   USER_COURSE_SAVE_CURRENT_STATE,
+<<<<<<< HEAD
   USER_UPDATE_CONTENT_REQUEST,
   USER_UPDATE_CONTENT_SUCCESS,
   USER_UPDATE_CONTENT_FAIL,
+=======
+>>>>>>> f4a828b (initial)
 } from '../constants/userConstants'
 
 const login = (email, password) => async (dispatch) => {
@@ -58,7 +64,10 @@ const login = (email, password) => async (dispatch) => {
 const logout = () => async (dispatch) => {
   localStorage.removeItem('userInfo')
   dispatch({ type: USER_DETAILS_RESET })
+<<<<<<< HEAD
   dispatch({ type: COURSE_DETAILS_RESET })
+=======
+>>>>>>> f4a828b (initial)
   dispatch({ type: ORDER_ALL_MY_RESET })
   dispatch({ type: USER_LOGOUT })
 }
@@ -191,6 +200,7 @@ const saveVideoCurrent = (id) => (dispatch) => {
   localStorage.setItem('userLearn', JSON.stringify(id))
 }
 
+<<<<<<< HEAD
 const updateUserCourses = (courseId) => async (dispatch, getState) => {
   try {
     dispatch({ type: USER_UPDATE_CONTENT_REQUEST })
@@ -218,6 +228,8 @@ const updateUserCourses = (courseId) => async (dispatch, getState) => {
   }
 }
 
+=======
+>>>>>>> f4a828b (initial)
 export {
   login,
   logout,
@@ -226,5 +238,8 @@ export {
   updateUserDetails,
   getUserCourses,
   saveVideoCurrent,
+<<<<<<< HEAD
   updateUserCourses,
+=======
+>>>>>>> f4a828b (initial)
 }

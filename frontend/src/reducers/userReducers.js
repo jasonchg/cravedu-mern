@@ -17,10 +17,13 @@ import {
   USER_COURSE_SUCCESS,
   USER_COURSE_FAIL,
   USER_COURSE_SAVE_CURRENT_STATE,
+<<<<<<< HEAD
   USER_UPDATE_CONTENT_REQUEST,
   USER_UPDATE_CONTENT_SUCCESS,
   USER_UPDATE_CONTENT_FAIL,
   USER_UPDATE_CONTENT_RESET,
+=======
+>>>>>>> f4a828b (initial)
 } from '../constants/userConstants'
 
 const userLoginReducer = (state = {}, action) => {
@@ -101,6 +104,7 @@ const userCourseReducer = (state = { userPaidCourses: [] }, action) => {
   }
 }
 
+<<<<<<< HEAD
 const userUpdateContentReducer = (state = {}, action) => {
   switch (action.type) {
     case USER_UPDATE_CONTENT_REQUEST:
@@ -116,11 +120,16 @@ const userUpdateContentReducer = (state = {}, action) => {
   }
 }
 
+=======
+>>>>>>> f4a828b (initial)
 export {
   userLoginReducer,
   userRegisterReducer,
   userDetailsReducer,
   userUpdateReducer,
   userCourseReducer,
+<<<<<<< HEAD
   userUpdateContentReducer,
+=======
+>>>>>>> f4a828b (initial)
 }

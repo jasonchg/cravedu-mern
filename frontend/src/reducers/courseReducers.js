@@ -19,11 +19,14 @@ import {
   COURSE_CATEGORIES_REQUEST,
   COURSE_CATEGORIES_SUCCESS,
   COURSE_CATEGORIES_FAIL,
+<<<<<<< HEAD
   COURSE_ANSWER_QANDA_REQUEST,
   COURSE_ANSWER_QANDA_SUCCESS,
   COURSE_ANSWER_QANDA_FAIL,
   COURSE_ANSWER_QANDA_RESET,
   COURSE_DETAILS_RESET,
+=======
+>>>>>>> f4a828b (initial)
 } from '../constants/courseConstants'
 import {
   USER_WATCHED_CONTENT_FAIL,
@@ -74,8 +77,11 @@ const courseDetailsReducer = (state = { course: {} }, action) => {
       return { loading: false, course: action.payload }
     case COURSE_DETAILS_FAIL:
       return { loading: false, error: action.payload }
+<<<<<<< HEAD
     case COURSE_DETAILS_RESET:
       return { course: {} }
+=======
+>>>>>>> f4a828b (initial)
     default:
       return state
   }
@@ -83,6 +89,7 @@ const courseDetailsReducer = (state = { course: {} }, action) => {
 
 const courseQandaReducer = (state = {}, action) => {
   switch (action.type) {
+<<<<<<< HEAD
     case COURSE_QANDA_REQUEST || COURSE_ANSWER_QANDA_REQUEST:
       return { loading: true }
     case COURSE_QANDA_SUCCESS || COURSE_ANSWER_QANDA_SUCCESS:
@@ -90,6 +97,15 @@ const courseQandaReducer = (state = {}, action) => {
     case COURSE_QANDA_FAIL || COURSE_ANSWER_QANDA_FAIL:
       return { loading: false, error: action.payload }
     case COURSE_QANDA_RESET || COURSE_ANSWER_QANDA_RESET:
+=======
+    case COURSE_QANDA_REQUEST:
+      return { loading: true }
+    case COURSE_QANDA_SUCCESS:
+      return { loading: false, success: true }
+    case COURSE_QANDA_FAIL:
+      return { loading: false, error: action.payload }
+    case COURSE_QANDA_RESET:
+>>>>>>> f4a828b (initial)
       return { loading: false, error: action.payload }
     default:
       return state

@@ -27,12 +27,15 @@ import {
   INSTRUCTOR_UPDATE_CONTENT_QUIZ_REQUEST,
   INSTRUCTOR_UPDATE_CONTENT_QUIZ_SUCCESS,
   INSTRUCTOR_UPDATE_CONTENT_QUIZ_FAIL,
+<<<<<<< HEAD
   INSTRUCTOR_PUBLISH_COURSE_REQUEST,
   INSTRUCTOR_PUBLISH_COURSE_SUCCESS,
   INSTRUCTOR_PUBLISH_COURSE_FAIL,
   INSTRUCTOR_ANNOUNCEMENT_REQUEST,
   INSTRUCTOR_ANNOUNCEMENT_SUCCESS,
   INSTRUCTOR_ANNOUNCEMENT_FAIL,
+=======
+>>>>>>> f4a828b (initial)
 } from '../constants/instructorConstants'
 
 const createCourse = () => async (dispatch, getState) => {
@@ -379,6 +382,7 @@ const deleteContent = (courseId, contentId) => async (dispatch, getState) => {
   }
 }
 
+<<<<<<< HEAD
 const publishCourseRequest = (courseId) => async (dispatch, getState) => {
   try {
     dispatch({ type: INSTRUCTOR_PUBLISH_COURSE_REQUEST })
@@ -448,6 +452,8 @@ const makeAnnouncement = (id, announceMessage) => async (
   }
 }
 
+=======
+>>>>>>> f4a828b (initial)
 export {
   listCourses,
   getCourseById,
@@ -460,6 +466,9 @@ export {
   updateSingleQuiz,
   updateAllQuiz,
   deleteQuiz,
+<<<<<<< HEAD
   publishCourseRequest,
   makeAnnouncement,
+=======
+>>>>>>> f4a828b (initial)
 }

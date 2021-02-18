@@ -35,6 +35,7 @@ import {
   INSTRUCTOR_UPDATE_CONTENT_QUIZ_SUCCESS,
   INSTRUCTOR_UPDATE_CONTENT_QUIZ_FAIL,
   INSTRUCTOR_UPDATE_CONTENT_QUIZ_RESET,
+<<<<<<< HEAD
   INSTRUCTOR_PUBLISH_COURSE_REQUEST,
   INSTRUCTOR_PUBLISH_COURSE_SUCCESS,
   INSTRUCTOR_PUBLISH_COURSE_FAIL,
@@ -43,6 +44,8 @@ import {
   INSTRUCTOR_ANNOUNCEMENT_SUCCESS,
   INSTRUCTOR_ANNOUNCEMENT_FAIL,
   INSTRUCTOR_ANNOUNCEMENT_RESET,
+=======
+>>>>>>> f4a828b (initial)
 } from '../constants/instructorConstants'
 
 const instructorCourseListReducer = (state = { courses: [] }, action) => {
@@ -197,6 +200,7 @@ const instructorContentDeleteReducer = (state = {}, action) => {
   }
 }
 
+<<<<<<< HEAD
 const instructorCoursePublishRequestReducer = (state = {}, action) => {
   switch (action.type) {
     case INSTRUCTOR_PUBLISH_COURSE_REQUEST:
@@ -227,6 +231,8 @@ const instructorAnnouncementReducer = (state = {}, action) => {
   }
 }
 
+=======
+>>>>>>> f4a828b (initial)
 export {
   instructorContentDeleteReducer,
   instructorCourseListReducer,
@@ -237,6 +243,9 @@ export {
   instructorContentUpdateReducer,
   instructorCourseDeleteReducer,
   instructorContentUpdateQuizReducer,
+<<<<<<< HEAD
   instructorCoursePublishRequestReducer,
   instructorAnnouncementReducer,
+=======
+>>>>>>> f4a828b (initial)
 }

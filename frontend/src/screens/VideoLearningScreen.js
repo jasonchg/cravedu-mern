@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
+<<<<<<< HEAD
+=======
+import CraveduLogo from '../assets/images/logo-black.png'
+>>>>>>> f4a828b (initial)
 import {
   Container,
   Grid,
@@ -14,10 +18,25 @@ import {
   Box,
   Paper,
   Button,
+<<<<<<< HEAD
   Modal,
   TextField,
   makeStyles,
 } from '@material-ui/core'
+=======
+  Avatar,
+  ListItemAvatar,
+  Modal,
+  TextField,
+  makeStyles,
+  ButtonGroup,
+  IconButton,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from '@material-ui/core'
+import ReplyIcon from '@material-ui/icons/Reply'
+>>>>>>> f4a828b (initial)
 import {
   addQanda,
   createReview,
@@ -34,11 +53,20 @@ import {
   COURSE_REVIEW_RESET,
 } from '../constants/courseConstants'
 import ReactStars from 'react-rating-stars-component'
+<<<<<<< HEAD
 import CourseContentList from '../components/CourseContentList'
 import { getUserCourses } from '../actions/userActions'
 import { USER_WATCHED_CONTENT_RESET } from '../constants/userConstants'
 import QuestionThread from '../components/QuestionThread'
 import InsturctorCard from '../components/InsturctorCard'
+=======
+import ThumbUpIcon from '@material-ui/icons/ThumbUp'
+import ThumbDownIcon from '@material-ui/icons/ThumbDown'
+import CourseContentList from '../components/CourseContentList'
+import { getUserCourses } from '../actions/userActions'
+import { USER_WATCHED_CONTENT_RESET } from '../constants/userConstants'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+>>>>>>> f4a828b (initial)
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props
 
@@ -89,7 +117,11 @@ const useStyles = makeStyles((theme) => ({
   },
   modalPaper: {
     width: 400,
+<<<<<<< HEAD
     height: 240,
+=======
+    height: 200,
+>>>>>>> f4a828b (initial)
     backgroundColor: '#f1faee',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
@@ -101,6 +133,13 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'scroll',
     overflowX: 'hidden',
   },
+<<<<<<< HEAD
+=======
+  questionBlock: {
+    margin: 2,
+    background: '#f1faee',
+  },
+>>>>>>> f4a828b (initial)
   divider: {
     margin: theme.spacing(2, 0),
   },
@@ -140,7 +179,30 @@ const useStyles = makeStyles((theme) => ({
   tabPanelArea: {
     minHeight: 500,
   },
+<<<<<<< HEAD
 }))
+=======
+  aboutInstructor: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    width: '30%',
+    background: '#f1faee',
+    borderRadius: 10,
+    padding: 10,
+    paddingBottom: 20,
+    marginTop: 20,
+    boxShadow: theme.shadows[5],
+  },
+  buttonLike: {
+    color: 'green',
+  },
+  buttonDislike: {
+    color: 'red',
+  },
+}))
+
+>>>>>>> f4a828b (initial)
 const VideoLearningScreen = ({ history }) => {
   const dispatch = useDispatch()
   const classes = useStyles()
@@ -168,6 +230,7 @@ const VideoLearningScreen = ({ history }) => {
   const [ratingStars, setRatingStars] = useState(5)
   const [comment, setComment] = useState('')
   const [alreadyReview, setAlreadyReview] = useState(false)
+<<<<<<< HEAD
   const { course_slug } = useParams()
   const userCourses = useSelector((state) => state.userCourses)
   const { userPaidCourses } = userCourses
@@ -176,6 +239,21 @@ const VideoLearningScreen = ({ history }) => {
   const [currentUserPaidCourse, setCurrentUserPaidCourse] = useState(null)
   const [newCourseContent, setNewCourseContent] = useState([])
 
+=======
+
+  const { course_slug } = useParams()
+
+  const userCourses = useSelector((state) => state.userCourses)
+  const { userPaidCourses } = userCourses
+
+  const contentWatched = useSelector((state) => state.contentWatched)
+  const { success: contentWatchedSuccess } = contentWatched
+
+  const [currentUserPaidCourse, setCurrentUserPaidCourse] = useState(null)
+
+  const [like, setLike] = useState(null)
+  const [newCourseContent, setNewCourseContent] = useState([])
+>>>>>>> f4a828b (initial)
   const tabHandler = (event, newValue) => {
     setValue(newValue)
   }
@@ -200,6 +278,10 @@ const VideoLearningScreen = ({ history }) => {
           },
         }
         await axios.put(`/api/users/${course._id}/course-completed`, {}, config)
+<<<<<<< HEAD
+=======
+
+>>>>>>> f4a828b (initial)
         alert(
           `Congratulation! You've completed this course. A certificate will be send to your mailbox soon.`
         )
@@ -231,12 +313,16 @@ const VideoLearningScreen = ({ history }) => {
       dispatch({ type: COURSE_REVIEW_RESET })
     }
 
+<<<<<<< HEAD
     if (
       !userInfo ||
       userInfo.name === null ||
       userInfo === null ||
       userInfo === undefined
     ) {
+=======
+    if (!userInfo) {
+>>>>>>> f4a828b (initial)
       history.push('/login')
     } else {
       if (!course || !course.name || course.slug !== course_slug) {
@@ -262,6 +348,11 @@ const VideoLearningScreen = ({ history }) => {
             setAlreadyReview(checkReview(course.reviews, userInfo._id))
 
             if (currentUserPaidCourse && currentUserPaidCourse.courseContents) {
+<<<<<<< HEAD
+=======
+              // problem here
+
+>>>>>>> f4a828b (initial)
               let notYetWatchContent = currentUserPaidCourse.courseContents.find(
                 (x) => x.watched !== true
               )
@@ -276,6 +367,11 @@ const VideoLearningScreen = ({ history }) => {
                   currentUserPaidCourse.completedCertificate === ''
                 ) {
                   getCertify()
+<<<<<<< HEAD
+=======
+                } else {
+                  console.log('Has Cert')
+>>>>>>> f4a828b (initial)
                 }
               } else {
                 let courseContentsPublishCheck = course.courseContents.find(
@@ -289,7 +385,10 @@ const VideoLearningScreen = ({ history }) => {
                   history.push(
                     `/course/${course_slug}/learn?chapter=${notYetWatchContent.chapterId}`
                   )
+<<<<<<< HEAD
 
+=======
+>>>>>>> f4a828b (initial)
                   setSelectedVideoName({
                     name: course.courseContents.find(
                       (x) => x._id === notYetWatchContent.chapterId
@@ -306,9 +405,20 @@ const VideoLearningScreen = ({ history }) => {
                     )
                   )
                 } else {
+<<<<<<< HEAD
                   history.push(
                     `/course/${course_slug}/learn?chapter=${course.courseContents[0]._id}`
                   )
+=======
+                  if (
+                    currentUserPaidCourse &&
+                    currentUserPaidCourse.completedCertificate === ''
+                  ) {
+                    getCertify()
+                  } else {
+                    console.log('Has Cert')
+                  }
+>>>>>>> f4a828b (initial)
                 }
               }
             } else {
@@ -355,6 +465,10 @@ const VideoLearningScreen = ({ history }) => {
   }
 
   const qandaHandler = (e) => {
+<<<<<<< HEAD
+=======
+    e.preventDefault()
+>>>>>>> f4a828b (initial)
     dispatch(addQanda(course._id, { question }))
     setModalOpen(false)
   }
@@ -369,6 +483,17 @@ const VideoLearningScreen = ({ history }) => {
     setExpanded(isExpanded ? panel : false)
   }
 
+<<<<<<< HEAD
+=======
+  const likeReply = (thought) => {
+    if (thought) {
+      setLike(true)
+    } else {
+      setLike(false)
+    }
+  }
+
+>>>>>>> f4a828b (initial)
   return (
     <>
       {loading || !course ? (
@@ -472,7 +597,41 @@ const VideoLearningScreen = ({ history }) => {
                     {!course || !course.instructor ? (
                       ''
                     ) : (
+<<<<<<< HEAD
                       <InsturctorCard instructor={course.instructor} />
+=======
+                      <div className={classes.aboutInstructor}>
+                        <p>Instructor Card</p>
+                        <span
+                          style={{
+                            background: '#1d3557',
+                            width: '100%',
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            padding: 10,
+                          }}
+                        >
+                          <Avatar
+                            style={{
+                              marginRight: 10,
+                              width: 50,
+                              height: 50,
+                              background: '#457b9d',
+                            }}
+                          >
+                            <h3>{course.instructor.charAt(0)}</h3>
+                          </Avatar>
+                          <h2 style={{ color: '#fff' }}>{course.instructor}</h2>
+                        </span>
+                        <img
+                          src={CraveduLogo}
+                          width='80'
+                          style={{ marginTop: 20 }}
+                        />
+                      </div>
+>>>>>>> f4a828b (initial)
                     )}
                   </div>
                 </TabPanel>
@@ -506,6 +665,7 @@ const VideoLearningScreen = ({ history }) => {
                       {course &&
                       course.courseQASection &&
                       course.courseQASection.length !== 0 ? (
+<<<<<<< HEAD
                         course.courseQASection
                           .map((qanda) => (
                             <QuestionThread
@@ -516,6 +676,175 @@ const VideoLearningScreen = ({ history }) => {
                             />
                           ))
                           .reverse()
+=======
+                        course.courseQASection.map((qanda) => (
+                          <div key={qanda._id}>
+                            <Paper className={classes.questionBlock}>
+                              <ListItem alignItems='flex-start'>
+                                <ListItemAvatar>
+                                  <Avatar style={{ marginRight: 10 }}>
+                                    {qanda.userName.charAt(0)}
+                                  </Avatar>
+                                </ListItemAvatar>
+                                <div
+                                  style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: '10fr .7fr',
+                                  }}
+                                >
+                                  <div>
+                                    <ListItemText
+                                      primary={
+                                        <strong>{qanda.question}</strong>
+                                      }
+                                      secondary={
+                                        <span>
+                                          <Typography
+                                            component='span'
+                                            variant='body2'
+                                            color='textPrimary'
+                                          >
+                                            {qanda.userName}
+                                          </Typography>{' '}
+                                          {qanda.createdAt &&
+                                            qanda.createdAt.substring(10, 0)}
+                                        </span>
+                                      }
+                                    />
+                                  </div>
+                                  <div>
+                                    <Button size='large'>
+                                      <ReplyIcon /> Reply
+                                    </Button>
+                                  </div>
+                                </div>
+                              </ListItem>
+                            </Paper>
+
+                            {qanda.answers && qanda.answers.length !== 0 ? (
+                              <List
+                                style={{
+                                  marginLeft: 25,
+                                  background: '#f1faee',
+                                }}
+                              >
+                                <Accordion
+                                  style={{
+                                    background: '#f1faee',
+                                    boxShadow: 'none',
+                                  }}
+                                >
+                                  <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon />}
+                                    aria-controls='answers-content'
+                                    id='answers-content-header'
+                                  >
+                                    {
+                                      qanda.answers.filter(
+                                        (x) => x.granted === true
+                                      ).length
+                                    }{' '}
+                                    had answered to this question.
+                                  </AccordionSummary>
+                                  <Divider />
+                                  <AccordionDetails>
+                                    {qanda.answers.map((thread, i) => {
+                                      return thread.granted === true ? (
+                                        <ListItem key={i}>
+                                          <ListItemAvatar>
+                                            <Avatar
+                                              style={{
+                                                marginRight: 10,
+                                              }}
+                                            >
+                                              {thread.userName.charAt(0)}
+                                            </Avatar>
+                                          </ListItemAvatar>
+                                          <div
+                                            style={{
+                                              display: 'grid',
+                                              gridTemplateColumns: '10fr  .7fr',
+                                            }}
+                                          >
+                                            <div>
+                                              <ListItemText
+                                                primary={
+                                                  <span>{thread.answer}</span>
+                                                }
+                                                secondary={
+                                                  <span>
+                                                    <Typography
+                                                      component='span'
+                                                      variant='body2'
+                                                      color='textPrimary'
+                                                    >
+                                                      {thread.userName}
+                                                    </Typography>{' '}
+                                                    {thread.createdAt &&
+                                                      thread.createdAt.substring(
+                                                        10,
+                                                        0
+                                                      )}
+                                                  </span>
+                                                }
+                                              />
+                                            </div>
+
+                                            <div>
+                                              <ButtonGroup
+                                                disableElevation
+                                                variant='contained'
+                                              >
+                                                <IconButton
+                                                  className={
+                                                    like && like !== null
+                                                      ? classes.buttonLike
+                                                      : ''
+                                                  }
+                                                  onClick={() =>
+                                                    likeReply(true)
+                                                  }
+                                                >
+                                                  <ThumbUpIcon />
+                                                  {thread.helpful &&
+                                                    thread.helpful}
+                                                </IconButton>
+                                                <IconButton
+                                                  className={
+                                                    !like && like !== null
+                                                      ? classes.buttonDislike
+                                                      : ''
+                                                  }
+                                                  onClick={() =>
+                                                    likeReply(false)
+                                                  }
+                                                >
+                                                  {thread.notHelpful &&
+                                                    thread.notHelpful}
+                                                  <ThumbDownIcon />
+                                                </IconButton>
+                                              </ButtonGroup>
+                                            </div>
+                                          </div>
+                                          <Divider
+                                            className={classes.divider}
+                                          />
+                                        </ListItem>
+                                      ) : (
+                                        ''
+                                      )
+                                    })}
+                                  </AccordionDetails>
+                                </Accordion>
+                              </List>
+                            ) : (
+                              ''
+                            )}
+
+                            <br />
+                          </div>
+                        ))
+>>>>>>> f4a828b (initial)
                       ) : (
                         <ListItem>No any question just yet.</ListItem>
                       )}
@@ -530,7 +859,11 @@ const VideoLearningScreen = ({ history }) => {
                     className={classes.modalContainer}
                   >
                     <div className={classes.modalPaper}>
+<<<<<<< HEAD
                       <div>
+=======
+                      <form onSubmit={qandaHandler}>
+>>>>>>> f4a828b (initial)
                         <FormContainer>
                           <TextField
                             required
@@ -541,7 +874,10 @@ const VideoLearningScreen = ({ history }) => {
                             variant='filled'
                             value={question}
                             onChange={(e) => setQuestion(e.target.value)}
+<<<<<<< HEAD
                             fullWidth
+=======
+>>>>>>> f4a828b (initial)
                           />
                         </FormContainer>
                         <br />
@@ -549,24 +885,37 @@ const VideoLearningScreen = ({ history }) => {
                           type='submit'
                           variant='contained'
                           color='primary'
+<<<<<<< HEAD
                           onClick={() => qandaHandler()}
+=======
+>>>>>>> f4a828b (initial)
                         >
                           Post
                         </Button>
                         <Button onClick={() => setModalOpen(false)}>
                           Cancel
                         </Button>
+<<<<<<< HEAD
                       </div>
                       <br />
                       <Message severity='info'>
                         Some your instructor might not answer your question but
                         other people will.
                       </Message>
+=======
+                      </form>
+
+                      <h4>
+                        Some your instructor might not answer your question but
+                        other people will.
+                      </h4>
+>>>>>>> f4a828b (initial)
                     </div>
                   </Modal>
                 </TabPanel>
 
                 <TabPanel value={value} index={2}>
+<<<<<<< HEAD
                   <Paper>
                     <List>
                       {!course ? (
@@ -598,6 +947,18 @@ const VideoLearningScreen = ({ history }) => {
                       )}
                     </List>
                   </Paper>
+=======
+                  <List>
+                    <Paper>
+                      <ListItem className={classes.description}>
+                        <ListItemText
+                          primary={`There is no any annoucement.`}
+                        />
+                      </ListItem>
+                    </Paper>
+                    <Divider />
+                  </List>
+>>>>>>> f4a828b (initial)
                 </TabPanel>
 
                 <TabPanel value={value} index={3}>

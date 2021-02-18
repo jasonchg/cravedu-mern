@@ -65,12 +65,20 @@ const HomeScreen = ({ history, match }) => {
     : matchesSM
     ? 2
     : matchesMD
+<<<<<<< HEAD
     ? 3
+=======
+    ? 4
+>>>>>>> f4a828b (initial)
     : matchesLG
     ? 5
     : 4
 
+<<<<<<< HEAD
   let itemToShowLeaning = matchesSM ? 1 : matchesMD ? 2 : matchesLG ? 2 : 2
+=======
+  let itemToShowLeaning = matchesSM ? 1 : matchesMD ? 2 : matchesLG ? 3 : 2
+>>>>>>> f4a828b (initial)
 
   return (
     <>
@@ -83,6 +91,7 @@ const HomeScreen = ({ history, match }) => {
 
           {userInfo && userPaidCourses && userPaidCourses.length !== 0 ? (
             <>
+<<<<<<< HEAD
               <Grid item xs={12}>
                 <div style={{ display: 'flex' }} className='homeHeaderText'>
                   <div style={{ flex: 1 }}>
@@ -98,6 +107,10 @@ const HomeScreen = ({ history, match }) => {
                     </Button>
                   </div>
                 </div>
+=======
+              <Grid item xs={12} className='homeHeaderText'>
+                <h2> Let's start learning, {userInfo.name}</h2>
+>>>>>>> f4a828b (initial)
               </Grid>
 
               <CourseScroll
@@ -108,11 +121,15 @@ const HomeScreen = ({ history, match }) => {
                 {userPaidCourses.map((currentCourse) => (
                   <Course
                     key={currentCourse._id}
+<<<<<<< HEAD
                     course={
                       currentCourse._id !== ''
                         ? courses.find((x) => x._id === currentCourse._id)
                         : currentCourse
                     }
+=======
+                    course={courses.find((x) => x._id === currentCourse._id)}
+>>>>>>> f4a828b (initial)
                     currentCourse={currentCourse}
                     learning
                   />
@@ -145,7 +162,11 @@ const HomeScreen = ({ history, match }) => {
               <h2>Categories</h2>
               {categories &&
                 categories.map((category, index) => (
+<<<<<<< HEAD
                   <Category key={index} category={category} />
+=======
+                  <Category key={index} category={category} color='primary' />
+>>>>>>> f4a828b (initial)
                 ))}
             </Grid>
 

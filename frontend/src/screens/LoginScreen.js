@@ -13,7 +13,16 @@ import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../actions/userActions'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
+<<<<<<< HEAD
 
+=======
+import {
+  FacebookLoginButton,
+  GoogleLoginButton,
+  TwitterLoginButton,
+  MicrosoftLoginButton,
+} from 'react-social-login-buttons'
+>>>>>>> f4a828b (initial)
 import LogoIcon from '../assets/images/logo-icon.png'
 
 const useStyles = makeStyles({
@@ -32,7 +41,11 @@ const useStyles = makeStyles({
     height: '70vh',
     marginTop: '40px',
     position: 'relative',
+<<<<<<< HEAD
     marginBottom: '40px',
+=======
+    marginBottom: '10px',
+>>>>>>> f4a828b (initial)
     '& img': {
       position: 'absolute',
       width: '175px',
@@ -73,6 +86,10 @@ const LoginScreen = ({ history, location, match }) => {
   const redirect = location.search ? location.search.split('=')[1] : '/'
 
   const id = match.params.id
+<<<<<<< HEAD
+=======
+  console.log(id)
+>>>>>>> f4a828b (initial)
 
   useEffect(() => {
     if (userInfo) {
@@ -111,6 +128,16 @@ const LoginScreen = ({ history, location, match }) => {
           <Grid item md={6} xs={12} className={classes.rightLoginContainer}>
             {error && <Message>{error}</Message>}
 
+<<<<<<< HEAD
+=======
+            <Typography variant='h5'>Social Logins</Typography>
+            <div className={classes.socialButtons}>
+              <FacebookLoginButton onClick={() => alert('Facebook')} />
+              <GoogleLoginButton onClick={() => alert('Google')} />
+              <TwitterLoginButton onClick={() => alert('Twitter')} />
+              <MicrosoftLoginButton onClick={() => alert('Microsoft')} />
+            </div>
+>>>>>>> f4a828b (initial)
             <Typography variant='h5'>Email Logins</Typography>
             <form className={classes.form} onSubmit={submitHandler}>
               <Grid item xs={12}>
@@ -142,11 +169,19 @@ const LoginScreen = ({ history, location, match }) => {
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </FormContainer>
+<<<<<<< HEAD
                 {/* <FormContainer>
                   <Typography variant='body2'>
                     <Link href={'/'}> Forget Password </Link>
                   </Typography>
                 </FormContainer> */}
+=======
+                <FormContainer>
+                  <Typography variant='body2'>
+                    <Link href={'/'}> Forget Password </Link>
+                  </Typography>
+                </FormContainer>
+>>>>>>> f4a828b (initial)
               </Grid>
               <Grid item xs={12} style={{ display: 'flex' }}>
                 <Button
@@ -157,6 +192,10 @@ const LoginScreen = ({ history, location, match }) => {
                 >
                   Login
                 </Button>
+<<<<<<< HEAD
+=======
+                {loading && <Loader style={{ position: 'absolute' }} />}
+>>>>>>> f4a828b (initial)
               </Grid>
               <Grid item xs={12}>
                 <FormContainer>
@@ -174,7 +213,10 @@ const LoginScreen = ({ history, location, match }) => {
                   </Typography>
                 </FormContainer>
               </Grid>
+<<<<<<< HEAD
               {loading && <Loader style={{ position: 'absolute' }} />}
+=======
+>>>>>>> f4a828b (initial)
             </form>
           </Grid>
         </Grid>

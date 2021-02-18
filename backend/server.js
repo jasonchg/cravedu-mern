@@ -16,7 +16,10 @@ import adminCourseRoutes from './routes/adminCourseRoutes.js'
 import uploadRoutes from './routes/uploadRoutes.js'
 import instructorRoutes from './routes/instructorRoutes.js'
 import instructorContentRoutes from './routes/instructorContentRoutes.js'
+<<<<<<< HEAD
 import notificationRoutes from './routes/notificationRoutes.js'
+=======
+>>>>>>> f4a828b (initial)
 
 // Config & Initialization
 dotenv.config()
@@ -24,6 +27,12 @@ connectDB()
 const app = express()
 app.use(express.json())
 app.use(morgan('dev'))
+<<<<<<< HEAD
+=======
+app.get('/', (req, res) => {
+  res.send('API is running')
+})
+>>>>>>> f4a828b (initial)
 
 // Default End Points
 app.use('/api/courses', courseRoutes)
@@ -35,6 +44,12 @@ app.use('/api/config/paypal', (req, res) => {
 })
 app.use('/api/upload/', uploadRoutes)
 
+<<<<<<< HEAD
+=======
+const __dirname = path.resolve()
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
+
+>>>>>>> f4a828b (initial)
 // Admin Routes
 app.use('/api/admin/users', adminRoutes)
 app.use('/api/admin/courses', adminCourseRoutes)
@@ -43,12 +58,19 @@ app.use('/api/admin/courses', adminCourseRoutes)
 app.use('/api/instructor/courses', instructorContentRoutes)
 app.use('/api/instructor/courses', instructorRoutes)
 
+<<<<<<< HEAD
 // Notification Routes
 app.use('/api/notifications', notificationRoutes)
+=======
+// Error Handling
+app.use(notFound)
+app.use(errorHandler)
+>>>>>>> f4a828b (initial)
 
 // Listener
 const PORT = process.env.PORT || 5000
 app.listen(PORT, console.log(`Server running on port ${PORT}`))
+<<<<<<< HEAD
 
 const __dirname = path.resolve()
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
@@ -69,3 +91,5 @@ if (process.env.NODE_ENV === 'production') {
 // Error Handling
 app.use(notFound)
 app.use(errorHandler)
+=======
+>>>>>>> f4a828b (initial)

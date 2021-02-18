@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from 'react'
+=======
+import React, { useEffect } from 'react'
+>>>>>>> f4a828b (initial)
 import {
   Grid,
   Button,
@@ -9,7 +13,10 @@ import {
   TableBody,
   Table,
   Typography,
+<<<<<<< HEAD
   TextField,
+=======
+>>>>>>> f4a828b (initial)
 } from '@material-ui/core'
 import { listUsers } from '../actions/adminActions'
 import { useDispatch, useSelector } from 'react-redux'
@@ -19,7 +26,10 @@ import CheckIcon from '@material-ui/icons/Check'
 import CloseIcon from '@material-ui/icons/Close'
 import { ADMIN_USER_DETAILS_RESET } from '../constants/adminConstants'
 import Breadcrumbs from '../components/Breadcrumbs'
+<<<<<<< HEAD
 import FormContainer from '../components/FormContainer'
+=======
+>>>>>>> f4a828b (initial)
 
 const ManageUsersScreen = ({ history }) => {
   const dispatch = useDispatch()
@@ -34,6 +44,7 @@ const ManageUsersScreen = ({ history }) => {
     history.push(`/admin/users/${id}/edit`)
   }
 
+<<<<<<< HEAD
   const [searchTerm, setSearchTerm] = useState('')
   const [allUsers, setAllUsers] = useState([])
 
@@ -56,6 +67,8 @@ const ManageUsersScreen = ({ history }) => {
     setAllUsers(users)
   }, [users])
 
+=======
+>>>>>>> f4a828b (initial)
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
       dispatch({ type: ADMIN_USER_DETAILS_RESET })
@@ -74,7 +87,11 @@ const ManageUsersScreen = ({ history }) => {
             link: '/',
           },
         ]}
+<<<<<<< HEAD
         currentPage='Manage Users'
+=======
+        currentPage='Users'
+>>>>>>> f4a828b (initial)
       />
       <Grid container style={{ marginTop: 10 }}>
         <Grid item xs={12}>
@@ -90,6 +107,7 @@ const ManageUsersScreen = ({ history }) => {
           ) : loading ? (
             <Loader />
           ) : (
+<<<<<<< HEAD
             <TableContainer
               style={{
                 overflow: 'scroll',
@@ -118,6 +136,9 @@ const ManageUsersScreen = ({ history }) => {
                 />
               </FormContainer>
 
+=======
+            <TableContainer>
+>>>>>>> f4a828b (initial)
               <Table>
                 <TableHead>
                   <TableRow>
@@ -129,6 +150,7 @@ const ManageUsersScreen = ({ history }) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
+<<<<<<< HEAD
                   {allUsers ? (
                     allUsers.map((user, index) => (
                       <TableRow key={user._id}>
@@ -166,6 +188,39 @@ const ManageUsersScreen = ({ history }) => {
                   ) : (
                     <Message>No User</Message>
                   )}
+=======
+                  {users.map((user, index) => (
+                    <TableRow key={user._id}>
+                      <TableCell align='center'>{index + 1}</TableCell>
+                      <TableCell>
+                        <b>{user.name}</b> <br />
+                        <Typography variant='caption'>({user._id})</Typography>
+                      </TableCell>
+                      <TableCell align='center'>
+                        {user.isAdmin ? (
+                          <CheckIcon style={{ color: 'green' }} />
+                        ) : (
+                          <CloseIcon style={{ color: 'red' }} />
+                        )}
+                      </TableCell>
+                      <TableCell align='center'>
+                        {user.isInstructor ? (
+                          <CheckIcon style={{ color: 'green' }} />
+                        ) : (
+                          <CloseIcon style={{ color: 'red' }} />
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          onClick={() => goToEdit(user._id)}
+                          variant='outlined'
+                        >
+                          Edit Info
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+>>>>>>> f4a828b (initial)
                 </TableBody>
               </Table>
             </TableContainer>

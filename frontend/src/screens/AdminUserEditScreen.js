@@ -9,11 +9,18 @@ import {
   Divider,
   FormControlLabel,
   Checkbox,
+<<<<<<< HEAD
   Paper,
 } from '@material-ui/core'
 import FormContainer from '../components/FormContainer'
 import { makeStyles } from '@material-ui/core/styles'
 import { deleteUser, getUserById, updateUser } from '../actions/adminActions'
+=======
+} from '@material-ui/core'
+import FormContainer from '../components/FormContainer'
+import { makeStyles } from '@material-ui/core/styles'
+import { getUserById, updateUser } from '../actions/adminActions'
+>>>>>>> f4a828b (initial)
 import { useDispatch, useSelector } from 'react-redux'
 
 import Message from '../components/Message'
@@ -47,9 +54,12 @@ const AdminUserEditScreen = ({ history, match }) => {
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
+<<<<<<< HEAD
   const adminUserDelete = useSelector((state) => state.adminUserDelete)
   const { success: userDeleteSuccess, error: userDeleteError } = adminUserDelete
 
+=======
+>>>>>>> f4a828b (initial)
   const adminUserGetDetails = useSelector((state) => state.adminUserGetDetails)
   const { userDetails, loading, error } = adminUserGetDetails
 
@@ -69,6 +79,7 @@ const AdminUserEditScreen = ({ history, match }) => {
 
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
+<<<<<<< HEAD
       if (userDeleteSuccess) {
         alert('User has been removed')
         dispatch({ type: ADMIN_USER_UPDATE_RESET })
@@ -98,10 +109,35 @@ const AdminUserEditScreen = ({ history, match }) => {
         setEmail(userDetails.email)
         setIsAdmin(userDetails.isAdmin)
         setIsInstructor(userDetails.isInstructor)
+=======
+      if (updateSuccess) {
+        dispatch({ type: ADMIN_USER_UPDATE_RESET })
+        dispatch({ type: ADMIN_USER_DETAILS_RESET })
+        history.push('/admin/users')
+      } else {
+        if (
+          !userDetails ||
+          !userDetails.name ||
+          !userDetails.email ||
+          userDetails._id !== userId
+        ) {
+          setName('')
+          setEmail('')
+          setIsAdmin(false)
+          setIsInstructor(false)
+          dispatch(getUserById(userId))
+        } else {
+          setName(userDetails.name)
+          setEmail(userDetails.email)
+          setIsAdmin(userDetails.isAdmin)
+          setIsInstructor(userDetails.isInstructor)
+        }
+>>>>>>> f4a828b (initial)
       }
     } else {
       history.push('/login')
     }
+<<<<<<< HEAD
   }, [
     dispatch,
     userInfo,
@@ -111,6 +147,9 @@ const AdminUserEditScreen = ({ history, match }) => {
     userId,
     userDeleteSuccess,
   ])
+=======
+  }, [dispatch, userInfo, history, updateSuccess, userDetails, userId])
+>>>>>>> f4a828b (initial)
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -132,6 +171,7 @@ const AdminUserEditScreen = ({ history, match }) => {
     setIsInstructor(isChecked)
   }
 
+<<<<<<< HEAD
   const handleDelete = () => {
     if (window.confirm('Delete user?')) {
       dispatch(deleteUser(userDetails))
@@ -147,6 +187,13 @@ const AdminUserEditScreen = ({ history, match }) => {
       <Grid container className={classes.root}>
         <Grid item xs={12}>
           <Button onClick={() => history.push('/admin-users')}>Go Back</Button>|
+=======
+  return (
+    <>
+      <Grid container className={classes.root}>
+        <Grid item xs={12}>
+          <Button onClick={() => history.push('/admin/users')}>Go Back</Button>|
+>>>>>>> f4a828b (initial)
           <Button onClick={() => history.push('/admin/courses')}>
             Go To Manage Courses
           </Button>
@@ -155,6 +202,7 @@ const AdminUserEditScreen = ({ history, match }) => {
       <h1>
         <SubdirectoryArrowRightIcon /> {userDetails && userDetails.name}
       </h1>
+<<<<<<< HEAD
       <code>
         User Id# <br />
         <b>{userDetails._id}</b> <br />
@@ -296,6 +344,126 @@ const AdminUserEditScreen = ({ history, match }) => {
           </Paper>
         </Grid>
       </Grid>
+=======
+
+      {updateLoading && <Loader left />}
+      {updateError && <Message>{updateError}</Message>}
+
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <Message>{error} </Message>
+      ) : (
+        <Grid container spacing='3'>
+          <Grid item md={4} xs={12}>
+            <form className={classes.form} onSubmit={submitHandler}>
+              <FormContainer>
+                <TextField
+                  required
+                  fullWidth
+                  id='email'
+                  type='email'
+                  label='Email Address'
+                  placeholder=''
+                  variant='filled'
+                  value={email}
+                  autoComplete='email'
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </FormContainer>
+              <FormContainer>
+                <TextField
+                  required
+                  fullWidth
+                  id='name'
+                  type='text'
+                  label='Name'
+                  placeholder=''
+                  variant='filled'
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </FormContainer>
+
+              <FormContainer>
+                <FormControlLabel
+                  label='Admin'
+                  control={
+                    <Checkbox
+                      checked={isAdmin}
+                      onChange={handleAdminCheck}
+                      name='isAdmin'
+                      color='primary'
+                    />
+                  }
+                />
+              </FormContainer>
+
+              <FormContainer>
+                <FormControlLabel
+                  label='Instructor'
+                  control={
+                    <Checkbox
+                      checked={isInstructor}
+                      onChange={handleInstructorCheck}
+                      name='isInstructor'
+                      color='primary'
+                    />
+                  }
+                />
+              </FormContainer>
+              <Button type='submit' variant='contained' color='primary'>
+                Update User Profile
+              </Button>
+            </form>
+          </Grid>
+          <Grid item md={8} xs={12}>
+            <div className={classes.list}>
+              <h4>
+                User Id# {userDetails._id} <br /> Acocunt created since{' '}
+                {userDetails.createdAt}
+                <Divider />
+              </h4>
+
+              {isInstructor && (
+                <Message severity='warning'>Created Courses</Message>
+              )}
+
+              <h2>Invoices</h2>
+              <div>
+                <List>
+                  {userDetails.myCourses ? (
+                    userDetails.myCourses.length === 0 ? (
+                      <Message severity='info'>No invoice</Message>
+                    ) : (
+                      userDetails.myCourses.map((course, index) => (
+                        <div key={course._id}>
+                          <ListItem>
+                            <ListItemText
+                              primary={`${index + 1}.  ${course.orderId}`}
+                            />
+                            <Button
+                              onClick={() =>
+                                history.push(`/order/${course.orderId}`)
+                              }
+                            >
+                              View
+                            </Button>
+                          </ListItem>
+                          <Divider />
+                        </div>
+                      ))
+                    )
+                  ) : (
+                    <Message>Something went wrong</Message>
+                  )}
+                </List>
+              </div>
+            </div>
+          </Grid>
+        </Grid>
+      )}
+>>>>>>> f4a828b (initial)
     </>
   )
 }

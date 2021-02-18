@@ -25,7 +25,11 @@ const TextEditor = ({ description, setter }) => {
       required
       editor={ClassicEditor}
       config={editorConfiguration}
+<<<<<<< HEAD
       data={description}
+=======
+      data={description !== '' ? description : ''}
+>>>>>>> f4a828b (initial)
       onChange={(event, editor) => {
         const data = editor.getData()
         setter(data)

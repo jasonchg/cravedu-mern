@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useEffect } from 'react'
+=======
+import React, { useEffect, useState } from 'react'
+>>>>>>> f4a828b (initial)
 import {
   Grid,
   Container,
@@ -44,8 +48,20 @@ const BrowseScreen = ({ match }) => {
     } else {
       dispatch(listCourses(keyword, pageNumber))
     }
+<<<<<<< HEAD
   }, [dispatch, keyword, match, category, pageNumber])
 
+=======
+  }, [dispatch, keyword])
+
+  const [currentCategory, setCurrentCategory] = useState(
+    category ? category : 'All Courses'
+  )
+
+  const setCatHandler = (selectCategory) => {
+    setCurrentCategory(selectCategory)
+  }
+>>>>>>> f4a828b (initial)
   const theme = useTheme()
   const matchesLG = useMediaQuery(theme.breakpoints.up('lg'))
 
@@ -53,25 +69,43 @@ const BrowseScreen = ({ match }) => {
     <Container>
       <Grid container spacing={3}>
         {keyword ? (
+<<<<<<< HEAD
           <Grid item xs={12}>
             <h2>Search terms : {keyword}</h2> <br />
           </Grid>
+=======
+          <div style={{ margin: '10px 0' }}>
+            <h2>Search terms : {keyword}</h2> <br />
+          </div>
+>>>>>>> f4a828b (initial)
         ) : (
           <>
             <Grid item xs={12}>
               <div style={{ fontSize: '20px' }}>
+<<<<<<< HEAD
                 <h1>{category ? category : 'All Courses'}</h1>
                 <Divider />
               </div>
             </Grid>
             <div>
+=======
+                <h1>{currentCategory}</h1>
+                <Divider />
+              </div>
+            </Grid>
+            <Grid item md={2} xs={12}>
+>>>>>>> f4a828b (initial)
               {categories &&
                 categories.map((category, index) => (
                   <span key={index}>
                     <Category category={category} color='primary' />
                   </span>
                 ))}
+<<<<<<< HEAD
             </div>
+=======
+            </Grid>
+>>>>>>> f4a828b (initial)
           </>
         )}
         <Grid item xs={10}>
@@ -92,6 +126,7 @@ const BrowseScreen = ({ match }) => {
                 </div>
               </div>
             ) : (
+<<<<<<< HEAD
               <>
                 {courses.map((course, i) => (
                   <div key={i} style={{ marginTop: 7 }}>
@@ -99,6 +134,13 @@ const BrowseScreen = ({ match }) => {
                   </div>
                 ))}
               </>
+=======
+              courses.map((course, i) => (
+                <Grid item xs={6} md={4} key={i} style={{ marginTop: 7 }}>
+                  <Course course={course} />
+                </Grid>
+              ))
+>>>>>>> f4a828b (initial)
             )}
           </Grid>
         </Grid>

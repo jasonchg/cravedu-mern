@@ -55,8 +55,11 @@ main {
   padding: 20px;
 }
 
+<<<<<<< HEAD
 /* Course Screen */
 
+=======
+>>>>>>> f4a828b (initial)
 /* CourseScroll */
 .rec.rec-arrow {
   background-color: #eee;
@@ -91,11 +94,14 @@ main {
   height: auto;
 }
 
+<<<<<<< HEAD
 /* Text editor */
 .ck-editor__editable {
   min-height: 150px !important;
 }
 
+=======
+>>>>>>> f4a828b (initial)
 /* Footer */
 footer {
   background-color: var(--dark);

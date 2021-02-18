@@ -1,11 +1,18 @@
 import { useState } from 'react'
+<<<<<<< HEAD
 import { Menu, MenuItem, Divider, Link, Button } from '@material-ui/core'
 
 const Category = ({ category }) => {
+=======
+import { Chip, Menu, MenuItem, Divider, Link } from '@material-ui/core'
+
+const Category = ({ category, color }) => {
+>>>>>>> f4a828b (initial)
   const [anchorEl, setAnchorEl] = useState(null)
 
   return (
     <>
+<<<<<<< HEAD
       <Button
         style={{ padding: 7, margin: 5, textAlign: 'start' }}
         onClick={(e) => setAnchorEl(e.currentTarget)}
@@ -14,6 +21,15 @@ const Category = ({ category }) => {
       >
         {category.category}
       </Button>
+=======
+      <Chip
+        color={color}
+        style={{ padding: 7, margin: 5 }}
+        label={category.category}
+        clickable
+        onClick={(e) => setAnchorEl(e.currentTarget)}
+      />
+>>>>>>> f4a828b (initial)
 
       <Menu
         anchorEl={anchorEl}

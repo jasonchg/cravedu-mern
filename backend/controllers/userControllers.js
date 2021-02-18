@@ -5,12 +5,15 @@ import { generateCert } from '../utils/generateCert.js'
 import Course from '../models/courseModel.js'
 import { sendThisCertToMail } from '../utils/sendThisMail.js'
 import { customAlphabet } from 'nanoid'
+<<<<<<< HEAD
 import path from 'path'
 import {
   COURSE_COMPLETED,
   NEW_REGISTER_SURVEY,
 } from './notificationConstants.js'
 import Notification from '../models/notificationModel.js'
+=======
+>>>>>>> f4a828b (initial)
 
 // @desc    Auth user & get json web token
 // @route   GET /api/users/login
@@ -61,6 +64,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @access  Public
 
 const registerUser = asyncHandler(async (req, res) => {
+<<<<<<< HEAD
   try {
     const { name, email, password, instructor } = req.body
     const userExisted = await User.findOne({ email })
@@ -107,6 +111,37 @@ const registerUser = asyncHandler(async (req, res) => {
   } catch (err) {
     res.status(500)
     throw new Error('Internal Server Error')
+=======
+  const { name, email, password, instructor } = req.body
+  const userExisted = await User.findOne({ email })
+
+  if (userExisted) {
+    res.status(400)
+    throw new Error('User already exists')
+  }
+
+  let type = instructor.toLowerCase() === 'student' ? false : true
+
+  const createdUser = await User.create({
+    name,
+    email,
+    password,
+    isInstructor: type,
+  })
+
+  if (createdUser) {
+    res.json({
+      _id: createdUser._id,
+      name: createdUser.name,
+      email: createdUser.email,
+      isAdmin: createdUser.isAdmin,
+      isInstructor: createdUser.isInstructor,
+      token: generateToken(createdUser._id),
+    })
+  } else {
+    res.status(400)
+    throw new Error('Invalid User Data')
+>>>>>>> f4a828b (initial)
   }
 })
 
@@ -147,6 +182,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 // @access  Private
 
 const completeCourse = asyncHandler(async (req, res) => {
+<<<<<<< HEAD
   try {
     const userExisted = await User.findById(req.user.id)
     const courseId = req.params.courseId
@@ -222,6 +258,58 @@ const completeCourse = asyncHandler(async (req, res) => {
   } catch (err) {
     res.status(500)
     console.log(err.message)
+=======
+  const userExisted = await User.findById(req.user.id)
+  const courseId = req.params.courseId
+  const course = await Course.findById(courseId)
+  const nanoid = customAlphabet(
+    course
+      ? course.name.trim().toLowerCase().replace(/\s/g, '')
+      : '1234567890abcdef',
+    10
+  )
+  const certificateId = `cert-${nanoid()}`
+
+  if (userExisted) {
+    const getCompletedCourse = userExisted.myCourses.find(
+      (x) => x._id == courseId
+    )
+    if (getCompletedCourse || course) {
+      if (
+        getCompletedCourse &&
+        getCompletedCourse.completedCertificate &&
+        getCompletedCourse.completedCertificate !== ' '
+      ) {
+        res.status(400)
+        throw new Error('Course already has a completed certificate')
+      } else {
+        generateCert(userExisted, course, certificateId)
+        let filename = `${certificateId}.jpeg`
+        let path = `/certificates/${filename}`
+
+        getCompletedCourse.completedCertificate = path || ''
+        const result = userExisted.save()
+        if (result) {
+          await sendThisCertToMail(userExisted, course, {
+            url: `www.cravedu.com/cert/${path}`,
+            path,
+            filename,
+            name: course.name,
+            totalDuration: course.totalDuration,
+          })
+          res.status(201).send({
+            certCreated: 'true',
+          })
+        }
+      }
+    } else {
+      res.status(404)
+      throw new Error('Course Not Found')
+    }
+  } else {
+    res.status(404)
+    throw new Error('User Not Found')
+>>>>>>> f4a828b (initial)
   }
 })
 

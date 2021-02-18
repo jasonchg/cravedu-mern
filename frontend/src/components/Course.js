@@ -6,19 +6,29 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+<<<<<<< HEAD
+=======
+  Button,
+>>>>>>> f4a828b (initial)
   Typography,
   Link,
 } from '@material-ui/core'
 import Rating from './Rating'
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled'
+<<<<<<< HEAD
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
+=======
+>>>>>>> f4a828b (initial)
 import PeopleIcon from '@material-ui/icons/People'
 import Loader from './Loader'
 const useStyles = makeStyles({
   root: {
     marginRight: 10,
     width: 300,
+<<<<<<< HEAD
     minHeight: 270,
+=======
+>>>>>>> f4a828b (initial)
   },
   media: {
     height: 175,
@@ -59,16 +69,20 @@ const learningStyles = makeStyles({
       opacity: '0.7',
     },
   },
+<<<<<<< HEAD
   checkedIcon: {
     opacity: '0.7',
     color: 'green',
   },
+=======
+>>>>>>> f4a828b (initial)
   learningBody: {
     display: 'flex',
   },
   content: {},
 })
 
+<<<<<<< HEAD
 const Course = ({ course, learning, currentCourse = '', myLearning }) => {
   const classes = useStyles()
   const classesLearning = learningStyles()
@@ -92,6 +106,28 @@ const Course = ({ course, learning, currentCourse = '', myLearning }) => {
       }
     }
   }, [currentCourse, course, progressCount.length])
+=======
+const Course = ({ course, learning, currentCourse = '' }) => {
+  const classes = useStyles()
+  const classesLearning = learningStyles()
+  const [progressCount, setProgressCount] = useState(0)
+  const [newCourseContent, setNewCourseContent] = useState([])
+
+  useEffect(() => {
+    setNewCourseContent(
+      course.courseContents.filter((content) => content.isPublished === true)
+    )
+
+    const progress = currentCourse
+      ? currentCourse.courseContents.map((x) => x.watched)
+      : ''
+    for (let key in progress) {
+      if (progress[key] === true) {
+        setProgressCount(progressCount + 1)
+      }
+    }
+  }, [currentCourse])
+>>>>>>> f4a828b (initial)
 
   return !course && !learning ? (
     <Loader />
@@ -107,6 +143,7 @@ const Course = ({ course, learning, currentCourse = '', myLearning }) => {
                 image={course && course.image}
                 title={course && course.name}
               />
+<<<<<<< HEAD
               {currentCourse.completedCertificate !== '' ? (
                 <CheckCircleIcon
                   className={`${classesLearning.playIcon} ${classesLearning.checkedIcon}`}
@@ -114,6 +151,9 @@ const Course = ({ course, learning, currentCourse = '', myLearning }) => {
               ) : (
                 <PlayCircleFilledIcon className={classesLearning.playIcon} />
               )}
+=======
+              <PlayCircleFilledIcon className={classesLearning.playIcon} />
+>>>>>>> f4a828b (initial)
             </div>
             <CardContent className={classesLearning.content}>
               <Typography
@@ -130,9 +170,13 @@ const Course = ({ course, learning, currentCourse = '', myLearning }) => {
                 componen='span'
                 style={{ fontStyle: 'bold', fontSize: 12 }}
               >
+<<<<<<< HEAD
                 {progressCount.length === newCourseContent.length
                   ? '100% Completed'
                   : `Progress: ${progressCount.length} / ${newCourseContent.length}`}
+=======
+                Progress: {progressCount} / {newCourseContent.length}
+>>>>>>> f4a828b (initial)
               </Typography>
             </CardContent>
           </div>
@@ -152,9 +196,13 @@ const Course = ({ course, learning, currentCourse = '', myLearning }) => {
                 {course && course.name}
               </Typography>
 
+<<<<<<< HEAD
               {myLearning ? (
                 ''
               ) : course.totalSold ? (
+=======
+              {course.totalSold ? (
+>>>>>>> f4a828b (initial)
                 <div
                   style={{
                     display: 'flex',
@@ -166,6 +214,7 @@ const Course = ({ course, learning, currentCourse = '', myLearning }) => {
                   </div>
                   <div> {course && course.totalSold}</div>
                 </div>
+<<<<<<< HEAD
               ) : (
                 <div
                   style={{
@@ -187,6 +236,10 @@ const Course = ({ course, learning, currentCourse = '', myLearning }) => {
                 : ''}
             </CardContent>
 
+=======
+              ) : null}
+            </CardContent>
+>>>>>>> f4a828b (initial)
             {course && course.rating ? (
               <div style={{ display: 'flex' }}>
                 <span style={{ marginLeft: 10 }}></span>
@@ -197,7 +250,17 @@ const Course = ({ course, learning, currentCourse = '', myLearning }) => {
         </Link>
       )}
 
+<<<<<<< HEAD
       {learning ? null : <CardActions></CardActions>}
+=======
+      {learning ? null : (
+        <CardActions>
+          <Button size='small' color='primary'>
+            Share
+          </Button>
+        </CardActions>
+      )}
+>>>>>>> f4a828b (initial)
     </Card>
   )
 }

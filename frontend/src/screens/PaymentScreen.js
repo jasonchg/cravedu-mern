@@ -50,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
   cartImage: {
     width: 120,
   },
+<<<<<<< HEAD
   payment: {
     marginLeft: 20,
     borderLeft: '1px solid #eaeaea',
@@ -61,6 +62,10 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
+=======
+  checkoutInput: {
+    margin: 10,
+>>>>>>> f4a828b (initial)
   },
 }))
 
@@ -173,6 +178,7 @@ const PaymentScreen = ({ history }) => {
       <Container className={classes.root}>
         <form>
           <Grid container spacing={2}>
+<<<<<<< HEAD
             <Grid item xs={12} md={8}>
               <Paper className={classes.paper}>
                 <div>
@@ -253,6 +259,69 @@ const PaymentScreen = ({ history }) => {
                   </div>
                 </div>
               </Paper>
+=======
+            <Grid item xs={8}>
+              <FormContainer>
+                {error && <Message>{error}</Message>}
+                {loading && <Loader />}
+
+                <FormContainer>
+                  <FormControl
+                    component='fieldset'
+                    className={classes.checkoutInput}
+                  >
+                    <FormLabel component='legend'>Billing Address</FormLabel>
+                    <FormContainer>
+                      <Select
+                        labelId='select_country'
+                        id='select_country'
+                        value={billingAddress}
+                        onChange={(e) => setBillingAddress(e.target.value)}
+                      >
+                        <MenuItem value={'Malaysia'}>Malaysia</MenuItem>
+                        <MenuItem value={'Other'} disabled>
+                          Other
+                        </MenuItem>
+                      </Select>
+                    </FormContainer>
+                  </FormControl>
+
+                  <FormContainer>
+                    <FormControl
+                      component='fieldset'
+                      className={classes.checkoutInput}
+                    >
+                      <FormLabel component='legend'>Payment Method</FormLabel>
+                      <FormContainer>
+                        <RadioGroup
+                          defaultValue='PayPal'
+                          value={paymentMethod}
+                          onChange={(e) => setPaymentMethod(e.target.value)}
+                        >
+                          <span>
+                            <FormControlLabel
+                              value='PayPal'
+                              control={<Radio color='primary' />}
+                              label={<i className='fa fa-paypal'></i>}
+                            />
+                            PayPal
+                          </span>
+                          <span>
+                            <FormControlLabel
+                              value='Other'
+                              control={<Radio color='primary' />}
+                              label={<PaymentIcon />}
+                              disabled
+                            />
+                            Other
+                          </span>
+                        </RadioGroup>
+                      </FormContainer>
+                    </FormControl>
+                  </FormContainer>
+                </FormContainer>
+              </FormContainer>
+>>>>>>> f4a828b (initial)
 
               <h2>
                 Order Items ({cartItems.reduce((acc, item) => acc + 1, 0)})
@@ -302,7 +371,11 @@ const PaymentScreen = ({ history }) => {
               </FormContainer>
             </Grid>
 
+<<<<<<< HEAD
             <Grid item md={4} xs={12}>
+=======
+            <Grid item xs={4}>
+>>>>>>> f4a828b (initial)
               <Paper className={classes.paper}>
                 <List>
                   <ListItem>

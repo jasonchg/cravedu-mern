@@ -2,7 +2,11 @@ import './App.css'
 import Footer from './components/Footer'
 import Header from './components/Header'
 import { Container } from '@material-ui/core'
+<<<<<<< HEAD
 import { BrowserRouter as Router, Route } from 'react-router-dom'
+=======
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+>>>>>>> f4a828b (initial)
 import HomeScreen from './screens/HomeScreen'
 import CourseScreen from './screens/CourseScreen'
 import CartScreen from './screens/CartScreen'
@@ -21,8 +25,11 @@ import BrowseScreen from './screens/BrowseScreen'
 import InstructorScreen from './screens/InstructorScreen'
 import InstructorCourseEditScreen from './screens/InstructorCourseEditScreen'
 import PreviewCourseScreen from './screens/PreviewCourseScreen'
+<<<<<<< HEAD
 import NotificationScreen from './screens/NotificationScreen'
 import ViewCertificateScreen from './screens/ViewCertificateScreen'
+=======
+>>>>>>> f4a828b (initial)
 
 function App() {
   return (
@@ -83,12 +90,15 @@ function App() {
           </div>
           {/* Main Screen */}
           <Container>
+<<<<<<< HEAD
             <Route
               path='/viewcert/certificates/:id'
               component={ViewCertificateScreen}
               exact
             />
             <Route path='/notifications' component={NotificationScreen} exact />
+=======
+>>>>>>> f4a828b (initial)
             <Route path='/mycourses' component={MyCoursesScreen} exact />
             <Route path='/register' component={RegisterScreen} exact />
             <Route path='/login/:id' component={LoginScreen} exact />

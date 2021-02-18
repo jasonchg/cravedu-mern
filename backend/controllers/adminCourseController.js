@@ -1,7 +1,10 @@
 import asyncHandler from 'express-async-handler'
 import Course from '../models/courseModel.js'
+<<<<<<< HEAD
 import { COURSE_PUBLISHED } from './notificationConstants.js'
 import Notification from '../models/notificationModel.js'
+=======
+>>>>>>> f4a828b (initial)
 
 // @desc    Get all courses
 // @route   GET /api/admin/course
@@ -48,6 +51,7 @@ const getCourseById = asyncHandler(async (req, res) => {
 // @access  Private Admin
 
 const updateCourse = asyncHandler(async (req, res) => {
+<<<<<<< HEAD
   try {
     const course = await Course.findById(req.params.id)
     if (course) {
@@ -85,6 +89,20 @@ const updateCourse = asyncHandler(async (req, res) => {
       //   await newNotification.save()
       // }
 
+=======
+  const course = await Course.findById(req.params.id)
+
+  if (course) {
+    course.name = req.body.name || course.name
+    course.image = req.body.image || course.image
+    course.price = req.body.price || course.price
+    course.category = req.body.category || course.category
+    course.description = req.body.description || course.description
+    course.instructor = req.body.instructor || course.instructor
+    course.isPublished = req.body.isPublished
+
+    try {
+>>>>>>> f4a828b (initial)
       const courseUpdated = await course.save()
       res.json({
         _id: courseUpdated._id,
@@ -96,6 +114,7 @@ const updateCourse = asyncHandler(async (req, res) => {
         instructor: courseUpdated.instructor,
         isPublished: courseUpdated.isPublished,
       })
+<<<<<<< HEAD
     } else {
       res.status(404)
       throw new Error('Course not found')
@@ -103,6 +122,15 @@ const updateCourse = asyncHandler(async (req, res) => {
   } catch (e) {
     res.status(401)
     throw new Error('Something went wrong.')
+=======
+    } catch (e) {
+      res.status(401)
+      throw new Error('Something went wrong.')
+    }
+  } else {
+    res.status(404)
+    throw new Error('Course not found')
+>>>>>>> f4a828b (initial)
   }
 })
 

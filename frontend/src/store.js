@@ -16,7 +16,10 @@ import {
   userDetailsReducer,
   userUpdateReducer,
   userCourseReducer,
+<<<<<<< HEAD
   userUpdateContentReducer,
+=======
+>>>>>>> f4a828b (initial)
 } from './reducers/userReducers'
 import { cartReducers } from './reducers/cartReducers'
 import {
@@ -45,6 +48,7 @@ import {
   instructorCourseListReducer,
   instructorCourseUpdateReducer,
   instructorContentUpdateQuizReducer,
+<<<<<<< HEAD
   instructorCoursePublishRequestReducer,
   instructorAnnouncementReducer,
 } from './reducers/instructorReducers'
@@ -54,6 +58,9 @@ import {
   notificationReadReducer,
   userNotificationReducer,
 } from './reducers/notificationReducers'
+=======
+} from './reducers/instructorReducers'
+>>>>>>> f4a828b (initial)
 
 const reducer = combineReducers({
   adminCourseUpdate: adminCourseUpdateReducer,
@@ -63,8 +70,11 @@ const reducer = combineReducers({
   adminUserGetDetails: adminUserGetDetailsReducer,
   adminUserDelete: adminUserDeleteReducer,
   adminUserList: adminUserListReducer,
+<<<<<<< HEAD
   instructorAnnouncement: instructorAnnouncementReducer,
   instructorCoursePublishRequest: instructorCoursePublishRequestReducer,
+=======
+>>>>>>> f4a828b (initial)
   instructorContentQuizUpdate: instructorContentUpdateQuizReducer,
   instructorContentDelete: instructorContentDeleteReducer,
   instructorCourseDelete: instructorCourseDeleteReducer,
@@ -75,7 +85,10 @@ const reducer = combineReducers({
   instructorCourseList: instructorCourseListReducer,
   instructorCourseCreate: instructorCourseCreateReducer,
   contentWatched: contentWatchedReducer,
+<<<<<<< HEAD
   instructorGrantAsnwer: notificationGrantAsnwerReducer,
+=======
+>>>>>>> f4a828b (initial)
   courseReview: courseReviewReducer,
   courseBestSold: courseBestSoldReducer,
   categoryList: categoriesReducer,
@@ -83,11 +96,15 @@ const reducer = combineReducers({
   courseDetails: courseDetailsReducer,
   courseQanda: courseQandaReducer,
   cart: cartReducers,
+<<<<<<< HEAD
   userNotificationDelete: notificationDeleteReducer,
   userNotificationRead: notificationReadReducer,
   userNotifications: userNotificationReducer,
   userLogin: userLoginReducer,
   userUpdateContent: userUpdateContentReducer,
+=======
+  userLogin: userLoginReducer,
+>>>>>>> f4a828b (initial)
   userRegister: userRegisterReducer,
   userDetails: userDetailsReducer,
   userUpdateProfile: userUpdateReducer,

@@ -65,6 +65,7 @@ const generateCert = async (user, course, certificateId) => {
             ptextH
           )
 
+<<<<<<< HEAD
           // let idtextW = Jimp.measureText(font, certId)
           // let idtextH = Jimp.measureTextHeight(font, certId)
           // cert.print(
@@ -77,6 +78,20 @@ const generateCert = async (user, course, certificateId) => {
           //   idtextW + 1000,
           //   idtextH
           // )
+=======
+          let idtextW = Jimp.measureText(font, certId)
+          let idtextH = Jimp.measureTextHeight(font, certId)
+          cert.print(
+            font,
+            w / 2 - idtextW / 2 - 1541,
+            h / 2 - idtextH / 2 + 1160,
+            {
+              text: `Certificate ID: ${certId}`,
+            },
+            idtextW + 1000,
+            idtextH
+          )
+>>>>>>> f4a828b (initial)
 
           Jimp.loadFont(Jimp.FONT_SANS_64_BLACK)
             .then((font) => {

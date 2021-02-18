@@ -2,6 +2,7 @@ import asyncHandler from 'express-async-handler'
 import Category from '../models/categoryModel.js'
 import Course from '../models/courseModel.js'
 import User from '../models/userModel.js'
+<<<<<<< HEAD
 import Notification from '../models/notificationModel.js'
 import mongoose from 'mongoose'
 import {
@@ -9,6 +10,8 @@ import {
   NEW_QANDA_QUESTION,
   NEW_REVIEW,
 } from './notificationConstants.js'
+=======
+>>>>>>> f4a828b (initial)
 
 // @desc    Fetch all courses/ Search features
 // @route   GET /api/courses
@@ -21,7 +24,11 @@ const getCourses = asyncHandler(async (req, res) => {
   const params = req.query.keyword
     ? {
         isPublished: true,
+<<<<<<< HEAD
         name: { $regex: `${req.query.keyword}`, $options: 'i' },
+=======
+        name: { $regex: req.query.keyword, $options: 'i' },
+>>>>>>> f4a828b (initial)
       }
     : { isPublished: true }
 
@@ -135,6 +142,7 @@ const createCourseQandA = asyncHandler(async (req, res) => {
       user: req.user._id,
     }
 
+<<<<<<< HEAD
     const newNotification = new Notification({
       user: course.user,
       notification: {
@@ -147,6 +155,8 @@ const createCourseQandA = asyncHandler(async (req, res) => {
 
     await newNotification.save()
 
+=======
+>>>>>>> f4a828b (initial)
     course.courseQASection.push(qanda)
 
     const posted = await course.save()
@@ -158,16 +168,25 @@ const createCourseQandA = asyncHandler(async (req, res) => {
 })
 
 // @desc    Reply QandA
+<<<<<<< HEAD
 // @route   POST /api/courses/:id/qanda/:qandaId
+=======
+// @route   PUT /api/courses/:id/qanda/:qandaId
+>>>>>>> f4a828b (initial)
 // @access  Private
 
 const replyCourseQandA = asyncHandler(async (req, res) => {
   const qandaId = req.params.qandaId
+<<<<<<< HEAD
 
+=======
+  const { reply } = req.body
+>>>>>>> f4a828b (initial)
   const course = await Course.findById(req.params.id)
 
   if (course) {
     try {
+<<<<<<< HEAD
       let currentQanda = course.courseQASection.find((x) => x._id == qandaId)
 
       if (currentQanda !== {}) {
@@ -201,13 +220,26 @@ const replyCourseQandA = asyncHandler(async (req, res) => {
         }
 
         res.status(201).json('Added')
+=======
+      let currentQanda = course.courseQASection.find((x) => x._id === qandaId)
+
+      if (currentQanda !== {}) {
+        currentQanda.push(reply)
+        const updateQanda = await course.save()
+        res.status(201).json({ updateQanda })
+>>>>>>> f4a828b (initial)
       } else {
         res.status(404)
         throw new Error('Q&A not found')
       }
     } catch (err) {
+<<<<<<< HEAD
       res.status(500)
       throw new Error('Q&A Failed', err.message)
+=======
+      res.status(404)
+      throw new Error('Course not found')
+>>>>>>> f4a828b (initial)
     }
   } else {
     res.status(404)
@@ -250,6 +282,7 @@ const createCourseReview = asyncHandler(async (req, res) => {
       user: req.user._id,
     }
 
+<<<<<<< HEAD
     const newNotification = new Notification({
       user: course.user,
       notification: {
@@ -262,6 +295,8 @@ const createCourseReview = asyncHandler(async (req, res) => {
 
     await newNotification.save()
 
+=======
+>>>>>>> f4a828b (initial)
     await course.reviews.push(review)
 
     course.numReviews = course.reviews.length
@@ -316,5 +351,8 @@ export {
   setWatched,
   getCategories,
   getCoursesByCategory,
+<<<<<<< HEAD
   replyCourseQandA,
+=======
+>>>>>>> f4a828b (initial)
 }

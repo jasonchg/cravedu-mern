@@ -18,9 +18,12 @@ import {
   COURSE_CATEGORIES_REQUEST,
   COURSE_CATEGORIES_SUCCESS,
   COURSE_CATEGORIES_FAIL,
+<<<<<<< HEAD
   COURSE_ANSWER_QANDA_REQUEST,
   COURSE_ANSWER_QANDA_SUCCESS,
   COURSE_ANSWER_QANDA_FAIL,
+=======
+>>>>>>> f4a828b (initial)
 } from '../constants/courseConstants'
 import {
   USER_WATCHED_CONTENT_REQUEST,
@@ -146,6 +149,7 @@ const addQanda = (courseId, qanda) => async (dispatch, getState) => {
   }
 }
 
+<<<<<<< HEAD
 const replyQanda = (courseId, qandaId, answer) => async (
   dispatch,
   getState
@@ -183,6 +187,8 @@ const replyQanda = (courseId, qandaId, answer) => async (
   }
 }
 
+=======
+>>>>>>> f4a828b (initial)
 const bestSoldCourses = () => async (dispatch) => {
   try {
     dispatch({ type: COURSE_BEST_REQUEST })
@@ -269,5 +275,8 @@ export {
   updateWatched,
   listCategories,
   listCoursesByCategory,
+<<<<<<< HEAD
   replyQanda,
+=======
+>>>>>>> f4a828b (initial)
 }

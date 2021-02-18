@@ -8,7 +8,10 @@ import users from './data/users.js'
 import courses from './data/courses.js'
 import Category from './models/categoryModel.js'
 import categories from './data/categories.js'
+<<<<<<< HEAD
 import Notification from './models/notificationModel.js'
+=======
+>>>>>>> f4a828b (initial)
 
 dotenv.config()
 connectDB()
@@ -19,7 +22,10 @@ const importData = async () => {
     await User.deleteMany()
     await Order.deleteMany()
     await Category.deleteMany()
+<<<<<<< HEAD
     await Notification.deleteMany()
+=======
+>>>>>>> f4a828b (initial)
 
     const createdUsers = await User.insertMany(users)
 
@@ -46,7 +52,10 @@ const destroyData = async () => {
     await User.deleteMany()
     await Order.deleteMany()
     await Category.deleteMany()
+<<<<<<< HEAD
     await Notification.deleteMany()
+=======
+>>>>>>> f4a828b (initial)
 
     console.log('Data Destroyed!'.red.inverse)
     process.exit()

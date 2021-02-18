@@ -10,9 +10,12 @@ import {
   ADMIN_USER_UPDATE_REQUEST,
   ADMIN_USER_UPDATE_SUCCESS,
   ADMIN_USER_UPDATE_FAIL,
+<<<<<<< HEAD
   ADMIN_USER_DELETE_SUCCESS,
   ADMIN_USER_DELETE_REQUEST,
   ADMIN_USER_DELETE_FAIL,
+=======
+>>>>>>> f4a828b (initial)
 } from '../constants/adminConstants'
 
 const listUsers = () => async (dispatch, getState) => {
@@ -102,6 +105,7 @@ const updateUser = (user) => async (dispatch, getState) => {
   }
 }
 
+<<<<<<< HEAD
 const deleteUser = (user) => async (dispatch, getState) => {
   try {
     dispatch({ type: ADMIN_USER_DELETE_REQUEST })
@@ -131,3 +135,6 @@ const deleteUser = (user) => async (dispatch, getState) => {
 }
 
 export { listUsers, getUserById, updateUser, deleteUser }
+=======
+export { listUsers, getUserById, updateUser }
+>>>>>>> f4a828b (initial)

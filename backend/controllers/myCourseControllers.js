@@ -1,6 +1,9 @@
 import asyncHandler from 'express-async-handler'
 import User from '../models/userModel.js'
+<<<<<<< HEAD
 import Course from '../models/courseModel.js'
+=======
+>>>>>>> f4a828b (initial)
 
 // @desc    Fetch all courses
 // @route   GET /api/mycourses
@@ -10,6 +13,7 @@ const getMyCourses = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id)
   const { myCourses } = user
 
+<<<<<<< HEAD
   let newList = []
 
   for (let key in myCourses) {
@@ -57,10 +61,18 @@ const updateMyCourse = asyncHandler(async (req, res) => {
         throw new Error('No Course Found')
       }
     }
+=======
+  if (user) {
+    res.json(myCourses)
+>>>>>>> f4a828b (initial)
   } else {
     res.status(404)
     throw new Error('No Course Found')
   }
 })
 
+<<<<<<< HEAD
 export { getMyCourses, updateMyCourse }
+=======
+export { getMyCourses }
+>>>>>>> f4a828b (initial)
