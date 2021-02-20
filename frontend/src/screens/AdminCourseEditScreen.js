@@ -27,12 +27,17 @@ import { myTrim, generateSlug } from '../utils'
 import {
   ADMIN_COURSE_DETAILS_RESET,
   ADMIN_COURSE_UPDATE_RESET,
+  ADMIN_COURSE_LIST_RESET,
 } from '../constants/adminConstants'
 import TextEditor from '../components/TextEditor'
 import { listCategories } from '../actions/courseActions'
 import CategorySelectList from '../components/CategorySelectList'
 import ContentListItem from '../components/ContentListItem'
-import { INSTRUCTOR_COURSE_UPDATE_RESET } from '../constants/instructorConstants'
+import {
+  INSTRUCTOR_COURSE_UPDATE_RESET,
+  INSTRUCTOR_DELETE_COURSE_RESET,
+} from '../constants/instructorConstants'
+import { deleteCourse } from '../actions/instructorActions'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -82,6 +87,11 @@ const AdminCourseEditScreen = ({ match, history }) => {
     (state) => state.instructorCourseUpdate
   )
   const { success: instructorUpdateSuccess } = instructorCourseUpdate
+
+  const instructorCourseDelete = useSelector(
+    (state) => state.instructorCourseDelete
+  )
+  const { success: deleteCourseSuccess } = instructorCourseDelete
 
   const [name, setName] = useState('')
   const [price, setPrice] = useState(0)
@@ -147,6 +157,12 @@ const AdminCourseEditScreen = ({ match, history }) => {
   }
 
   useEffect(() => {
+    if (deleteCourseSuccess) {
+      dispatch({ type: INSTRUCTOR_DELETE_COURSE_RESET })
+      dispatch({ type: ADMIN_COURSE_LIST_RESET })
+      history.push('/admin')
+    }
+
     if (updateSuccess || instructorUpdateSuccess) {
       dispatch({ type: INSTRUCTOR_COURSE_UPDATE_RESET })
       dispatch({ type: ADMIN_COURSE_DETAILS_RESET })
@@ -191,6 +207,7 @@ const AdminCourseEditScreen = ({ match, history }) => {
     history,
     updateSuccess,
     instructorUpdateSuccess,
+    deleteCourseSuccess,
   ])
   const [cantDelete, setCantDelete] = useState(false)
   const [expanded, setExpanded] = useState(false)
@@ -214,7 +231,7 @@ const AdminCourseEditScreen = ({ match, history }) => {
       }\n(*This action is not reversable. Think twice!)`
 
       if (window.confirm(deleteMsg)) {
-        // dispatch(deleteCourse(courseId))
+        dispatch(deleteCourse(courseId))
       }
     }
   }

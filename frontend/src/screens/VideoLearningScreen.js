@@ -199,10 +199,12 @@ const VideoLearningScreen = ({ history }) => {
             Authorization: `Bearer ${userInfo.token}`,
           },
         }
-        await axios.put(`/api/users/${course._id}/course-completed`, {}, config)
+
         alert(
           `Congratulation! You've completed this course. A certificate will be send to your mailbox soon.`
         )
+
+        await axios.put(`/api/users/${course._id}/course-completed`, {}, config)
       } catch (err) {
         console.log(err)
       }
@@ -265,7 +267,6 @@ const VideoLearningScreen = ({ history }) => {
               let notYetWatchContent = currentUserPaidCourse.courseContents.find(
                 (x) => x.watched !== true
               )
-
               if (
                 !notYetWatchContent ||
                 notYetWatchContent.length === 0 ||
@@ -276,6 +277,10 @@ const VideoLearningScreen = ({ history }) => {
                   currentUserPaidCourse.completedCertificate === ''
                 ) {
                   getCertify()
+                } else {
+                  history.push(
+                    `/course/${course_slug}/learn?chapter=${course.courseContents[0]._id}`
+                  )
                 }
               } else {
                 let courseContentsPublishCheck = course.courseContents.find(

@@ -56,11 +56,12 @@ const login = (email, password) => async (dispatch) => {
 }
 
 const logout = () => async (dispatch) => {
-  localStorage.removeItem('userInfo')
   dispatch({ type: USER_DETAILS_RESET })
   dispatch({ type: COURSE_DETAILS_RESET })
   dispatch({ type: ORDER_ALL_MY_RESET })
   dispatch({ type: USER_LOGOUT })
+
+  localStorage.removeItem('userInfo')
 }
 
 const register = (name, email, password, instructor) => async (dispatch) => {
