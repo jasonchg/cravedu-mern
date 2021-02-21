@@ -91,6 +91,7 @@ const Header = () => {
   const logoutUser = () => {
     if (window.confirm('Logout?')) {
       dispatch(logout())
+      window.location = '/login'
     }
     closeUserMenuHandler()
     closeAdminMenuHandler()

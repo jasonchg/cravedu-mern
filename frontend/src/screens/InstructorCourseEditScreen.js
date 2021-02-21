@@ -384,15 +384,12 @@ const InstructorCourseEditScreen = ({ match, history }) => {
                   placeholder=''
                   variant='filled'
                   value={price}
-                  autoComplete='number'
                   onChange={(e) => setPrice(e.target.value)}
                 />
               </FormContainer>
               <FormContainer>
                 <TextEditor
-                  description={
-                    description !== '' ? description : '<h5>Loading</h5>'
-                  }
+                  description={description !== '' ? description : ''}
                   setter={setDescription}
                 />
               </FormContainer>

@@ -19,10 +19,12 @@ const useStyles = makeStyles({
     marginRight: 10,
     width: 300,
     minHeight: 270,
+    marginBottom: 10,
   },
   media: {
     height: 175,
   },
+  content: { height: '100%' },
 })
 
 const learningStyles = makeStyles({
@@ -66,7 +68,7 @@ const learningStyles = makeStyles({
   learningBody: {
     display: 'flex',
   },
-  content: {},
+  content: { height: '100%' },
 })
 
 const Course = ({ course, learning, currentCourse = '', myLearning }) => {
@@ -147,7 +149,7 @@ const Course = ({ course, learning, currentCourse = '', myLearning }) => {
               title={course && course.name}
             />
 
-            <CardContent>
+            <CardContent style={{ maxHeight: 130, minHeight: 130 }}>
               <Typography gutterBottom variant='h5' componen='span'>
                 {course && course.name}
               </Typography>
@@ -192,7 +194,12 @@ const Course = ({ course, learning, currentCourse = '', myLearning }) => {
                 <span style={{ marginLeft: 10 }}></span>
                 <Rating value={course.rating} text={`(${course.numReviews})`} />
               </div>
-            ) : null}
+            ) : (
+              <div style={{ display: 'flex' }}>
+                <span style={{ marginLeft: 10 }}></span>
+                <Rating value={Number(0)} text={`(${0})`} />
+              </div>
+            )}
           </CardActionArea>
         </Link>
       )}
