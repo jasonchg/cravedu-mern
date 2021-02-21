@@ -27,9 +27,13 @@ yarn-error.log*\
 debug.log
 frontend/debug.log
 
+gitlistobjectbysize.sh
+
 .vscode
+
 E:\React Js\cravedu-mern\.vscode
 
-C:\Users\Jason\Desktop\cravedu-mern-master\frontend\public\videos
+C:\Users\Jason\Desktop\cravedu-mern-master\frontend\public\videos\*
+
 frontend\public\videos
 
