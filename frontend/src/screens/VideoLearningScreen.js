@@ -199,7 +199,6 @@ const VideoLearningScreen = ({ history }) => {
             Authorization: `Bearer ${userInfo.token}`,
           },
         }
-
         alert(
           `Congratulation! You've completed this course. A certificate will be send to your mailbox soon.`
         )
